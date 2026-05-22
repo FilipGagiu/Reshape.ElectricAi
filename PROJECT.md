@@ -79,12 +79,12 @@ One Postgres database (`electric_ai`), four schemas, one `DbContext` per lib (CO
 
 | Schema | Owner | Key tables |
 |---|---|---|
-| `plans` | Plans lib | `users`, `refresh_tokens`, `user_preferences`, `groups`, `group_members`, `group_preferences`, `plans` |
+| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
 | `vector` | VectorDb lib | `documents`, `document_chunks` (with `embedding vector(1536)` + HNSW index) |
 | `feed` | LiveFeed lib | `feed_entries`, `feed_deliveries` |
 | `chat` | AiChat lib | `chat_sessions`, `chat_messages`, `chat_budgets`, `faq_hot_questions` |
 
-**Cross-schema references are loose `Guid` IDs** (e.g. `chat.chat_messages.UserId` does NOT declare a navigation property to `plans.users`). EF Core can't enforce FKs across `DbContext`s, so referential integrity is application-level. CODE.md mandates this.
+**Cross-schema references are loose `Guid` IDs** (e.g. `chat.chat_messages.UserId` does NOT declare a navigation property to `plans."Users"`). EF Core can't enforce FKs across `DbContext`s, so referential integrity is application-level. CODE.md mandates this.
 
 For endpoint shapes + JSON schemas, see [README.md](README.md). For ORM and migrations rules, see [CODE.md](CODE.md).
 
@@ -184,7 +184,7 @@ The original DOCX/XLSX/PDF files stay in `Client Generic Requirements/` as sourc
 ## Known limitations (v1 / hackathon)
 
 - **Ticket tier is self-declared** by users — no integration with the real EC ticketing system. Budget caps use the self-declared tier. Bypass by lying about your tier is possible. Documented for the demo; production would resolve from ticket API.
-- **Organizer role is set manually in DB** (`UPDATE plans.users SET role='Organizer' WHERE email='...'`). No promotion UI in v1.
+- **Organizer role is set manually in DB** (`UPDATE plans."Users" SET "Role"='Organizer' WHERE "Email"='...'`). No promotion UI in v1.
 - **No email verification, no password reset.** Hackathon shortcut. Users typo their email = they lose the account.
 - **SSE channels are in-memory.** Single-instance deployment only. Horizontal scaling would need Redis pub/sub or a SignalR backplane.
 - **No real ticket payment** — `POST /plans/generate` returns a budget estimate, doesn't link to checkout.

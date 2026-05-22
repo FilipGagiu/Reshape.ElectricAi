@@ -116,7 +116,7 @@ Test projects additionally set `<IsPackable>false</IsPackable>`.
       npgsql.UseVector(); // VectorDb context only
   });
   ```
-- **No cross-context navigation properties.** Cross-lib references are loose `Guid` IDs only (e.g. `chat.chat_sessions.UserId` is a `Guid`, not a navigation to `plans.users`).
+- **No cross-context navigation properties.** Cross-lib references are loose `Guid` IDs only (e.g. `chat.chat_sessions.UserId` is a `Guid`, not a navigation to `plans."Users"`).
 - Migrations live in the lib that owns the context: `src/Reshape.ElectricAi.<Lib>/Migrations/`.
 - `Program.cs` calls `await db.Database.MigrateAsync(cancellationToken)` per context on startup **only when** `ASPNETCORE_ENVIRONMENT=Development`. Prod migrations are explicit (`dotnet ef database update`).
 
@@ -160,7 +160,7 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 
 - JWT (HS256). Signing key from `IConfiguration["Auth:JwtSigningKey"]`, **MUST be ≥ 32 bytes**. User-secrets in dev, environment variable in prod. **NEVER hardcode.**
 - Access token lifetime: `Auth:AccessTokenMinutes` (default 15).
-- Refresh token lifetime: `Auth:RefreshTokenDays` (default 7), stored as **SHA-256 hash** in `plans.refresh_tokens`. Rotated on refresh, old token revoked.
+- Refresh token lifetime: `Auth:RefreshTokenDays` (default 7), stored as **SHA-256 hash** in `plans."RefreshTokens"`. Rotated on refresh, old token revoked.
 - Password hashing: `BCrypt.HashPassword(password + salt, workFactor: 12)`. Per-user salt is 16 random bytes from `RandomNumberGenerator.GetBytes(16)`, stored alongside the hash.
 - Password policy: ≥ 10 characters, ≥ 1 digit, ≥ 1 symbol (enforced by FluentValidation).
 - Login MUST always run BCrypt verify even when the user is not found (constant-time, prevents user enumeration).
@@ -227,7 +227,7 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 
 - `.editorconfig` is authoritative. Key non-default rules:
   - File-scoped namespaces (`namespace Foo;`).
-  - `var` everywhere the type is obvious from the right-hand side.
+  - `var` always for local variables. Even when the right-hand side type is non-obvious. Explicit types only when `var` is illegal (e.g. uninitialized locals, target-typed `new()` ambiguity, lambda parameter types). No exceptions for "readability" — consistency wins.
   - Private fields `_camelCase`. Locals + parameters `camelCase`. Types + methods + properties + constants `PascalCase`.
   - Braces on new lines (Allman) for types/methods; same-line OK for short property accessors.
   - One public type per file. File name == type name.

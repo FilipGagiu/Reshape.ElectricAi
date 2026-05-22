@@ -311,7 +311,7 @@ Extracted to `data/` (planned, not yet seeded). Ingest is idempotent via `Conten
 
 - **JWT bearer**, HS256, signing key from `Auth:JwtSigningKey` (user-secrets in dev, env var in prod).
 - Access token: 15 minutes (`Auth:AccessTokenMinutes`).
-- Refresh token: 7 days (`Auth:RefreshTokenDays`), opaque, stored as SHA-256 hash in `plans.refresh_tokens`. Rotated on refresh, old token revoked.
+- Refresh token: 7 days (`Auth:RefreshTokenDays`), opaque, stored as SHA-256 hash in `plans."RefreshTokens"`. Rotated on refresh, old token revoked.
 - Password hashing: BCrypt work factor 12 + per-user salt. Login runs verify even when user not found (constant-time).
 - Roles: `User`, `Organizer`. Organizer role granted manually in DB (v1 limitation, see [PROJECT.md](PROJECT.md)).
 
