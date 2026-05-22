@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Reshape.ElectricAi.AiChat/Reshape.ElectricAi.AiChat.csproj" />
+    <Project Path="src/Reshape.ElectricAi.Core/Reshape.ElectricAi.Core.csproj" />
+    <Project Path="src/Reshape.ElectricAi.LiveFeed/Reshape.ElectricAi.LiveFeed.csproj" />
+    <Project Path="src/Reshape.ElectricAi.Plans/Reshape.ElectricAi.Plans.csproj" />
+    <Project Path="src/Reshape.ElectricAi.Presentation/Reshape.ElectricAi.Presentation.csproj" />
+    <Project Path="src/Reshape.ElectricAi.VectorDb/Reshape.ElectricAi.VectorDb.csproj" />
+  </Folder>
+</Solution>

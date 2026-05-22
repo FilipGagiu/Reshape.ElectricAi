@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.14.14" />
+    <PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.*" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Reshape.ElectricAi.Core\Reshape.ElectricAi.Core.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.Plans\Reshape.ElectricAi.Plans.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.VectorDb\Reshape.ElectricAi.VectorDb.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.AiChat\Reshape.ElectricAi.AiChat.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.LiveFeed\Reshape.ElectricAi.LiveFeed.csproj" />
+  </ItemGroup>
+
+</Project>
