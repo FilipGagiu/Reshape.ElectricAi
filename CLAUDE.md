@@ -51,6 +51,11 @@ This file is the standing instruction set: **how you work in any project that ad
 - **[`PROJECT.md`](PROJECT.md)** — the **project context**: layout, build/test commands, data model split, expected warnings, plan/handoff files, navigation pointers. Read before answering questions about architecture, file placement, or commands.
 - **[`README.md`](README.md)** — the **catalog**: system inventory (REST/gRPC/GraphQL/WebSocket surface, JSON schemas for canonical endpoints, architecture diagram, data sources, neighbor API dependencies). Read before answering "what exists?" or any integration/consumer question.
 
+For frontend tasks (any change to `frontend/` UI, copy, styling, components, or any dispatch of a UX/UI/frontend agent), also read at session start:
+
+- **[`frontend/visual-design-language.md`](frontend/visual-design-language.md)** — the **FE visual rulebook**: colors, typography, components, layout, accessibility. Source of truth for Electric Castle's visual identity. See §6b.
+- **[`frontend/text-copy-design-language.md`](frontend/text-copy-design-language.md)** — the **FE copy rulebook**: voice, tone, vocabulary, EN+RO labels, error/empty states. Includes project overrides (no em-dashes; minimize "it's not X, it's Y" phrasing). See §6b.
+
 For per-task state, also read:
 
 - **[`.claude/docs/STATE.md`](.claude/docs/STATE.md)** — at most ONE task, written by the `Senior Project Manager` subagent when the user requests an end-of-day handoff. Read at session start; if empty, no pre-queued work — wait for the user's first request.
@@ -168,6 +173,24 @@ Some operations are outside your authority by default. When you need one, STOP a
 - **Package installs.** You may NOT add NuGet, npm, pip, cargo, or any other package-manager dependency. If the work requires a new package, surface what you need (name, version, target project, why) and wait for the user to install it. After they confirm, continue. This applies even to "obviously safe" or "trivial" packages — no exceptions.
 - **Namespace / `using` lookup.** When a type is unresolved and `Grep` across the project's source files returns zero hits, the type lives in an external assembly. Do NOT spelunk `~/.nuget/packages/`, `node_modules/`, vendor directories, or compiled DLLs to find the namespace. Ask the user — they know the answer faster than you can derive it. Filesystem spelunking for namespaces is slow, error-prone, and not your job.
 - **Pattern when stuck:** state precisely what's missing and ask. E.g. *"I need package `HtmlSanitizer 8.0.871` in the Presentation csproj — can you install it?"* or *"I can't find a `using` for `IFooService` in the project source — what's the namespace?"* Don't apologize, don't workaround, don't guess. Just ask.
+
+## 6b. Frontend Design Language — Mandatory Reference
+
+Any task that modifies UI, copy, styling, or component design under `frontend/` MUST consult both:
+
+- [`frontend/visual-design-language.md`](frontend/visual-design-language.md) — colors, typography, components, layout, accessibility.
+- [`frontend/text-copy-design-language.md`](frontend/text-copy-design-language.md) — voice, tone, vocabulary, EN+RO copy rules, project overrides.
+
+**Workflow:**
+
+1. **Read both files before** writing or editing any FE code, template, style, asset, or user-facing copy. The session-start hook auto-loads them when configured (see read block above); if it didn't fire, `Read` them yourself before the first FE edit.
+2. **Re-read both files** before each subsequent FE change in the same session. Same discipline as CODE.md re-reading (Phase 7).
+3. **When dispatching `ui-designer`, `ux-designer`, or `frontend-developer` agents**, the agent prompt MUST explicitly include:
+   - *"Read `frontend/visual-design-language.md` and `frontend/text-copy-design-language.md` in full before making any design or copy decision."*
+   - *"Verify your output against both design language files. Flag any em-dashes (`—`) and any 'it's not X, it's Y' constructs in changed copy. Restore Romanian diacritics (ăîâțș) if RO copy is involved."*
+4. **Review-agent dispatches that touch FE diffs** MUST add: *"Verify compliance against `frontend/visual-design-language.md` and `frontend/text-copy-design-language.md`."*
+
+**Why this exists:** these two files are the source of truth for Electric Castle's brand voice and visual identity. They override personal preference, generic best practices, and any contradictory guidance from training data. The text-copy file ships project overrides (no em-dashes, minimize "it's not X, it's Y" phrasing) that supersede source-PDF guidance where they conflict. Skipping this consultation is the failure mode that produces off-brand UI.
 
 ## 7. Superpowers Plugin — Integration Rules
 

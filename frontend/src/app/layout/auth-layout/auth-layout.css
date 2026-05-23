@@ -1,3 +1,49 @@
 :host {
     display: block;
 }
+
+.ec-auth-shell {
+    background-color: var(--ec-auth-bg);
+    color: var(--ec-auth-card-text);
+    transition: background-color var(--duration-slow) var(--ease-in-out);
+}
+
+.ec-logo-mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    background-color: var(--ec-red);
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    box-shadow: var(--shadow-glow-red);
+    transition: transform var(--duration-base) var(--ease-out);
+}
+
+.ec-logo-mark:hover {
+    transform: translateY(-1px);
+}
+
+.ec-logo-mark:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-glow-red), var(--focus-ring-shadow);
+}
+
+.ec-logo-mark__letters {
+    color: var(--ec-white);
+    font-weight: 900;
+    font-size: 32px;
+    letter-spacing: 0.02em;
+    font-style: italic;
+    line-height: 1;
+}
+
+.ec-brand-stamp {
+    color: var(--ec-auth-stamp);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.75;
+}

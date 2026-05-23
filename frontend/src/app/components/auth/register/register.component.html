@@ -1,23 +1,17 @@
 <form
     [formGroup]="form"
     (ngSubmit)="submit()"
-    class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex w-full flex-col gap-6 rounded-2xl border p-6 shadow-sm"
+    class="ec-auth-card"
     novalidate
 >
-    <header class="flex flex-col gap-1 text-center">
-        <h1 class="text-surface-900 dark:text-surface-0 text-xl font-semibold">
-            {{ 'auth.register.title' | transloco }}
-        </h1>
-        <p class="text-surface-500 dark:text-surface-400 text-sm">
-            {{ 'auth.register.subtitle' | transloco }}
-        </p>
+    <header class="ec-auth-card__header">
+        <h1 class="ec-auth-title">{{ 'auth.register.title' | transloco }}</h1>
+        <span class="ec-auth-accent" aria-hidden="true"></span>
+        <p class="ec-auth-subtitle">{{ 'auth.register.subtitle' | transloco }}</p>
     </header>
 
-    <div class="flex flex-col gap-2">
-        <label
-            for="register-email"
-            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
-        >
+    <div class="ec-field">
+        <label for="register-email" class="ec-field-label">
             {{ 'auth.field.email' | transloco }}
         </label>
         <input
@@ -26,18 +20,16 @@
             type="email"
             autocomplete="email"
             formControlName="email"
+            class="ec-field-input"
             [placeholder]="'auth.field.emailPlaceholder' | transloco"
         />
         @if (form.controls.email.touched && form.controls.email.invalid) {
-            <small class="text-red-500">{{ 'auth.error.emailInvalid' | transloco }}</small>
+            <small class="ec-field-error">{{ 'auth.error.emailInvalid' | transloco }}</small>
         }
     </div>
 
-    <div class="flex flex-col gap-2">
-        <label
-            for="register-password"
-            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
-        >
+    <div class="ec-field">
+        <label for="register-password" class="ec-field-label">
             {{ 'auth.field.password' | transloco }}
         </label>
         <p-password
@@ -45,24 +37,19 @@
             formControlName="password"
             [feedback]="true"
             [toggleMask]="true"
-            styleClass="w-full"
-            inputStyleClass="w-full"
+            styleClass="ec-field-password w-full"
+            inputStyleClass="ec-field-input w-full"
             [placeholder]="'auth.field.passwordPlaceholder' | transloco"
         />
         @if (form.controls.password.touched && form.controls.password.invalid) {
-            <small class="text-red-500">
-                {{
-                    'auth.error.passwordTooShort' | transloco: { length: passwordMinLength }
-                }}
+            <small class="ec-field-error">
+                {{ 'auth.error.passwordTooShort' | transloco: { length: passwordMinLength } }}
             </small>
         }
     </div>
 
-    <div class="flex flex-col gap-2">
-        <label
-            for="register-confirm"
-            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
-        >
+    <div class="ec-field">
+        <label for="register-confirm" class="ec-field-label">
             {{ 'auth.field.confirmPassword' | transloco }}
         </label>
         <p-password
@@ -70,12 +57,12 @@
             formControlName="confirmPassword"
             [feedback]="false"
             [toggleMask]="true"
-            styleClass="w-full"
-            inputStyleClass="w-full"
+            styleClass="ec-field-password w-full"
+            inputStyleClass="ec-field-input w-full"
             [placeholder]="'auth.field.confirmPasswordPlaceholder' | transloco"
         />
         @if (form.touched && form.hasError('passwordsMismatch')) {
-            <small class="text-red-500">{{ 'auth.error.passwordsMismatch' | transloco }}</small>
+            <small class="ec-field-error">{{ 'auth.error.passwordsMismatch' | transloco }}</small>
         }
     </div>
 
@@ -87,15 +74,12 @@
         type="submit"
         [label]="'auth.register.submit' | transloco"
         [loading]="submitting()"
-        styleClass="w-full"
+        styleClass="ec-cta-primary w-full"
     />
 
-    <p class="text-surface-500 dark:text-surface-400 text-center text-sm">
+    <p class="ec-auth-card__footer">
         {{ 'auth.register.hasAccount' | transloco }}
-        <a
-            routerLink="/login"
-            class="text-primary-500 hover:text-primary-600 ml-1 font-medium underline-offset-2 hover:underline"
-        >
+        <a routerLink="/login" class="ec-link-accent">
             {{ 'auth.register.loginCta' | transloco }}
         </a>
     </p>

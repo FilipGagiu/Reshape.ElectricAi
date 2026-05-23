@@ -1,0 +1,52 @@
+{
+    "nav": {
+        "liveFeed": "Feed live",
+        "questions": "Întrebări",
+        "plan": "Planul meu EC"
+    },
+    "liveFeed": {
+        "title": "Feed live",
+        "placeholder": "Actualizările în timp real apar aici."
+    },
+    "questions": {
+        "title": "Întrebări și chat",
+        "placeholder": "Pune întrebări și discută cu ceilalți."
+    },
+    "plan": {
+        "title": "Planul meu EC",
+        "placeholder": "Planul tău extracurricular trăiește aici."
+    },
+    "auth": {
+        "login": {
+            "title": "Bun venit înapoi",
+            "subtitle": "Autentifică-te. Castelul ți-a dus dorul.",
+            "submit": "AUTENTIFICĂ-TE",
+            "bypass": "Sari peste login (dev)",
+            "noAccount": "Prima dată la EC?",
+            "registerCta": "Alătură-te Aventurii"
+        },
+        "register": {
+            "title": "Alătură-te Aventurii",
+            "subtitle": "Aventura ta începe aici. Creează-ți contul.",
+            "submit": "CREEAZĂ CONT",
+            "hasAccount": "Deja Casteller?",
+            "loginCta": "Autentifică-te"
+        },
+        "field": {
+            "email": "Adresă de e-mail",
+            "emailPlaceholder": "tu@email.com",
+            "password": "Parolă",
+            "passwordPlaceholder": "Min. 8 caractere",
+            "confirmPassword": "Confirmă parola",
+            "confirmPasswordPlaceholder": "Repetă parola"
+        },
+        "error": {
+            "emailInvalid": "Introdu o adresă de e-mail validă.",
+            "passwordRequired": "Parola este obligatorie.",
+            "passwordTooShort": "Min. {{length}} caractere.",
+            "passwordsMismatch": "Parolele nu se potrivesc.",
+            "emailTaken": "E-mailul ăsta e deja folosit.",
+            "invalidCredentials": "E-mail sau parolă greșite."
+        }
+    }
+}
