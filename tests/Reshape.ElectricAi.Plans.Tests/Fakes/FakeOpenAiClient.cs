@@ -17,13 +17,20 @@ public sealed class FakeOpenAiClient : IOpenAiClient
     {
         var json = JsonSerializer.Serialize(envelope, LlmJsonOptions.Default);
         var resolvedUsage = usage ?? new LlmUsage(10, 5, 1);
-        _responses.Enqueue(new QueuedResponse(json, null, resolvedUsage));
+        _responses.Enqueue(new QueuedResponse(json, null, null, resolvedUsage));
+        return this;
+    }
+
+    public FakeOpenAiClient WithTextResponse(string text, LlmUsage? usage = null)
+    {
+        var resolvedUsage = usage ?? new LlmUsage(10, 5, 1);
+        _responses.Enqueue(new QueuedResponse(null, text, null, resolvedUsage));
         return this;
     }
 
     public FakeOpenAiClient WithException(Exception ex)
     {
-        _responses.Enqueue(new QueuedResponse(null, ex, new LlmUsage(0, 0, 0)));
+        _responses.Enqueue(new QueuedResponse(null, null, ex, new LlmUsage(0, 0, 0)));
         return this;
     }
 
@@ -55,7 +62,30 @@ public sealed class FakeOpenAiClient : IOpenAiClient
         return Task.FromResult(new LlmStructuredResult<T>(value, queued.Usage));
     }
 
-    private sealed record QueuedResponse(string? Json, Exception? Exception, LlmUsage Usage);
+    public Task<LlmTextResult> CompleteFreeTextAsync(
+        string systemPrompt,
+        string userPrompt,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _calls.Add(new RecordedCall(systemPrompt, userPrompt, model, maxCompletionTokens, null));
+        if (_responses.Count == 0)
+        {
+            throw new InvalidOperationException("FakeOpenAiClient has no queued response.");
+        }
+
+        var queued = _responses.Dequeue();
+        if (queued.Exception is not null)
+        {
+            throw queued.Exception;
+        }
+
+        return Task.FromResult(new LlmTextResult(queued.Text ?? string.Empty, queued.Usage));
+    }
+
+    private sealed record QueuedResponse(string? Json, string? Text, Exception? Exception, LlmUsage Usage);
 }
 
 public sealed record RecordedCall(
