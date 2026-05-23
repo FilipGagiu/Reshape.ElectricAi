@@ -8,7 +8,6 @@ After re-scraping, re-run the annotation pipeline:
 
 ```bash
 python scripts/annotate-ec-pages.py   # re-annotate informational pages
-# line-up.md must be restructured manually (run the inline script in the plan)
 python scripts/extract-ec-faq.py       # regenerate data/faqs-ec-website.json
 ```
 
@@ -70,7 +69,6 @@ Skip `faq.md` (redirect notice only — use `faqs-ec-website.json` instead).**
 
 | File | `source` | `source_ref` | Heading strategy |
 |---|---|---|---|
-| `line-up.md` | `EcLineup` | `ec-website/line-up` | `## ARTIST NAME` + `Day: DATE` per artist (195 entries) |
 | `vip-experience.md` | `EcVipExperience` | `ec-website/vip-experience` | ALL-CAPS section names (26 headers) |
 | `youth-pass-u25.md` | `EcYouthPass` | `ec-website/youth-pass-u25` | No headers (1.6 KB — single chunk) |
 | `music-stages.md` | `EcMusicStages` | `ec-website/music-stages` | Stage names only (6 headers) |
@@ -86,7 +84,6 @@ Skip `faq.md` (redirect notice only — use `faqs-ec-website.json` instead).**
 
 | File | Chars | Status |
 |---|---|---|
-| `line-up.md` | ~3,900 | OK (restructured) |
 | `vip-experience.md` | 3,910 | OK |
 | `youth-pass-u25.md` | 1,634 | OK |
 | `music-stages.md` | 4,951 | OK |
