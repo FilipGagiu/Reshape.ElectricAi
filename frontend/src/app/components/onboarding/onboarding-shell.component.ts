@@ -9,6 +9,7 @@ import { OnboardingStepId } from './onboarding.model';
 import { OnboardingService } from './onboarding.service';
 import { StepAccommodationComponent } from './steps/step-accommodation/step-accommodation.component';
 import { StepActivitiesComponent } from './steps/step-activities/step-activities.component';
+import { StepAgeComponent } from './steps/step-age/step-age.component';
 import { StepAllergiesComponent } from './steps/step-allergies/step-allergies.component';
 import { StepArtistsComponent } from './steps/step-artists/step-artists.component';
 import { StepBasicsComponent } from './steps/step-basics/step-basics.component';
@@ -30,6 +31,7 @@ import { WizardFooterComponent } from './ui/wizard-footer/wizard-footer.componen
         WizardProgressComponent,
         WizardFooterComponent,
         StepBasicsComponent,
+        StepAgeComponent,
         StepTicketComponent,
         StepAccommodationComponent,
         StepTransportComponent,

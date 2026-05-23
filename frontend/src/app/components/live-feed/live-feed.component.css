@@ -1,8 +1,41 @@
 :host {
     display: block;
+    background-color: var(--ec-dark-navy);
 }
 
 .live-feed-header {
-    /* Stick directly under the dynamic island / status bar. */
     top: env(safe-area-inset-top);
+}
+
+.live-feed-filters {
+    scrollbar-width: none;
+}
+
+.live-feed-filters::-webkit-scrollbar {
+    display: none;
+}
+
+.filter-chip:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-shadow);
+}
+
+.feed-card {
+    transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+.feed-card:hover {
+    box-shadow: var(--shadow-2);
+}
+
+.feed-card__body {
+    overflow: hidden;
+    white-space: pre-line;
+}
+
+.feed-card__body--collapsed {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
 }

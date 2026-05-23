@@ -8,6 +8,17 @@ import { PlanFoodSlide } from '../plan-share.model';
     imports: [TranslocoModule],
     template: `
         <div class="ec-slide">
+            <video
+                class="ec-slide__video"
+                src="/media/sliders/slide_5_bg.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                disablepictureinpicture
+                aria-hidden="true"
+            ></video>
+            <span class="ec-slide__scrim" aria-hidden="true"></span>
             <h1 class="ec-slide__headline">
                 {{ 'plan.story.food.headline' | transloco }}
             </h1>
@@ -52,6 +63,35 @@ import { PlanFoodSlide } from '../plan-share.model';
             padding: var(--space-12) var(--space-6);
             gap: var(--space-4);
             text-align: center;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .ec-slide__video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(3px);
+            transform: scale(1.04);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ec-slide__scrim {
+            position: absolute;
+            inset: 0;
+            background-color: rgb(130 3 98 / 55%);
+            z-index: 1;
+            pointer-events: none;
+            filter: contrast(5);
+        }
+        .ec-slide__headline,
+        .ec-slide__accent,
+        .ec-slide__chips,
+        .ec-slide__body,
+        .ec-slide__note {
+            position: relative;
+            z-index: 2;
         }
         .ec-slide__headline {
             margin: 0;

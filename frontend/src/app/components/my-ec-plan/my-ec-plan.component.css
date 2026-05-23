@@ -1,8 +1,10 @@
 :host {
-    display: block;
+    display: flex;
+    flex-direction: column;
     background-color: var(--ec-page-bg);
     color: var(--ec-page-text);
     min-height: 100%;
+    flex: 1;
 }
 
 .ec-plan-page {

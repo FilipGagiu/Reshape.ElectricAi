@@ -6,7 +6,9 @@
       "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi log --all --source -- frontend/.postcssrc.json)",
       "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi log --all --diff-filter=A --name-only --pretty=format:)",
       "Bash(npx ng *)",
-      "Bash(find /Users/solomonpaul/Projects/Reshape.ElectricAi -maxdepth 3 -type f \\\\\\( -name \"*.md\" -o -name \"*.sln\" -o -name \"launchSettings.json\" \\\\\\) | grep -v frontend | sort)"
+      "Bash(find /Users/solomonpaul/Projects/Reshape.ElectricAi -maxdepth 3 -type f \\\\\\( -name \"*.md\" -o -name \"*.sln\" -o -name \"launchSettings.json\" \\\\\\) | grep -v frontend | sort)",
+      "Bash(ls /Users/solomonpaul/Projects/Reshape.ElectricAi/.claude/plans/ 2>&1 | head -20)",
+      "Bash(cat /Users/solomonpaul/Projects/Reshape.ElectricAi/frontend/angular.json | head -80 && echo \"---\" && ls /Users/solomonpaul/Projects/Reshape.ElectricAi/ && echo \"---\" && cat /Users/solomonpaul/Projects/Reshape.ElectricAi/frontend/package.json | grep -E '\"\\(name|build|scripts\\)\"' -A 5)"
     ]
   }
 }

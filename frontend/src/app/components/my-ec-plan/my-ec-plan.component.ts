@@ -1,19 +1,16 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 
-import { OnboardingShellComponent } from '@components/onboarding/onboarding-shell.component';
-import { OnboardingService } from '@components/onboarding/onboarding.service';
-import { MOCK_PLAN_UUID } from '@components/plan-share/plan-share.model';
+import { PlanIntakeComponent } from './plan-intake/plan-intake.component';
+import { PlanIntakeService } from './plan-intake/services/plan-intake.service';
 
 @Component({
     selector: 'app-my-ec-plan',
-    imports: [TranslocoModule, RouterLink, OnboardingShellComponent],
+    imports: [TranslocoModule, PlanIntakeComponent],
     templateUrl: './my-ec-plan.component.html',
     styleUrl: './my-ec-plan.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyEcPlanComponent {
-    protected readonly onboarding = inject(OnboardingService);
-    protected readonly recapPlanUrl = `/p/${MOCK_PLAN_UUID}`;
+    protected readonly intake = inject(PlanIntakeService);
 }

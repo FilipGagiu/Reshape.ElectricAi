@@ -8,6 +8,17 @@ import { PlanWelcomeSlide } from '../plan-share.model';
     imports: [TranslocoModule],
     template: `
         <div class="ec-slide">
+            <video
+                class="ec-slide__video"
+                src="/media/sliders/slide_1_bg.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                disablepictureinpicture
+                aria-hidden="true"
+            ></video>
+            <span class="ec-slide__scrim" aria-hidden="true"></span>
             <span class="ec-slide__monogram">
                 <span class="ec-slide__monogram-letters">EC</span>
             </span>
@@ -34,6 +45,33 @@ import { PlanWelcomeSlide } from '../plan-share.model';
             padding: var(--space-12) var(--space-6);
             gap: var(--space-6);
             text-align: center;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .ec-slide__video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(3px);
+            transform: scale(1.04);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ec-slide__scrim {
+            position: absolute;
+            inset: 0;
+            background-color: rgb(13 56 136 / 55%);
+            z-index: 1;
+            pointer-events: none;
+            filter: contrast(5);
+        }
+        .ec-slide__monogram,
+        .ec-slide__headline,
+        .ec-slide__body {
+            position: relative;
+            z-index: 2;
         }
         .ec-slide__monogram {
             display: inline-flex;

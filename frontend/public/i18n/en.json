@@ -6,7 +6,73 @@
     },
     "liveFeed": {
         "title": "Live feed",
-        "placeholder": "Real-time updates will appear here."
+        "subtitle": "Bonțida · Electric Castle",
+        "status": {
+            "live": "LIVE",
+            "offline": "OFFLINE",
+            "offlineHint": "Connection lost. Retrying..."
+        },
+        "filter": {
+            "all": "All",
+            "urgent": "Urgent",
+            "schedule": "Schedule",
+            "gettingAround": "Getting around",
+            "general": "General"
+        },
+        "category": {
+            "general": "General",
+            "transport": "Transport",
+            "accommodation": "Stay",
+            "food": "Food & Drink",
+            "music": "Music",
+            "lineup": "Line-Up",
+            "activity": "Activity",
+            "weather": "Weather",
+            "rules": "Rules",
+            "ticket": "Tickets",
+            "safety": "Safety",
+            "health": "Health"
+        },
+        "pinned": {
+            "eyebrow": {
+                "safety": "HEADS UP",
+                "weather": "WEATHER",
+                "transport": "DON'T MISS",
+                "artist": "FOR YOU"
+            },
+            "cta": {
+                "seeDetails": "SEE DETAILS",
+                "getThere": "GET THERE"
+            }
+        },
+        "card": {
+            "expand": "Show more",
+            "collapse": "Show less"
+        },
+        "empty": {
+            "personalized": {
+                "title": "Nothing here for your artists yet.",
+                "body": "Updates show up the moment organisers post them."
+            },
+            "urgent": {
+                "title": "All quiet on the urgent front.",
+                "body": "We'll surface anything that needs attention."
+            },
+            "filtered": {
+                "title": "Nothing in this filter.",
+                "body": "Try a different chip or wait a few minutes."
+            },
+            "firstLoad": {
+                "title": "The feed is warming up.",
+                "body": "Check back in a moment."
+            }
+        },
+        "time": {
+            "justNow": "just now",
+            "minutesAgo": "{{count}}m ago",
+            "hoursAgo": "{{count}}h ago",
+            "daysAgo": "{{count}}d ago"
+        }
     },
     "questions": {
         "title": "Questions and chat",
@@ -102,17 +168,6 @@
                 "headline": "YOUR LINEUP",
                 "bodySuffix": "Plus everything {{genres}} that the Main Stage and Hangar have to offer."
             },
-            "budget": {
-                "headline": "ALL IN",
-                "suffix": "Approximate, in RON",
-                "line": {
-                    "ticket": "Ticket",
-                    "sleep": "Sleep",
-                    "transport": "Transport",
-                    "food": "Food",
-                    "chaos": "Chaos fund"
-                }
-            },
             "food": {
                 "headline": "FOOD FOR THE FESTIVAL",
                 "cuisine": {
@@ -129,12 +184,23 @@
                 "fallback": "EC Village has 60+ food vendors. From sarmale to sushi. Come hungry.",
                 "allergyNote": "Allergy-friendly options are marked on the app map."
             },
-            "weather": {
-                "headline": "PACK FOR TRANSYLVANIA",
-                "tip": {
-                    "layers": "Bring layers. Warm days, cold nights.",
-                    "sunscreen": "Sunscreen. The sun bites in July.",
-                    "noGlass": "No glass bottles anywhere on site."
+            "activityVibe": {
+                "headline": "BEYOND THE MUSIC",
+                "body": "The in-between moments make the festival. Bring your curiosity.",
+                "activity": {
+                    "yoga": "Yoga",
+                    "workshops": "Workshops",
+                    "artTours": "Art tours",
+                    "lakeSwim": "Lake swim",
+                    "silentDisco": "Silent disco",
+                    "foodTour": "Food tour",
+                    "wellness": "Wellness",
+                    "castleTour": "Castle tour"
+                },
+                "vibe": {
+                    "curiousAndChill": "Curious & chill",
+                    "partyAnimal": "Party animal",
+                    "fullSend": "Full send"
                 }
             },
             "share": {
@@ -145,6 +211,77 @@
                 "shareCta": "Share",
                 "replayCta": "Watch again",
                 "shareText": "Check out my Electric Castle 2026 plan. See you at the castle?"
+            }
+        },
+        "intake": {
+            "greeting": "Hey! Let's build your EC plan together. A few quick questions and you're set.",
+            "submitting": "Saving your plan...",
+            "thanks": "Got it. Your plan's brewing. We'll have it ready in a bit.",
+            "error": "Couldn't save your answers. Try again in a moment.",
+            "retry": "Try again",
+            "input": {
+                "placeholder": "Type your answer..."
+            },
+            "q": {
+                "name": {
+                    "prompt": "What should we call you?",
+                    "placeholder": "Your first name"
+                },
+                "origin": {
+                    "prompt": "Where are you coming in from, and with how many?",
+                    "placeholder": "City + group size",
+                    "chip": {
+                        "clujSolo": "Cluj-Napoca, solo",
+                        "bucharestCrew": "Bucharest, with friends",
+                        "abroadGroup": "Abroad, big group"
+                    }
+                },
+                "accommodation": {
+                    "prompt": "Where are you staying during the festival?",
+                    "placeholder": "Festival camping, hotel, Airbnb...",
+                    "chip": {
+                        "festivalCamping": "Festival camping",
+                        "bontida": "Bontida village",
+                        "cluj": "Cluj-Napoca",
+                        "undecided": "Still figuring it out"
+                    }
+                },
+                "vibe": {
+                    "prompt": "What's your festival vibe, and what calls you between sets?",
+                    "placeholder": "Energy level + downtime plans",
+                    "chip": {
+                        "chillExplore": "Chill, explore, lake breaks",
+                        "raveFood": "Front row, food truck hunts",
+                        "discoveryWorkshops": "New sounds + workshops"
+                    }
+                },
+                "music": {
+                    "prompt": "Any must-see acts? Drop your favourite genres or artists too.",
+                    "placeholder": "Artists, genres, anything",
+                    "chip": {
+                        "surprise": "Surprise me",
+                        "electronic": "Electronic",
+                        "rock": "Rock / indie",
+                        "hipHop": "Hip-hop"
+                    }
+                },
+                "dietary": {
+                    "prompt": "Anything you can't (or won't) eat?",
+                    "placeholder": "Allergies, diets, anything we should know",
+                    "chip": {
+                        "none": "No restrictions",
+                        "vegetarian": "Vegetarian",
+                        "vegan": "Vegan",
+                        "glutenFree": "Gluten-free"
+                    }
+                },
+                "extra": {
+                    "prompt": "Anything else we should know? The floor is yours.",
+                    "placeholder": "Or skip if you're done",
+                    "chip": {
+                        "nothing": "Nothing else"
+                    }
+                }
             }
         }
     },
@@ -198,7 +335,11 @@
         "step": {
             "basics": {
                 "title": "About you",
-                "subtitle": "Tell us your name and age."
+                "subtitle": "Tell us your name."
+            },
+            "ageGroup": {
+                "title": "Your age group",
+                "subtitle": "Pick the range you fall into."
             },
             "ticket": {
                 "title": "Your ticket",
@@ -235,8 +376,14 @@
         },
         "field": {
             "name": "Name",
-            "namePlaceholder": "How should we call you?",
-            "age": "Age"
+            "namePlaceholder": "How should we call you?"
+        },
+        "ageGroup": {
+            "under18": "Under 18",
+            "adult18To24": "18–24",
+            "adult25To34": "25–34",
+            "adult35To44": "35–44",
+            "adult45Plus": "45+"
         },
         "ticket": {
             "noTicket": "No ticket yet",

@@ -31,28 +31,16 @@ export interface PlanMusicSlide {
     readonly genres: ReadonlyArray<string>;
 }
 
-export interface PlanBudgetBreakdownLine {
-    readonly key: string; // i18n key suffix under plan.story.budget.line
-    readonly ron: number;
-}
-
-export interface PlanBudgetSlide {
-    readonly type: 'budget';
-    readonly amountRon: number;
-    readonly breakdown: ReadonlyArray<PlanBudgetBreakdownLine>;
-}
-
 export interface PlanFoodSlide {
     readonly type: 'food';
     readonly cuisines: ReadonlyArray<string>;
     readonly allergies: ReadonlyArray<string>;
 }
 
-export interface PlanWeatherSlide {
-    readonly type: 'weather';
-    readonly tempLow: number;
-    readonly tempHigh: number;
-    readonly tipKeys: ReadonlyArray<string>; // i18n key suffixes under plan.story.weather.tip
+export interface PlanActivityVibeSlide {
+    readonly type: 'activityVibe';
+    readonly activityKeys: ReadonlyArray<string>; // i18n key suffixes under plan.story.activityVibe.activity
+    readonly vibeKey: string; // i18n key suffix under plan.story.activityVibe.vibe
 }
 
 export interface PlanShareSlide {
@@ -65,9 +53,8 @@ export type PlanSlide =
     | PlanTransportSlide
     | PlanSleepSlide
     | PlanMusicSlide
-    | PlanBudgetSlide
     | PlanFoodSlide
-    | PlanWeatherSlide
+    | PlanActivityVibeSlide
     | PlanShareSlide;
 
 export interface PlanData {
