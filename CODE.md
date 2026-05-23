@@ -48,12 +48,13 @@ tests/
 
 **Dependency direction (acyclic, enforced by reviewers):**
 ```
-Presentation  →  Plans, VectorDb, LiveFeed, AiChat, Core
-Plans         →  Core   (may depend on VectorDb for lineup-aware plan generation)
-AiChat        →  Core, VectorDb
-LiveFeed      →  Core, VectorDb
-VectorDb      →  Core
-Core          →  (nothing except Microsoft.Extensions.* abstractions)
+Presentation     →  Plans, VectorDb, LiveFeed, AiChat, Core, Infrastructure
+Plans            →  Core, Infrastructure
+AiChat           →  Core, VectorDb
+LiveFeed         →  Core, Infrastructure, VectorDb
+VectorDb         →  Core
+Infrastructure   →  Core
+Core             →  (nothing except Microsoft.Extensions.* abstractions)
 ```
 
 **Hard rules:**
@@ -131,7 +132,8 @@ Test projects additionally set `<IsPackable>false</IsPackable>`.
   - `SpecificationEvaluator.Apply<T>(IQueryable<T>, ISpecification<T>)` — static, applies the spec to a queryable. Order: AsNoTracking → AsSplitQuery → Where → Includes → IncludeStrings → OrderBy/OrderByDescending → Skip → Take.
 - Specs live in `Plans/Persistence/Specifications/<Name>Spec.cs` (`UserByEmailSpec`, `ActiveRefreshTokenByHashSpec`, etc.). One spec per file, `sealed class`, name ends in `Spec`.
 - Atomic multi-row operations (e.g. refresh-token rotation) MUST bypass the generic repo. Use `DbContext.<DbSet>.Where(...).ExecuteUpdateAsync(...)` in a dedicated service (e.g. `Plans/Services/RefreshTokenStore.cs` behind `IRefreshTokenStore`) — keeps `IRepository<T>` clean of one-off methods.
-- **Today the EF base lives in `Reshape.ElectricAi.Plans`.** When a second lib needs it, promote `EfRepository<TContext, T>` + `SpecificationEvaluator` + `PlansRepository<T>`-style closing class to a new `Reshape.ElectricAi.Infrastructure` project (referenced by all feature libs). Do not reference Plans from another feature lib in the interim.
+- **The EF base lives in `Reshape.ElectricAi.Infrastructure`** (referenced by every feature lib that needs EF persistence). It holds `EfRepository<TContext, T>` + `SpecificationEvaluator`. Each consuming lib provides its own closing class (`PlansRepository<T>`, `FeedRepository<T>`, etc.). Plans + LiveFeed currently consume; AiChat + VectorDb will follow the same pattern when they add EF persistence.
+- **DI registration must avoid open-generic shadowing.** When multiple libs register `IRepository<>` open-generic at the same DI key, the last registration wins and replaces the earlier ones — `IRepository<User>` then resolves to a closing class wired to the wrong `DbContext`, throwing `Cannot create a DbSet for 'User' because this type is not included in the model for the context` at runtime. **Rule:** the FIRST lib in the registration order MAY use open-generic (`services.AddScoped(typeof(IRepository<>), typeof(XxxRepository<>))`); every subsequent lib MUST close per-entity for the types it owns (`services.AddScoped<IRepository<FeedEntry>, FeedRepository<FeedEntry>>()` etc.). MS.DI prefers the closed-specific registration over open-generic when both match, so per-entity closes from later libs win for their own types without disturbing the earlier open-generic for the first lib's types. Today: Plans uses open-generic; LiveFeed closes per-entity for `FeedEntry`, `FeedEntryArtist`, `FeedEntryGenre`. AiChat / VectorDb must also close per-entity.
 
 ## DTOs vs entities
 

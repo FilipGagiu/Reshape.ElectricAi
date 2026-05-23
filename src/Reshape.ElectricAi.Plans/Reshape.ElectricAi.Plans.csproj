@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Reshape.ElectricAi.Core\Reshape.ElectricAi.Core.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.Infrastructure\Reshape.ElectricAi.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

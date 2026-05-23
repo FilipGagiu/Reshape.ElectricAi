@@ -7,6 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+    <!-- CA1825/CA1861 emitted only inside EF-generated Migrations/ files; silenced via NoWarn rather than promoted-to-warning to keep our hand-written source clean. -->
+    <NoWarn>$(NoWarn);CA1825;CA1861</NoWarn>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
@@ -18,11 +20,17 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.*" />
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Reshape.ElectricAi.Core\Reshape.ElectricAi.Core.csproj" />
+    <ProjectReference Include="..\Reshape.ElectricAi.Infrastructure\Reshape.ElectricAi.Infrastructure.csproj" />
     <ProjectReference Include="..\Reshape.ElectricAi.VectorDb\Reshape.ElectricAi.VectorDb.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Reshape.ElectricAi.LiveFeed.Tests" />
   </ItemGroup>
 
 </Project>

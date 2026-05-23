@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Reshape.ElectricAi.Core.Configuration;
+using Reshape.ElectricAi.LiveFeed;
+using Reshape.ElectricAi.LiveFeed.Persistence;
 using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.VectorDb;
@@ -25,6 +27,8 @@ builder.Host.UseSerilog((context, services, configuration) =>
 
 builder.Services.AddPlansModule(builder.Configuration);
 builder.Services.AddVectorDbModule(builder.Configuration);
+builder.Services.AddLiveFeedModule(builder.Configuration);
+
 
 builder.Services.AddScoped<FluentValidationFilter>();
 builder.Services.AddControllers(options =>
@@ -134,10 +138,13 @@ if (app.Environment.IsDevelopment())
     var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
     var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
     await seeder.SeedAsync(dataRoot);
+    
+    var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
+    await feedDb.Database.MigrateAsync();
 
     app.UseSwagger();
     app.MapScalarApiReference(options =>
-        options.WithOpenApiRoutePattern("/swagger/v1/swagger.json"));
+        options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();

@@ -2,12 +2,14 @@
   <Folder Name="/src/">
     <Project Path="src/Reshape.ElectricAi.AiChat/Reshape.ElectricAi.AiChat.csproj" />
     <Project Path="src/Reshape.ElectricAi.Core/Reshape.ElectricAi.Core.csproj" />
+    <Project Path="src/Reshape.ElectricAi.Infrastructure/Reshape.ElectricAi.Infrastructure.csproj" />
     <Project Path="src/Reshape.ElectricAi.LiveFeed/Reshape.ElectricAi.LiveFeed.csproj" />
     <Project Path="src/Reshape.ElectricAi.Plans/Reshape.ElectricAi.Plans.csproj" />
     <Project Path="src/Reshape.ElectricAi.Presentation/Reshape.ElectricAi.Presentation.csproj" />
     <Project Path="src/Reshape.ElectricAi.VectorDb/Reshape.ElectricAi.VectorDb.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/Reshape.ElectricAi.LiveFeed.Tests/Reshape.ElectricAi.LiveFeed.Tests.csproj" />
     <Project Path="tests/Reshape.ElectricAi.Plans.Tests/Reshape.ElectricAi.Plans.Tests.csproj" />
     <Project Path="tests/Reshape.ElectricAi.VectorDb.Tests/Reshape.ElectricAi.VectorDb.Tests.csproj" />
   </Folder>
