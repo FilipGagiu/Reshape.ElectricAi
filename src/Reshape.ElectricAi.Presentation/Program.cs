@@ -8,6 +8,7 @@ using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.VectorDb;
 using Reshape.ElectricAi.VectorDb.Persistence;
+using Reshape.ElectricAi.VectorDb.Services;
 using Reshape.ElectricAi.Presentation.Filters;
 using Reshape.ElectricAi.Presentation.Middleware;
 using Scalar.AspNetCore;
@@ -130,8 +131,13 @@ if (app.Environment.IsDevelopment())
     var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
     await vectorDb.Database.MigrateAsync();
 
+    var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
+    var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
+    await seeder.SeedAsync(dataRoot);
+
     app.UseSwagger();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+        options.WithOpenApiRoutePattern("/swagger/v1/swagger.json"));
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();

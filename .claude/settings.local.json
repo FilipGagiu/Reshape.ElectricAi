@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(dotnet build *)",
-      "Bash(curl -s https://raw.githubusercontent.com/msitarzewski/agency-agents/main/README.md)"
+      "Bash(curl -s https://raw.githubusercontent.com/msitarzewski/agency-agents/main/README.md)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 *)",
+      "Bash(xargs cat)",
+      "Bash(dotnet clean *)",
+      "Bash(dotnet test *)"
     ]
   }
 }
