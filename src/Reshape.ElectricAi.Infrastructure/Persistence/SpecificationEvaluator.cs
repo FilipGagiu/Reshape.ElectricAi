@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Reshape.ElectricAi.Core.Persistence;
 
-namespace Reshape.ElectricAi.Plans.Persistence;
+namespace Reshape.ElectricAi.Infrastructure.Persistence;
 
 public static class SpecificationEvaluator
 {

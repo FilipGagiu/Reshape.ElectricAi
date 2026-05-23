@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Reshape.ElectricAi.Core.Configuration;
+using Reshape.ElectricAi.LiveFeed;
+using Reshape.ElectricAi.LiveFeed.Persistence;
 using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.Presentation.Filters;
@@ -19,6 +21,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
         .Enrich.FromLogContext());
 
 builder.Services.AddPlansModule(builder.Configuration);
+builder.Services.AddLiveFeedModule(builder.Configuration);
 
 builder.Services.AddScoped<FluentValidationFilter>();
 builder.Services.AddControllers(options =>
@@ -119,9 +122,14 @@ app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
-    await db.Database.MigrateAsync();
+    using (var scope = app.Services.CreateScope())
+    {
+        var plansDb = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
+        await plansDb.Database.MigrateAsync();
+
+        var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
+        await feedDb.Database.MigrateAsync();
+    }
 
     app.UseSwagger();
     app.MapScalarApiReference();
