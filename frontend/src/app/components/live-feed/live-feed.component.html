@@ -1,47 +1,5 @@
 <section *transloco="let t" class="live-feed flex min-h-full flex-col">
-    <header
-        class="live-feed-header sticky z-[var(--z-sticky)] flex items-center gap-3 px-4"
-        style="background-color: var(--ec-red); height: var(--space-14)"
-    >
-        <div
-            class="flex shrink-0 items-center justify-center font-extrabold tracking-tight text-white italic"
-            style="
-                background-color: var(--ec-red);
-                width: 32px;
-                height: 24px;
-                border: 1px solid rgba(255, 255, 255, 0.0);
-                border-radius: var(--radius-sm);
-                box-shadow: var(--shadow-glow-red);
-                font-size: 14px;
-            "
-            aria-label="Electric Castle"
-        >
-            EC
-        </div>
-        <div class="flex min-w-0 flex-1 flex-col leading-tight">
-            <span
-                class="truncate font-bold tracking-[0.1em] text-white uppercase"
-                style="font-size: var(--type-label-size, 11px)"
-                >{{ t('liveFeed.title') }}</span
-            >
-            <span class="truncate text-[11px] text-white/70">{{ t('liveFeed.subtitle') }}</span>
-        </div>
-        <div class="flex items-center gap-2" aria-live="polite">
-            <span
-                class="inline-block"
-                style="
-                    width: 8px;
-                    height: 8px;
-                    background-color: {{ isOnline() ? 'var(--ec-yellow)' : 'var(--ec-warning)' }};
-                "
-            ></span>
-            <span
-                class="font-bold tracking-[0.1em] text-white uppercase"
-                style="font-size: 11px"
-                >{{ isOnline() ? t('liveFeed.status.live') : t('liveFeed.status.offline') }}</span
-            >
-        </div>
-    </header>
+    <app-ec-topbar titleKey="liveFeed.title" subtitleKey="liveFeed.subtitle" />
 
     @if (!isOnline()) {
         <div

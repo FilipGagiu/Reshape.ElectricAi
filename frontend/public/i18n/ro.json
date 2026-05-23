@@ -212,7 +212,6 @@
                 "shareText": "Uite planul meu pentru Electric Castle 2026. Ne vedem la castel?"
             }
         },
-        "onboardingHeading": "Termină configurarea ca să-ți deblochezi planul personalizat.",
         "intake": {
             "greeting": "Salut! Hai să construim împreună planul tău EC. Câteva întrebări scurte și ești gata.",
             "submitting": "Îți salvăm planul...",
@@ -316,148 +315,10 @@
             "passwordsMismatch": "Parolele nu se potrivesc.",
             "emailTaken": "E-mailul ăsta e deja folosit.",
             "invalidCredentials": "E-mail sau parolă greșite."
-        }
-    },
-    "onboarding": {
-        "title": "Configurează-ți festivalul",
-        "subtitle": "Câteva atingeri și îți personalizăm EC-ul.",
-        "progress": "Pasul {{current}} din {{total}}",
-        "action": {
-            "next": "Înainte",
-            "back": "Înapoi",
-            "skip": "Sari peste",
-            "continue": "Continuă",
-            "finish": "Gata",
-            "devReset": "Resetează",
-            "itemsSelected": "{{count}} selectate",
-            "noneSelected": "Niciuna selectată"
         },
-        "step": {
-            "basics": {
-                "title": "Despre tine",
-                "subtitle": "Spune-ne numele tău."
-            },
-            "ageGroup": {
-                "title": "Grupa ta de vârstă",
-                "subtitle": "Alege intervalul în care te încadrezi."
-            },
-            "ticket": {
-                "title": "Biletul tău",
-                "subtitle": "Ce abonament ai?"
-            },
-            "accommodation": {
-                "title": "Unde dormi",
-                "subtitle": "Alege-ți baza."
-            },
-            "transport": {
-                "title": "Cum te deplasezi",
-                "subtitle": "Bifează toate opțiunile pe care le folosești."
-            },
-            "artists": {
-                "title": "Artiști pe care îi iubești",
-                "subtitle": "Bifează tot ce-ți place."
-            },
-            "music": {
-                "title": "Sunetul tău",
-                "subtitle": "Genuri pe care nu le poți rata."
-            },
-            "cuisine": {
-                "title": "Mâncarea pe care o poftești",
-                "subtitle": "Alege bucătăriile preferate."
-            },
-            "allergies": {
-                "title": "Nevoi alimentare",
-                "subtitle": "Filtrăm recomandările pentru tine."
-            },
-            "activities": {
-                "title": "Dincolo de muzică",
-                "subtitle": "Experiențe de zi care ți-ar plăcea."
-            }
-        },
-        "field": {
-            "name": "Nume",
-            "namePlaceholder": "Cum să-ți spunem?"
-        },
-        "ageGroup": {
-            "under18": "Sub 18",
-            "adult18To24": "18–24",
-            "adult25To34": "25–34",
-            "adult35To44": "35–44",
-            "adult45Plus": "45+"
-        },
-        "ticket": {
-            "noTicket": "Încă fără bilet",
-            "fullPass": "Abonament complet",
-            "dayTicket": "Bilet de o zi",
-            "vip": "VIP",
-            "ultraVip": "Ultra VIP",
-            "blackTicket": "Bilet Black"
-        },
-        "accommodation": {
-            "festivalCamping": "Camping festival",
-            "bontida": "Bonțida",
-            "cluj": "Cluj-Napoca"
-        },
-        "transport": {
-            "car": "Mașină",
-            "train": "Tren",
-            "bus": "Autobuz",
-            "bike": "Bicicletă",
-            "onFoot": "Pe jos"
-        },
-        "artist": {
-            "bmth": "Bring Me The Horizon",
-            "apashe": "Apashe",
-            "skepta": "Skepta",
-            "subFocus": "Sub Focus",
-            "tameImpala": "Tame Impala",
-            "arcticMonkeys": "Arctic Monkeys",
-            "fkaTwigs": "FKA Twigs",
-            "fourTet": "Four Tet",
-            "massiveAttack": "Massive Attack",
-            "idles": "Idles"
-        },
-        "genre": {
-            "rock": "Rock",
-            "electronic": "Electronică",
-            "house": "House",
-            "techno": "Techno",
-            "dnb": "Drum & Bass",
-            "hipHop": "Hip-hop",
-            "indie": "Indie",
-            "pop": "Pop",
-            "metal": "Metal",
-            "jazz": "Jazz"
-        },
-        "cuisine": {
-            "italian": "Italiană",
-            "romanian": "Românească",
-            "asian": "Asiatică",
-            "mexican": "Mexicană",
-            "middleEastern": "Orientul Mijlociu",
-            "indian": "Indiană",
-            "bbq": "Grătar",
-            "vegan": "Pe bază de plante"
-        },
-        "allergy": {
-            "vegan": "Vegan",
-            "vegetarian": "Vegetarian",
-            "glutenFree": "Fără gluten",
-            "dairyFree": "Fără lactate",
-            "nutAllergy": "Alergie la nuci",
-            "halal": "Halal",
-            "kosher": "Cușer",
-            "pescatarian": "Pescatarian"
-        },
-        "activity": {
-            "yoga": "Yoga",
-            "workshops": "Ateliere",
-            "artTours": "Tururi de artă",
-            "lakeSwim": "Înot în lac",
-            "silentDisco": "Silent disco",
-            "foodTour": "Tur culinar",
-            "wellness": "Wellness",
-            "castleTour": "Tur al castelului"
+        "logout": {
+            "label": "Deconectare",
+            "aria": "Deconectare"
         }
     }
 }

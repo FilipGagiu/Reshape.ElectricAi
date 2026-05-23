@@ -90,6 +90,6 @@ export class RegisterComponent {
             return;
         }
 
-        this.router.navigateByUrl('/onboarding');
+        this.router.navigateByUrl('/');
     }
 }

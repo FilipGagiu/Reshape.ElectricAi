@@ -36,14 +36,6 @@ export const routes: Routes = [
         ],
     },
     {
-        path: 'onboarding',
-        canMatch: [authGuard],
-        loadComponent: () =>
-            import('@components/onboarding/onboarding-shell.component').then(
-                (m) => m.OnboardingShellComponent,
-            ),
-    },
-    {
         path: '',
         canMatch: [authGuard],
         loadComponent: () =>
