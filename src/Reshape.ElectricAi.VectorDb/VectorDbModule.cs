@@ -19,7 +19,6 @@ public static class VectorDbModule
     {
         var chatOptions = BuildChatOptions(configuration);
         ValidateChatOptions(chatOptions);
-        services.AddSingleton(chatOptions);
         services.AddSingleton<IOptions<ChatOptions>>(Options.Create(chatOptions));
 
         var connectionString = configuration.GetConnectionString("Postgres")
@@ -35,7 +34,6 @@ public static class VectorDbModule
         services.AddScoped<IRepository<Document>, VectorRepository<Document>>();
         services.AddScoped<IRepository<DocumentChunk>, VectorRepository<DocumentChunk>>();
         services.AddScoped<IRepository<Question>, VectorRepository<Question>>();
-        services.AddScoped<IRepository<Answer>, VectorRepository<Answer>>();
         services.AddScoped<IRepository<EventEntry>, VectorRepository<EventEntry>>();
 
         var apiKey = configuration["OpenAi:ApiKey"]

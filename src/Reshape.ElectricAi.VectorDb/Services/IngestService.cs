@@ -137,7 +137,7 @@ public sealed class IngestService(
 
     private static List<string> Chunk(string text)
     {
-        var ids = Tokenizer.EncodeToIds(text);
+        var ids = Tokenizer.EncodeToIds(text).ToList();
 
         if (ids.Count <= MaxChunkTokens)
             return [text];
@@ -148,8 +148,7 @@ public sealed class IngestService(
         while (i < ids.Count)
         {
             var length = Math.Min(MaxChunkTokens, ids.Count - i);
-            var chunkIds = ids.Skip(i).Take(length).ToList();
-            chunks.Add(Tokenizer.Decode(chunkIds) ?? string.Empty);
+            chunks.Add(Tokenizer.Decode(ids.GetRange(i, length)) ?? string.Empty);
             if (i + length >= ids.Count) break;
             i += MaxChunkTokens - ChunkOverlapTokens;
         }

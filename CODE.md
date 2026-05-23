@@ -15,7 +15,7 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | Web framework | ASP.NET Core 10, **Controllers only** — no Minimal APIs, no MVC views, no Razor |
 | ORM | EF Core 10 (`10.0.*` floating) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
 | Database | PostgreSQL 16+ with `pgvector` extension enabled |
-| LLM | OpenAI .NET SDK (`OpenAI` official package, 2.4.0) |
+| LLM | OpenAI .NET SDK (`OpenAI` official package, 2.10.0) |
 | Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
 | Default chat model | `gpt-4o-mini` (overridable via `Chat:DefaultModel`) |
 | Password hashing | `BCrypt.Net-Next` `4.0.3` |
@@ -23,7 +23,7 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | Validation | `FluentValidation` `11.11.0` + `FluentValidation.DependencyInjectionExtensions` `11.11.0` (NOT the deprecated `.AspNetCore` package) |
 | Logging | `Serilog.AspNetCore` `9.0.0` + `Serilog.Sinks.Console` `6.0.0` (+ `Seq` later if useful) |
 | OpenAPI | `Swashbuckle.AspNetCore` `7.2.0` + `Scalar.AspNetCore` `2.6.5` UI |
-| Tokenizer | `Microsoft.ML.Tokenizers` `1.0.2` (cl100k_base) |
+| Tokenizer | `Microsoft.ML.Tokenizers` `2.0.0` + `Microsoft.ML.Tokenizers.Data.Cl100kBase` `2.0.0` (cl100k_base data package required at runtime) |
 | Tests | `xUnit` + `FluentAssertions` + `Testcontainers.PostgreSql` (added when first test project is scaffolded) |
 | Solution file | `ElectricCastle.slnx` — XML solution format (new .NET 10 default from `dotnet new sln`, replaces classic `.sln`) |
 | NuGet feed | project-local `nuget.config` clears global sources + adds nuget.org only (works around the user's authenticated `devops.iceportal.com` global feed that returns 401 here) |

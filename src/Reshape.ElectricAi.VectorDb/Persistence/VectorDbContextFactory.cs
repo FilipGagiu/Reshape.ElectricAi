@@ -10,7 +10,8 @@ public class VectorDbContextFactory : IDesignTimeDbContextFactory<VectorDbContex
     public VectorDbContext CreateDbContext(string[] args)
     {
         var connection = Environment.GetEnvironmentVariable("RESHAPE_VECTOR_CONNECTION")
-            ?? "Host=localhost;Database=electric_ai;Username=postgres;Password=postgres";
+            ?? throw new InvalidOperationException(
+                "Set RESHAPE_VECTOR_CONNECTION to run EF design-time commands.");
 
         var options = new DbContextOptionsBuilder<VectorDbContext>()
             .UseNpgsql(connection, npgsql =>
