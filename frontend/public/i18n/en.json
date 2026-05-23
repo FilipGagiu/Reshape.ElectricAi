@@ -1,0 +1,52 @@
+{
+    "nav": {
+        "liveFeed": "Live feed",
+        "questions": "Questions",
+        "plan": "My EC plan"
+    },
+    "liveFeed": {
+        "title": "Live feed",
+        "placeholder": "Real-time updates will appear here."
+    },
+    "questions": {
+        "title": "Questions and chat",
+        "placeholder": "Ask questions and chat with others."
+    },
+    "plan": {
+        "title": "My EC plan",
+        "placeholder": "Your extracurricular plan lives here."
+    },
+    "auth": {
+        "login": {
+            "title": "Welcome back",
+            "subtitle": "Sign in to continue.",
+            "submit": "Sign in",
+            "bypass": "Bypass login (dev)",
+            "noAccount": "Don't have an account?",
+            "registerCta": "Create one"
+        },
+        "register": {
+            "title": "Create your account",
+            "subtitle": "Get started in seconds.",
+            "submit": "Create account",
+            "hasAccount": "Already have an account?",
+            "loginCta": "Sign in"
+        },
+        "field": {
+            "email": "Email",
+            "emailPlaceholder": "you@example.com",
+            "password": "Password",
+            "passwordPlaceholder": "Your password",
+            "confirmPassword": "Confirm password",
+            "confirmPasswordPlaceholder": "Repeat password"
+        },
+        "error": {
+            "emailInvalid": "Enter a valid email address.",
+            "passwordRequired": "Password is required.",
+            "passwordTooShort": "Password must be at least {{length}} characters.",
+            "passwordsMismatch": "Passwords do not match.",
+            "emailTaken": "That email is already registered.",
+            "invalidCredentials": "Email or password is incorrect."
+        }
+    }
+}

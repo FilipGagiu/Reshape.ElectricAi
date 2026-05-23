@@ -13,9 +13,9 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | Runtime | .NET 10 GA (SDK 10.0.300+) |
 | Language | C# 13, `<LangVersion>latest</LangVersion>` |
 | Web framework | ASP.NET Core 10, **Controllers only** — no Minimal APIs, no MVC views, no Razor |
-| ORM | EF Core 10 (`10.0.*` floating) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
+| ORM | EF Core 10 (`10.0.8` pinned) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
 | Database | PostgreSQL 16+ with `pgvector` extension enabled |
-| LLM | OpenAI .NET SDK (`OpenAI` official package, 2.4.0) |
+| LLM | OpenAI .NET SDK (`OpenAI` official package, 2.10.0) |
 | Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
 | Default chat model | `gpt-4o-mini` (overridable via `Chat:DefaultModel`) |
 | Password hashing | `BCrypt.Net-Next` `4.2.0` |
@@ -23,7 +23,7 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | Validation | `FluentValidation` `12.1.1` only — v12 removed the MVC auto-validation package (`FluentValidation.AspNetCore` and `FluentValidation.DependencyInjectionExtensions.AddFluentValidationAutoValidation()` are gone). Use the hand-rolled `Presentation/Filters/FluentValidationFilter.cs` (`IAsyncActionFilter`) instead. `FluentValidation.DependencyInjectionExtensions` `12.1.1` is on Presentation only (for any future use); Plans registers its validators via a reflection scan in `PlansModule.RegisterValidators` to avoid adding the package there. |
 | Logging | `Serilog.AspNetCore` `10.0.0` + `Serilog.Sinks.Console` `6.1.1` (+ `Seq` later if useful) |
 | OpenAPI | `Swashbuckle.AspNetCore` `10.1.7` + `Scalar.AspNetCore` `2.14.14` UI |
-| Tokenizer | `Microsoft.ML.Tokenizers` `1.0.2` (cl100k_base) |
+| Tokenizer | `Microsoft.ML.Tokenizers` `2.0.0` + `Microsoft.ML.Tokenizers.Data.Cl100kBase` `2.0.0` (cl100k_base data package required at runtime) |
 | Tests | `xUnit` + `FluentAssertions` + `Testcontainers.PostgreSql` (added when first test project is scaffolded) |
 | Solution file | `ElectricCastle.slnx` — XML solution format (new .NET 10 default from `dotnet new sln`, replaces classic `.sln`) |
 | NuGet feed | project-local `nuget.config` clears global sources + adds nuget.org only (works around the user's authenticated `devops.iceportal.com` global feed that returns 401 here) |
@@ -204,8 +204,12 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 - Embedding model fixed to `text-embedding-3-small` (1536 dims). Changing the model is a **migration event**: re-embed every chunk + drop and rebuild the HNSW index. Do not change casually.
 - Chunker: token-aware via `Microsoft.ML.Tokenizers` cl100k_base. Target 400 tokens per chunk, 50-token overlap.
 - Ingest is **idempotent** via `vector.documents.ContentHash` (SHA-256 of normalized content). If hash unchanged → skip re-embedding for that document.
-- Retrieval: cosine similarity (`<=>` operator) on the HNSW index. Default top-K = 6. Caller passes a `SearchFilter` to constrain by `Source[]` and metadata.
-- `IVectorSearchService.SearchAsync` returns `RetrievedChunk { DocumentId, ChunkIndex, Text, Source, SourceRef, Score, Metadata }`. Score is 1 - cosine_distance.
+- Retrieval: cosine similarity (`<=>` operator) on the HNSW index. Default top-K = 6. Caller passes a per-domain filter record with optional `CategoryValues` for GIN-based pre-filtering.
+- `IVectorSearchService` exposes three domain-specific methods:
+  - `SearchDocumentsAsync` → `RetrievedChunk { DocumentId, DocumentTitle, ChunkIndex, Content, Score }`
+  - `SearchQuestionsAsync` → `RetrievedQA { QuestionText, Answers: RetrievedAnswer[], QuestionScore }`
+  - `SearchEventsAsync` → `RetrievedEvent { FeedEntryId, Title, TextRepresentation, EventUtc, Score }`
+- Score is `1 - cosine_distance` (higher = more similar).
 
 ## SSE (LiveFeed)
 

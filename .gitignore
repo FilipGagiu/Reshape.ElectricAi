@@ -222,3 +222,12 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
+
+# local secrets — never commit
+secrets.json
+
+
+# Frontend
+
+frontend/.angular/cache/
+frontend/dist/*

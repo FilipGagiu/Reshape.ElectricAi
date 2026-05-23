@@ -1,0 +1,59 @@
+@import 'tailwindcss';
+@import 'primeicons/primeicons.css';
+@plugin "tailwindcss-primeui";
+@custom-variant dark (&:where(.ec-hackaton-dark, .ec-hackaton-dark *));
+
+/* Prevent flash of unstyled content during theme initialization */
+html {
+    /* Use CSS custom properties that are available immediately */
+    background-color: light-dark(#ffffff, #0f172a);
+    color: light-dark(#1e293b, #f8fafc);
+}
+
+/* Fallback for browsers that don't support light-dark() */
+@media (prefers-color-scheme: dark) {
+    html:not(.ec-hackaton-dark) {
+        background-color: #0f172a;
+        color: #f8fafc;
+    }
+}
+
+@theme {
+    --color-accent-50: var(--p-accent-50);
+    --color-accent-100: var(--p-accent-100);
+    --color-accent-200: var(--p-accent-200);
+    --color-accent-300: var(--p-accent-300);
+    --color-accent-400: var(--p-accent-400);
+    --color-accent-500: var(--p-accent-500);
+    --color-accent-600: var(--p-accent-600);
+    --color-accent-700: var(--p-accent-700);
+    --color-accent-800: var(--p-accent-800);
+    --color-accent-900: var(--p-accent-900);
+    --color-accent-950: var(--p-accent-950);
+    --color-accent: var(--p-accent-500);
+}
+
+/* Apply PrimeNG design tokens when available */
+html {
+    background-color: var(--p-surface-ground, light-dark(#ffffff, #0f172a));
+    color: var(--p-text-color, light-dark(#1e293b, #f8fafc));
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
+
+body {
+    background-color: var(--p-surface-ground, light-dark(#ffffff, #0f172a));
+    color: var(--p-text-color, light-dark(#1e293b, #f8fafc));
+    margin: 0;
+    padding: 0;
+    font-family:
+        'Roboto',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        sans-serif;
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+}
