@@ -119,6 +119,16 @@ public sealed class IngestService(
         }
     }
 
+    public async Task RemoveEventAsync(Guid feedEntryId, CancellationToken cancellationToken = default)
+    {
+        var entry = await eventRepository.FirstOrDefaultAsync(
+            new EventByFeedEntryIdSpec(feedEntryId, asNoTracking: false), cancellationToken);
+        if (entry is null) return;
+
+        eventRepository.Remove(entry);
+        await eventRepository.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task IngestEventAsync(IngestEventRequest request, CancellationToken cancellationToken = default)
     {
         if (await eventRepository.AnyAsync(new EventByFeedEntryIdSpec(request.FeedEntryId), cancellationToken))

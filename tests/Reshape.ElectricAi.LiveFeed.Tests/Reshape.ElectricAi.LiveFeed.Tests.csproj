@@ -41,6 +41,7 @@
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.LiveFeed\Reshape.ElectricAi.LiveFeed.csproj" />
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Plans\Reshape.ElectricAi.Plans.csproj" />
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Presentation\Reshape.ElectricAi.Presentation.csproj" />
+    <ProjectReference Include="..\..\src\Reshape.ElectricAi.VectorDb\Reshape.ElectricAi.VectorDb.csproj" />
   </ItemGroup>
 
 </Project>

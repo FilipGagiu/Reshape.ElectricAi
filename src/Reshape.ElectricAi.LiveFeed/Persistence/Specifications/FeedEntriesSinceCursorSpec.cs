@@ -7,9 +7,8 @@ public sealed class FeedEntriesSinceCursorSpec : Specification<FeedEntry>
 {
     public FeedEntriesSinceCursorSpec(DateTime cursorPublishedUtc, Guid cursorEntryId, int take)
     {
-        Where(e => e.DeletedUtc == null
-                && (e.PublishedUtc > cursorPublishedUtc
-                    || (e.PublishedUtc == cursorPublishedUtc && e.Id > cursorEntryId)));
+        Where(e => e.PublishedUtc > cursorPublishedUtc
+                || (e.PublishedUtc == cursorPublishedUtc && e.Id > cursorEntryId));
 
         AddInclude(e => e.TargetArtists);
         AddInclude(e => e.TargetGenres);

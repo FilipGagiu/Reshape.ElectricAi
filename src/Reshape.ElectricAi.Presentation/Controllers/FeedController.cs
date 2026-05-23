@@ -107,8 +107,7 @@ public class FeedController(
     /// <summary>Update an existing feed entry as an organizer.</summary>
     /// <remarks>
     /// Replaces all editable fields on the entry, sets <c>UpdatedUtc</c>, and broadcasts a
-    /// <c>feed.updated</c> event after the database transaction commits. Soft-deleted entries
-    /// cannot be updated (returns 404).
+    /// <c>feed.updated</c> event after the database transaction commits.
     /// </remarks>
     /// <param name="id">Entry id (path).</param>
     /// <param name="request">New field values.</param>
@@ -117,7 +116,7 @@ public class FeedController(
     /// <response code="400">Validation failed.</response>
     /// <response code="401">Missing or invalid bearer token.</response>
     /// <response code="403">Authenticated but not in role <c>Organizer</c>.</response>
-    /// <response code="404">Entry not found or soft-deleted.</response>
+    /// <response code="404">Entry not found.</response>
     [HttpPut("{id:guid}")]
     [Authorize(Roles = "Organizer")]
     [ProducesResponseType(typeof(FeedEntryDto), StatusCodes.Status200OK)]
@@ -137,12 +136,14 @@ public class FeedController(
         return Ok(dto);
     }
 
-    /// <summary>Soft-delete a feed entry as an organizer.</summary>
+    /// <summary>Delete a feed entry as an organizer.</summary>
     /// <remarks>
-    /// Sets <c>DeletedUtc</c> on the entry (no row removal). Subsequent <c>GET /feed</c>
-    /// and stream replays exclude it. Broadcasts a <c>feed.deleted</c> event so connected
-    /// subscribers can remove it from their rendered list. Idempotent: deleting an
-    /// already-deleted entry is a no-op (no second broadcast, no exception).
+    /// Hard-deletes the entry row (and cascades to <c>FeedEntryArtist</c>/<c>FeedEntryGenre</c>),
+    /// best-effort removes the matching <c>vector.event_entries</c> row, then broadcasts a
+    /// <c>feed.deleted</c> event so connected subscribers can drop it from their rendered list.
+    /// Idempotent: deleting a missing entry is a no-op (no broadcast, no exception). When the
+    /// vector-row removal throws, the FeedEntry is still gone and the broadcast still ships --
+    /// a warning is logged with the stale <c>FeedEntryId</c>.
     /// </remarks>
     /// <param name="id">Entry id (path).</param>
     /// <param name="cancellationToken">Request cancellation token.</param>
@@ -154,12 +155,12 @@ public class FeedController(
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<IActionResult> SoftDeleteEntryByIdAsOrganizerAsync(
+    public async Task<IActionResult> DeleteEntryByIdAsOrganizerAsync(
         [FromRoute] Guid id, CancellationToken cancellationToken)
     {
         // See UpdateEntryByIdAsOrganizerAsync above re. discarded sub-claim assertion.
         _ = GetCurrentUserId(User);
-        await feed.SoftDeleteEntryByIdAsync(id, cancellationToken);
+        await feed.DeleteEntryByIdAsync(id, cancellationToken);
         return NoContent();
     }
 

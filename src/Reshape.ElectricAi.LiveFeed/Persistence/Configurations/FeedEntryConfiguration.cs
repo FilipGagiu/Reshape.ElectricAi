@@ -18,15 +18,9 @@ internal sealed class FeedEntryConfiguration : IEntityTypeConfiguration<FeedEntr
         builder.Property(e => e.PublishedByUserId).IsRequired();
         builder.Property(e => e.PublishedUtc).IsRequired();
 
+        // Single descending index on PublishedUtc — hard-delete removes rows entirely,
+        // so the previous partial filter `WHERE DeletedUtc IS NULL` is no longer needed.
         builder.HasIndex(e => e.PublishedUtc).IsDescending();
-        // Partial index for the hot path "recent not-deleted entries" in RecentFeedEntriesSpec.
-        // DeletedUtc ASC (NULL-first, then nothing because filter excludes non-NULL),
-        // PublishedUtc DESC so the index can be scanned forward for newest-first reads.
-        // Reviewer finding #30: without IsDescending(false, true) the PublishedUtc column
-        // was indexed ASC and the most-recent-first scan path was sub-optimal.
-        builder.HasIndex(e => new { e.DeletedUtc, e.PublishedUtc })
-               .IsDescending(false, true)
-               .HasFilter("\"DeletedUtc\" IS NULL");
 
         builder.HasMany(e => e.TargetArtists)
                .WithOne(a => a.FeedEntry!)
