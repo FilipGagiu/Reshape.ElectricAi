@@ -228,7 +228,7 @@
                     "placeholder": "Your first name"
                 },
                 "origin": {
-                    "prompt": "Where are you coming in from, and with how many?",
+                    "prompt": "Where are you coming in from, and how big's the crew?",
                     "placeholder": "City + group size",
                     "chip": {
                         "clujSolo": "Cluj-Napoca, solo",
@@ -237,7 +237,7 @@
                     }
                 },
                 "accommodation": {
-                    "prompt": "Where are you staying during the festival?",
+                    "prompt": "Where will you call home for EC?",
                     "placeholder": "Festival camping, hotel, Airbnb...",
                     "chip": {
                         "festivalCamping": "Festival camping",
@@ -256,7 +256,7 @@
                     }
                 },
                 "music": {
-                    "prompt": "Any must-see acts? Drop your favourite genres or artists too.",
+                    "prompt": "Anyone you can't miss? Drop your favourite genres or artists too.",
                     "placeholder": "Artists, genres, anything",
                     "chip": {
                         "surprise": "Surprise me",

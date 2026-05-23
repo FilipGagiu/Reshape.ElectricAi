@@ -228,7 +228,7 @@
                     "placeholder": "Prenumele tău"
                 },
                 "origin": {
-                    "prompt": "De unde vii și cu câte persoane?",
+                    "prompt": "De unde vii și cât de mare-i gașca?",
                     "placeholder": "Oraș + dimensiunea grupului",
                     "chip": {
                         "clujSolo": "Cluj-Napoca, singur/ă",
@@ -237,7 +237,7 @@
                     }
                 },
                 "accommodation": {
-                    "prompt": "Unde stai pe perioada festivalului?",
+                    "prompt": "Unde îți faci tabăra la EC?",
                     "placeholder": "Camping festival, hotel, Airbnb...",
                     "chip": {
                         "festivalCamping": "Camping festival",
