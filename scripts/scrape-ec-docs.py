@@ -26,7 +26,8 @@ PAGES = [
     ("international",  "EcInternational",  "ec-website/international",  "https://electriccastle.ro/international"),
 ]
 
-SKIP_TAGS = {"script", "style", "nav", "header", "footer", "aside", "noscript", "iframe", "svg", "button", "form"}
+SKIP_TAGS = {"head", "script", "style", "nav", "header", "footer", "aside", "noscript", "iframe", "svg", "button", "form"}
+SKIP_IDS = {"CybotCookiebotDialog", "CybotCookiebotDialogBodyUnderlay"}
 MIN_CONTENT_CHARS = 200
 
 
@@ -37,7 +38,11 @@ class TextExtractor(HTMLParser):
         self.chunks = []
 
     def handle_starttag(self, tag, attrs):
-        if tag in SKIP_TAGS:
+        attr_map = dict(attrs)
+        if tag in SKIP_TAGS or attr_map.get("id") in SKIP_IDS:
+            self._skip_stack.append(tag)
+        elif self._skip_stack and tag == self._skip_stack[-1]:
+            # Track same-tag nesting so a nested </div> doesn't exit a parent <div> skip prematurely
             self._skip_stack.append(tag)
 
     def handle_endtag(self, tag):
@@ -62,9 +67,11 @@ def clean_text(raw_html: str) -> str:
 
 
 def fetch_page(url: str) -> str:
+    # electriccastle.ro is AngularJS SPA; ?_escaped_fragment_= triggers server-side pre-render
+    escaped_url = url + ("&" if "?" in url else "?") + "_escaped_fragment_="
     req = urllib.request.Request(
-        url,
-        headers={"User-Agent": "Mozilla/5.0 (compatible; EC-RAG-Scraper/1.0)"},
+        escaped_url,
+        headers={"User-Agent": "Googlebot/2.1 (+http://www.google.com/bot.html)"},
     )
     with urllib.request.urlopen(req, timeout=15) as resp:
         charset = resp.headers.get_content_charset() or "utf-8"
