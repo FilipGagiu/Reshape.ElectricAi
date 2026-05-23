@@ -11,7 +11,7 @@ public interface IFeedService
     Task<FeedEntryDto> UpdateEntryByIdAsync(
         Guid entryId, UpdateFeedEntryCommand command, CancellationToken ct);
 
-    Task SoftDeleteEntryByIdAsync(Guid entryId, CancellationToken ct);
+    Task DeleteEntryByIdAsync(Guid entryId, CancellationToken ct);
 
     Task<FeedEntryDto?> GetEntryByIdAsync(Guid entryId, CancellationToken ct);
 

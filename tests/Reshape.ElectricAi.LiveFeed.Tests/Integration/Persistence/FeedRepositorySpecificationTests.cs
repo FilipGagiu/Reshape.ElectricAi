@@ -21,7 +21,7 @@ public class FeedRepositorySpecificationTests(PostgresFixture postgres) : IAsync
 
     public Task DisposeAsync() => _factory.DisposeAsync().AsTask();
 
-    private static FeedEntry CreateEntry(string title, DateTime utc, bool deleted = false) =>
+    private static FeedEntry CreateEntry(string title, DateTime utc) =>
         new()
         {
             Id = Guid.NewGuid(),
@@ -30,12 +30,11 @@ public class FeedRepositorySpecificationTests(PostgresFixture postgres) : IAsync
             PrimaryCategory = Category.General,
             IsGeneral = true,
             PublishedByUserId = Guid.NewGuid(),
-            PublishedUtc = utc,
-            DeletedUtc = deleted ? DateTime.UtcNow : null
+            PublishedUtc = utc
         };
 
     [Fact]
-    public async Task ListAsync_WithRecentFeedEntriesSpec_ReturnsLatestFirstAndExcludesDeleted()
+    public async Task ListAsync_WithRecentFeedEntriesSpec_ReturnsLatestFirst()
     {
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
@@ -43,12 +42,10 @@ public class FeedRepositorySpecificationTests(PostgresFixture postgres) : IAsync
 
         db.FeedEntries.Add(CreateEntry("Older", DateTime.UtcNow.AddMinutes(-5)));
         db.FeedEntries.Add(CreateEntry("Newer", DateTime.UtcNow));
-        db.FeedEntries.Add(CreateEntry("Gone", DateTime.UtcNow.AddMinutes(-1), deleted: true));
         await db.SaveChangesAsync();
 
         var list = await repo.ListAsync(new RecentFeedEntriesSpec(null, 10), CancellationToken.None);
         list.Select(e => e.Title).Should().ContainInOrder("Newer", "Older");
-        list.Any(e => e.Title == "Gone").Should().BeFalse();
     }
 
     [Fact]

@@ -56,7 +56,7 @@ public class FeedServiceBroadcastOrderingTests(PostgresFixture postgres) : IAsyn
     }
 
     [Fact]
-    public async Task SoftDeleteEntryById_WhenAlreadyDeleted_DoesNotBroadcastAndDoesNotThrow()
+    public async Task DeleteEntryById_WhenAlreadyDeleted_DoesNotBroadcastAndDoesNotThrow()
     {
         using var scope = _factory.Services.CreateScope();
         var feed = scope.ServiceProvider.GetRequiredService<IFeedService>();
@@ -66,7 +66,7 @@ public class FeedServiceBroadcastOrderingTests(PostgresFixture postgres) : IAsyn
             Guid.NewGuid(),
             new PublishFeedEntryCommand("Doomed", "b", Category.General, true, [], []),
             CancellationToken.None);
-        await feed.SoftDeleteEntryByIdAsync(dto.Id, CancellationToken.None);
+        await feed.DeleteEntryByIdAsync(dto.Id, CancellationToken.None);
 
         var received = new List<FeedEventEnvelope>();
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(1));
@@ -82,7 +82,7 @@ public class FeedServiceBroadcastOrderingTests(PostgresFixture postgres) : IAsyn
         });
 
         await Task.Delay(200, cts.Token);
-        var act = async () => await feed.SoftDeleteEntryByIdAsync(dto.Id, CancellationToken.None);
+        var act = async () => await feed.DeleteEntryByIdAsync(dto.Id, CancellationToken.None);
         await act.Should().NotThrowAsync();
 
         await Task.Delay(200, cts.Token);

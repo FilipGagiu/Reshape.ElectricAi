@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Reshape.ElectricAi.LiveFeed.Persistence;
@@ -11,9 +12,11 @@ using Reshape.ElectricAi.LiveFeed.Persistence;
 namespace Reshape.ElectricAi.LiveFeed.Migrations
 {
     [DbContext(typeof(FeedDbContext))]
-    partial class FeedDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260523200615_DropFeedEntryDeletedUtc")]
+    partial class DropFeedEntryDeletedUtc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

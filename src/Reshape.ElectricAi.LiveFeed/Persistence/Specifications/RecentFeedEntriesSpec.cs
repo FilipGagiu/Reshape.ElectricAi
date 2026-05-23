@@ -9,9 +9,7 @@ public sealed class RecentFeedEntriesSpec : Specification<FeedEntry>
     public RecentFeedEntriesSpec(Category? categoryFilter, int take)
     {
         if (categoryFilter is { } cat)
-            Where(e => e.DeletedUtc == null && e.PrimaryCategory == cat);
-        else
-            Where(e => e.DeletedUtc == null);
+            Where(e => e.PrimaryCategory == cat);
 
         AddInclude(e => e.TargetArtists);
         AddInclude(e => e.TargetGenres);

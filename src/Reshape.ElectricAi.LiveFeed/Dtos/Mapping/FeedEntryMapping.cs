@@ -1,4 +1,6 @@
 using Reshape.ElectricAi.Core.Dtos;
+using Reshape.ElectricAi.Core.Dtos.VectorSearch;
+using Reshape.ElectricAi.Core.Enums;
 using Reshape.ElectricAi.LiveFeed.Entities;
 
 namespace Reshape.ElectricAi.LiveFeed.Dtos.Mapping;
@@ -63,5 +65,32 @@ public static class FeedEntryMapping
         entity.TargetGenres.Clear();
         foreach (var g in cmd.TargetGenres.Distinct())
             entity.TargetGenres.Add(new FeedEntryGenre { FeedEntryId = entity.Id, Genre = g });
+    }
+
+    public static IngestEventRequest ToIngestEventRequest(this FeedEntry entry)
+    {
+        var textRepresentation = $"{entry.Title}\n\n{entry.Body}";
+
+        var tags = new Dictionary<Category, IReadOnlyList<string>>();
+
+        if (entry.TargetGenres.Count > 0)
+        {
+            tags[Category.Music] = entry.TargetGenres
+                .Select(g => g.Genre.ToString())
+                .Distinct()
+                .ToList();
+        }
+
+        if (!tags.ContainsKey(entry.PrimaryCategory))
+        {
+            tags[entry.PrimaryCategory] = [entry.PrimaryCategory.ToString()];
+        }
+
+        return new IngestEventRequest(
+            FeedEntryId: entry.Id,
+            Title: entry.Title,
+            TextRepresentation: textRepresentation,
+            EventUtc: entry.PublishedUtc,
+            CategoryValues: tags);
     }
 }
