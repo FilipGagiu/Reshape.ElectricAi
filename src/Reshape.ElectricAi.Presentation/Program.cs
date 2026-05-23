@@ -145,11 +145,12 @@ if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"))
         var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
         await seeder.SeedAsync(dataRoot);
 
-        app.UseSwagger();
-        app.MapScalarApiReference(options =>
-            options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
     }
 }
+
+app.UseSwagger();
+app.MapScalarApiReference(options =>
+    options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 
