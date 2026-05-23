@@ -30,20 +30,20 @@ The above assignment is a recommendation — the team confirms or rearranges at 
 
 ## Solution layout
 
-> **Status: planned, not yet scaffolded.** No `.sln` or `.csproj` files exist as of this writing. The next plan (a separate, dedicated one) creates the solution and projects. This file describes the target layout.
+> **Status: scaffolded; Plans auth slice landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations + auth (register/login/refresh/me) + generic repository abstraction. Test project `Plans.Tests` exists with 32 passing tests. Other libs are empty scaffolds.
 
 ```
 ElectricCastle/
-├── ElectricCastle.sln                          (planned)
+├── ElectricCastle.slnx                         (exists) XML solution format (replaces classic .sln)
 ├── src/
-│   ├── Reshape.ElectricAi.Presentation/        (planned) API host, controllers, middleware, Program.cs, appsettings
-│   ├── Reshape.ElectricAi.Core/                (planned) shared entities, DTOs, interfaces, enums, exceptions
-│   ├── Reshape.ElectricAi.Plans/               (planned) Auth + Users + Preferences + Plan generation
-│   ├── Reshape.ElectricAi.VectorDb/            (planned) pgvector access, ingest pipeline, retrieval
-│   ├── Reshape.ElectricAi.LiveFeed/            (planned) organizer feed + SSE channel state
-│   └── Reshape.ElectricAi.AiChat/              (planned) chat, RAG, OpenAI wrapper, budget
+│   ├── Reshape.ElectricAi.Presentation/        (exists) API host, controllers, middleware, Program.cs, appsettings
+│   ├── Reshape.ElectricAi.Core/                (exists) shared entities, DTOs, interfaces, enums, exceptions, persistence + config abstractions
+│   ├── Reshape.ElectricAi.Plans/               (auth slice live) Auth + Users + (Preferences/Plan generation TODO)
+│   ├── Reshape.ElectricAi.VectorDb/            (scaffold) pgvector access, ingest pipeline, retrieval
+│   ├── Reshape.ElectricAi.LiveFeed/            (scaffold) organizer feed + SSE channel state
+│   └── Reshape.ElectricAi.AiChat/              (scaffold) chat, RAG, OpenAI wrapper, budget
 ├── tests/
-│   ├── Reshape.ElectricAi.Plans.Tests/         (planned)
+│   ├── Reshape.ElectricAi.Plans.Tests/         (exists) xUnit + FluentAssertions + Testcontainers.PostgreSql + Mvc.Testing; 32 tests
 │   ├── Reshape.ElectricAi.VectorDb.Tests/      (planned)
 │   ├── Reshape.ElectricAi.LiveFeed.Tests/      (planned)
 │   └── Reshape.ElectricAi.AiChat.Tests/        (planned)
@@ -54,9 +54,12 @@ ElectricCastle/
 ├── CODE.md                                     (exists) code rulebook
 ├── PROJECT.md                                  (exists) this file
 ├── README.md                                   (exists) public catalog
+├── nuget.config                                (exists) clears global feeds, adds nuget.org only
 ├── .editorconfig                               (planned, follow-up)
-└── .gitignore                                  (planned, follow-up)
+└── .gitignore                                  (exists)
 ```
+
+**Persistence layer location (interim).** The generic EF repository (`EfRepository<TContext, T>`, `SpecificationEvaluator`, `PlansRepository<T>` closing class) currently lives in `Reshape.ElectricAi.Plans/Persistence/`. When a second feature lib (LiveFeed / AiChat / VectorDb) needs EF persistence, promote these to a new `Reshape.ElectricAi.Infrastructure` project referenced by all feature libs. The abstractions (`IRepository<T>`, `ISpecification<T>`, `Specification<T>`) already live in Core and don't need to move.
 
 **Project dependency graph (acyclic — enforced by reviewers + CODE.md):**
 
@@ -210,7 +213,10 @@ The original DOCX/XLSX/PDF files stay in `Client Generic Requirements/` as sourc
 
 ## Known follow-ups (next plans)
 
-1. **Scaffolding plan** — create `.sln`, six `.csproj`, four test projects, `Program.cs`, `appsettings.json`, `Directory.Build.props` with the csproj defaults from CODE.md, `.editorconfig`, `.gitignore`.
+1. ~~**Scaffolding plan**~~ — DONE. `ElectricCastle.slnx` + six `.csproj` + `Plans.Tests` test project all exist.
 2. **Knowledge-base seeding plan** — extract `Client Generic Requirements/*` to the `data/` folder in the documented JSON/MD shapes; wire the ingest source classes.
-3. **Per-lib feature plans** — one per dev: Plans (auth + prefs + plan-gen), VectorDb (ingest + retrieval), AiChat (chat + RAG + budget), LiveFeed (CRUD + SSE).
-4. **PM-agent handoff scaffolding** — offer to create `.claude/docs/` + `STATE.md` + `todo.md` per CLAUDE.md bootstrap.
+3. **Plans next slices** — Preferences endpoints (GET/PUT/PATCH + parse-freetext), Groups CRUD + invites, Plan generation (LLM-backed). All use the existing `IRepository<T>` + `ISpecification<T>` foundation. Atomic multi-row ops go in dedicated stores (mirroring `RefreshTokenStore`).
+4. **Promote `EfRepository<TContext,T>` to a shared `Infrastructure` project** — trigger: when the second feature lib (LiveFeed / AiChat / VectorDb) needs EF persistence. Move `EfRepository`, `SpecificationEvaluator`, and adopt a per-lib closing-class pattern (e.g. `FeedRepository<T> : EfRepository<FeedDbContext, T>`).
+5. **Per-lib feature plans (other devs)** — VectorDb (ingest + retrieval), AiChat (chat + RAG + budget), LiveFeed (CRUD + SSE). Each follows the Plans pattern: entities → migration → `XxxModule.AddXxxModule()` → controllers → tests.
+6. **PM-agent handoff scaffolding** — offer to create `.claude/docs/` + `STATE.md` + `todo.md` per CLAUDE.md bootstrap.
+7. **`xmin` concurrency token on `RefreshToken`** — currently rotation is atomic via `ExecuteUpdateAsync` (no xmin needed). If we ever revert to load-mutate-save for refresh tokens, add `xmin` to match the other entities. Low priority.
