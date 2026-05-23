@@ -5,7 +5,7 @@ url: https://electriccastle.ro/fyi
 scraped_at: 2026-05-23T00:51:39Z
 ---
 
-THE NAME ON YOUR TICKET
+## THE NAME ON YOUR TICKET
 Every ticket (including camping and accommodation tickets) needs to have the holder’s NAME and ADDRESS on it (same as their ID). When adding your details, you will have to upload a PHOTO as well, which won’t be visible on your ticket, but on your EC account only.
 Tickets are nominal, so you can’t enter the festival if you don’t
 have your name & your photo
@@ -17,7 +17,7 @@ If you have a voucher or an invitation, you need to redeem it
 here
 until the date mentioned on it and to personalize it.
 You will not be able to enter the festival with a voucher.
-OPENING HOURS
+## OPENING HOURS
 The festival
 will open at 2 PM on Thursday, July 16, and will remain open until 8 AM on Monday, July 20.
 EC Village
@@ -30,7 +30,7 @@ The Organizer is not liable for fraudulent statements; the submitter is responsi
 The consent form can be downloaded from
 here
 to be filled in. Make sure you have it at the festival's entrance.
-GET YOUR WRISTBAND EARLY
+## GET YOUR WRISTBAND EARLY
 To save time, you can visit a Swap Point, show your ID, and swap your ticket into a wristband before the festival begins. Be the first one to brag about it on your Insta stories and avoid the long lines at the entrance of the festival. Pre-Swapped wristbands can go straight to the fast lane.
 IMPORTANT: Pre-Swap is not available for day tickets. Minors can only get their wristbands at the festival.
 Swap points are available in Cluj-Napoca at
@@ -54,7 +54,7 @@ From July 8 to July 17, 10:00-22:00.
 AFI Cotroceni
 glo island, Bulevardul General Paul Teodorescu 4.
 From July 8 to July 17, 10:00-22:00.
-ONLINE TOP-UP
+## ONLINE TOP-UP
 Every payment made inside the festival is cashless, as you can pay for anything using your wristband. For that, you need to top-up money on it. In order to do so, you will have to create an account and register your ticket
 here
 .
@@ -78,7 +78,7 @@ IMPORTANT:
 Cash refunds of the remaining balance on the wristband, requested at the festival cash desks, are subject to a 3% processing fee. This fee will be deducted from the refunded amount and applies regardless of the method used to load funds onto the wristband.
 Refunds requested after the festival has ended, online via bank transfer, are not subject to this processing fee.
 By requesting a refund during the festival, the participant acknowledges and agrees to the application of this processing fee.
-GETTING TO THE FESTIVAL AND BACK
+## GETTING TO THE FESTIVAL AND BACK
 The Electric Castle festival ground is located 30 km (18 miles) outside Cluj-Napoca, in the village of Bonțida. If you’re not staying in EC Village or Bonțida, you can come by train (EC Trains are the best option), bus, or car.
 We’re constantly working on improving transportation to the festival and back.
 * A whole street in Bontida will be used to load up to 5 buses at once, making the trip back to town as quick as possible.
@@ -98,7 +98,7 @@ online
 . EC trains have limited capacity, so we strongly recommend buying a ticket in advance. When purchasing, select your departure date and time; the ticket will only be valid for that journey.
 Unused EC train tickets can be used for any ride with EC buses.
 Get your EC Train ticket here
-BY BUS - NON STOP
+## BY BUS - NON STOP
 There will be non-stop buses leaving from Iulius Mall and Expo Transilvania to the Castle and back, all day and all night long.
 We strongly recommend you to buy bus tickets in advance,
 online
@@ -119,21 +119,21 @@ Iulius Mall
 .
 Special rides for EC Village
 For those who want to check in early, there will be dedicated buses from Cluj-Napoca on July 14 & 15, leaving from Expo Transilvania, every hour between 11:00-18:00. Tickets can be bought on the spot paying with card or cash (35 lei).
-GET YOUR EC BUS TICKET HERE
-BY CFR TRAINS
+## GET YOUR EC BUS TICKET HERE
+## BY CFR TRAINS
 You can also choose to travel to the festival by a regular train. Take the train to Bontida station - any CFR train that passes through Bontida will stop there. You can find the CFR schedule
 here
 . Once you get to Bontida, you will have to walk for about 40 minutes until you reach the festival’s entrance.
-BY PLANE
+## BY PLANE
 If you’re traveling from a different country, we recommend you fly to Cluj-Napoca Airport (
 airportcluj.ro
 ) (30 km from the festival site). From the airport, you can go to one of the departure points of our transport options (Iulius Mall and Expo Transilvania), to the train station, order a ride through , or take a taxi to the festival site.
-BY FLIXBUS
+## BY FLIXBUS
 If you’re traveling from a different country, you can choose to hop on a Flixbus and benefit from a 20% discount on the trip by filling in the form
 here
 .
 From the bus station, you can go to one of the departure points of our transport options (Iulius Mall and Expo Transilvania), to the train station (10 minutes walk), order a ride through Uber, or take a taxi to the festival site.
-BY CAR
+## BY CAR
 We strongly advise you to leave your car at home. Use our trains or shuttle buses!
 However, if you choose to come by car, share the ride with your friends. If there are no empty seats when you arrive at the festival, we will offer you free parking (spots are limited) and you get the chance to win some cool prizes. This action is part of our
 sustainability initiatives
@@ -152,7 +152,7 @@ You will be able to buy Parking Tickets on-site as well. A ticket is available f
 sustainability initiatives
 to reduce the carbon footprint.
 There will be a dedicated and limited Premium Parking. In order to have access to it, you will need a parking ticket and you will have to show your Premium wristband or Premium ticket + ID at the entrance.
-BY UBER
+## BY UBER
 Uber drivers will have access via E 576 and DJ161. There will be a dedicated
 pick-up and drop-off spot
 for Uber
@@ -160,12 +160,12 @@ and a flat fee of 200 LEI for the trip to the castle
 .
 This flat fee is applied for any ride from Cluj-Napoca to the festival or back.
 IMPORTANT: Drivers will only be allowed to the dedicated spot in Bonțida by showing the ongoing ride on the app.
-BY TAXI & OTHER APPS
+## BY TAXI & OTHER APPS
 If you choose to come by taxi or other transport app, you will have access via E 576 and DJ161. There will be a dedicated
 Taxi Station
 .
 IMPORTANT: Drivers will only be allowed there by showing the ongoing ride on the app.
-GETTING TO YOUR BONTIDA ACCOMMODATION
+## GETTING TO YOUR BONTIDA ACCOMMODATION
 IF YOUR ACCOMMODATION IS IN BONTIDA VILLAGE, IT IS VERY IMPORTANT TO KNOW THIS:
 talk to your host regarding the car access and give them the license plate number of the car you will use to get to their address;
 your host will have to inform the Auto Accreditation Office about your license plate number;
@@ -174,7 +174,7 @@ upon your arrival in Bontida, head to the Auto Accreditations Office where you w
 the cars must be parked inside at all times, for the duration of your stay;
 if you leave your host's courtyard by car, when returning, you will only be able to enter the festival’s parking;
 cars with no auto access pass will use the road from Rascruci and will head to the festival's parking area.
-LOCKERS
+## LOCKERS
 Choose a care-free experience at the castle by leaving your stuff in a locker and charging your phone whenever you need.
 Book one in advance from
 here
@@ -214,7 +214,7 @@ Garden furniture (folding chair, folding table)
 Flashlights
 Speakers, amplifiers or sound systems
 Drones or other unmanned aerial vehicles
-STAYING IN THE EC VILLAGE
+## STAYING IN THE EC VILLAGE
 Find out
 what to expect before your arrival at the EC Village.
 Participants
@@ -265,7 +265,7 @@ Check out the
 Car Camping Rules
 .
 In case you need help or info, go to the Camping Reception (at the entrance of EC Village).
-REUSABLE CUPS
+## REUSABLE CUPS
 You can find reusable cups at every bar (except Fresh, Wine, Speed Bars & Coffee Shops). Cocktails or draft beer will be served in them.
 For your first drink, you’ll pay a 10 lei deposit for the cup.
 For your second order, return the cup to the bar and receive a clean one in exchange.
@@ -276,7 +276,7 @@ If you paid via wristband
 If you paid via card
 : you can get a refund only once during the festival for up to 5 cups, and the deposit will be refunded to your wristband. A second refund is possible only with proof of transaction.
 Cups collected from others will not be accepted.
-SAFETY
+## SAFETY
 We want the festival to be a safe place for everyone.
 You can find our
 Red Team
@@ -297,9 +297,9 @@ ask for a cap and a straw at any bar.
 Knowledge is sexy. Visit the
 www.ginfospot.ro
 for sex-related advice and resources.
-FIRST AID
+## FIRST AID
 There will be 4 first-aid points inside the festival and one in the EC Village. Check the festival’s map.
-DISCOVER THE EC WORLD
+## DISCOVER THE EC WORLD
 Check out the
 schedule
 in the EC App.

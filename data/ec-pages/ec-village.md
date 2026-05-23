@@ -17,22 +17,22 @@ In your own timezone
 Where to sleep
 Sleep close. Very close. And wake up when your body does, not when your alarm insists.
 Scroll down and check out all the camping options.
-Camping
+## Camping
 All friends in one place
 Why share just a few hours with friends when you can vibe 24/7? Camping isn't just a crash spot, it's sunrise-to-sunrise bonding, living that full festival glow-up. They say it's the rawest way to live the festival, and they're probably right. Pitch your own tent or skip the setup hassle with our pre-pitched ones.
 Festival Pass + Camping Pass are mandatory for each person.
 Get camping
-Car Camping
+## Car Camping
 Less commuting. More fun
 Imagine a little parcel of 3x8 meter to park your car, pitch a tent and set up anything else you might need to feel cozy.
 Car Camping ticket + Festival Pass + Camping Pass are mandatory for each person.
 Get car camping
-RV Camping
+## RV Camping
 Your base camp round the corner
 Bring your home on wheels at the festival and park it in a designated area of the EC Village. You will have a power source, a water source nearby (you'll need your own hose), wastewater discharge, and a chemical toilet discharge point.
 RV Camping ticket + Festival Pass + Camping Pass are mandatory for each participant.
 Get RV camping
-Glamping
+## Glamping
 City comfort at any moment
 And just like that... all the comfort you found by staying in a hotel room or a house in the city is wasted on endless drives to the festival. The real luxury lays in making the best out of every minute. Enjoy the freedom and comfort in a quieter area of EC Village.
 Valid accommodation ticket, a Festival Pass + Camping Pass are mandatory for each person sleeping in all the accommodation structures.
@@ -64,7 +64,7 @@ One more song is always possible
 Stay close to everything
 Your base camp is right here
 Sunrise is part of the plan
-What to pack
+## What to pack
 Festival Pass and Camping Pass
 Keep them close.
 Tent for the Tent Area
@@ -120,7 +120,7 @@ except for small folding chairs and tables
 Big sound systems
 Reusable metal or glass bottles
 Drones or other unmanned aerial vehicles
-Our tips
+## Our tips
 Traveling light sounds about right
 You will have to carry your stuff from the parking area or the bus station to EC Village and back.
 That’s 10 to 20min walk round trip. Pack smart, bring what’s necessary. Wanna get there as cheap as possible, as fast as you can and something extra: Bring a mountain backpack rather than a trolly, the EC Village is not an asphalted area.
@@ -134,6 +134,5 @@ Reuse. Reduce. Recycle.
 Nature is our dance floor. Let’s take care of it. Avoid single-use items and opt for reusables instead.
 Still in doubt? Talk to us
 Look for volunteers and info point whenever you have questions or need a little help.
-How to make it to EC Village
+## How to make it to EC Village
 Finally testing “touchdown” in the WhatsApp group is easy. Whether you’re coming by bus or car, check the map below to find your way around.
-That’s why when the party is over, the only footprint left behind has to be a positive one. At Electric Castle, we believe that sustainability shouldn’t be a one-hit wonder but an all-timer. Our efforts are sustained and constant for each edition to be more environmentally friendly.

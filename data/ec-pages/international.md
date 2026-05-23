@@ -114,9 +114,9 @@ Atelier Cafe
 Cute bar. Nice parties.
 The Brewhouse
 More types of beer than you could drink in the old city.
-LET'S COFFEE
+## LET'S COFFEE
 Really good speciality coffee from roasters around the world.
-BOOHA BAR
+## BOOHA BAR
 Where Electric Castle was born.
 Visuin
 Delish cocktails.

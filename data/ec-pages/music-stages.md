@@ -6,7 +6,7 @@ scraped_at: 2026-05-23T00:51:36Z
 ---
 
 Music Stages
-MAIN STAGE
+## MAIN STAGE
 by Coca-Cola
 Our biggest stage is where the most awaited artists perform. Here you can enjoy the most spectacular EC moments, sharing climax with thousands of people like you. Thrilling.
 At the Main Stage you can listen to: the most spectacular live shows and DJ sets.
@@ -32,7 +32,7 @@ FLORENCE + THE MACHINE
 FRANZ FERDINAND
 PAUL KALKBRENNER
 Back to top
-HANGAR
+## HANGAR
 by Banca Transilvania
 Welcoming a mix of punks, ravers, artists, and music lovers from all walks of life. It's not just about partying—it's about connection, creativity, and shared energy.
 Here you can listen to: alternative & niche live acts and sophisticated DJ sets.
@@ -58,7 +58,7 @@ NOGA EREZ
 GUS GUS
 VIAGRA BOYS
 Back to top
-BOOHA
+## BOOHA
 by glo
 This is where the party never stops. The iconic stage with an unforgettable industrial look is the first thing you bump into when you enter the festival. The programming spans various sub-genres, ensuring a rich and eclectic musical experience.
 Here you can listen to: house, groovy house, bass, disco and melodic techno.
@@ -84,7 +84,7 @@ CRAZY P
 ELI ESCOBAR
 MJ COLE
 Back to top
-HIDEOUT
+## HIDEOUT
 by #UNLOCKWONDER
 The crowd is typically a mix of jet-setters, bohemian travelers, spiritual seekers, and influencers. Attendees are drawn by EC's unique blend of natural beauty, music, and the opportunity to experience events that feel both exclusive and authentic
 Here you can listen to: afro house, organic house & deep tribal house.
@@ -122,7 +122,7 @@ NIGHTMARES ON WAX
 NATASHA DIGGS
 DJ MARKY
 Back to top
-BACKYARD STAGE
+## BACKYARD STAGE
 by MobilaDalin
 The Backyard Stage is a soulful haven where authentic, inspiring sounds come alive. Each act takes you on a journey, from pulsing basslines to delicate strings and unforgettable vocals, all raw and organic. With its warm, intimate vibe, lush greenery, and fairy lights, it feels like a friend's garden, bringing people together through music and connection—not flashy effects, just pure discovery.
 Here you can listen to: the globe’s vibrant musical tapestry is woven together - African rhythms, Latin grooves, Asian melodies, and European avant-garde.
@@ -143,7 +143,7 @@ NIGHT BEATS
 JOYCUT
 SABABA 5
 Back to top
-PING PONG STAGE
+## PING PONG STAGE
 by Burn
 The oldies but goldies hits we all love to hear once in while are at the Castle. Here you’ll involuntarily shake your body right from the first beat. Don’t say we didn’t warn ya.
 Here you can listen to:
