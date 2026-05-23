@@ -9,6 +9,8 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
+import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
+
 import {
     CATEGORY_META,
     CategoryMeta,
@@ -60,7 +62,7 @@ const TICK_INTERVAL_MS = 30_000;
     selector: 'app-live-feed',
     templateUrl: './live-feed.component.html',
     styleUrl: './live-feed.component.css',
-    imports: [TranslocoModule],
+    imports: [TranslocoModule, EcTopbarComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveFeedComponent {

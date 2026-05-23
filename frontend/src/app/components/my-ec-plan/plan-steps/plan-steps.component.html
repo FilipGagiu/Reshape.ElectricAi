@@ -18,10 +18,11 @@
         <button
             type="button"
             class="ec-plan-steps__icon-btn"
-            (click)="reset()"
-            [attr.aria-label]="'plan.steps.actions.reset' | transloco"
+            (click)="forward()"
+            [disabled]="!canGoForward()"
+            [attr.aria-label]="'plan.steps.actions.forward' | transloco"
         >
-            <i class="pi pi-refresh"></i>
+            <i class="pi pi-arrow-right"></i>
         </button>
     </header>
 
@@ -53,6 +54,12 @@
                 <h1 class="ec-plan-steps__prompt">
                     {{ promptKey() | transloco }}
                 </h1>
+
+                @if (descriptionKey(); as descKey) {
+                    <p class="ec-plan-steps__description">
+                        {{ descKey | transloco }}
+                    </p>
+                }
 
                 @if (suggestionKeys().length) {
                     <div
@@ -114,6 +121,15 @@
             >
                 {{ continueLabelKey() | transloco }}
             </button>
+            @if (canSkip()) {
+                <button
+                    type="button"
+                    class="ec-plan-steps__skip"
+                    (click)="skip()"
+                >
+                    {{ 'plan.steps.actions.skip' | transloco }}
+                </button>
+            }
         </footer>
     }
 </section>

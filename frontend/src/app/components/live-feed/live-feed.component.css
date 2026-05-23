@@ -3,10 +3,6 @@
     background-color: var(--ec-dark-navy);
 }
 
-.live-feed-header {
-    top: env(safe-area-inset-top);
-}
-
 .live-feed-filters {
     scrollbar-width: none;
 }

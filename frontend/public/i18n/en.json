@@ -126,7 +126,6 @@
     "plan": {
         "title": "My EC plan",
         "placeholder": "Your extracurricular plan lives here.",
-        "onboardingHeading": "Finish your setup to unlock your personalised plan.",
         "cta": {
             "watchRecap": "Watch the recap"
         },
@@ -221,7 +220,8 @@
                 "continue": "Continue",
                 "finish": "Finish",
                 "back": "Back",
-                "reset": "Start over"
+                "forward": "Next",
+                "skip": "Skip this one"
             },
             "completed": {
                 "title": "You're all set",
@@ -235,17 +235,20 @@
             "thanks": "Got it. Your plan's brewing. We'll have it ready in a bit.",
             "error": "Couldn't save your answers. Try again in a moment.",
             "retry": "Try again",
+            "skipped": "Skipped",
             "input": {
                 "placeholder": "Type your answer..."
             },
             "q": {
                 "name": {
                     "prompt": "What should we call you?",
-                    "placeholder": "Your first name"
+                    "placeholder": "Your first name",
+                    "description": "First name's plenty. We'll keep things casual from here."
                 },
                 "origin": {
                     "prompt": "Where are you coming in from, and how big's the crew?",
                     "placeholder": "City + group size",
+                    "description": "Helps us think about your route in and how the days flow for your group.",
                     "chip": {
                         "clujSolo": "Cluj-Napoca, solo",
                         "bucharestCrew": "Bucharest, with friends",
@@ -255,6 +258,7 @@
                 "accommodation": {
                     "prompt": "Where will you call home for EC?",
                     "placeholder": "Festival camping, hotel, Airbnb...",
+                    "description": "Your base camp shapes your mornings and how late you can stay out.",
                     "chip": {
                         "festivalCamping": "Festival camping",
                         "bontida": "Bontida village",
@@ -265,6 +269,7 @@
                 "vibe": {
                     "prompt": "What's your festival vibe, and what calls you between sets?",
                     "placeholder": "Energy level + downtime plans",
+                    "description": "Tells us how to balance the big stages with the in-between magic.",
                     "chip": {
                         "chillExplore": "Chill, explore, lake breaks",
                         "raveFood": "Front row, food truck hunts",
@@ -274,6 +279,7 @@
                 "music": {
                     "prompt": "Anyone you can't miss? Drop your favourite genres or artists too.",
                     "placeholder": "Artists, genres, anything",
+                    "description": "We'll line up your schedule around the sets you actually want to catch.",
                     "chip": {
                         "surprise": "Surprise me",
                         "electronic": "Electronic",
@@ -284,6 +290,7 @@
                 "dietary": {
                     "prompt": "Anything you can't (or won't) eat?",
                     "placeholder": "Allergies, diets, anything we should know",
+                    "description": "EC Village has 60+ vendors. We'll point you at the safe-bet stalls.",
                     "chip": {
                         "none": "No restrictions",
                         "vegetarian": "Vegetarian",
@@ -294,6 +301,7 @@
                 "extra": {
                     "prompt": "Anything else we should know? The floor is yours.",
                     "placeholder": "Or skip if you're done",
+                    "description": "Quirks, must-dos, group chaos. Anything we'd otherwise miss.",
                     "chip": {
                         "nothing": "Nothing else"
                     }
@@ -332,148 +340,10 @@
             "passwordsMismatch": "Passwords don't match.",
             "emailTaken": "That email's already in use.",
             "invalidCredentials": "Wrong email or password."
-        }
-    },
-    "onboarding": {
-        "title": "Set up your festival",
-        "subtitle": "A few taps and we tailor your EC.",
-        "progress": "Step {{current}} of {{total}}",
-        "action": {
-            "next": "Next",
-            "back": "Back",
-            "skip": "Skip",
-            "continue": "Continue",
-            "finish": "Finish",
-            "devReset": "Reset",
-            "itemsSelected": "{{count}} selected",
-            "noneSelected": "None selected"
         },
-        "step": {
-            "basics": {
-                "title": "About you",
-                "subtitle": "Tell us your name."
-            },
-            "ageGroup": {
-                "title": "Your age group",
-                "subtitle": "Pick the range you fall into."
-            },
-            "ticket": {
-                "title": "Your ticket",
-                "subtitle": "Which pass do you have?"
-            },
-            "accommodation": {
-                "title": "Where you'll sleep",
-                "subtitle": "Pick your home base."
-            },
-            "transport": {
-                "title": "How you'll get around",
-                "subtitle": "Tap every option you'll use."
-            },
-            "artists": {
-                "title": "Artists you love",
-                "subtitle": "Tap all that apply."
-            },
-            "music": {
-                "title": "Your sound",
-                "subtitle": "Genres you can't miss."
-            },
-            "cuisine": {
-                "title": "Food you crave",
-                "subtitle": "Pick your favourite cuisines."
-            },
-            "allergies": {
-                "title": "Dietary needs",
-                "subtitle": "We'll filter recommendations."
-            },
-            "activities": {
-                "title": "Beyond the music",
-                "subtitle": "Daytime experiences you'd enjoy."
-            }
-        },
-        "field": {
-            "name": "Name",
-            "namePlaceholder": "How should we call you?"
-        },
-        "ageGroup": {
-            "under18": "Under 18",
-            "adult18To24": "18–24",
-            "adult25To34": "25–34",
-            "adult35To44": "35–44",
-            "adult45Plus": "45+"
-        },
-        "ticket": {
-            "noTicket": "No ticket yet",
-            "fullPass": "Full festival pass",
-            "dayTicket": "Day ticket",
-            "vip": "VIP",
-            "ultraVip": "Ultra VIP",
-            "blackTicket": "Black ticket"
-        },
-        "accommodation": {
-            "festivalCamping": "Festival camping",
-            "bontida": "Bonțida",
-            "cluj": "Cluj-Napoca"
-        },
-        "transport": {
-            "car": "Car",
-            "train": "Train",
-            "bus": "Bus",
-            "bike": "Bike",
-            "onFoot": "On foot"
-        },
-        "artist": {
-            "bmth": "Bring Me The Horizon",
-            "apashe": "Apashe",
-            "skepta": "Skepta",
-            "subFocus": "Sub Focus",
-            "tameImpala": "Tame Impala",
-            "arcticMonkeys": "Arctic Monkeys",
-            "fkaTwigs": "FKA Twigs",
-            "fourTet": "Four Tet",
-            "massiveAttack": "Massive Attack",
-            "idles": "Idles"
-        },
-        "genre": {
-            "rock": "Rock",
-            "electronic": "Electronic",
-            "house": "House",
-            "techno": "Techno",
-            "dnb": "Drum & Bass",
-            "hipHop": "Hip-hop",
-            "indie": "Indie",
-            "pop": "Pop",
-            "metal": "Metal",
-            "jazz": "Jazz"
-        },
-        "cuisine": {
-            "italian": "Italian",
-            "romanian": "Romanian",
-            "asian": "Asian",
-            "mexican": "Mexican",
-            "middleEastern": "Middle Eastern",
-            "indian": "Indian",
-            "bbq": "BBQ",
-            "vegan": "Plant-based"
-        },
-        "allergy": {
-            "vegan": "Vegan",
-            "vegetarian": "Vegetarian",
-            "glutenFree": "Gluten-free",
-            "dairyFree": "Dairy-free",
-            "nutAllergy": "Nut allergy",
-            "halal": "Halal",
-            "kosher": "Kosher",
-            "pescatarian": "Pescatarian"
-        },
-        "activity": {
-            "yoga": "Yoga",
-            "workshops": "Workshops",
-            "artTours": "Art tours",
-            "lakeSwim": "Lake swim",
-            "silentDisco": "Silent disco",
-            "foodTour": "Food tour",
-            "wellness": "Wellness",
-            "castleTour": "Castle tour"
+        "logout": {
+            "label": "Sign out",
+            "aria": "Sign out"
         }
     }
 }

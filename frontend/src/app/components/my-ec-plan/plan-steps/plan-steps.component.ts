@@ -51,18 +51,24 @@ export class PlanStepsComponent {
     protected readonly answeredCount = this.service.answeredCount;
     protected readonly totalQuestions = this.service.totalQuestions;
     protected readonly isCompleted = this.service.isCompleted;
+    protected readonly currentIndex = this.service.currentIndex;
+    protected readonly answers = this.service.answers;
 
     protected readonly isSubmitting = computed(() => this.status() === 'submitting');
     protected readonly hasError = computed(() => this.status() === 'error');
     protected readonly isCollecting = computed(() => this.status() === 'collecting');
 
     protected readonly isLastQuestion = computed(
-        () => this.answeredCount() === this.totalQuestions() - 1,
+        () => this.currentIndex() === this.totalQuestions() - 1,
     );
-    protected readonly isFirstQuestion = computed(() => this.answeredCount() === 0);
+    protected readonly isFirstQuestion = computed(() => this.currentIndex() === 0);
+    protected readonly canSkip = computed(() => !this.isFirstQuestion() && this.isCollecting());
+    protected readonly canGoForward = computed(
+        () => this.currentIndex() < this.answers().length && !this.isLastQuestion(),
+    );
 
     protected readonly counterParams = computed(() => ({
-        current: Math.min(this.answeredCount() + 1, this.totalQuestions()),
+        current: Math.min(this.currentIndex() + 1, this.totalQuestions()),
         total: this.totalQuestions(),
     }));
 
@@ -76,11 +82,12 @@ export class PlanStepsComponent {
 
     protected readonly progressSteps = computed<ReadonlyArray<WizardProgressStep>>(() => {
         const total = this.totalQuestions();
-        const activeIndex = Math.min(this.answeredCount(), total - 1);
+        const active = this.currentIndex();
+        const reached = Math.max(active, this.answers().length);
         return Array.from({ length: total }, (_, index) => ({
             index,
-            active: index === activeIndex,
-            reachable: index <= activeIndex,
+            active: index === active,
+            reachable: index <= reached,
         }));
     });
 
@@ -89,6 +96,9 @@ export class PlanStepsComponent {
     );
     protected readonly placeholderKey = computed(
         () => this.currentQuestion()?.placeholderKey ?? 'plan.intake.input.placeholder',
+    );
+    protected readonly descriptionKey = computed(
+        () => this.currentQuestion()?.descriptionKey ?? null,
     );
     protected readonly suggestionKeys = computed<ReadonlyArray<string>>(
         () => this.currentQuestion()?.suggestionKeys ?? [],
@@ -99,9 +109,12 @@ export class PlanStepsComponent {
     constructor() {
         effect(() => {
             const question = this.currentQuestion();
+            const index = this.currentIndex();
             if (!question) return;
             untracked(() => {
-                this.textControl.setValue('', { emitEvent: false });
+                const existing = this.service.answers()[index];
+                const prefill = existing && !existing.skipped ? existing.text : '';
+                this.textControl.setValue(prefill, { emitEvent: false });
                 queueMicrotask(() => {
                     this.textareaRef()?.nativeElement.focus();
                     this.resizeTextarea();
@@ -149,8 +162,14 @@ export class PlanStepsComponent {
         this.service.previous();
     }
 
-    protected reset(): void {
-        this.service.reset();
+    protected forward(): void {
+        if (!this.canGoForward()) return;
+        this.service.goForward();
+    }
+
+    protected skip(): void {
+        if (!this.canSkip()) return;
+        this.service.skipCurrent();
     }
 
     protected gotoPlan(): void {

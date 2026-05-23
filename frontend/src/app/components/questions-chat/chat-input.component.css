@@ -18,22 +18,6 @@
     background-color: var(--ec-dark-navy);
     border-top: 3px solid var(--ec-red);
     box-shadow: 0 -16px 40px rgba(15, 20, 40, 0.32);
-    animation: ec-chat-input-slide-up var(--duration-deliberate) var(--ease-out) both;
-}
-
-@keyframes ec-chat-input-slide-up {
-    from {
-        transform: translateY(100%);
-    }
-    to {
-        transform: translateY(0);
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    :host(.ec-chat-input-host--sticky) .ec-chat-input-shell {
-        animation: none;
-    }
 }
 
 :host(.ec-chat-input-host--sticky) .ec-chat-input__chips {
