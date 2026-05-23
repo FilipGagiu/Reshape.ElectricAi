@@ -2,7 +2,7 @@
 
 > Real-time organizer-to-attendee push channel for the Electric Castle backend. Server-Sent Events (SSE) hub with personalized targeting based on each user's preferences.
 
-This document explains the feature end-to-end: what it does, how a message gets from an organizer to the right phones, where each piece of code lives, and which constraints govern the design.
+This document explains the feature end-to-end: what it does, how a message gets from an organizer to the right phones, where each piece of code lives, and which constraints govern the design. **Status:** shipped on `feature/live-feed-v2` — 70/70 tests passing (32 Plans regression + 38 LiveFeed), 0 build warnings in scope, controllers carry XML doc comments ready for Swagger.
 
 ---
 
@@ -11,17 +11,18 @@ This document explains the feature end-to-end: what it does, how a message gets 
 Organizers publish short feed entries ("30 min delay on Main Stage", "Rain after 21:00, stages stay open"). Each entry can be:
 
 - **General** — broadcast to every connected user.
-- **Targeted** — delivered only to users whose preferences intersect the entry's tags. Targeting today uses two axes:
+- **Targeted** — delivered only to users whose preferences intersect the entry's tags. Targeting uses two axes:
   - **Artist names** (free-text, exact-string, case-sensitive).
   - **Music genres** (`MusicGenre` enum: HipHop, House, Techno, Rock, etc.).
 
-Users connect to a long-lived HTTP stream. As organizers publish, matching entries appear on their device within ~50 ms (in-process channel hop, no broker).
+Attendees connect to a long-lived HTTP stream. As organizers publish, matching entries appear on their device within ~50 ms (in-process channel hop, no broker).
 
 **Out of scope (v1):**
 - Location-based targeting (no geo field anywhere).
 - Group-level targeting (`GroupPreferences` ignored).
 - Vector indexing of feed entries (Dev 2 — VectorDb lib).
 - `feed_deliveries` per-user delivery log (replay relies on the client-supplied `Last-Event-ID` cursor).
+- SSE authentication — stream endpoint is `[AllowAnonymous]` with a `?userId={guid}` query placeholder. Securing it (CODE.md `## Auth` line 184's query-string-token middleware) is deferred to a follow-up plan.
 
 ---
 
@@ -35,17 +36,17 @@ Users connect to a long-lived HTTP stream. As organizers publish, matching entri
 └──────────────┘                       └──────────┬──────────────┘
                                                   │ IFeedService
                                                   ▼
-                                       ┌─────────────────────────┐
-                                       │ LiveFeed                │
-                                       │  FeedService            │
-                                       │   ├─ IRepository<Entry> │ ── FeedRepository<T> ──┐
-                                       │   │     (Add/Save)       │                       │
-                                       │   └─ IFeedBroadcaster    │ ── FeedBroadcaster ───┼─▶ Postgres `feed` schema
-                                       │         (Broadcast AFTER │     (singleton,       │
-                                       │          SaveChanges)    │      ConcurrentDict   │   ┌────────────────┐
-                                       └──────────┬───────────────┘      of subs)         └─▶ │ Infrastructure │
-                                                  │                                            │  EfRepository  │
-                                                  │ TryWrite to matching channels              └────────────────┘
+                                       ┌─────────────────────────┐       ┌────────────────┐
+                                       │ LiveFeed                │       │ Infrastructure │
+                                       │  FeedService            │       │  EfRepository  │
+                                       │   ├─ IRepository<Entry> ┼──────►│  Specification │
+                                       │   │     (Add/Save)      │       │  Evaluator     │
+                                       │   └─ IFeedBroadcaster   │       └────────┬───────┘
+                                       │         (Broadcast AFTER│                │
+                                       │          SaveChanges)   │                │
+                                       └──────────┬──────────────┘                ▼
+                                                  │                       Postgres `feed` schema
+                                                  │ TryWrite to matching channels
                                                   ▼
 ┌──────────────┐                       ┌─────────────────────────┐
 │ Attendee     │  GET  /api/v1/feed/   │ FeedController          │
@@ -63,8 +64,8 @@ Users connect to a long-lived HTTP stream. As organizers publish, matching entri
 
 **Two execution paths share one process:**
 
-1. **Write path (POST/PUT/DELETE):** Controller → `FeedService` → `IRepository<FeedEntry>` (EF Core) → Postgres commit → `IFeedBroadcaster.BroadcastEventToMatchingSubscribers(kind, dto)`. Broadcast fires **only after** `SaveChangesAsync` returns — never before. A rollback never leaks an envelope.
-2. **Read/stream path (GET /feed, GET /feed/stream):** Controller resolves the caller, asks `IUserPrefsProvider` for that user's targeting preferences, then either lists DTOs (GET /feed) or subscribes to the broadcaster (GET /feed/stream) and forwards events to the client.
+1. **Write path (POST/PUT/DELETE):** Controller → `FeedService` → `IRepository<FeedEntry>` (closed-generic, EF Core) → Postgres commit → `IFeedBroadcaster.BroadcastEventToMatchingSubscribers(kind, dto)`. Broadcast fires **only after** `SaveChangesAsync` returns — never before. A rollback never leaks an envelope.
+2. **Read/stream path (GET /feed, GET /feed/stream):** Controller resolves the caller (JWT `sub` claim for CRUD, `?userId=` query for SSE), asks `IUserPrefsProvider` for that user's targeting preferences, then either lists DTOs (GET /feed) or subscribes to the broadcaster (GET /feed/stream) and forwards events to the client.
 
 ---
 
@@ -85,7 +86,7 @@ src/Reshape.ElectricAi.LiveFeed/
 │   ├── Specifications/          ISpecification<FeedEntry> implementations.
 │   │   ├── RecentFeedEntriesSpec.cs
 │   │   ├── FeedEntriesSinceCursorSpec.cs
-│   │   └── FeedEntryByIdSpec.cs
+│   │   └── FeedEntryByIdSpec.cs   (asNoTracking flag — true for read-only Get path)
 │   └── Migrations/              EF Core migration (`InitialFeedSchema`).
 │
 ├── Broadcasting/                In-process SSE hub.
@@ -97,7 +98,7 @@ src/Reshape.ElectricAi.LiveFeed/
 ├── Services/
 │   ├── FeedService.cs           Application service. Implements Core.Services.IFeedService.
 │   └── EmptyUserPrefsProvider.cs Default IUserPrefsProvider — returns empty prefs.
-│                                Plans dev replaces with a Postgres-backed impl later.
+│                                 Plans dev replaces with a Postgres-backed impl later.
 │
 ├── Dtos/
 │   ├── PublishFeedEntryRequest.cs   HTTP input record (controller-side).
@@ -110,7 +111,9 @@ src/Reshape.ElectricAi.LiveFeed/
 │   └── UpdateFeedEntryRequestValidator.cs
 │
 └── LiveFeedModule.cs            DI entry-point: AddLiveFeedModule(this IServiceCollection, IConfiguration).
-                                 Registers DbContext, FeedRepository, FeedService, FeedBroadcaster,
+                                 Registers DbContext, FeedRepository (closed-generic per entity:
+                                 IRepository<FeedEntry>, <FeedEntryArtist>, <FeedEntryGenre>),
+                                 FeedService (scoped), FeedBroadcaster (singleton),
                                  EmptyUserPrefsProvider (TryAdd), and validators (reflection scan).
 ```
 
@@ -138,6 +141,16 @@ src/Reshape.ElectricAi.Core/
 src/Reshape.ElectricAi.Infrastructure/Persistence/
 ├── EfRepository.cs                    Generic IRepository<T> impl over any DbContext.
 └── SpecificationEvaluator.cs          Applies ISpecification<T> to an IQueryable<T>.
+```
+
+**Controller (Presentation):**
+
+```
+src/Reshape.ElectricAi.Presentation/Controllers/
+└── FeedController.cs                  Thin controller. XML doc comments on every action.
+                                       [Produces("application/json")] class default;
+                                       [Produces("text/event-stream")] override on /stream.
+                                       [ProducesResponseType(...)] for every status code.
 ```
 
 ---
@@ -174,8 +187,8 @@ src/Reshape.ElectricAi.Infrastructure/Persistence/
 
 ### Indexes
 
-- `(PublishedUtc DESC)` — recent-feed scans.
-- `(DeletedUtc, PublishedUtc DESC) WHERE DeletedUtc IS NULL` — **partial index** for the not-deleted hot path. Emitted via EF's `HasFilter(...)`.
+- `(PublishedUtc DESC)` — single-column DESC for full-history scans.
+- `(DeletedUtc ASC, PublishedUtc DESC) WHERE DeletedUtc IS NULL` — **partial index** for the not-deleted hot path. Emitted via `HasFilter(...)` + `IsDescending(false, true)` so Postgres can scan forward for newest-first reads. The descending direction on `PublishedUtc` is mandatory; without it, `RecentFeedEntriesSpec` falls into a sub-optimal backward scan.
 
 ### Schema
 
@@ -219,9 +232,13 @@ public sealed class FeedBroadcaster(IServiceScopeFactory scopeFactory) : IFeedBr
 }
 ```
 
+### Why singleton
+
+In-memory subscription state is **shared global state across all HTTP requests**. Publish from request A must reach subscribers in requests B..Z. Scoped instance = each request gets its own empty dictionary = no fan-out. Singleton = one shared `ConcurrentDictionary` = pub/sub works. Channel lifetime exceeds any request scope (SSE connections live minutes to hours), so subscription bookkeeping must outlive request lifetimes.
+
 ### Why `IServiceScopeFactory`?
 
-`FeedBroadcaster` is singleton; `IFeedService` is scoped (it depends on the scoped `IRepository<FeedEntry>` which holds the scoped `FeedDbContext`). On every SSE connect the broadcaster needs to call `IFeedService` to fetch the replay batch. A singleton can't capture a scoped service directly — that's the classic captive-dependency bug. The broadcaster instead injects `IServiceScopeFactory` and opens a **per-subscribe scope**:
+`FeedBroadcaster` is singleton; `IFeedService` is scoped (it depends on the scoped `IRepository<FeedEntry>` which holds the scoped `FeedDbContext`). On every SSE connect the broadcaster needs to call `IFeedService` to fetch the replay batch. A singleton can't capture a scoped service directly — that's the classic captive-dependency bug (ASP.NET Core's `ValidateScopes=true` throws at build OR runtime serves a stale instance forever). The broadcaster instead injects `IServiceScopeFactory` (itself a singleton, safe to capture) and opens a **per-subscribe scope**:
 
 ```csharp
 using (var scope = scopeFactory.CreateScope())
@@ -278,7 +295,7 @@ public async IAsyncEnumerable<FeedEventEnvelope> SubscribeUserToStreamAsync(
 
 `try/finally` guarantees the dictionary entry is removed on **any** exit path: client disconnect (ct cancels), iterator dispose, exception, normal completion. No subscription leak across restarts of the same client.
 
-The `SubscriptionId` is a per-connection `Guid` — meaning a single user can have multiple tabs open, each with its own channel and prefs snapshot.
+The `SubscriptionId` is a per-connection `Guid` — meaning a single user can have multiple tabs open, each with its own channel and prefs snapshot. 50 unique users + 50 tabs each = 2500 entries in the dictionary, all independent.
 
 ---
 
@@ -292,11 +309,15 @@ internal sealed class FeedService(
     IFeedBroadcaster broadcaster) : IFeedService { ... }
 ```
 
-`IRepository<T>` is registered in `LiveFeedModule` with the closing class:
+`IRepository<T>` is registered in `LiveFeedModule` **per entity (closed generic)** to avoid shadowing Plans's open-generic registration:
 
 ```csharp
-services.AddScoped(typeof(IRepository<>), typeof(FeedRepository<>));
+services.AddScoped<IRepository<FeedEntry>, FeedRepository<FeedEntry>>();
+services.AddScoped<IRepository<FeedEntryArtist>, FeedRepository<FeedEntryArtist>>();
+services.AddScoped<IRepository<FeedEntryGenre>, FeedRepository<FeedEntryGenre>>();
 ```
+
+**Why closed-generic and not open?** Plans registers open-generic `IRepository<>` → `PlansRepository<>` in `PlansModule`. If LiveFeed also registered open-generic, the later registration would replace the earlier one — Plans's services resolving `IRepository<User>` would land in `FeedRepository<User>`, which calls `FeedDbContext.Set<User>()` and throws `Cannot create a DbSet for 'User' because this type is not included in the model for the context`. CODE.md `## Persistence layer` documents the rule: the FIRST lib in registration order may use open-generic; every later lib must close per-entity. MS.DI prefers the closed-specific registration over open-generic when both match a closed type, so per-entity closes from LiveFeed win for their three entities without disturbing Plans.
 
 `FeedRepository<T>` (in LiveFeed) is just:
 
@@ -333,7 +354,7 @@ public sealed class RecentFeedEntriesSpec : Specification<FeedEntry>
 Three specs exist:
 - `RecentFeedEntriesSpec(Category?, int take)` — recent not-deleted.
 - `FeedEntriesSinceCursorSpec(DateTime, Guid, int)` — replay-on-connect via decomposed cursor predicate (`PublishedUtc > p OR (PublishedUtc == p AND Id > g)`). Translates cleanly under Npgsql.
-- `FeedEntryByIdSpec(Guid)` — by-id lookup with target collections included.
+- `FeedEntryByIdSpec(Guid, bool asNoTracking = false)` — by-id lookup with target collections included. `asNoTracking=true` only on the read-only `GetEntryByIdAsync` path; Update/Delete keep tracking on so EF can mutate the loaded graph.
 
 ---
 
@@ -403,10 +424,13 @@ If they raced, frames would interleave mid-line and corrupt the SSE stream. A pe
 using var writeLock = new SemaphoreSlim(1, 1);
 var heartbeatTask = RunHeartbeatLoopAsync(writeLock, ct);
 try { await foreach (var env in ...) await WriteSseEventFrameAsync(env, writeLock, ct); }
+catch (OperationCanceledException) { }
+catch (ObjectDisposedException) { }
+catch (IOException) { }
 finally { try { await heartbeatTask; } catch (...) { } }
 ```
 
-The `using var` disposes the semaphore on connection close.
+The `using var` disposes the semaphore on connection close. Cancellation is the normal exit for an SSE consumer — the outer try/catch swallows `OperationCanceledException` / `ObjectDisposedException` / `IOException` (Kestrel teardown mid-write) so the request doesn't bubble up to the global exception middleware (which would clear the response body and write a JSON envelope, breaking content type).
 
 ### Reconnect / replay (`Last-Event-ID`)
 
@@ -435,12 +459,12 @@ X-Accel-Buffering: no
 
 ## 9. Endpoints
 
-All routes are under `/api/v1/feed` (CODE.md `## Controllers`).
+All routes are under `/api/v1/feed` (CODE.md `## Controllers`). Controllers carry XML doc comments + `[ProducesResponseType]` attributes; once the host opts in to `swagger.IncludeXmlComments(...)`, the descriptions surface in Scalar UI automatically.
 
 | Method | Path | Auth | Description |
 |---|---|---|---|
 | `GET` | `/api/v1/feed?category=<Category>` | `[Authorize]` | List recent (last 100) not-deleted entries filtered by category + the caller's prefs. |
-| `POST` | `/api/v1/feed` | `[Authorize(Roles = "Organizer")]` | Publish new entry. Returns 201 + created DTO. |
+| `POST` | `/api/v1/feed` | `[Authorize(Roles = "Organizer")]` | Publish new entry. Returns 201 + DTO. `Location` header points at entry URL. |
 | `PUT` | `/api/v1/feed/{id}` | `[Authorize(Roles = "Organizer")]` | Update entry. 404 if missing or deleted. |
 | `DELETE` | `/api/v1/feed/{id}` | `[Authorize(Roles = "Organizer")]` | Soft-delete. 204. **Idempotent**: re-deleting an already-deleted entry is a no-op — no exception, no second broadcast. |
 | `GET` | `/api/v1/feed/stream?userId={guid}` | `[AllowAnonymous]` | SSE stream. `userId` is the targeting placeholder (see §10). |
@@ -489,6 +513,8 @@ private static Guid GetCurrentUserId(ClaimsPrincipal user)
 }
 ```
 
+Update/Delete actions defensively call `GetCurrentUserId(User)` and discard the result — `[Authorize(Roles="Organizer")]` already gates the role, but the discard provides a belt-and-suspenders assertion that the JWT carries a valid `sub` claim. If audit logging arrives, this userId can be passed through to the service.
+
 Roles use the standard ASP.NET Core `Roles = "Organizer"` mechanism; the JWT carries a `role` claim with the `UserRole` enum value.
 
 ### Stream endpoint (intentionally anonymous in v1)
@@ -500,6 +526,7 @@ Until that middleware lands, the stream accepts an opaque `?userId={guid}` query
 **Limitations of the current model (acknowledged):**
 
 - Anyone who knows a user id can subscribe to their personalized feed.
+- No connection-count throttling on the stream — DoS surface for an anonymous attacker opening many simultaneous SSE connections (security audit flagged as MAJOR; deferred to v2 with rate-limit middleware).
 - A future plan will add `SseQueryStringTokenMiddleware` (per CODE.md) — extracts `?access_token=` only on the stream route, rewrites the `Authorization` header before JWT middleware runs, rejects the query token on every other route.
 
 ---
@@ -510,28 +537,57 @@ Until that middleware lands, the stream accepts an opaque `?userId={guid}` query
 
 ```csharp
 services.AddDbContext<FeedDbContext>(...);
-services.AddScoped(typeof(IRepository<>), typeof(FeedRepository<>));
+
+// Closed-generic per entity (NOT open-generic) — see § 7 for the why.
+services.AddScoped<IRepository<FeedEntry>,        FeedRepository<FeedEntry>>();
+services.AddScoped<IRepository<FeedEntryArtist>,  FeedRepository<FeedEntryArtist>>();
+services.AddScoped<IRepository<FeedEntryGenre>,   FeedRepository<FeedEntryGenre>>();
+
 services.AddScoped<IFeedService, FeedService>();
 services.AddSingleton<IFeedBroadcaster, FeedBroadcaster>();
 services.TryAddScoped<IUserPrefsProvider, EmptyUserPrefsProvider>();
-// + reflection scan that picks up Publish/Update validators
+
+RegisterValidators(services);  // reflection scan, same pattern as PlansModule
 ```
 
-`Program.cs` calls it after `AddPlansModule`. The development-only DB migration block was extended to run `FeedDbContext.MigrateAsync()` alongside `PlansDbContext`.
+`Program.cs` calls it after `AddPlansModule` and `AddVectorDbModule`. The development-only DB migration block runs `MigrateAsync()` for `PlansDbContext`, `VectorDbContext`, and `FeedDbContext` in that order on app startup.
 
-`TryAddScoped<IUserPrefsProvider, EmptyUserPrefsProvider>()` is intentional: when the Plans dev wires the real preferences provider (reading from `plans.UserPreferences`), their registration takes precedence because `TryAdd` only registers if no impl exists yet. Until then, every user looks like "empty prefs" → only `IsGeneral` entries reach them.
+`TryAddScoped<IUserPrefsProvider, EmptyUserPrefsProvider>()` is intentional: when the Plans dev wires the real preferences provider (reading from `plans.UserPreferences`), their registration takes precedence as long as `AddPlansModule` runs before `AddLiveFeedModule` in `Program.cs` (currently the case). Until then, every user looks like "empty prefs" → only `IsGeneral` entries reach them.
 
 ---
 
-## 12. Configuration
+## 12. Configuration + local dev setup
 
 The only required key (beyond Plans's existing keys) is the standard:
 
 ```
-ConnectionStrings:Postgres = Host=...;Database=electric_ai;Username=postgres;Password=postgres
+ConnectionStrings:Postgres = Host=localhost;Port=5432;Database=electric_ai;Username=postgres;Password=postgres
 ```
 
 There are no LiveFeed-specific knobs in `appsettings.json` for v1. The channel capacity (100), heartbeat interval (25 s), and replay cap (10 entries) are hard-coded constants — appropriate for hackathon-scale. If they ever need to vary by environment, promote to `appsettings.json` keys.
+
+### Postgres requirement
+
+The `VectorDbContext` migration runs `CREATE EXTENSION vector` on startup. If the local Postgres lacks pgvector, app boot fails with `0A000: extension "vector" is not available`. Two options on a developer workstation:
+
+1. **Run Postgres in Docker with pgvector pre-installed** (recommended):
+
+   ```powershell
+   docker run -d --name electric-ai-dev `
+     -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin `
+     -e POSTGRES_DB=electric_ai `
+     -p 5433:5432 `
+     -v electric-ai-data:/var/lib/postgresql/data `
+     pgvector/pgvector:pg16
+
+   dotnet user-secrets set "ConnectionStrings:Postgres" `
+     "Host=localhost;Port=5433;Database=electric_ai;Username=postgres;Password=admin" `
+     --project src/Reshape.ElectricAi.Presentation
+   ```
+
+   (Port 5433 to avoid colliding with a native Postgres service on 5432.)
+
+2. **Install pgvector on the native Postgres**. Build from source via `nmake /F Makefile.win` against the local Postgres install, or use the Windows pre-built binaries from [pgvector releases](https://github.com/pgvector/pgvector/releases).
 
 ---
 
@@ -539,7 +595,7 @@ There are no LiveFeed-specific knobs in `appsettings.json` for v1. The channel c
 
 `tests/Reshape.ElectricAi.LiveFeed.Tests` mirrors `Plans.Tests` in structure and package versions.
 
-### Unit tests (no Docker required) — currently 16 passing
+### Unit tests (no Docker required) — 16 passing
 
 | File | Coverage |
 |---|---|
@@ -549,7 +605,7 @@ There are no LiveFeed-specific knobs in `appsettings.json` for v1. The channel c
 
 A small `RecordingScopeFactory` test fixture stubs `IFeedService` without touching EF, so these tests run in milliseconds.
 
-### Integration tests (Docker required, written but not yet executed) — 23 cases
+### Integration tests (Docker required) — 22 passing
 
 `FeedApiFactory : WebApplicationFactory<Program>` boots the real `Program.cs` against a Testcontainers PostgreSQL container (`pgvector/pgvector:pg16`), overrides the connection string + JWT signing key, and exposes:
 
@@ -560,7 +616,7 @@ A small `RecordingScopeFactory` test fixture stubs `IFeedService` without touchi
 
 | File | What's covered |
 |---|---|
-| `FeedCrudTests` (9) | Auth gate (401), role gate (403), happy publish, ordering, soft delete removal, 404 on missing entry, validation failure code. |
+| `FeedCrudTests` (8) | Auth gate (401), role gate (403), happy publish, ordering, soft delete removal, 404 on missing entry, validation failure code. |
 | `FeedSseTests` (10) | Matched delivery, unmatched silence, 25 s heartbeat, `Last-Event-ID` replay (happy + malformed), multi-subscriber isolation, heartbeat-vs-event interleave correctness, disconnect cleanup, response header compliance, anonymous-stream behavior. |
 | `FeedServiceBroadcastOrderingTests` (2) | Broadcast happens **after** `SaveChangesAsync`. Idempotent re-delete does not broadcast. |
 | `FeedRepositorySpecificationTests` (2) | `RecentFeedEntriesSpec` orders + excludes deleted. `FeedEntryByIdSpec` includes target collections. |
@@ -581,8 +637,22 @@ Where to plug in common future changes, without re-reading the whole codebase:
   3. Extend `FeedTargeting.EntryMatchesUserPrefs` with a third clause.
   4. Update validators + add a unit test row.
   5. Update both mapping methods (`ToNewEntity`, `ApplyUpdateTo`).
+  6. Add a new closed-generic IRepository registration in `LiveFeedModule` if the new collection becomes a separate entity.
 
 - **Secure the stream.** Add `Presentation/Middleware/SseQueryStringTokenMiddleware.cs` per CODE.md `## Auth` line 184. Remove `[AllowAnonymous]` from `StreamFeedToCurrentUserAsync`. Delete the `?userId=` query parameter — `GetCurrentUserId(User)` reads the claim. Add an integration test that the middleware rejects `?access_token=` on every route other than `/api/v1/feed/stream`.
+
+- **Surface XML doc comments in Swagger / Scalar.** Add one line in Program.cs's existing `AddSwaggerGen` call:
+
+  ```csharp
+  builder.Services.AddSwaggerGen(swagger =>
+  {
+      var xmlPath = Path.Combine(AppContext.BaseDirectory,
+          $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml");
+      if (File.Exists(xmlPath)) swagger.IncludeXmlComments(xmlPath);
+  });
+  ```
+
+  The XML file is already generated (`Presentation.csproj` has `<GenerateDocumentationFile>true</GenerateDocumentationFile>`). One opt-in line and Scalar UI renders the descriptions.
 
 - **Horizontal scale.** The `FeedBroadcaster.ConcurrentDictionary<...>` is in-process. For multi-instance deployment, swap to a fan-out backplane (Redis pub/sub, SignalR backplane, or NATS). Service interfaces (`IFeedBroadcaster`) stay; only the broadcaster impl changes. `LiveFeedModule` picks the impl based on configuration.
 
@@ -595,12 +665,29 @@ Where to plug in common future changes, without re-reading the whole codebase:
 - **In-memory channel state.** Restart = all subscribers reconnect from scratch (their EventSource clients auto-retry). Single-instance only — see horizontal scale note above.
 - **No `feed_deliveries` log.** Replay relies on the client-supplied `Last-Event-ID` cursor. If the cursor is older than the entries currently in DB (e.g., a client offline for a year), they get the most recent batch, not strict "everything since X". For v1 this is acceptable: feed entries are inherently short-lived.
 - **SSE stream is `[AllowAnonymous]`.** `?userId=` is trivially spoofable. Documented above; future plan adds the query-string token middleware.
+- **No rate limiting on the stream.** A single anonymous attacker can open many SSE connections. Security audit flagged as MAJOR; deferred to v2 with ASP.NET Core rate-limiting middleware per-IP.
 - **Artist match is case-sensitive.** Documented + unit-tested. If organizers report misses, normalize at write time (lowercase + trim) — additive change.
-- **No rate limiting.** A single organizer could in theory flood subscribers. Acceptable for the hackathon demo; tighten when needed.
+- **Synchronous fan-out on the publish request thread.** At 1000+ subscribers, every publish adds noticeable latency. Future: post the fan-out to a background `ChannelWriter<>` consumed by an `IHostedService`.
 
 ---
 
-## 16. Quick reference — running the feature
+## 16. Recent fixes worth knowing about
+
+These five issues were found and fixed during the LiveFeed slice's verification cycle. Documented here so future devs (and you in two months) don't re-hit them.
+
+1. **Open-generic `IRepository<>` shadowing.** Plans registers `IRepository<>` open-generic; the original LiveFeed module did the same and silently replaced Plans's registration (last-wins). Plans's `AuthService` then resolved `FeedRepository<User>` and failed at `FeedDbContext.Set<User>()`. Fixed by closing the generic per-entity in `LiveFeedModule` for `FeedEntry`, `FeedEntryArtist`, `FeedEntryGenre`. CODE.md `## Persistence layer` now documents the rule.
+
+2. **`CreatedAtAction(nameof(...Async))` route resolution failure.** MVC strips the `Async` suffix from action names when building routes; `nameof()` returns the full name, so the lookup misses every time. Replaced with `Created($"/api/v1/feed/{dto.Id}", dto)` which builds the Location URL directly.
+
+3. **`OperationCanceledException` escape from SSE writer.** Client disconnect cancels the request → `await foreach` over the channel throws OCE → escapes to `ExceptionHandlerMiddleware` → clears response + writes JSON envelope, replacing the `text/event-stream` content type. Fixed by wrapping the loop in `try { ... } catch (OperationCanceledException) { } catch (ObjectDisposedException) { } catch (IOException) { }`. Same trio also wraps the `await heartbeatTask` in `finally`.
+
+4. **Test JSON enum deserialization.** Server emits camelCase enum strings via the global `JsonStringEnumConverter`; tests using bare `ReadFromJsonAsync<FeedEntryDto>()` fail to deserialize because default options expect integer enums. Added `TestJson.Options` (a shared `JsonSerializerOptions` with `JsonStringEnumConverter`) to test fixtures and pass it to every `ReadFromJsonAsync` call.
+
+5. **Partial index missing `DESC` modifier.** The composite partial index `(DeletedUtc, PublishedUtc) WHERE DeletedUtc IS NULL` originally indexed `PublishedUtc` ASC, which Postgres can scan backward but loses some optimizations. Fixed via `.IsDescending(false, true)` in the EF configuration; migration regenerated to produce `descending: new[] { false, true }` in the DDL.
+
+---
+
+## 17. Quick reference — running the feature
 
 Once Docker Desktop is installed:
 
@@ -610,13 +697,12 @@ dotnet build
 dotnet test tests/Reshape.ElectricAi.LiveFeed.Tests
 dotnet test tests/Reshape.ElectricAi.Plans.Tests   # regression check
 
-# 2. Apply migration to local Postgres
-dotnet ef database update \
-  -p src/Reshape.ElectricAi.LiveFeed \
-  -s src/Reshape.ElectricAi.Presentation \
-  -- --context FeedDbContext
+# 2. Start a local Postgres with pgvector (or apply migrations to a native install — see §12)
+docker run -d --name electric-ai-dev -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=admin `
+  -e POSTGRES_DB=electric_ai -p 5433:5432 -v electric-ai-data:/var/lib/postgresql/data `
+  pgvector/pgvector:pg16
 
-# 3. Run the API
+# 3. Run the API (Development env auto-migrates all four contexts)
 dotnet run --project src/Reshape.ElectricAi.Presentation
 # default port 5217, Scalar UI at http://localhost:5217/scalar/v1
 ```

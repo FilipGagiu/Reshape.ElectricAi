@@ -9,6 +9,15 @@
     <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <!-- Emit XML doc file so Swashbuckle can surface ///-comments in /swagger/v1/swagger.json
+         + Scalar UI. SwaggerGen does NOT include the XML automatically — opt-in is one line
+         where the gen is configured (`swagger.IncludeXmlComments(xmlPath);`). Generating the
+         file unconditionally costs nothing and lets the controller XML docs ship now. -->
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <!-- CS1591 is already permitted-as-warning above, but with GenerateDocumentationFile on
+         every undocumented public member emits one. Silence emission for Presentation host
+         (DTOs/services in other libs document themselves at their own pace). -->
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
