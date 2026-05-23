@@ -6,7 +6,6 @@ using Microsoft.IdentityModel.Tokens;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
-using Reshape.ElectricAi.Plans.Services;
 using Reshape.ElectricAi.Presentation.Filters;
 using Reshape.ElectricAi.Presentation.Middleware;
 using Scalar.AspNetCore;
@@ -38,47 +37,67 @@ builder.Services.Configure<ApiBehaviorOptions>(o =>
                 kvp => kvp.Key,
                 kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
 
-        return new BadRequestObjectResult(new
-        {
-            error = new
-            {
-                code = "validation-failed",
-                message = "One or more validation errors occurred.",
-                details
-            }
-        });
+        return new BadRequestObjectResult(
+            ErrorEnvelope.WithDetails("validation-failed", "One or more validation errors occurred.", details));
     };
 });
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var authSection = builder.Configuration.GetSection(AuthOptions.SectionName);
-var authOptions = new AuthOptions
-{
-    Issuer = authSection["Issuer"] ?? "reshape-electric-ai",
-    Audience = authSection["Audience"] ?? "reshape-electric-ai-api",
-    JwtSigningKey = authSection["JwtSigningKey"] ?? string.Empty
-};
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
 
-if (string.IsNullOrWhiteSpace(authOptions.JwtSigningKey))
-{
-    throw new InvalidOperationException("Auth:JwtSigningKey is required (user-secrets in dev, env var in prod).");
-}
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
+builder.Services
+    .AddOptions<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme)
+    .Configure<AuthOptions>((jwt, auth) =>
     {
-        options.TokenValidationParameters = new TokenValidationParameters
+        jwt.MapInboundClaims = false;
+        jwt.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = authOptions.Issuer,
-            ValidAudience = authOptions.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(TokenService.SigningKeyBytes(authOptions.JwtSigningKey)),
-            ClockSkew = TimeSpan.FromSeconds(30)
+            ValidIssuer = auth.Issuer,
+            ValidAudience = auth.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(JwtSigningKey.Decode(auth.JwtSigningKey)),
+            ClockSkew = TimeSpan.FromSeconds(30),
+            ValidAlgorithms = [SecurityAlgorithms.HmacSha256]
+        };
+        jwt.Events = new JwtBearerEvents
+        {
+            OnChallenge = async context =>
+            {
+                context.HandleResponse();
+                if (context.Response.HasStarted)
+                {
+                    return;
+                }
+                context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                context.Response.ContentType = "application/json; charset=utf-8";
+                var code = context.AuthenticateFailure switch
+                {
+                    SecurityTokenExpiredException => "token-expired",
+                    SecurityTokenInvalidIssuerException => "invalid-token",
+                    SecurityTokenInvalidAudienceException => "invalid-token",
+                    SecurityTokenInvalidSignatureException => "invalid-token",
+                    null => "missing-token",
+                    _ => "invalid-token"
+                };
+                await context.Response.WriteAsJsonAsync(ErrorEnvelope.Simple(code, "Authentication is required."));
+            },
+            OnForbidden = async context =>
+            {
+                if (context.Response.HasStarted)
+                {
+                    return;
+                }
+                context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                context.Response.ContentType = "application/json; charset=utf-8";
+                await context.Response.WriteAsJsonAsync(ErrorEnvelope.Simple("forbidden", "Insufficient permissions."));
+            }
         };
     });
 
@@ -109,7 +128,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
-app.UseHttpsRedirection();
+
+if (!app.Environment.IsDevelopment() && !app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
+
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

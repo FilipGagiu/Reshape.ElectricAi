@@ -30,8 +30,9 @@ public static class PlansModule
 
         services.AddScoped(typeof(IRepository<>), typeof(PlansRepository<>));
 
-        services.AddScoped<IPasswordHasher, PasswordHasher>();
+        services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IAuthService, AuthService>();
 
         RegisterValidators(services);
@@ -76,10 +77,17 @@ public static class PlansModule
             throw new InvalidOperationException("Auth:JwtSigningKey is required (user-secrets in dev, env var in prod).");
         }
 
-        var keyBytes = TokenService.SigningKeyBytes(options.JwtSigningKey);
-        if (keyBytes.Length < 32)
+        if (JwtSigningKey.LooksLikeBase64ButTooShort(options.JwtSigningKey))
         {
-            throw new InvalidOperationException("Auth:JwtSigningKey must be at least 32 bytes (256 bits).");
+            throw new InvalidOperationException(
+                "Auth:JwtSigningKey looks like base64 but decodes to fewer than 32 bytes. " +
+                "Supply a longer base64 key (e.g. `openssl rand -base64 48`) or a raw UTF-8 passphrase >= 32 chars.");
+        }
+
+        var keyBytes = JwtSigningKey.Decode(options.JwtSigningKey);
+        if (keyBytes.Length < JwtSigningKey.MinimumBytes)
+        {
+            throw new InvalidOperationException($"Auth:JwtSigningKey must be at least {JwtSigningKey.MinimumBytes} bytes (256 bits).");
         }
 
         if (options.AccessTokenMinutes < 1)

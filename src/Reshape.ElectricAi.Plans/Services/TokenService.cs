@@ -26,12 +26,12 @@ public sealed class TokenService(IOptions<AuthOptions> options) : ITokenService
         {
             new Claim(JwtRegisteredClaimNames.Sub, subject.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, subject.Email),
-            new Claim(ClaimTypes.NameIdentifier, subject.Id.ToString()),
             new Claim(ClaimTypes.Role, subject.Role.ToString()),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Iat, new DateTimeOffset(nowUtc, TimeSpan.Zero).ToUnixTimeSeconds().ToString(CultureInfo.InvariantCulture), ClaimValueTypes.Integer64)
         };
 
-        var key = new SymmetricSecurityKey(SigningKeyBytes(_options.JwtSigningKey));
+        var key = new SymmetricSecurityKey(JwtSigningKey.Decode(_options.JwtSigningKey));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var jwt = new JwtSecurityToken(
@@ -61,17 +61,6 @@ public sealed class TokenService(IOptions<AuthOptions> options) : ITokenService
         var bytes = Encoding.UTF8.GetBytes(plainToken);
         var hash = SHA256.HashData(bytes);
         return Convert.ToBase64String(hash);
-    }
-
-    public static byte[] SigningKeyBytes(string key)
-    {
-        var buffer = new byte[key.Length];
-        if (Convert.TryFromBase64String(key, buffer, out var written) && written >= 32)
-        {
-            return buffer[..written];
-        }
-
-        return Encoding.UTF8.GetBytes(key);
     }
 
     private static string Base64UrlEncode(byte[] bytes)

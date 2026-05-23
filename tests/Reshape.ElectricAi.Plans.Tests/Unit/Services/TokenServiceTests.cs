@@ -43,7 +43,7 @@ public sealed class TokenServiceTests
             ValidateIssuerSigningKey = true,
             ValidIssuer = _options.Issuer,
             ValidAudience = _options.Audience,
-            IssuerSigningKey = new SymmetricSecurityKey(TokenService.SigningKeyBytes(SigningKey)),
+            IssuerSigningKey = new SymmetricSecurityKey(JwtSigningKey.Decode(SigningKey)),
             ClockSkew = TimeSpan.FromSeconds(5)
         };
 

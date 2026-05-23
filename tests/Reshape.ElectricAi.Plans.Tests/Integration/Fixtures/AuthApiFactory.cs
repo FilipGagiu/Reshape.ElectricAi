@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace Reshape.ElectricAi.Plans.Tests.Integration.Fixtures;
 
@@ -10,21 +10,19 @@ public sealed class AuthApiFactory(PostgresFixture postgres) : WebApplicationFac
 
     private readonly PostgresFixture _postgres = postgres;
 
+    protected override IHost CreateHost(IHostBuilder builder)
+    {
+        Environment.SetEnvironmentVariable("ConnectionStrings__Postgres", _postgres.ConnectionString);
+        Environment.SetEnvironmentVariable("Auth__JwtSigningKey", TestSigningKey);
+        Environment.SetEnvironmentVariable("Auth__Issuer", "reshape-electric-ai");
+        Environment.SetEnvironmentVariable("Auth__Audience", "reshape-electric-ai-api");
+        Environment.SetEnvironmentVariable("Auth__AccessTokenMinutes", "15");
+        Environment.SetEnvironmentVariable("Auth__RefreshTokenDays", "7");
+        return base.CreateHost(builder);
+    }
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Development");
-
-        builder.ConfigureAppConfiguration((_, config) =>
-        {
-            config.AddInMemoryCollection(new Dictionary<string, string?>
-            {
-                ["ConnectionStrings:Postgres"] = _postgres.ConnectionString,
-                ["Auth:JwtSigningKey"] = TestSigningKey,
-                ["Auth:Issuer"] = "reshape-electric-ai",
-                ["Auth:Audience"] = "reshape-electric-ai-api",
-                ["Auth:AccessTokenMinutes"] = "15",
-                ["Auth:RefreshTokenDays"] = "7"
-            });
-        });
     }
 }
