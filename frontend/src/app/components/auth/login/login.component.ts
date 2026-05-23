@@ -66,11 +66,11 @@ export class LoginComponent {
             return;
         }
 
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl(result.onboardingCompleted ? '/' : '/onboarding');
     }
 
     protected bypass(): void {
-        this.authService.bypass();
-        this.router.navigateByUrl('/');
+        const session = this.authService.bypass();
+        this.router.navigateByUrl(session.onboardingCompleted ? '/' : '/onboarding');
     }
 }

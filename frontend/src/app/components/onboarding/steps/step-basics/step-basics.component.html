@@ -1,0 +1,42 @@
+<form [formGroup]="form" class="flex flex-col gap-6" novalidate>
+    <div class="flex flex-col gap-2">
+        <label
+            for="onboarding-name"
+            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
+        >
+            {{ 'onboarding.field.name' | transloco }}
+        </label>
+        <input
+            pInputText
+            id="onboarding-name"
+            type="text"
+            autocomplete="given-name"
+            formControlName="name"
+            [placeholder]="'onboarding.field.namePlaceholder' | transloco"
+            class="w-full"
+        />
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label
+            for="onboarding-age"
+            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
+        >
+            {{ 'onboarding.field.age' | transloco }}
+        </label>
+        <p-inputNumber
+            inputId="onboarding-age"
+            formControlName="age"
+            [min]="13"
+            [max]="120"
+            [useGrouping]="false"
+            [showButtons]="true"
+            buttonLayout="horizontal"
+            spinnerMode="horizontal"
+            decrementButtonClass="p-button-secondary"
+            incrementButtonClass="p-button-secondary"
+            styleClass="w-full"
+            [inputStyleClass]="'w-full text-center'"
+        />
+    </div>
+</form>

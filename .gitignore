@@ -230,4 +230,4 @@ secrets.json
 # Frontend
 
 frontend/.angular/cache/
-frontend/dist/*
+frontend/dist/

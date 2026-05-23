@@ -1,0 +1,12 @@
+<div class="grid grid-cols-2 gap-3">
+    @for (option of options; track option.id) {
+        <app-selectable-card
+            [labelKey]="option.labelKey"
+            [icon]="option.icon ?? null"
+            [layout]="'grid'"
+            [multi]="true"
+            [selected]="profile().allergyIds.includes(option.id)"
+            (toggle)="toggle(option.id)"
+        />
+    }
+</div>

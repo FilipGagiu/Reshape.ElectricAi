@@ -1,0 +1,84 @@
+@if (isGrid()) {
+    <button
+        type="button"
+        [disabled]="disabled()"
+        (click)="handleClick()"
+        [class.border-primary-500]="selected()"
+        [class.bg-primary-50]="selected()"
+        [class.dark:bg-primary-950]="selected()"
+        [class.shadow-md]="selected()"
+        [class.border-surface-200]="!selected()"
+        [class.dark:border-surface-700]="!selected()"
+        [class.opacity-50]="disabled()"
+        class="bg-surface-0 dark:bg-surface-900 hover:border-primary-300 dark:hover:border-primary-400 relative flex aspect-square w-full flex-col items-center justify-center gap-2 border-2 p-3 transition-all active:scale-[0.97]"
+        [attr.aria-pressed]="selected()"
+    >
+        @if (selected()) {
+            <span class="bg-primary-500 absolute top-2 right-2 flex h-6 w-6 items-center justify-center">
+                <i class="pi pi-check text-xs text-white"></i>
+            </span>
+        }
+
+        @if (icon()) {
+            <span class="flex h-14 w-14 items-center justify-center text-4xl">
+                @if (isPrimeIcon()) {
+                    <i class="pi {{ icon() }} text-primary-500 text-4xl"></i>
+                } @else {
+                    {{ icon() }}
+                }
+            </span>
+        }
+
+        <span class="text-surface-900 dark:text-surface-0 text-center text-sm font-semibold leading-tight">
+            {{ labelKey() | transloco }}
+        </span>
+    </button>
+} @else {
+    <button
+        type="button"
+        [disabled]="disabled()"
+        (click)="handleClick()"
+        [class.border-primary-500]="selected()"
+        [class.bg-primary-50]="selected()"
+        [class.dark:bg-primary-950]="selected()"
+        [class.border-surface-200]="!selected()"
+        [class.dark:border-surface-700]="!selected()"
+        [class.opacity-50]="disabled()"
+        class="bg-surface-0 dark:bg-surface-900 hover:border-primary-300 dark:hover:border-primary-400 flex min-h-20 w-full items-center gap-4 border-2 p-4 text-left transition-colors active:scale-[0.99]"
+        [attr.aria-pressed]="selected()"
+    >
+        @if (icon()) {
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center text-2xl">
+                @if (isPrimeIcon()) {
+                    <i class="pi {{ icon() }} text-primary-500 text-2xl"></i>
+                } @else {
+                    {{ icon() }}
+                }
+            </span>
+        }
+
+        <div class="flex flex-1 flex-col gap-0.5">
+            <span class="text-surface-900 dark:text-surface-0 text-base font-semibold">
+                {{ labelKey() | transloco }}
+            </span>
+            @if (sublabelKey(); as sub) {
+                <span class="text-surface-500 dark:text-surface-400 text-sm">
+                    {{ sub | transloco }}
+                </span>
+            }
+        </div>
+
+        <span
+            [class.border-primary-500]="selected()"
+            [class.bg-primary-500]="selected()"
+            [class.border-surface-300]="!selected()"
+            [class.dark:border-surface-600]="!selected()"
+            [class.rounded-full]="!multi()"
+            class="flex h-6 w-6 shrink-0 items-center justify-center border-2 transition-colors"
+        >
+            @if (selected()) {
+                <i class="pi pi-check text-xs text-white"></i>
+            }
+        </span>
+    </button>
+}

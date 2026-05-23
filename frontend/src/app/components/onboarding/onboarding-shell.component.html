@@ -1,0 +1,107 @@
+<section
+    [class.fixed]="!embedded()"
+    [class.inset-0]="!embedded()"
+    [class.bg-surface-50]="!embedded()"
+    [class.dark:bg-surface-950]="!embedded()"
+    class="flex w-full flex-col"
+    [style.height]="embedded() ? 'auto' : '100svh'"
+>
+    <div
+        class="flex items-center justify-between gap-3 px-4 pb-3"
+        [style.padding-top]="embedded() ? '0.75rem' : 'calc(env(safe-area-inset-top, 0px) + 0.75rem)'"
+    >
+        <button
+            type="button"
+            (click)="back()"
+            [disabled]="isFirstStep()"
+            [class.opacity-0]="isFirstStep()"
+            [class.pointer-events-none]="isFirstStep()"
+            class="text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800 flex h-9 w-9 items-center justify-center transition-colors"
+            aria-label="Back"
+        >
+            <i class="pi pi-arrow-left text-base"></i>
+        </button>
+
+        <app-wizard-progress
+            class="flex-1"
+            [steps]="progressSteps()"
+            (select)="jumpTo($event)"
+        />
+
+        <div class="flex items-center gap-1.5">
+            <button
+                type="button"
+                (click)="resetOnboarding()"
+                class="text-surface-500 dark:text-surface-400 hover:bg-surface-100 dark:hover:bg-surface-800 flex h-9 w-9 items-center justify-center transition-colors"
+                aria-label="Reset onboarding"
+            >
+                <i class="pi pi-refresh text-sm"></i>
+            </button>
+            @if (canSkip()) {
+                <button
+                    type="button"
+                    (click)="skip()"
+                    class="text-surface-700 dark:text-surface-200 border-surface-300 dark:border-surface-600 hover:bg-surface-100 dark:hover:bg-surface-800 border px-3 py-1.5 text-xs font-semibold uppercase tracking-wider transition-colors"
+                >
+                    {{ 'onboarding.action.skip' | transloco }}
+                </button>
+            }
+        </div>
+    </div>
+
+    <header class="flex flex-col gap-2 px-5 pb-5 pt-2">
+        <h1 class="text-surface-900 dark:text-surface-0 text-2xl font-bold tracking-tight">
+            {{ stepTitleKey() | transloco }}
+        </h1>
+        <p class="text-surface-500 dark:text-surface-400 text-sm leading-relaxed">
+            {{ stepSubtitleKey() | transloco }}
+        </p>
+    </header>
+
+    <div
+        class="flex flex-1 flex-col gap-3 px-4 pb-6"
+        [class.overflow-y-auto]="!embedded()"
+    >
+        @switch (currentStep()) {
+            @case (StepId.Basics) {
+                <app-step-basics />
+            }
+            @case (StepId.Ticket) {
+                <app-step-ticket />
+            }
+            @case (StepId.Accommodation) {
+                <app-step-accommodation />
+            }
+            @case (StepId.Transport) {
+                <app-step-transport />
+            }
+            @case (StepId.Artists) {
+                <app-step-artists />
+            }
+            @case (StepId.Music) {
+                <app-step-music />
+            }
+            @case (StepId.Cuisine) {
+                <app-step-cuisine />
+            }
+            @case (StepId.Allergies) {
+                <app-step-allergies />
+            }
+            @case (StepId.Activities) {
+                <app-step-activities />
+            }
+        }
+    </div>
+
+    <div
+        class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 border-t"
+        [style.padding-bottom]="embedded() ? '0' : 'max(env(safe-area-inset-bottom, 0px), 0.25rem)'"
+    >
+        <app-wizard-footer
+            [isLastStep]="isLastStep()"
+            [canProceed]="canProceed()"
+            [selectionCount]="selectionCount()"
+            (proceed)="proceed()"
+        />
+    </div>
+</section>
