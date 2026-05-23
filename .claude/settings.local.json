@@ -18,7 +18,9 @@
       "Read(//usr/share/postgresql/17/extension/**)",
       "Read(//usr/share/postgresql/18/extension/**)",
       "Read(//usr/lib/postgresql/**)",
-      "Read(//usr/share/postgresql/**)"
+      "Read(//usr/share/postgresql/**)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)"
     ]
   }
 }
