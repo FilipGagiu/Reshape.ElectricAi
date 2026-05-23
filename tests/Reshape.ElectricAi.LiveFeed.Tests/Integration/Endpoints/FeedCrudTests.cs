@@ -31,7 +31,7 @@ public class FeedCrudTests(PostgresFixture postgres) : IAsyncLifetime
         var resp = await OrganizerClient().PostAsJsonAsync("/api/v1/feed",
             new PublishFeedEntryRequest("Rain", "Light shower 21:00", Category.Weather, true, [], []));
         resp.StatusCode.Should().Be(HttpStatusCode.Created);
-        var dto = await resp.Content.ReadFromJsonAsync<FeedEntryDto>();
+        var dto = await resp.Content.ReadFromJsonAsync<FeedEntryDto>(TestJson.Options);
         dto!.Title.Should().Be("Rain");
         dto.IsGeneral.Should().BeTrue();
     }
@@ -65,7 +65,7 @@ public class FeedCrudTests(PostgresFixture postgres) : IAsyncLifetime
 
         var resp = await UserClient().GetAsync("/api/v1/feed");
         resp.StatusCode.Should().Be(HttpStatusCode.OK);
-        var list = await resp.Content.ReadFromJsonAsync<List<FeedEntryDto>>();
+        var list = await resp.Content.ReadFromJsonAsync<List<FeedEntryDto>>(TestJson.Options);
         list!.Should().BeInDescendingOrder(e => e.PublishedUtc);
     }
 
@@ -80,12 +80,12 @@ public class FeedCrudTests(PostgresFixture postgres) : IAsyncLifetime
         var org = OrganizerClient();
         var publish = await org.PostAsJsonAsync("/api/v1/feed",
             new PublishFeedEntryRequest("Doomed", "b", Category.General, true, [], []));
-        var dto = await publish.Content.ReadFromJsonAsync<FeedEntryDto>();
+        var dto = await publish.Content.ReadFromJsonAsync<FeedEntryDto>(TestJson.Options);
 
         var del = await org.DeleteAsync($"/api/v1/feed/{dto!.Id}");
         del.StatusCode.Should().Be(HttpStatusCode.NoContent);
 
-        var list = await UserClient().GetFromJsonAsync<List<FeedEntryDto>>("/api/v1/feed");
+        var list = await UserClient().GetFromJsonAsync<List<FeedEntryDto>>("/api/v1/feed", TestJson.Options);
         list!.Any(e => e.Id == dto.Id).Should().BeFalse();
     }
 

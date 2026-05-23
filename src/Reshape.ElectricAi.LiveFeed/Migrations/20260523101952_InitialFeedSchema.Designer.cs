@@ -12,7 +12,7 @@ using Reshape.ElectricAi.LiveFeed.Persistence;
 namespace Reshape.ElectricAi.LiveFeed.Migrations
 {
     [DbContext(typeof(FeedDbContext))]
-    [Migration("20260523082020_InitialFeedSchema")]
+    [Migration("20260523101952_InitialFeedSchema")]
     partial class InitialFeedSchema
     {
         /// <inheritdoc />
@@ -68,6 +68,7 @@ namespace Reshape.ElectricAi.LiveFeed.Migrations
                         .IsDescending();
 
                     b.HasIndex("DeletedUtc", "PublishedUtc")
+                        .IsDescending(false, true)
                         .HasFilter("\"DeletedUtc\" IS NULL");
 
                     b.ToTable("feed_entries", "feed");

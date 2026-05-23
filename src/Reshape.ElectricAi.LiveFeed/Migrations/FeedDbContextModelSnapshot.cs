@@ -65,6 +65,7 @@ namespace Reshape.ElectricAi.LiveFeed.Migrations
                         .IsDescending();
 
                     b.HasIndex("DeletedUtc", "PublishedUtc")
+                        .IsDescending(false, true)
                         .HasFilter("\"DeletedUtc\" IS NULL");
 
                     b.ToTable("feed_entries", "feed");

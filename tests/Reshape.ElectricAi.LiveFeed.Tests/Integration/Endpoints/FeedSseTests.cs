@@ -33,14 +33,15 @@ public class FeedSseTests(PostgresFixture postgres) : IAsyncLifetime
             foreach (var kv in extraHeaders)
                 req.Headers.TryAddWithoutValidation(kv.Key, kv.Value);
         }
-        using var resp = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
-        resp.EnsureSuccessStatusCode();
 
-        await using var stream = await resp.Content.ReadAsStreamAsync(ct);
         var buffer = new byte[maxBytes];
         var read = 0;
         try
         {
+            using var resp = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead, ct);
+            resp.EnsureSuccessStatusCode();
+
+            await using var stream = await resp.Content.ReadAsStreamAsync(ct);
             while (read < maxBytes)
             {
                 var n = await stream.ReadAsync(buffer.AsMemory(read, maxBytes - read), ct);
@@ -48,7 +49,11 @@ public class FeedSseTests(PostgresFixture postgres) : IAsyncLifetime
                 read += n;
             }
         }
+        // Cancellation is the normal exit for an SSE consumer in these tests --
+        // the cts expires deliberately. HttpClient surfaces it as TaskCanceledException
+        // (subtype of OperationCanceledException). Swallow + return whatever was read.
         catch (OperationCanceledException) { }
+        catch (IOException) { /* server tore down mid-read on shutdown */ }
         return Encoding.UTF8.GetString(buffer, 0, read);
     }
 
@@ -104,7 +109,7 @@ public class FeedSseTests(PostgresFixture postgres) : IAsyncLifetime
         var user = Guid.NewGuid();
         var first = await OrganizerClient(organizer).PostAsJsonAsync("/api/v1/feed",
             new PublishFeedEntryRequest("First", "b", Category.General, true, [], []));
-        var firstDto = await first.Content.ReadFromJsonAsync<FeedEntryDto>();
+        var firstDto = await first.Content.ReadFromJsonAsync<FeedEntryDto>(TestJson.Options);
         await Task.Delay(50);
         await OrganizerClient(organizer).PostAsJsonAsync("/api/v1/feed",
             new PublishFeedEntryRequest("Second", "b", Category.General, true, [], []));

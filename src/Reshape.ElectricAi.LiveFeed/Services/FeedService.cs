@@ -59,7 +59,7 @@ internal sealed class FeedService(
 
     public async Task<FeedEntryDto?> GetEntryByIdAsync(Guid entryId, CancellationToken ct)
     {
-        var entry = await repository.FirstOrDefaultAsync(new FeedEntryByIdSpec(entryId), ct);
+        var entry = await repository.FirstOrDefaultAsync(new FeedEntryByIdSpec(entryId, asNoTracking: true), ct);
         if (entry is null || entry.DeletedUtc is not null) return null;
         return entry.ToDto();
     }

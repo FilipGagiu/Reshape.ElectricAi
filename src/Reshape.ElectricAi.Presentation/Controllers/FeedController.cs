@@ -43,7 +43,11 @@ public class FeedController(
     {
         var organizerId = GetCurrentUserId(User);
         var dto = await feed.PublishEntryAsync(organizerId, request.ToCommand(), cancellationToken);
-        return CreatedAtAction(nameof(ListRecentEntriesForCurrentUserAsync), new { }, dto);
+        // 201 + Location header per CODE.md ## Controllers. CreatedAtAction(nameof(...))
+        // would attempt route-name resolution which fails when MVC strips the Async
+        // suffix from the action name -- nameof() returns the full name and no route
+        // matches. Build the Location URL directly instead.
+        return Created($"/api/v1/feed/{dto.Id}", dto);
     }
 
     [HttpPut("{id:guid}")]
@@ -51,6 +55,10 @@ public class FeedController(
     public async Task<ActionResult<FeedEntryDto>> UpdateEntryByIdAsOrganizerAsync(
         [FromRoute] Guid id, [FromBody] UpdateFeedEntryRequest request, CancellationToken cancellationToken)
     {
+        // Defensive sub-claim assertion. [Authorize(Roles="Organizer")] gates the role,
+        // but GetCurrentUserId throws UnauthorizedException if `sub` is missing/malformed.
+        // Discard result -- service signature doesn't take organizerId today; if audit
+        // logging arrives the userId will be passed through.
         _ = GetCurrentUserId(User);
         var dto = await feed.UpdateEntryByIdAsync(id, request.ToCommand(), cancellationToken);
         return Ok(dto);
@@ -61,6 +69,7 @@ public class FeedController(
     public async Task<IActionResult> SoftDeleteEntryByIdAsOrganizerAsync(
         [FromRoute] Guid id, CancellationToken cancellationToken)
     {
+        // See UpdateEntryByIdAsOrganizerAsync above re. discarded sub-claim assertion.
         _ = GetCurrentUserId(User);
         await feed.SoftDeleteEntryByIdAsync(id, cancellationToken);
         return NoContent();
@@ -88,6 +97,13 @@ public class FeedController(
             await foreach (var env in broadcaster.SubscribeUserToStreamAsync(effectiveUserId, prefs, lastEventId, cancellationToken))
                 await WriteSseEventFrameAsync(env, writeLock, cancellationToken);
         }
+        // Client disconnect cancels the request -- normal SSE lifecycle, not an error.
+        // Without these catches the exception escapes to ExceptionHandlerMiddleware
+        // which clears the response and emits a JSON error envelope, replacing the
+        // text/event-stream content type the test (and any real client) expects.
+        catch (OperationCanceledException) { }
+        catch (ObjectDisposedException) { }
+        catch (IOException) { }
         finally
         {
             try { await heartbeatTask; }

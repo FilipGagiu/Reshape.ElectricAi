@@ -79,6 +79,7 @@ namespace Reshape.ElectricAi.LiveFeed.Migrations
                 schema: "feed",
                 table: "feed_entries",
                 columns: new[] { "DeletedUtc", "PublishedUtc" },
+                descending: new[] { false, true },
                 filter: "\"DeletedUtc\" IS NULL");
 
             migrationBuilder.CreateIndex(

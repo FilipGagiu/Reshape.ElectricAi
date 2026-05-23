@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Reshape.ElectricAi.Core.Persistence;
 using Reshape.ElectricAi.Core.Services;
 using Reshape.ElectricAi.LiveFeed.Broadcasting;
+using Reshape.ElectricAi.LiveFeed.Entities;
 using Reshape.ElectricAi.LiveFeed.Persistence;
 using Reshape.ElectricAi.LiveFeed.Services;
 
@@ -23,7 +24,14 @@ public static class LiveFeedModule
             opts.UseNpgsql(connectionString, n =>
                 n.MigrationsHistoryTable("__EFMigrationsHistory", "feed")));
 
-        services.AddScoped(typeof(IRepository<>), typeof(FeedRepository<>));
+        // Close the generic per-entity to avoid shadowing other libs' IRepository<> registrations
+        // (e.g. PlansModule registers open-generic IRepository<> -> PlansRepository<>).
+        // Open-generic registrations from multiple libs would replace each other -- last wins -- and
+        // resolving IRepository<User> would land in FeedRepository<User>, which fails on
+        // FeedDbContext.Set<User>(). Per-entity closed registrations don't collide.
+        services.AddScoped<IRepository<FeedEntry>, FeedRepository<FeedEntry>>();
+        services.AddScoped<IRepository<FeedEntryArtist>, FeedRepository<FeedEntryArtist>>();
+        services.AddScoped<IRepository<FeedEntryGenre>, FeedRepository<FeedEntryGenre>>();
 
         services.AddScoped<IFeedService, FeedService>();
         services.AddSingleton<IFeedBroadcaster, FeedBroadcaster>();
