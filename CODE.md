@@ -18,11 +18,11 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | LLM | OpenAI .NET SDK (`OpenAI` official package, 2.10.0) |
 | Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
 | Default chat model | `gpt-4o-mini` (overridable via `Chat:DefaultModel`) |
-| Password hashing | `BCrypt.Net-Next` `4.0.3` |
-| JWT | `Microsoft.AspNetCore.Authentication.JwtBearer` (`10.0.*`) + `System.IdentityModel.Tokens.Jwt` `8.5.0` + `Microsoft.IdentityModel.Tokens` `8.5.0` |
-| Validation | `FluentValidation` `11.11.0` + `FluentValidation.DependencyInjectionExtensions` `11.11.0` (NOT the deprecated `.AspNetCore` package) |
-| Logging | `Serilog.AspNetCore` `9.0.0` + `Serilog.Sinks.Console` `6.0.0` (+ `Seq` later if useful) |
-| OpenAPI | `Swashbuckle.AspNetCore` `7.2.0` + `Scalar.AspNetCore` `2.6.5` UI |
+| Password hashing | `BCrypt.Net-Next` `4.2.0` |
+| JWT | `Microsoft.AspNetCore.Authentication.JwtBearer` (`10.0.*`) + `System.IdentityModel.Tokens.Jwt` `8.18.0` + `Microsoft.IdentityModel.Tokens` `8.18.0` |
+| Validation | `FluentValidation` `12.1.1` only — v12 removed the MVC auto-validation package (`FluentValidation.AspNetCore` and `FluentValidation.DependencyInjectionExtensions.AddFluentValidationAutoValidation()` are gone). Use the hand-rolled `Presentation/Filters/FluentValidationFilter.cs` (`IAsyncActionFilter`) instead. `FluentValidation.DependencyInjectionExtensions` `12.1.1` is on Presentation only (for any future use); Plans registers its validators via a reflection scan in `PlansModule.RegisterValidators` to avoid adding the package there. |
+| Logging | `Serilog.AspNetCore` `10.0.0` + `Serilog.Sinks.Console` `6.1.1` (+ `Seq` later if useful) |
+| OpenAPI | `Swashbuckle.AspNetCore` `10.1.7` + `Scalar.AspNetCore` `2.14.14` UI |
 | Tokenizer | `Microsoft.ML.Tokenizers` `2.0.0` + `Microsoft.ML.Tokenizers.Data.Cl100kBase` `2.0.0` (cl100k_base data package required at runtime) |
 | Tests | `xUnit` + `FluentAssertions` + `Testcontainers.PostgreSql` (added when first test project is scaffolded) |
 | Solution file | `ElectricCastle.slnx` — XML solution format (new .NET 10 default from `dotnet new sln`, replaces classic `.sln`) |
@@ -120,6 +120,19 @@ Test projects additionally set `<IsPackable>false</IsPackable>`.
 - Migrations live in the lib that owns the context: `src/Reshape.ElectricAi.<Lib>/Migrations/`.
 - `Program.cs` calls `await db.Database.MigrateAsync(cancellationToken)` per context on startup **only when** `ASPNETCORE_ENVIRONMENT=Development`. Prod migrations are explicit (`dotnet ef database update`).
 
+## Persistence layer (Repository + Specification)
+
+- Generic abstractions live in `Reshape.ElectricAi.Core/Persistence/`:
+  - `IRepository<T>` — `GetByIdAsync` / `FirstOrDefaultAsync(spec)` / `ListAsync(spec)` / `CountAsync(spec)` / `AnyAsync(spec)` / `AddAsync` / `Update` / `Remove` / `SaveChangesAsync`. Generic over `T : class`.
+  - `ISpecification<T>` + `Specification<T>` base — encodes Where / Includes / OrderBy / Take/Skip / AsNoTracking / AsSplitQuery. Concrete specs derive from `Specification<T>` and use fluent protected methods (`Where`, `AddInclude`, `ApplyOrderBy`, `EnableNoTracking`, etc.) in their constructor. Core stays EF-free.
+- EF-aware impl lives in each feature lib that needs persistence:
+  - `EfRepository<TContext, T> : IRepository<T>` — generic over the lib's `DbContext`. Constructor: `(TContext context)`. Two type params so DI cannot register it directly via open generics.
+  - **Closing class per lib** (REQUIRED for DI): `public sealed class PlansRepository<T> : EfRepository<PlansDbContext, T>` — collapses to one type param so `services.AddScoped(typeof(IRepository<>), typeof(PlansRepository<>))` works. When LiveFeed/AiChat add EF persistence, each adds its own `XxxRepository<T>` and `AddScoped` line.
+  - `SpecificationEvaluator.Apply<T>(IQueryable<T>, ISpecification<T>)` — static, applies the spec to a queryable. Order: AsNoTracking → AsSplitQuery → Where → Includes → IncludeStrings → OrderBy/OrderByDescending → Skip → Take.
+- Specs live in `Plans/Persistence/Specifications/<Name>Spec.cs` (`UserByEmailSpec`, `ActiveRefreshTokenByHashSpec`, etc.). One spec per file, `sealed class`, name ends in `Spec`.
+- Atomic multi-row operations (e.g. refresh-token rotation) MUST bypass the generic repo. Use `DbContext.<DbSet>.Where(...).ExecuteUpdateAsync(...)` in a dedicated service (e.g. `Plans/Services/RefreshTokenStore.cs` behind `IRefreshTokenStore`) — keeps `IRepository<T>` clean of one-off methods.
+- **Today the EF base lives in `Reshape.ElectricAi.Plans`.** When a second lib needs it, promote `EfRepository<TContext, T>` + `SpecificationEvaluator` + `PlansRepository<T>`-style closing class to a new `Reshape.ElectricAi.Infrastructure` project (referenced by all feature libs). Do not reference Plans from another feature lib in the interim.
+
 ## DTOs vs entities
 
 - Entities (EF Core types) never cross the controller boundary.
@@ -158,13 +171,15 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 
 ## Auth
 
-- JWT (HS256). Signing key from `IConfiguration["Auth:JwtSigningKey"]`, **MUST be ≥ 32 bytes**. User-secrets in dev, environment variable in prod. **NEVER hardcode.**
+- JWT (HS256). Signing key from `IConfiguration["Auth:JwtSigningKey"]`, **MUST be ≥ 32 bytes**. User-secrets in dev, environment variable in prod. **NEVER hardcode.** Decoded via `Reshape.ElectricAi.Core.Configuration.JwtSigningKey.Decode(string)` (base64 first, UTF-8 fallback, ≥ 32-byte gate). `JwtSigningKey.LooksLikeBase64ButTooShort(string)` companion rejects strings that look like base64 but decode to fewer than 32 bytes (catches accidental short keys).
 - Access token lifetime: `Auth:AccessTokenMinutes` (default 15).
-- Refresh token lifetime: `Auth:RefreshTokenDays` (default 7), stored as **SHA-256 hash** in `plans."RefreshTokens"`. Rotated on refresh, old token revoked.
-- Password hashing: `BCrypt.HashPassword(password + salt, workFactor: 12)`. Per-user salt is 16 random bytes from `RandomNumberGenerator.GetBytes(16)`, stored alongside the hash.
+- Refresh token lifetime: `Auth:RefreshTokenDays` (default 7), stored as **SHA-256 hash** in `plans."RefreshTokens"`. Rotated on refresh, old token revoked. Rotation is atomic via `ExecuteUpdateAsync(Where(hash=X, RevokedUtc==null, ExpiresUtc>now)).SetProperty(RevokedUtc=now, ReplacedByHash=new)` in `Plans/Services/RefreshTokenStore.cs` — 0 rows updated → `UnauthorizedException("invalid-refresh-token")`. Postgres row-level lock serializes concurrent callers.
+- Password hashing: `BCrypt.HashPassword(password + base64(salt), workFactor: 12)`. Per-user salt is 16 random bytes from `RandomNumberGenerator.GetBytes(16)`, stored as `byte[]` alongside the hash.
 - Password policy: ≥ 10 characters, ≥ 1 digit, ≥ 1 symbol (enforced by FluentValidation).
-- Login MUST always run BCrypt verify even when the user is not found (constant-time, prevents user enumeration).
-- JWT claims: `sub` (UserId), `email`, `role`, `iat`, `exp`, `iss=reshape-electric-ai`, `aud=reshape-electric-ai-api`.
+- Login MUST always run BCrypt verify even when the user is not found (constant-time, prevents user enumeration). `IPasswordHasher.VerifyDummy()` is part of the interface contract; runs BCrypt against a precomputed dummy hash. `PasswordHasher` is registered as **Singleton** (no mutable state, no DI deps) so the dummy hash is computed once per process.
+- JWT claims: `sub` (UserId), `email`, `role`, `jti` (random Guid per token, RFC 7519 §4.1.7 — required for uniqueness when tokens issue in the same epoch second), `iat`, `exp`, `iss=reshape-electric-ai`, `aud=reshape-electric-ai-api`.
+- `TokenValidationParameters` MUST pin `ValidAlgorithms = [SecurityAlgorithms.HmacSha256]` (defense in depth — prevents algorithm-confusion attacks if the signing key type ever changes). `MapInboundClaims = false` to drop legacy SAML auto-mapping (`sub`→`ClaimTypes.NameIdentifier`). Controllers read `JwtRegisteredClaimNames.Sub` directly with `ClaimTypes.NameIdentifier` as a unit-test fallback.
+- `JwtBearer` 401/403 responses MUST flow through the standard error envelope. Wire `JwtBearerEvents.OnChallenge` (write 401 + envelope, code derived from `context.AuthenticateFailure` type: `SecurityTokenExpiredException → token-expired`, invalid issuer/audience/signature → `invalid-token`, null failure → `missing-token`) and `OnForbidden` (write 403 + `code: forbidden`). Without this, the bearer middleware emits empty 401 bodies that bypass `ExceptionHandlerMiddleware`.
 - Authorize attributes: `[Authorize]` (any valid token), `[Authorize(Roles = "Organizer")]` (feed publish/edit/delete). Anonymous endpoints use `[AllowAnonymous]` — written out, not aliased.
 - **SSE query-string token (`?access_token=`) is accepted ONLY on `GET /api/v1/feed/stream`.** A middleware extracts it and rewrites the `Authorization` header before the JWT middleware runs. The middleware MUST reject query-string tokens on every other route.
 
