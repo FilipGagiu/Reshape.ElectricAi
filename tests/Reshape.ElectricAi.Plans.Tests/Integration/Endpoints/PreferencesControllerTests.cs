@@ -274,7 +274,7 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
     [Fact]
     public async Task Put_PersistsToDatabase()
     {
-        var token = await RegisterAndGetTokenAsync("put-persist");
+        var (token, email) = await RegisterAndGetTokenAndEmailAsync("put-persist");
         var body = new PreferencesReplaceRequest(
             TicketType.Black,
             Accommodation.Glamping,
@@ -289,11 +289,12 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
 
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
+        var user = await db.Users.AsNoTracking().SingleAsync(u => u.Email == email);
         var row = await db.UserPreferences.AsNoTracking()
             .Include(p => p.Genres)
             .Include(p => p.Artists)
             .Include(p => p.Cuisines)
-            .SingleAsync();
+            .SingleAsync(p => p.UserId == user.Id);
         row.TicketType.Should().Be(TicketType.Black);
         row.Accommodation.Should().Be(Accommodation.Glamping);
         row.Genres.Select(g => g.Genre).Should().BeEquivalentTo([MusicGenre.Metal]);
@@ -394,11 +395,17 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
 
     private async Task<string> RegisterAndGetTokenAsync(string prefix)
     {
+        var (token, _) = await RegisterAndGetTokenAndEmailAsync(prefix);
+        return token;
+    }
+
+    private async Task<(string Token, string Email)> RegisterAndGetTokenAndEmailAsync(string prefix)
+    {
         var email = $"{prefix}-{Guid.NewGuid():N}@example.com";
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest(email, ValidPassword));
         response.EnsureSuccessStatusCode();
         var payload = await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOptions);
-        return payload!.AccessToken;
+        return (payload!.AccessToken, email);
     }
 
     private async Task<HttpResponseMessage> SendAsync(HttpMethod method, string path, object? body, string token)

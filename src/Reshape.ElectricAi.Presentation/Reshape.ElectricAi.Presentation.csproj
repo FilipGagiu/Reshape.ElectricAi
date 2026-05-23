@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -9,6 +9,7 @@
     <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <UserSecretsId>cc6a3375-1b8a-4758-880d-c553f35f4cf8</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
