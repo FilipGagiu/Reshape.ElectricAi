@@ -56,6 +56,21 @@ body {
     transition:
         background-color 0.3s ease,
         color 0.3s ease;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+button,
+a,
+[role='button'] {
+    touch-action: manipulation;
 }
 
 /*

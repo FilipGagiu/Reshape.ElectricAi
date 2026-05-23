@@ -1,0 +1,17 @@
+@if (onboarding.isCompleted()) {
+    <section class="flex flex-col gap-4 p-4">
+        <h1 class="text-surface-900 dark:text-surface-0 text-2xl font-bold tracking-tight">
+            {{ 'plan.title' | transloco }}
+        </h1>
+        <p class="text-surface-600 dark:text-surface-300">{{ 'plan.placeholder' | transloco }}</p>
+    </section>
+} @else {
+    <section class="flex flex-col gap-3">
+        <header class="px-4 pt-4">
+            <p class="text-surface-500 dark:text-surface-400 text-sm">
+                {{ 'plan.onboardingHeading' | transloco }}
+            </p>
+        </header>
+        <app-onboarding-shell [embedded]="true" />
+    </section>
+}
