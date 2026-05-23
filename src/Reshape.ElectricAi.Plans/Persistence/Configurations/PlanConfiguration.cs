@@ -4,7 +4,7 @@ using Reshape.ElectricAi.Plans.Entities;
 
 namespace Reshape.ElectricAi.Plans.Persistence.Configurations;
 
-public class PlanConfiguration : IEntityTypeConfiguration<Plan>
+public sealed class PlanConfiguration : IEntityTypeConfiguration<Plan>
 {
     public void Configure(EntityTypeBuilder<Plan> builder)
     {
@@ -18,6 +18,11 @@ public class PlanConfiguration : IEntityTypeConfiguration<Plan>
         builder.Property(x => x.TicketType).HasConversion<string>().HasMaxLength(20).IsRequired();
 
         builder.Property(x => x.ContentJson).HasColumnType("jsonb").IsRequired();
+
+        builder.Property(x => x.Tip)
+            .HasColumnType("text")
+            .HasMaxLength(500)
+            .IsRequired(false);
 
         builder.Property(x => x.GeneratedUtc).IsRequired();
 

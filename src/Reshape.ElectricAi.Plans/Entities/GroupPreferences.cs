@@ -16,4 +16,5 @@ public class GroupPreferences
     public List<GroupPreferenceFoodRestriction> FoodRestrictions { get; set; } = [];
     public List<GroupPreferenceActivity> Activities { get; set; } = [];
     public List<GroupPreferenceArtist> Artists { get; set; } = [];
+    public List<GroupPreferenceCuisine> Cuisines { get; set; } = [];
 }

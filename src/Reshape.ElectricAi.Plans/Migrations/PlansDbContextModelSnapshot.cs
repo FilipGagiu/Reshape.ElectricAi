@@ -93,6 +93,20 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.ToTable("GroupPreferenceArtists", "plans");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceCuisine", b =>
+                {
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Cuisine")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("GroupId", "Cuisine");
+
+                    b.ToTable("GroupPreferenceCuisines", "plans");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceFoodRestriction", b =>
                 {
                     b.Property<Guid>("GroupId")
@@ -187,6 +201,10 @@ namespace Reshape.ElectricAi.Plans.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Tip")
+                        .HasMaxLength(500)
+                        .HasColumnType("text");
 
                     b.Property<uint>("xmin")
                         .IsConcurrencyToken()
@@ -489,6 +507,17 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("GroupPreferences");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceCuisine", b =>
+                {
+                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
+                        .WithMany("Cuisines")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GroupPreferences");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceFoodRestriction", b =>
                 {
                     b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
@@ -628,6 +657,8 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("Activities");
 
                     b.Navigation("Artists");
+
+                    b.Navigation("Cuisines");
 
                     b.Navigation("FoodRestrictions");
 

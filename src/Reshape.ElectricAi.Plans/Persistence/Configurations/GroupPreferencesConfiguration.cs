@@ -42,5 +42,10 @@ public class GroupPreferencesConfiguration : IEntityTypeConfiguration<GroupPrefe
             .WithOne(x => x.GroupPreferences!)
             .HasForeignKey(x => x.GroupId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Cuisines)
+            .WithOne(x => x.GroupPreferences!)
+            .HasForeignKey(x => x.GroupId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

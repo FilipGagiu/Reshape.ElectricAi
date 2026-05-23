@@ -30,7 +30,7 @@ The above assignment is a recommendation — the team confirms or rearranges at 
 
 ## Solution layout
 
-> **Status: scaffolded; Plans auth + preferences (incl. cuisines) slices landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations (InitialPlansSchema + AddPushSubscriptions + AddPreferenceCuisines) + auth (register/login/refresh/me) + preferences (GET/PUT/PATCH `/api/v1/preferences` across 9 dimensions) + generic repository abstraction. Test project `Plans.Tests` has 32 base passing tests + 18 preferences integration tests (Docker-gated). Other libs are empty scaffolds.
+> **Status: scaffolded; Plans auth + preferences + groups slices landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations (InitialPlansSchema + AddPushSubscriptions + AddPreferenceCuisines + AddGroupPreferenceCuisines) + auth (register/login/refresh/me) + user preferences (GET/PUT/PATCH `/api/v1/preferences`) + groups CRUD (`POST/GET /groups`, member add/remove) + group preferences (GET/PUT/PATCH `/api/v1/groups/{id}/preferences`, owner-only modify) — all 9-dim parity. Test project `Plans.Tests` has 71 passing tests (Docker-gated). Other libs are empty scaffolds.
 
 ```
 ElectricCastle/
@@ -84,7 +84,7 @@ One Postgres database (`electric_ai`), four schemas, one `DbContext` per lib (CO
 
 | Schema | Owner | Key tables |
 |---|---|---|
-| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `UserPreferenceCuisines`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
+| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `UserPreferenceCuisines`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `GroupPreferenceCuisines`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
 | `vector` | VectorDb lib | `documents`, `document_chunks` (with `embedding vector(1536)` + HNSW index) |
 | `feed` | LiveFeed lib | `feed_entries`, `feed_deliveries` |
 | `chat` | AiChat lib | `chat_sessions`, `chat_messages`, `chat_budgets`, `faq_hot_questions` |
@@ -224,3 +224,7 @@ The original DOCX/XLSX/PDF files stay in `Client Generic Requirements/` as sourc
 5. **Per-lib feature plans (other devs)** — VectorDb (ingest + retrieval), AiChat (chat + RAG + budget), LiveFeed (CRUD + SSE). Each follows the Plans pattern: entities → migration → `XxxModule.AddXxxModule()` → controllers → tests.
 6. **PM-agent handoff scaffolding** — offer to create `.claude/docs/` + `STATE.md` + `todo.md` per CLAUDE.md bootstrap.
 7. **`xmin` concurrency token on `RefreshToken`** — currently rotation is atomic via `ExecuteUpdateAsync` (no xmin needed). If we ever revert to load-mutate-save for refresh tokens, add `xmin` to match the other entities. Low priority.
+8. **AiChat csproj cleanup (Dev 2)** — `src/Reshape.ElectricAi.AiChat/Reshape.ElectricAi.AiChat.csproj` carries unused `Microsoft.EntityFrameworkCore` + `Microsoft.EntityFrameworkCore.Design` + `Npgsql.EntityFrameworkCore.PostgreSQL` packages and a `ProjectReference` to `VectorDb` that no AiChat code uses today. Drop in next AiChat slice. Flagged by `Code Reviewer` on the AI plan-generation slice.
+9. **`InMemorySlidingWindowRateLimiter` scale ceiling** — `Reshape.ElectricAi.Plans/Services/InMemorySlidingWindowRateLimiter.cs` keeps per-key state in-process. Acceptable for single-instance v1 (matches existing SSE in-memory channel limitation), but a horizontal-scale deployment gives `5 * N` plan-gens per user per hour. Swap to Redis-backed sliding window before any multi-replica deploy.
+10. ~~**LiveFeed Postgres reset flake**~~ — DONE. `FeedApiFactory.ResetDatabaseAsync` switched from `EnsureDeletedAsync` + `MigrateAsync` to `TRUNCATE feed.feed_entries, feed.feed_entry_artists, feed.feed_entry_genres RESTART IDENTITY CASCADE`. LiveFeed.Tests now 38/38 green. Root cause: Npgsql's static process-global pool retained connections terminated by `DROP DATABASE`, surfaced as `57P01` on the next host's startup migration.
+11. **`OpenAi:Limits:MaxPromptTokens` not enforced** — `CODE.md "OpenAI + cost discipline"` lists max prompt tokens as a wrapper responsibility but `OpenAiClient` currently has no pre-call tokenization gate. Add `Microsoft.ML.Tokenizers` cl100k_base count + reject when over the cap. Flagged by `Code Reviewer` second pass.

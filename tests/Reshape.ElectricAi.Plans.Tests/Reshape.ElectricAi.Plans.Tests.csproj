@@ -6,7 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS1591;CA1707;CA1515;CA2007;CA1812;CA1711;CA1001;CA1819;CA1062;CA1024;CA1822</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS1591;CA1707;CA1515;CA2007;CA1812;CA1711;CA1001;CA1819;CA1062;CA1024;CA1822;CA1861</WarningsNotAsErrors>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <IsPackable>false</IsPackable>

@@ -102,14 +102,17 @@ All routes under `/api/v1`. JWT bearer required unless marked `[Anon]`. Status: 
 
 ### Groups (`Reshape.ElectricAi.Plans`)
 
-| Method | Route | Auth | Summary |
-|---|---|---|---|
-| POST | `/groups` | `[User]` | Create group, current user becomes owner. |
-| GET | `/groups/{id}` | `[User]` (member) | Group detail + members + aggregated prefs. |
-| POST | `/groups/{id}/members` | `[User]` (owner) | Invite by email. |
-| DELETE | `/groups/{id}/members/{userId}` | `[User]` (owner) | Remove member. |
-| GET | `/groups/{id}/preferences` | `[User]` (member) | Aggregated group preferences. |
-| PUT | `/groups/{id}/preferences` | `[User]` (member) | Replace group preferences. |
+| Method | Route | Auth | Summary | Status |
+|---|---|---|---|---|
+| POST | `/groups` | `[User]` | Create group, caller becomes owner + first member. Returns 201 + Location. | live |
+| GET | `/groups/{id}` | `[User]` (member) | Group detail + members. 404 to non-members (existence hidden). | live |
+| POST | `/groups/{id}/members` | `[User]` (owner) | Add by email. 404 if email not registered, 409 `already-member`. | live |
+| DELETE | `/groups/{id}/members/{userId}` | `[User]` (owner) | Remove member. 409 `cannot-remove-owner` for the owner. 204 on success. | live |
+| GET | `/groups/{id}/preferences` | `[User]` (member) | `GroupPreferencesDto` (same shape as user preferences, 9 dims). Empty default when no row. | live |
+| PUT | `/groups/{id}/preferences` | `[User]` (owner) | Full replace. Owner-only modify; 403 to non-owner members. | live |
+| PATCH | `/groups/{id}/preferences` | `[User]` (owner) | Partial update. Owner-only. Same null/empty semantics as user prefs. | live |
+
+`GroupPreferencesDto` schema is identical to [`PreferencesDto`](#put-preferences--request-and-preferencesdto-response) above (same 9 dimensions, same enum values, same validation caps). `completionPercent` divisor = 9. Same PATCH null-vs-absent semantics.
 
 ### Plans (`Reshape.ElectricAi.Plans`)
 

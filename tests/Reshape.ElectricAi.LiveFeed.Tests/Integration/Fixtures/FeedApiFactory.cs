@@ -28,12 +28,28 @@ public sealed class FeedApiFactory(PostgresFixture postgres) : WebApplicationFac
         Environment.SetEnvironmentVariable("Auth__Audience", "reshape-electric-ai-api");
         Environment.SetEnvironmentVariable("Auth__AccessTokenMinutes", "15");
         Environment.SetEnvironmentVariable("Auth__RefreshTokenDays", "7");
+        // AiChatModule + VectorDbModule fail-fast on missing OpenAi:ApiKey at startup.
+        // LiveFeed tests don't exercise LLM calls but the host still loads both modules.
+        Environment.SetEnvironmentVariable("OpenAi__ApiKey", "test-key");
+        Environment.SetEnvironmentVariable("OpenAi__Limits__TimeoutSeconds", "30");
+        Environment.SetEnvironmentVariable("OpenAi__Models__gpt-4o-mini__PromptCentsPer1K", "0.015");
+        Environment.SetEnvironmentVariable("OpenAi__Models__gpt-4o-mini__CompletionCentsPer1K", "0.060");
         return base.CreateHost(builder);
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        Environment.SetEnvironmentVariable("OpenAi__ApiKey", null);
+        Environment.SetEnvironmentVariable("OpenAi__Limits__TimeoutSeconds", null);
+        Environment.SetEnvironmentVariable("OpenAi__Models__gpt-4o-mini__PromptCentsPer1K", null);
+        Environment.SetEnvironmentVariable("OpenAi__Models__gpt-4o-mini__CompletionCentsPer1K", null);
+        await base.DisposeAsync();
+        GC.SuppressFinalize(this);
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Development");
+        builder.UseEnvironment("Testing");
 
         builder.ConfigureTestServices(services =>
         {
@@ -47,8 +63,13 @@ public sealed class FeedApiFactory(PostgresFixture postgres) : WebApplicationFac
     {
         using var scope = Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
-        await db.Database.EnsureDeletedAsync();
-        await db.Database.MigrateAsync();
+        // TRUNCATE the feed schema tables. Avoids DROP DATABASE, which terminates
+        // Npgsql's static process-global pool connections and produces a 57P01 race
+        // on the next host's startup migration query. Migrations are applied by
+        // Program.cs at host startup (Development|Testing env gate), so the schema
+        // is already in place by the time this method runs.
+        await db.Database.ExecuteSqlRawAsync(
+            "TRUNCATE feed.feed_entries, feed.feed_entry_artists, feed.feed_entry_genres RESTART IDENTITY CASCADE;");
     }
 
     public HttpClient CreateClientForUser(Guid userId, UserRole role = UserRole.User, string email = "tester@example.com")
