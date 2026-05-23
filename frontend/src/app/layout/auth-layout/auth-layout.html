@@ -1,13 +1,15 @@
 <div
-    class="bg-surface-50 dark:bg-surface-950 flex min-h-screen flex-col items-center justify-center px-6 py-12"
+    class="ec-auth-shell flex min-h-screen flex-col items-center justify-center px-6 py-12"
 >
-    <div class="flex w-full max-w-sm flex-col items-center gap-8">
-        <div
-            class="logo-placeholder bg-surface-200 dark:bg-surface-800 text-surface-500 dark:text-surface-400 flex h-20 w-20 items-center justify-center rounded-2xl text-xs font-medium tracking-wide uppercase"
-            aria-label="Logo placeholder"
+    <div class="flex w-full max-w-sm flex-col items-center gap-6">
+        <a
+            class="ec-logo-mark"
+            routerLink="/"
+            aria-label="Electric Castle"
         >
-            Logo
-        </div>
+            <span class="ec-logo-mark__letters">EC</span>
+        </a>
+        <span class="ec-brand-stamp">ELECTRIC CASTLE</span>
 
         <router-outlet></router-outlet>
     </div>

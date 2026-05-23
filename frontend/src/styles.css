@@ -56,4 +56,145 @@ body {
     transition:
         background-color 0.3s ease,
         color 0.3s ease;
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: contain;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+button,
+a,
+[role='button'] {
+    touch-action: manipulation;
+}
+
+/*
+ * Electric Castle design tokens.
+ * Source of truth: frontend/visual-design-language.md.
+ * Do not change palette values without re-reading that file.
+ */
+:root {
+    /* Primary palette */
+    --ec-red: #dc3529;
+    --ec-dark-navy: #0f1428;
+    --ec-yellow: #ffe600;
+
+    /* Accent / support */
+    --ec-off-white: #f5f5f5;
+    --ec-white: #ffffff;
+    --ec-gray-light: #ebebeb;
+    --ec-gray-mid: #787878;
+
+    /* Pass colors (ticket card left-stripes only; see visual §10) */
+    --ec-pass-general: #aa3c32;
+    --ec-pass-vip: #d25096;
+    --ec-pass-youth: #4682c8;
+    --ec-pass-camping: #28b950;
+    --ec-pass-ultravip: #823cc8;
+    --ec-day-ticket: #dc6432;
+
+    /* Semantic palette (state colors) */
+    --ec-success: #28b950;
+    --ec-warning: #f2a93b;
+    --ec-error: #dc3529;
+    --ec-info: #4682c8;
+
+    /* Spacing scale (4-base grid). See visual §00. */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-14: 56px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+
+    /*
+     * Border-radius scale. EC defaults to SQUARE corners (--radius-none).
+     * --radius-sm (2px) is the only allowed soft corner. Any other value
+     * is a brand violation and requires explicit design sign-off.
+     * See visual §00 "Border-radius scale (THE square-corner rule)".
+     */
+    --radius-none: 0;
+    --radius-sm: 2px;
+    --radius-pill: 9999px; /* reserved; approval required */
+
+    /* Elevation / shadow tokens */
+    --shadow-1: 0 6px 18px rgba(15, 20, 40, 0.18);
+    --shadow-2: 0 8px 24px rgba(15, 20, 40, 0.22);
+    --shadow-3: 0 16px 40px rgba(15, 20, 40, 0.32);
+    --shadow-4: 0 10px 30px rgba(15, 20, 40, 0.4);
+    --shadow-glow-red: 0 6px 18px rgba(220, 53, 41, 0.35);
+
+    /* Motion */
+    --duration-fast: 100ms;
+    --duration-base: 150ms;
+    --duration-slow: 250ms;
+    --duration-deliberate: 400ms;
+    --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+    /* Z-index scale */
+    --z-base: 1;
+    --z-sticky: 100;
+    --z-dropdown: 200;
+    --z-modal-backdrop: 300;
+    --z-modal: 400;
+    --z-toast: 500;
+    --z-tooltip: 600;
+
+    /* Opacity scale */
+    --opacity-disabled: 0.45;
+    --opacity-hover-overlay: 0.06;
+    --opacity-active-overlay: 0.1;
+    --opacity-scrim: 0.6;
+    --opacity-readonly: 0.7;
+
+    /* Focus ring (apply via :focus-visible) */
+    --focus-ring-color: rgba(220, 53, 41, 0.35);
+    --focus-ring-input: rgba(220, 53, 41, 0.18);
+    --focus-ring-on-yellow: rgba(255, 230, 0, 0.5);
+    --focus-ring-on-dark: rgba(255, 255, 255, 0.35);
+    --focus-ring-shadow: 0 0 0 3px var(--focus-ring-color);
+
+    /* Auth page semantic tokens (LIGHT mode default) */
+    --ec-auth-bg: var(--ec-gray-light);
+    --ec-auth-card-bg: var(--ec-white);
+    --ec-auth-card-text: var(--ec-dark-navy);
+    --ec-auth-card-muted: var(--ec-gray-mid);
+    --ec-auth-card-border: rgba(15, 20, 40, 0.08);
+    --ec-auth-input-border: rgba(15, 20, 40, 0.15);
+    --ec-auth-stamp: var(--ec-gray-mid);
+}
+
+.ec-hackaton-dark {
+    /* Auth page semantic tokens (DARK mode override) */
+    --ec-auth-bg: var(--ec-dark-navy);
+    --ec-auth-card-bg: var(--ec-off-white);
+    --ec-auth-card-text: var(--ec-dark-navy);
+    --ec-auth-card-muted: var(--ec-gray-mid);
+    --ec-auth-card-border: rgba(15, 20, 40, 0.12);
+    --ec-auth-input-border: rgba(15, 20, 40, 0.2);
+    --ec-auth-stamp: var(--ec-off-white);
+}
+
+/* Reduce motion accessibility. See visual §00. */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --duration-fast: 0ms;
+        --duration-base: 0ms;
+        --duration-slow: 0ms;
+        --duration-deliberate: 0ms;
+    }
 }

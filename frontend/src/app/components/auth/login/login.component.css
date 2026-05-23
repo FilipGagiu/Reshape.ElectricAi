@@ -2,3 +2,180 @@
     display: block;
     width: 100%;
 }
+
+.ec-auth-card {
+    background-color: var(--ec-auth-card-bg);
+    color: var(--ec-auth-card-text);
+    border: 1px solid var(--ec-auth-card-border);
+    border-radius: var(--radius-none);
+    padding: var(--space-8) var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+    box-shadow: var(--shadow-1);
+}
+
+.ec-auth-card__header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--space-2);
+}
+
+.ec-auth-title {
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--ec-auth-card-text);
+}
+
+.ec-auth-accent {
+    display: block;
+    width: 36px;
+    height: 3px;
+    background-color: var(--ec-red);
+}
+
+.ec-auth-subtitle {
+    margin: 0;
+    color: var(--ec-auth-card-muted);
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.ec-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.ec-field-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ec-auth-card-text);
+}
+
+:host ::ng-deep input.ec-field-input {
+    background-color: var(--ec-white);
+    color: var(--ec-auth-card-text);
+    border: 1px solid var(--ec-auth-input-border);
+    border-radius: var(--radius-none);
+    padding: 10px var(--space-3);
+    font-size: 14px;
+    width: 100%;
+    transition:
+        border-color var(--duration-base) var(--ease-out),
+        box-shadow var(--duration-base) var(--ease-out);
+}
+
+:host ::ng-deep input.ec-field-input:hover {
+    border-color: rgba(220, 53, 41, 0.35);
+}
+
+:host ::ng-deep input.ec-field-input:focus,
+:host ::ng-deep input.ec-field-input:focus-visible {
+    border-color: var(--ec-red);
+    box-shadow: 0 0 0 3px var(--focus-ring-input);
+    outline: none;
+}
+
+:host ::ng-deep .ec-field-password {
+    width: 100%;
+}
+
+:host ::ng-deep .ec-field-password .p-password-input {
+    width: 100%;
+}
+
+.ec-field-error {
+    color: var(--ec-red);
+    font-size: 12px;
+    font-weight: 500;
+}
+
+:host ::ng-deep .ec-cta-primary,
+:host ::ng-deep .ec-cta-primary .p-button {
+    background-color: var(--ec-yellow);
+    color: var(--ec-dark-navy);
+    border: 0;
+    border-radius: var(--radius-none);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    padding: var(--space-3) var(--space-4);
+    min-height: var(--space-12);
+    transition: filter var(--duration-base) var(--ease-out);
+    width: 100%;
+}
+
+:host ::ng-deep .ec-cta-primary .p-button-label {
+    font-weight: 800;
+    letter-spacing: 0.1em;
+}
+
+:host ::ng-deep .ec-cta-primary .p-button:hover:not(:disabled) {
+    filter: brightness(0.93);
+    background-color: var(--ec-yellow);
+    color: var(--ec-dark-navy);
+}
+
+:host ::ng-deep .ec-cta-primary .p-button:active:not(:disabled) {
+    filter: brightness(0.85);
+}
+
+:host ::ng-deep .ec-cta-primary .p-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring-on-yellow);
+}
+
+:host ::ng-deep .ec-cta-primary .p-button:disabled {
+    opacity: var(--opacity-disabled);
+}
+
+.ec-auth-card__footer {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ec-auth-card-muted);
+    margin: 0;
+}
+
+.ec-link-accent {
+    color: var(--ec-auth-card-text);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition:
+        color var(--duration-base) var(--ease-out),
+        border-color var(--duration-base) var(--ease-out);
+    margin-left: var(--space-1);
+}
+
+.ec-link-accent:hover,
+.ec-link-accent:focus-visible {
+    color: var(--ec-red);
+    border-bottom-color: var(--ec-red);
+    outline: none;
+}
+
+.ec-text-link {
+    background: transparent;
+    border: 0;
+    padding: var(--space-2);
+    align-self: center;
+    color: var(--ec-auth-card-muted);
+    font-size: 12px;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+    transition: color var(--duration-base) var(--ease-out);
+}
+
+.ec-text-link:hover,
+.ec-text-link:focus-visible {
+    color: var(--ec-auth-card-text);
+    outline: none;
+}
