@@ -16,7 +16,7 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | ORM | EF Core 10 (`10.0.8` pinned) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
 | Database | PostgreSQL 16+ with `pgvector` extension enabled |
 | LLM | OpenAI .NET SDK (`OpenAI` official package, 2.10.0) |
-| Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
+| Embeddings | OpenAI `text-embedding-3-large` with `EmbeddingDimensions=1536` (truncated via API `dimensions` param) — hnsw limit is 2000 dims, do not exceed; **do not change model or dims without a migration plan** |
 | Default chat model | `gpt-4o-mini` (overridable via `Chat:DefaultModel`) |
 | Password hashing | `BCrypt.Net-Next` `4.2.0` |
 | JWT | `Microsoft.AspNetCore.Authentication.JwtBearer` (`10.0.*`) + `System.IdentityModel.Tokens.Jwt` `8.18.0` + `Microsoft.IdentityModel.Tokens` `8.18.0` |

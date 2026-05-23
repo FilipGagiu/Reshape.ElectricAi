@@ -71,7 +71,7 @@ public static class VectorDbModule
         var section = configuration.GetSection(ChatOptions.SectionName);
         return new ChatOptions
         {
-            EmbeddingModel = section["EmbeddingModel"] ?? "text-embedding-3-small",
+            EmbeddingModel = section["EmbeddingModel"] ?? "text-embedding-3-large",
             EmbeddingDimensions = int.TryParse(section["EmbeddingDimensions"], out var dims) ? dims : 1536,
         };
     }
