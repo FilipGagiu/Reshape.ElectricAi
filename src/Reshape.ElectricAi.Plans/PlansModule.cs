@@ -50,6 +50,7 @@ public static class PlansModule
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IPreferencesService, PreferencesService>();
 
         var pushOptions = BuildPushOptions(configuration);
         services.AddSingleton(pushOptions);
