@@ -139,6 +139,27 @@ export class PlanIntakeService {
         await this.submit();
     }
 
+    /**
+     * Step back one question. Pops the last answer and rewinds currentIndex.
+     * No-op on the first question. Used by the stepped (non-chat) variant.
+     */
+    previous(): void {
+        const current = this.stateSignal();
+        if (current.currentIndex <= 0) return;
+        this.clearTypingTimer();
+        this.isAssistantTypingSignal.set(false);
+        const nextIndex = current.currentIndex - 1;
+        const nextAnswers = current.answers.slice(0, nextIndex);
+        this.stateSignal.set({
+            ...current,
+            status: 'collecting',
+            currentIndex: nextIndex,
+            answers: nextAnswers,
+            errorCode: undefined,
+            updatedAt: new Date().toISOString(),
+        });
+    }
+
     reset(): void {
         const user = this.auth.currentUser();
         localStorage.removeItem(this.storageKeyFor(user?.email));

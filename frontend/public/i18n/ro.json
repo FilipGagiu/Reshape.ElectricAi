@@ -2,7 +2,8 @@
     "nav": {
         "liveFeed": "Feed live",
         "questions": "Întrebări",
-        "plan": "Planul meu EC"
+        "plan": "Planul meu EC",
+        "steps": "Pași"
     },
     "liveFeed": {
         "title": "Feed live",
@@ -213,6 +214,21 @@
             }
         },
         "onboardingHeading": "Termină configurarea ca să-ți deblochezi planul personalizat.",
+        "steps": {
+            "questionCounter": "Întrebarea {{current}} din {{total}}",
+            "suggestionsLabel": "Sugestii rapide",
+            "actions": {
+                "continue": "Mai departe",
+                "finish": "Gata",
+                "back": "Înapoi",
+                "reset": "De la capăt"
+            },
+            "completed": {
+                "title": "Gata, ești setat",
+                "body": "Răspunsurile sunt salvate. Planul se pregătește.",
+                "cta": "DESCHIDE PLANUL"
+            }
+        },
         "intake": {
             "greeting": "Salut! Hai să construim împreună planul tău EC. Câteva întrebări scurte și ești gata.",
             "submitting": "Îți salvăm planul...",
