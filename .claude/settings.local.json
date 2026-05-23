@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Bash(git -C /home/mz/Documents/ElectricCastle/Repos/Reshape.ElectricAi log --oneline -10)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(dotnet ef migrations *)",
+      "Bash(git -C /home/mz/Documents/ElectricCastle/Repos/Reshape.ElectricAi diff --stat)",
+      "Bash(git -C /home/mz/Documents/ElectricCastle/Repos/Reshape.ElectricAi status --short)",
+      "Bash(git *)",
+      "Bash(docker info *)",
+      "Bash(dotnet test *)",
+      "Bash(dotnet list *)",
+      "Bash(pip index *)",
+      "Bash(nuget list *)",
+      "Bash(curl -s \"https://api.nuget.org/v3-flatcontainer/microsoft.bcl.memory/index.json\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d['versions'][-5:]\\)\")",
+      "Bash(xargs cat)",
+      "Bash(grep -ni 'bcl\\\\|memory\\\\|NU1903\\\\|tokenizer' __TRACKED_VAR__/MEMORY.md)"
     ]
   }
 }

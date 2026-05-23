@@ -4,5 +4,5 @@ namespace Reshape.ElectricAi.Core.Domain;
 
 public interface ICategorizable
 {
-    IReadOnlyCollection<Category> Categories { get; }
+    IReadOnlyDictionary<Category, IReadOnlyList<string>> CategoryValues { get; }
 }

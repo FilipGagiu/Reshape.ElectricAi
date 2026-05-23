@@ -1,0 +1,11 @@
+<Project>
+  <!--
+    Force Microsoft.EntityFrameworkCore.Relational to 10.0.8 solution-wide.
+    Npgsql.EntityFrameworkCore.PostgreSQL 10.0.1 declares a [10.0.4, 11.0.0) minimum,
+    which NuGet resolves to 10.0.4 — but our projects compile against the Design 10.0.8
+    reference, causing a runtime ReflectionTypeLoadException.
+  -->
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
+  </ItemGroup>
+</Project>

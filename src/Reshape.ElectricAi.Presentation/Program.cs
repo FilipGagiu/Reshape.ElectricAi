@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
+using Reshape.ElectricAi.VectorDb;
+using Reshape.ElectricAi.VectorDb.Persistence;
 using Reshape.ElectricAi.Presentation.Filters;
 using Reshape.ElectricAi.Presentation.Middleware;
 using Scalar.AspNetCore;
@@ -13,12 +15,15 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LoadSecretsJson(builder.Configuration, Directory.GetCurrentDirectory());
+
 builder.Host.UseSerilog((context, services, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext());
 
 builder.Services.AddPlansModule(builder.Configuration);
+builder.Services.AddVectorDbModule(builder.Configuration);
 
 builder.Services.AddScoped<FluentValidationFilter>();
 builder.Services.AddControllers(options =>
@@ -120,8 +125,10 @@ app.UseSerilogRequestLogging();
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
-    var db = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
-    await db.Database.MigrateAsync();
+    var plansDb = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
+    await plansDb.Database.MigrateAsync();
+    var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
+    await vectorDb.Database.MigrateAsync();
 
     app.UseSwagger();
     app.MapScalarApiReference();
@@ -140,5 +147,20 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.RunAsync();
+
+static void LoadSecretsJson(ConfigurationManager configuration, string startDir)
+{
+    var dir = new DirectoryInfo(startDir);
+    while (dir is not null)
+    {
+        var path = Path.Combine(dir.FullName, "secrets.json");
+        if (File.Exists(path))
+        {
+            configuration.AddJsonFile(path, optional: false, reloadOnChange: false);
+            return;
+        }
+        dir = dir.Parent;
+    }
+}
 
 public partial class Program;

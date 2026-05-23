@@ -9,5 +9,6 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="tests/Reshape.ElectricAi.Plans.Tests/Reshape.ElectricAi.Plans.Tests.csproj" />
+    <Project Path="tests/Reshape.ElectricAi.VectorDb.Tests/Reshape.ElectricAi.VectorDb.Tests.csproj" />
   </Folder>
 </Solution>
