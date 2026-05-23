@@ -15,6 +15,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+LoadSecretsJson(builder.Configuration, Directory.GetCurrentDirectory());
+
 builder.Host.UseSerilog((context, services, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
@@ -145,5 +147,20 @@ app.UseAuthorization();
 app.MapControllers();
 
 await app.RunAsync();
+
+static void LoadSecretsJson(ConfigurationManager configuration, string startDir)
+{
+    var dir = new DirectoryInfo(startDir);
+    while (dir is not null)
+    {
+        var path = Path.Combine(dir.FullName, "secrets.json");
+        if (File.Exists(path))
+        {
+            configuration.AddJsonFile(path, optional: false, reloadOnChange: false);
+            return;
+        }
+        dir = dir.Parent;
+    }
+}
 
 public partial class Program;
