@@ -14,7 +14,7 @@ The system needs a RAG layer over three distinct knowledge domains:
 2. **Q&A knowledge base** — questions with multiple context-specific answers (categorizable, user-filtered)
 3. **Organizer events** — real-time facts emitted by organizers (categorizable, user-filtered)
 
-All three need vector search. Domains 2 and 3 need **category-based filtering** so that retrieval respects user context (e.g., a camper gets camping-relevant answers; a VIP gets VIP-specific events).
+All three need vector search **with category-based filtering**. A camping-section document is irrelevant to a village resident. If no user context is provided, documents/chunks with empty `category_tags` surface naturally; tagged documents may still appear if their tags overlap the user context.
 
 ---
 
@@ -22,7 +22,7 @@ All three need vector search. Domains 2 and 3 need **category-based filtering** 
 
 ### ICategorizable interface
 
-The existing `ICategorizable` in Core returns `IReadOnlyCollection<Category>` (category types only). This is insufficient for filtering — we need the *values* within each category (e.g. which `TransportMode`, which accommodation type, which artists).
+The existing `ICategorizable` in Core returns `IReadOnlyCollection<Category>` (category types only). This is insufficient — we need the *values* within each category (e.g. which `TransportMode`, which accommodation type, which artists).
 
 **Decision:** Replace the existing interface body with a value-bearing dictionary:
 
@@ -51,7 +51,7 @@ No new enums needed — all user-described categories map to existing Core enums
 
 ### Category filtering — DB storage strategy
 
-Storing the dict as JSONB makes intersection queries awkward. Instead, flatten to a **namespaced `text[]` column** with a GIN index:
+Flatten the dict to a **namespaced `text[]` column** with a GIN index on every table that is categorizable:
 
 ```
 category_tags text[] NOT NULL DEFAULT '{}'
@@ -59,32 +59,98 @@ category_tags text[] NOT NULL DEFAULT '{}'
 
 Format: `{"Transport.EcBus","Accommodation.Camping","Lineup.Justin Timberlake"}`
 
-Overlap query:
+Overlap query used across all three domains:
 ```sql
-WHERE category_tags && ARRAY['Transport.EcBus','Accommodation.Camping']
-OR category_tags = '{}'   -- empty = general, matches everyone
+WHERE (entity.category_tags && ARRAY['Transport.EcBus','Accommodation.Camping']
+       OR entity.category_tags = '{}')
 ```
+
+- If the caller passes a user context, the `&&` filter applies; rows with empty tags pass through as "general content."
+- If no user context is provided, the filter is dropped entirely — all rows are candidates.
 
 `ICategorizable.CategoryValues` is reconstructed from tags at read time by splitting on the first `.`.
 
-### Three search domains, three tables
+### Three search domains — all support category filtering
 
-| Domain | Tables | Filtering |
+| Domain | Tables | Embedding on | Category tags on |
+|---|---|---|---|
+| Official EC docs | `documents` + `document_chunks` | `document_chunks` | `document_chunks` (copied from ingest request) |
+| Q&A | `questions` + `answers` | `questions` | `questions` AND `answers` independently |
+| Organizer events | `events` | `events` | `events` |
+
+Placing `category_tags` on `document_chunks` (not on `documents`) avoids a JOIN at search time — the category filter and the KNN sort are evaluated in one pass on the chunk table.
+
+### Embedding model — config-driven, migration-gated
+
+The embedding model name and expected dimensions come from configuration:
+
+```json
+"Chat": {
+  "EmbeddingModel": "text-embedding-3-small",
+  "EmbeddingDimensions": 1536
+}
+```
+
+`VectorDbModule` reads both at startup and passes `EmbeddingDimensions` to `IngestService` and `VectorSearchService`. **The EF migration hardcodes `vector(1536)` in the column definition.** Changing the model requires:
+1. A new migration that drops + recreates the `vector(N)` columns and HNSW indexes
+2. Re-embedding all existing rows
+
+This is a documented breaking change (CODE.md: "Changing the model is a migration event"). The config value is cross-checked at startup: if `EmbeddingDimensions` does not match the value the migration was generated with, log a fatal and refuse to start.
+
+### Repository pattern alignment
+
+The merge introduced a Repository + Specification pattern across all libs:
+
+- `IRepository<T>` (Core) — generic CRUD interface
+- `EfRepository<TContext, T>` (currently in Plans) — generic EF Core implementation
+- `SpecificationEvaluator` (currently in Plans) — applies `ISpecification<T>` to an `IQueryable<T>`
+- `PlansRepository<T>` — typed wrapper that binds `EfRepository` to `PlansDbContext`
+
+**Decision:** Move `EfRepository<TContext, T>` and `SpecificationEvaluator` to `Core/Persistence/` so VectorDb can share them without duplication. This requires adding `Microsoft.EntityFrameworkCore` to Core's `.csproj`. Core depending on EF Core abstractions does not violate the "Core MUST NOT reference any feature lib" rule — EF Core is a framework dependency, not a feature lib.
+
+**Coordination:** The Plans dev must accept the move (file deletions from `Plans/Persistence/`). No behavior change — the namespace of `EfRepository` changes from `Reshape.ElectricAi.Plans.Persistence` to `Reshape.ElectricAi.Core.Persistence`; a single `using` update in Plans files.
+
+VectorDb then adds `VectorRepository<T>` mirroring the Plans pattern:
+
+```csharp
+// VectorDb/Persistence/VectorRepository.cs
+public sealed class VectorRepository<T>(VectorDbContext context)
+    : EfRepository<VectorDbContext, T>(context)
+    where T : class;
+```
+
+**Service access patterns:**
+
+| Service | DB access method | Reason |
 |---|---|---|
-| Official EC docs | `documents` + `document_chunks` | Source enum only (no user context) |
-| Q&A | `questions` + `answers` | User context on `answers.category_tags` |
-| Organizer events | `events` | User context on `events.category_tags` |
+| `IngestService` | `IRepository<T>` (via `VectorRepository<T>`) | Standard CRUD: hash check, insert document/chunk/question/answer/event |
+| `VectorSearchService` | `VectorDbContext` directly | KNN queries with `<=>` operator + category filter are not expressible as `ISpecification<T>` predicates |
 
-Q&A retrieval: KNN on `questions.embedding` → JOIN `answers` WHERE `answers.category_tags && userTags OR answers.category_tags = '{}'`.
+`VectorDbModule` registers both:
+```csharp
+services.AddScoped(typeof(IRepository<>), typeof(VectorRepository<>));
+services.AddScoped<IVectorSearchService, VectorSearchService>();
+services.AddScoped<IIngestService, IngestService>();
+```
 
 ---
 
 ## Section 1: Core changes
 
-### Files changed / added
+### Files moved
+
+| From | To | Change |
+|---|---|---|
+| `Plans/Persistence/EfRepository.cs` | `Core/Persistence/EfRepository.cs` | Namespace: `Reshape.ElectricAi.Core.Persistence` |
+| `Plans/Persistence/SpecificationEvaluator.cs` | `Core/Persistence/SpecificationEvaluator.cs` | Namespace: `Reshape.ElectricAi.Core.Persistence` |
+
+Plans files that `using Reshape.ElectricAi.Plans.Persistence;` to reach these classes need their `using` updated to `Reshape.ElectricAi.Core.Persistence;`.
+
+### Files changed / added in Core
 
 | File | Change |
 |---|---|
+| `Core/Core.csproj` | Add `<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.*" />` |
 | `Core/Domain/ICategorizable.cs` | Replace `IReadOnlyCollection<Category> Categories` with `IReadOnlyDictionary<Category, IReadOnlyList<string>> CategoryValues` |
 | `Core/Services/IVectorSearchService.cs` | New |
 | `Core/Services/IIngestService.cs` | New |
@@ -147,8 +213,11 @@ public record RetrievedEvent(
     IReadOnlyDictionary<Category, IReadOnlyList<string>> CategoryValues,
     DateTime PublishedUtc);
 
-// Search filters
-public record DocumentSearchFilter(string[]? Sources = null, int TopK = 6);
+// Search filters — all three domains accept UserContext
+public record DocumentSearchFilter(
+    IReadOnlyDictionary<Category, IReadOnlyList<string>>? UserContext = null,
+    string[]? Sources = null,
+    int TopK = 6);
 
 public record QuestionSearchFilter(
     IReadOnlyDictionary<Category, IReadOnlyList<string>>? UserContext = null,
@@ -159,20 +228,28 @@ public record EventSearchFilter(
     int TopK = 6);
 
 // Ingest requests
-public record IngestDocumentRequest(string Source, string SourceRef, string Content);
+public record IngestDocumentRequest(
+    string Source,
+    string SourceRef,
+    string Content,
+    IReadOnlyDictionary<Category, IReadOnlyList<string>>? CategoryValues = null);
 // IngestService computes ContentHash internally (SHA-256 of Content)
+// CategoryValues are copied down to every DocumentChunk at ingest time
 
 public record IngestAnswerRequest(
     string Text,
     IReadOnlyDictionary<Category, IReadOnlyList<string>> CategoryValues);
 
 public record IngestQARequest(
-    string SourceRef, string QuestionText,
+    string SourceRef,
+    string QuestionText,
     IReadOnlyDictionary<Category, IReadOnlyList<string>> QuestionCategoryValues,
     IReadOnlyList<IngestAnswerRequest> Answers);
 
 public record IngestEventRequest(
-    Guid FeedEntryId, string Title, string Body,
+    Guid FeedEntryId,
+    string Title,
+    string Body,
     IReadOnlyDictionary<Category, IReadOnlyList<string>> CategoryValues,
     DateTime PublishedUtc);
 ```
@@ -193,6 +270,8 @@ Schema name: `vector`. One `VectorDbContext`. Migrations history table: `vector.
 | `content_hash` | `text NOT NULL UNIQUE` | SHA-256 — idempotency gate |
 | `created_utc` | `timestamptz NOT NULL` | |
 
+No `category_tags` on `documents` — tags live on chunks to avoid JOIN at search time.
+
 ### Table: `vector.document_chunks`
 
 | Column | Type | Notes |
@@ -201,7 +280,8 @@ Schema name: `vector`. One `VectorDbContext`. Migrations history table: `vector.
 | `document_id` | `uuid FK → documents` | CASCADE delete |
 | `chunk_index` | `int NOT NULL` | 0-based position in parent document |
 | `text` | `text NOT NULL` | Raw chunk text (400-token target, 50-token overlap) |
-| `embedding` | `vector(1536)` | HNSW index (cosine). Populated by `IngestService` |
+| `embedding` | `vector(1536)` | HNSW index (cosine) |
+| `category_tags` | `text[] NOT NULL DEFAULT '{}'` | GIN index. Copied from `IngestDocumentRequest.CategoryValues` at ingest |
 
 ### Table: `vector.questions`
 
@@ -222,7 +302,7 @@ Schema name: `vector`. One `VectorDbContext`. Migrations history table: `vector.
 | `id` | `uuid` PK | |
 | `question_id` | `uuid FK → questions` | CASCADE delete |
 | `text` | `text NOT NULL` | Answer text |
-| `category_tags` | `text[] NOT NULL DEFAULT '{}'` | GIN index. Empty = general (matches all users) |
+| `category_tags` | `text[] NOT NULL DEFAULT '{}'` | GIN index. Empty = general (matches all user contexts) |
 | `created_utc` | `timestamptz NOT NULL` | |
 
 No embedding on answers — retrieval is by question similarity, answers are fetched relationally.
@@ -240,7 +320,7 @@ No embedding on answers — retrieval is by question similarity, answers are fet
 | `published_utc` | `timestamptz NOT NULL` | |
 | `created_utc` | `timestamptz NOT NULL` | |
 
-Deduplication: `feed_entry_id` has a UNIQUE constraint. `IngestEventAsync` is idempotent — upsert on `feed_entry_id`.
+Deduplication: `feed_entry_id` UNIQUE constraint. `IngestEventAsync` upserts on `feed_entry_id`.
 
 ---
 
@@ -248,27 +328,29 @@ Deduplication: `feed_entry_id` has a UNIQUE constraint. `IngestEventAsync` is id
 
 ### VectorDb entities → C# names
 
-| DB table | Entity class |
-|---|---|
-| `vector.documents` | `Document` |
-| `vector.document_chunks` | `DocumentChunk` |
-| `vector.questions` | `Question` |
-| `vector.answers` | `Answer` |
-| `vector.events` | `EventEntry` |
+| DB table | Entity class | Implements `ICategorizable`? |
+|---|---|---|
+| `vector.documents` | `Document` | No |
+| `vector.document_chunks` | `DocumentChunk` | Yes (has `category_tags`) |
+| `vector.questions` | `Question` | Yes |
+| `vector.answers` | `Answer` | Yes |
+| `vector.events` | `EventEntry` | Yes |
 
-All entities with `category_tags` implement `ICategorizable` by reconstructing the dict from tags.
+Entities implementing `ICategorizable` reconstruct `CategoryValues` from `category_tags` by splitting each tag on the first `.`.
 
 ### Implementation services
 
 **`VectorSearchService`** implements `IVectorSearchService`:
-- `SearchDocumentsAsync`: embed query → cosine KNN on `document_chunks.embedding`, optional Source filter → return `RetrievedChunk[]`
-- `SearchQuestionsAsync`: embed query → cosine KNN on `questions.embedding`, then `LEFT JOIN answers WHERE answers.category_tags && userTags OR answers.category_tags = '{}'` → return `RetrievedQA[]`
-- `SearchEventsAsync`: embed query → cosine KNN on `events.embedding`, apply `events.category_tags && userTags` filter → return `RetrievedEvent[]`
+- Injects `VectorDbContext` directly (KNN + category filter not expressible as `ISpecification<T>`)
+- `SearchDocumentsAsync`: embed query → cosine KNN on `document_chunks.embedding` → apply category filter if `UserContext` non-null → return `RetrievedChunk[]`
+- `SearchQuestionsAsync`: embed query → cosine KNN on `questions.embedding` → JOIN `answers` WHERE `answers.category_tags && userTags OR answers.category_tags = '{}'` → return `RetrievedQA[]`
+- `SearchEventsAsync`: embed query → cosine KNN on `events.embedding` → apply category filter → return `RetrievedEvent[]`
 
 **`IngestService`** implements `IIngestService`:
-- `IngestDocumentAsync`: SHA-256 content hash → skip if exists → chunk (400-token, 50 overlap via `Microsoft.ML.Tokenizers`) → embed each chunk (OpenAI `text-embedding-3-small`) → upsert `documents` + `document_chunks`
-- `IngestQAAsync`: SHA-256 of question text → skip if exists → embed question → upsert `questions` + replace `answers`
-- `IngestEventAsync`: upsert on `feed_entry_id` → embed title+body → upsert `events`
+- Injects `IRepository<Document>`, `IRepository<DocumentChunk>`, `IRepository<Question>`, `IRepository<Answer>`, `IRepository<EventEntry>`
+- `IngestDocumentAsync`: SHA-256 hash → skip if exists → chunk (400-token, 50 overlap via `Microsoft.ML.Tokenizers`) → embed each chunk (OpenAI embedding client) → copy `CategoryValues` to each chunk as `category_tags` → upsert
+- `IngestQAAsync`: SHA-256 of question text → skip if exists → embed question → upsert question + replace all answers
+- `IngestEventAsync`: upsert on `feed_entry_id` → embed title+body → save
 
 ### VectorDbContext
 
@@ -298,15 +380,20 @@ public static class VectorDbModule
     public static IServiceCollection AddVectorDbModule(
         this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString("Postgres")!;
+        var connectionString = configuration.GetConnectionString("Postgres")
+            ?? throw new InvalidOperationException("ConnectionStrings:Postgres is not configured.");
+
         services.AddDbContext<VectorDbContext>(o =>
             o.UseNpgsql(connectionString, npgsql =>
             {
                 npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "vector");
                 npgsql.UseVector();
             }));
+
+        services.AddScoped(typeof(IRepository<>), typeof(VectorRepository<>));
         services.AddScoped<IVectorSearchService, VectorSearchService>();
         services.AddScoped<IIngestService, IngestService>();
+
         return services;
     }
 }
@@ -316,8 +403,15 @@ public static class VectorDbModule
 
 ```
 src/Reshape.ElectricAi.Core/
+├── Core.csproj                                    ← add EF Core package ref
 ├── Domain/
 │   └── ICategorizable.cs                          ← updated
+├── Persistence/
+│   ├── IRepository.cs                             ← existing
+│   ├── ISpecification.cs                          ← existing
+│   ├── Specification.cs                           ← existing
+│   ├── EfRepository.cs                            ← MOVED from Plans
+│   └── SpecificationEvaluator.cs                  ← MOVED from Plans
 ├── Services/
 │   ├── IVectorSearchService.cs                    ← new
 │   └── IIngestService.cs                          ← new
@@ -335,6 +429,12 @@ src/Reshape.ElectricAi.Core/
         ├── IngestAnswerRequest.cs
         └── IngestEventRequest.cs
 
+src/Reshape.ElectricAi.Plans/
+├── Persistence/
+│   ├── EfRepository.cs                            ← DELETED (moved to Core)
+│   └── SpecificationEvaluator.cs                  ← DELETED (moved to Core)
+│   (all using directives updated to Core.Persistence namespace)
+
 src/Reshape.ElectricAi.VectorDb/
 ├── Entities/
 │   ├── Document.cs
@@ -345,6 +445,7 @@ src/Reshape.ElectricAi.VectorDb/
 ├── Persistence/
 │   ├── VectorDbContext.cs
 │   ├── VectorDbContextFactory.cs
+│   ├── VectorRepository.cs                        ← mirrors PlansRepository<T>
 │   └── Configurations/
 │       ├── DocumentConfiguration.cs
 │       ├── DocumentChunkConfiguration.cs
@@ -363,14 +464,21 @@ src/Reshape.ElectricAi.VectorDb/
 
 ## Implementation order
 
-1. **Core changes** — ICategorizable update + IVectorSearchService + IIngestService + all DTOs
-2. **VectorDb entities** — 5 entity classes with `ICategorizable` where applicable
-3. **VectorDb EF configurations** — fluent API: columns, indexes (HNSW on embeddings, GIN on `category_tags[]`), FK cascades
-4. **VectorDbContext + VectorDbContextFactory**
-5. **EF migration** — `dotnet ef migrations add InitialVectorSchema -p src/Reshape.ElectricAi.VectorDb -s src/Reshape.ElectricAi.Presentation -- --context VectorDbContext`
-6. **Service implementations** — VectorSearchService + IngestService (full implementations, not stubs)
-7. **VectorDbModule** — DI wiring + register in `Program.cs`
-8. **Build verification** — `dotnet build` must pass with zero errors/warnings
+1. **Core — move EfRepository + SpecificationEvaluator** — update Plans `using` directives, add EF Core to Core.csproj, verify `dotnet build` green
+2. **Core — ICategorizable update + interfaces + DTOs** — all files in Core/Services/ and Core/Dtos/VectorSearch/
+3. **VectorDb entities** — 5 entity classes; `ICategorizable` implemented where applicable
+4. **VectorDb EF configurations** — HNSW indexes on embeddings, GIN indexes on `category_tags[]`, FK cascades, `source` stored as text
+5. **VectorDbContext + VectorDbContextFactory + VectorRepository**
+6. **EF migration:**
+   ```
+   dotnet ef migrations add InitialVectorSchema \
+     -p src/Reshape.ElectricAi.VectorDb \
+     -s src/Reshape.ElectricAi.Presentation \
+     -- --context VectorDbContext
+   ```
+7. **Service implementations** — `IngestService` (uses `IRepository<T>`) then `VectorSearchService` (uses `VectorDbContext` directly)
+8. **VectorDbModule** — DI wiring + `Program.cs` registration
+9. **Build verification** — `dotnet build` with zero errors/warnings
 
 ---
 
@@ -380,14 +488,14 @@ src/Reshape.ElectricAi.VectorDb/
 - AiChat RAG orchestration (calls `IVectorSearchService` — separate dev)
 - Data seeding (`data/faqs.json`, `data/rules.md`, etc.) — separate plan
 - `POST /admin/ingest` controller — separate plan (Presentation layer work)
-- Test projects — to be addressed in a follow-up plan
+- Test projects — separate plan
 
 ---
 
 ## Key constraints (from CODE.md)
 
-- Embedding model fixed: `text-embedding-3-small` (1536 dims). Do not change.
+- Embedding model and dimensions from config (`Chat:EmbeddingModel`, `Chat:EmbeddingDimensions`). The migration hardcodes `vector(1536)` — changing the model requires a new migration + full re-embed.
 - Chunker: `Microsoft.ML.Tokenizers` cl100k_base, 400-token target, 50-token overlap.
 - No cross-context EF navigations. `EventEntry.FeedEntryId` is a loose `Guid`, not a navigation.
-- `Controllers live ONLY in Presentation` — VectorDb exposes no controllers.
-- Package installs are human-only. VectorDb `.csproj` already has all needed packages (EF Core, Npgsql, Pgvector, OpenAI, ML.Tokenizers).
+- Controllers live ONLY in Presentation — VectorDb exposes no controllers.
+- Package installs are human-only. VectorDb `.csproj` already has all needed packages. Core needs `Microsoft.EntityFrameworkCore` added (human install).
