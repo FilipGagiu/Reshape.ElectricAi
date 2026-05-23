@@ -16,7 +16,7 @@ namespace Reshape.ElectricAi.Plans.Services;
 public sealed partial class PushService(
     IRepository<PushSubscriptionEntity> repository,
     IOptions<PushOptions> options,
-    ILogger<PushService> logger) : IPushService
+    ILogger<PushService> logger) : IPushService, IDisposable
 {
     private static readonly JsonSerializerOptions PayloadJsonOptions = new()
     {
@@ -146,4 +146,6 @@ public sealed partial class PushService(
 
     [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "Pruned {Count} dead push subscriptions.")]
     private static partial void LogPruned(ILogger logger, int count);
+
+    public void Dispose() => _webPushClient.Dispose();
 }
