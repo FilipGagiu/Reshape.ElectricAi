@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi log --all --oneline --diff-filter=D -- 'frontend/.postcssrc*' 'frontend/postcss.config*')",
+      "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi ls-files frontend/)",
+      "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi log --all --source -- frontend/.postcssrc.json)",
+      "Bash(git -C /Users/solomonpaul/Projects/Reshape.ElectricAi log --all --diff-filter=A --name-only --pretty=format:)",
+      "Bash(npx ng *)"
+    ]
+  }
+}
