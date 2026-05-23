@@ -22,7 +22,7 @@ public sealed class IngestService(
     private const int ChunkOverlapTokens = 50;
 
     private static readonly TiktokenTokenizer Tokenizer =
-        TiktokenTokenizer.CreateForModel("text-embedding-3-small");
+        TiktokenTokenizer.CreateForModel("text-embedding-3-large");
 
     public async Task IngestDocumentAsync(IngestDocumentRequest request, CancellationToken cancellationToken = default)
     {

@@ -9,7 +9,7 @@ namespace Reshape.ElectricAi.VectorDb.Migrations
     /// <inheritdoc />
     public partial class InitVectorDb : Migration
     {
-        private static readonly string[] CosineOps = ["vector_cosine_ops"];
+        private static readonly string[] CosinOps = ["vector_cosine_ops"];
 
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -132,7 +132,7 @@ namespace Reshape.ElectricAi.VectorDb.Migrations
                 table: "answers",
                 column: "Embedding")
                 .Annotation("Npgsql:IndexMethod", "hnsw")
-                .Annotation("Npgsql:IndexOperators", CosineOps);
+                .Annotation("Npgsql:IndexOperators", CosinOps);
 
             migrationBuilder.CreateIndex(
                 name: "IX_answers_QuestionId",
@@ -159,7 +159,7 @@ namespace Reshape.ElectricAi.VectorDb.Migrations
                 table: "document_chunks",
                 column: "Embedding")
                 .Annotation("Npgsql:IndexMethod", "hnsw")
-                .Annotation("Npgsql:IndexOperators", CosineOps);
+                .Annotation("Npgsql:IndexOperators", CosinOps);
 
             migrationBuilder.CreateIndex(
                 name: "IX_documents_SourceHash",
@@ -181,7 +181,7 @@ namespace Reshape.ElectricAi.VectorDb.Migrations
                 table: "event_entries",
                 column: "Embedding")
                 .Annotation("Npgsql:IndexMethod", "hnsw")
-                .Annotation("Npgsql:IndexOperators", CosineOps);
+                .Annotation("Npgsql:IndexOperators", CosinOps);
 
             migrationBuilder.CreateIndex(
                 name: "IX_event_entries_FeedEntryId",
@@ -203,7 +203,7 @@ namespace Reshape.ElectricAi.VectorDb.Migrations
                 table: "questions",
                 column: "Embedding")
                 .Annotation("Npgsql:IndexMethod", "hnsw")
-                .Annotation("Npgsql:IndexOperators", CosineOps);
+                .Annotation("Npgsql:IndexOperators", CosinOps);
 
             migrationBuilder.CreateIndex(
                 name: "IX_questions_TextHash",

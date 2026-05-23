@@ -13,7 +13,7 @@ using Reshape.ElectricAi.VectorDb.Persistence;
 namespace Reshape.ElectricAi.VectorDb.Migrations
 {
     [DbContext(typeof(VectorDbContext))]
-    [Migration("20260523011423_InitVectorDb")]
+    [Migration("20260523202212_InitVectorDb")]
     partial class InitVectorDb
     {
         /// <inheritdoc />
