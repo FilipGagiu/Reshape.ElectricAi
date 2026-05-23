@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
 import { ButtonModule } from 'primeng/button';
 
+import { MOCK_PLAN_UUID } from '@components/plan-share/plan-share.model';
+
 import { OnboardingStepId } from './onboarding.model';
 import { OnboardingService } from './onboarding.service';
 import { StepAccommodationComponent } from './steps/step-accommodation/step-accommodation.component';
@@ -91,9 +93,11 @@ export class OnboardingShellComponent {
         }
         if (this.isLastStep()) {
             this.onboarding.complete();
-            if (!this.embedded()) {
-                this.router.navigateByUrl('/');
-            }
+            // After onboarding completes, drop the user into the
+            // Spotify-Wrapped-style recap of their plan. UUID is a hardcoded
+            // mock for the demo; the real plan UUID will come from the BE
+            // when the plan-generation endpoint lands.
+            this.router.navigateByUrl(`/p/${MOCK_PLAN_UUID}`);
             return;
         }
         this.onboarding.next();

@@ -59,7 +59,94 @@
     "plan": {
         "title": "My EC plan",
         "placeholder": "Your extracurricular plan lives here.",
-        "onboardingHeading": "Finish your setup to unlock your personalised plan."
+        "onboardingHeading": "Finish your setup to unlock your personalised plan.",
+        "cta": {
+            "watchRecap": "Watch the recap"
+        },
+        "story": {
+            "close": "Close",
+            "pause": "Paused",
+            "notFound": {
+                "title": "Plan not found",
+                "body": "This link looks like it's lost in the forest.",
+                "cta": "Back to the castle"
+            },
+            "welcome": {
+                "headline": "YOUR FIRST ELECTRIC CASTLE",
+                "body": "{{name}}, this is going to be a lot. In the best way. Here's your plan for 16-19 July."
+            },
+            "transport": {
+                "headline": "HOW YOU'RE GETTING THERE",
+                "method": {
+                    "car": "By car. Parking opens at 10:00.",
+                    "train": "By train. The festival shuttle runs from Cluj-Napoca every 30 minutes.",
+                    "bus": "By bus. Shuttles run from Cluj-Napoca every 30 minutes.",
+                    "bike": "By bike. Secure parking on site.",
+                    "onFoot": "On foot. Bring good shoes."
+                }
+            },
+            "sleep": {
+                "headline": "YOUR BASE CAMP",
+                "accommodation": {
+                    "festivalCamping": "Festival Camping",
+                    "bontida": "Bonțida village",
+                    "cluj": "Cluj-Napoca"
+                },
+                "tip": {
+                    "festivalCamping": "Bring a good sleeping bag. Transylvanian nights are cold.",
+                    "bontida": "Walking distance to the gates. Earplugs welcome.",
+                    "cluj": "45 minutes from the gates. Plan your mornings."
+                }
+            },
+            "music": {
+                "headline": "YOUR LINEUP",
+                "bodySuffix": "Plus everything {{genres}} that the Main Stage and Hangar have to offer."
+            },
+            "budget": {
+                "headline": "ALL IN",
+                "suffix": "Approximate, in RON",
+                "line": {
+                    "ticket": "Ticket",
+                    "sleep": "Sleep",
+                    "transport": "Transport",
+                    "food": "Food",
+                    "chaos": "Chaos fund"
+                }
+            },
+            "food": {
+                "headline": "FOOD FOR THE FESTIVAL",
+                "cuisine": {
+                    "italian": "Italian",
+                    "romanian": "Romanian",
+                    "asian": "Asian",
+                    "mexican": "Mexican",
+                    "middleEastern": "Middle Eastern",
+                    "indian": "Indian",
+                    "bbq": "BBQ",
+                    "vegan": "Plant-based"
+                },
+                "body": "EC Village has 60+ vendors. Come hungry.",
+                "fallback": "EC Village has 60+ food vendors. From sarmale to sushi. Come hungry.",
+                "allergyNote": "Allergy-friendly options are marked on the app map."
+            },
+            "weather": {
+                "headline": "PACK FOR TRANSYLVANIA",
+                "tip": {
+                    "layers": "Bring layers. Warm days, cold nights.",
+                    "sunscreen": "Sunscreen. The sun bites in July.",
+                    "noGlass": "No glass bottles anywhere on site."
+                }
+            },
+            "share": {
+                "headline": "TELL THE GROUP",
+                "body": "Your plan is saved. Share it with the crew and see who's in.",
+                "copyCta": "COPY LINK",
+                "copied": "LINK COPIED",
+                "shareCta": "Share",
+                "replayCta": "Watch again",
+                "shareText": "Check out my Electric Castle 2026 plan. See you at the castle?"
+            }
+        }
     },
     "auth": {
         "login": {

@@ -76,6 +76,45 @@ export class EcModalComponent {
                 this.restoreFocus();
             }
         });
+
+        // Track the visual viewport so the modal "squishes" when the mobile
+        // soft keyboard opens, instead of being pushed off-screen.
+        //
+        // Two metrics matter, not just height:
+        //  - visualViewport.height  → keyboard shrinks the visible area
+        //  - visualViewport.offsetTop → iOS auto-scrolls the focused input
+        //    into view, which shifts the visual viewport DOWN inside the
+        //    layout viewport. The backdrop must follow that offset, or it
+        //    ends up positioned above the visible area.
+        //
+        // `window.visualViewport` is the standardised API (iOS 13+,
+        // Chrome 61+, Firefox 91+). `100dvh` alone is not reliable across
+        // iOS versions.
+        effect((onCleanup) => {
+            if (!this.open()) return;
+
+            const vv = window.visualViewport;
+            if (!vv) {
+                this.applyVisualMetrics(0, window.innerHeight);
+                return;
+            }
+
+            const handler = () => this.applyVisualMetrics(vv.offsetTop, vv.height);
+            handler();
+            vv.addEventListener('resize', handler);
+            vv.addEventListener('scroll', handler);
+
+            onCleanup(() => {
+                vv.removeEventListener('resize', handler);
+                vv.removeEventListener('scroll', handler);
+            });
+        });
+    }
+
+    private applyVisualMetrics(top: number, height: number): void {
+        const el = this.hostElement.nativeElement;
+        el.style.setProperty('--ec-modal-vt', `${top}px`);
+        el.style.setProperty('--ec-modal-vh', `${height}px`);
     }
 
     protected onBackdropMouseDown(event: MouseEvent): void {

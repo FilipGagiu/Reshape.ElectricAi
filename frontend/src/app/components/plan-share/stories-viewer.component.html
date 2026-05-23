@@ -1,0 +1,84 @@
+<div
+    #stage
+    class="ec-stories"
+    (pointerdown)="onPointerDown($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerCancel()"
+>
+    @if (state() === 'loading') {
+        <div class="ec-stories__placeholder" aria-live="polite">
+            <span class="ec-stories__spinner"></span>
+        </div>
+    } @else if (state() === 'not-found') {
+        <div class="ec-stories__placeholder ec-stories__placeholder--centered">
+            <i class="pi pi-question-circle ec-stories__placeholder-icon" aria-hidden="true"></i>
+            <h2 class="ec-stories__placeholder-title">
+                {{ 'plan.story.notFound.title' | transloco }}
+            </h2>
+            <p class="ec-stories__placeholder-body">
+                {{ 'plan.story.notFound.body' | transloco }}
+            </p>
+            <button type="button" class="ec-stories__placeholder-cta" (click)="onClose()">
+                {{ 'plan.story.notFound.cta' | transloco }}
+            </button>
+        </div>
+    } @else if (currentSlide() !== null) {
+        <app-story-progress
+            class="ec-stories__progress"
+            [count]="slideCount()"
+            [currentIndex]="currentIndex()"
+            [progressFraction]="progressFraction()"
+        />
+
+        <div class="ec-stories__slide" role="region" [attr.aria-label]="'Slide ' + (currentIndex() + 1) + ' of ' + slideCount()">
+            @switch (currentSlide()!.type) {
+                @case ('welcome') {
+                    <app-welcome-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('transport') {
+                    <app-transport-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('sleep') {
+                    <app-sleep-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('music') {
+                    <app-music-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('budget') {
+                    <app-budget-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('food') {
+                    <app-food-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('weather') {
+                    <app-weather-slide [slide]="$any(currentSlide())" />
+                }
+                @case ('share') {
+                    <app-share-slide
+                        [slide]="$any(currentSlide())"
+                        (replay)="onReplay()"
+                    />
+                }
+            }
+        </div>
+
+        <button
+            type="button"
+            class="ec-stories__close"
+            [attr.aria-label]="'plan.story.close' | transloco"
+            (click)="onClose()"
+        >
+            <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+
+        <span class="ec-stories__brand" aria-hidden="true">
+            <span class="ec-stories__brand-letters">EC</span>
+        </span>
+
+        @if (paused()) {
+            <div class="ec-stories__pause" aria-live="polite">
+                <i class="pi pi-pause ec-stories__pause-icon" aria-hidden="true"></i>
+            </div>
+        }
+    }
+</div>

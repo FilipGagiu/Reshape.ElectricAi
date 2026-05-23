@@ -1,0 +1,107 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { TranslocoModule } from '@jsverse/transloco';
+
+import { PlanFoodSlide } from '../plan-share.model';
+
+@Component({
+    selector: 'app-food-slide',
+    imports: [TranslocoModule],
+    template: `
+        <div class="ec-slide">
+            <h1 class="ec-slide__headline">
+                {{ 'plan.story.food.headline' | transloco }}
+            </h1>
+            <span class="ec-slide__accent" aria-hidden="true"></span>
+
+            @if (slide().cuisines.length > 0) {
+                <div class="ec-slide__chips">
+                    @for (cuisine of slide().cuisines; track cuisine) {
+                        <span class="ec-slide__chip">
+                            {{ 'plan.story.food.cuisine.' + cuisine | transloco }}
+                        </span>
+                    }
+                </div>
+                <p class="ec-slide__body">
+                    {{ 'plan.story.food.body' | transloco }}
+                </p>
+            } @else {
+                <p class="ec-slide__body">
+                    {{ 'plan.story.food.fallback' | transloco }}
+                </p>
+            }
+
+            @if (slide().allergies.length > 0) {
+                <p class="ec-slide__note">
+                    {{ 'plan.story.food.allergyNote' | transloco }}
+                </p>
+            }
+        </div>
+    `,
+    styles: `
+        :host {
+            display: contents;
+        }
+        .ec-slide {
+            position: absolute;
+            inset: 0;
+            background-color: var(--ec-dark-navy);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-6);
+            gap: var(--space-4);
+            text-align: center;
+        }
+        .ec-slide__headline {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            line-height: 1.1;
+            color: var(--ec-white);
+        }
+        .ec-slide__accent {
+            display: block;
+            width: 64px;
+            height: 2px;
+            background-color: var(--ec-red);
+        }
+        .ec-slide__chips {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--space-2);
+            margin-top: var(--space-4);
+        }
+        .ec-slide__chip {
+            padding: var(--space-2) var(--space-4);
+            background-color: transparent;
+            color: var(--ec-yellow);
+            border: 1px solid var(--ec-yellow);
+            border-radius: var(--radius-none);
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .ec-slide__body {
+            margin: var(--space-4) 0 0;
+            font-size: 15px;
+            line-height: 1.55;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 340px;
+        }
+        .ec-slide__note {
+            margin: var(--space-3) 0 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+    `,
+    changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FoodSlideComponent {
+    readonly slide = input.required<PlanFoodSlide>();
+}
