@@ -21,7 +21,8 @@
       "Read(//usr/share/postgresql/**)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "Bash(dotnet add *)"
+      "Bash(dotnet add *)",
+      "Bash(grep -v \"^$\")"
     ]
   }
 }

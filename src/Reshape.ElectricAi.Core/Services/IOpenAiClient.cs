@@ -13,4 +13,11 @@ public interface IOpenAiClient
         double? temperature,
         CancellationToken cancellationToken)
         where T : class;
+
+    Task<LlmTextResult> CompleteFreeTextAsync(
+        string systemPrompt,
+        string userPrompt,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken);
 }
