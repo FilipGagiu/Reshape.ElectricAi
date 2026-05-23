@@ -1,170 +1,249 @@
-<section class="flex flex-col">
+<section *transloco="let t" class="live-feed flex min-h-full flex-col">
     <header
-        class="live-feed-header bg-surface-50 dark:bg-surface-950 border-surface-200 dark:border-surface-700 sticky z-10 flex flex-col gap-2 border-b px-4 pt-4 pb-3"
+        class="live-feed-header sticky z-[var(--z-sticky)] flex items-center gap-3 px-4"
+        style="background-color: var(--ec-red); height: var(--space-14)"
     >
-        <div class="flex items-baseline justify-between">
-            <h1 class="text-surface-900 dark:text-surface-0 text-2xl leading-none font-bold tracking-tight">Live feed</h1>
-            <span class="text-surface-500 dark:text-surface-400 text-xs">Bonțida · Electric Castle</span>
-        </div>
-        <button
-            type="button"
-            (click)="triggerDemoNotification()"
-            [disabled]="demoArmed()"
-            class="bg-primary-500 text-surface-0 hover:bg-primary-600 disabled:bg-primary-400 flex items-center justify-center gap-2 self-start px-3 py-1.5 text-xs font-semibold tracking-wide uppercase transition disabled:cursor-not-allowed"
+        <div
+            class="flex shrink-0 items-center justify-center font-extrabold tracking-tight text-white italic"
+            style="
+                background-color: var(--ec-red);
+                width: 32px;
+                height: 24px;
+                border: 1px solid rgba(255, 255, 255, 0.0);
+                border-radius: var(--radius-sm);
+                box-shadow: var(--shadow-glow-red);
+                font-size: 14px;
+            "
+            aria-label="Electric Castle"
         >
-            <i class="pi pi-bell"></i>
-            @if (demoArmed()) {
-                <span>Incoming in 5s…</span>
-            } @else {
-                <span>Send demo notification</span>
-            }
-        </button>
+            EC
+        </div>
+        <div class="flex min-w-0 flex-1 flex-col leading-tight">
+            <span
+                class="truncate font-bold tracking-[0.1em] text-white uppercase"
+                style="font-size: var(--type-label-size, 11px)"
+                >{{ t('liveFeed.title') }}</span
+            >
+            <span class="truncate text-[11px] text-white/70">{{ t('liveFeed.subtitle') }}</span>
+        </div>
+        <div class="flex items-center gap-2" aria-live="polite">
+            <span
+                class="inline-block"
+                style="
+                    width: 8px;
+                    height: 8px;
+                    background-color: {{ isOnline() ? 'var(--ec-yellow)' : 'var(--ec-warning)' }};
+                "
+            ></span>
+            <span
+                class="font-bold tracking-[0.1em] text-white uppercase"
+                style="font-size: 11px"
+                >{{ isOnline() ? t('liveFeed.status.live') : t('liveFeed.status.offline') }}</span
+            >
+        </div>
     </header>
 
-    <ul class="flex flex-col gap-3 px-3 pb-4">
-        @for (item of feed(); track trackById($index, item)) {
-            <li>
-                @switch (item.kind) {
-                    @case (FeedItemKind.NowPlaying) {
-                        <article
-                            class="bg-primary-500 text-surface-0 flex flex-col gap-2 p-4 shadow-sm"
-                        >
-                            <div class="flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                                <span class="inline-block h-2 w-2 animate-pulse bg-white"></span>
-                                <span>On stage now</span>
-                                <span class="opacity-80">· {{ clock(item.startsAt) }} – {{ clock(item.endsAt) }}</span>
-                            </div>
-                            <div class="text-2xl leading-tight font-extrabold">{{ item.artist }}</div>
-                            <div class="text-sm opacity-90">{{ item.stage }}</div>
-                        </article>
-                    }
+    @if (!isOnline()) {
+        <div
+            class="flex items-center gap-2 px-4 py-2 text-white/80"
+            style="background-color: var(--ec-dark-navy); font-size: 13px"
+        >
+            <span
+                class="inline-block"
+                style="width: 6px; height: 6px; background-color: var(--ec-warning)"
+            ></span>
+            <span>{{ t('liveFeed.status.offlineHint') }}</span>
+        </div>
+    }
 
-                    @case (FeedItemKind.UpNext) {
-                        <article
-                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-center gap-3 border p-4"
-                        >
-                            <div class="bg-primary-500/10 text-primary-600 dark:text-primary-400 flex h-12 w-12 shrink-0 items-center justify-center">
-                                <i class="pi pi-clock text-xl!"></i>
-                            </div>
-                            <div class="flex min-w-0 flex-1 flex-col">
-                                <div class="text-surface-500 dark:text-surface-400 text-xs font-medium tracking-wide uppercase">
-                                    Up next · {{ futureLabel(item.startsAt) }}
-                                </div>
-                                <div class="text-surface-900 dark:text-surface-0 truncate text-base font-semibold">
-                                    {{ item.artist }}
-                                </div>
-                                <div class="text-surface-600 dark:text-surface-300 truncate text-sm">
-                                    {{ item.stage }} · {{ clock(item.startsAt) }}
-                                </div>
-                            </div>
-                        </article>
-                    }
-
-                    @case (FeedItemKind.Alert) {
-                        <article
-                            class="flex items-start gap-3 border-l-4 p-4"
-                            [class.bg-yellow-50]="item.level === AlertLevel.Warning"
-                            [class.dark:bg-yellow-950]="item.level === AlertLevel.Warning"
-                            [class.border-yellow-500]="item.level === AlertLevel.Warning"
-                            [class.bg-red-50]="item.level === AlertLevel.Danger"
-                            [class.dark:bg-red-950]="item.level === AlertLevel.Danger"
-                            [class.border-red-500]="item.level === AlertLevel.Danger"
-                            [class.bg-blue-50]="item.level === AlertLevel.Info"
-                            [class.dark:bg-blue-950]="item.level === AlertLevel.Info"
-                            [class.border-blue-500]="item.level === AlertLevel.Info"
-                        >
-                            <i
-                                class="pi {{ item.icon }} mt-0.5 text-xl!"
-                                [class.text-yellow-600]="item.level === AlertLevel.Warning"
-                                [class.text-red-600]="item.level === AlertLevel.Danger"
-                                [class.text-blue-600]="item.level === AlertLevel.Info"
-                            ></i>
-                            <div class="flex min-w-0 flex-1 flex-col gap-1">
-                                <div class="text-surface-900 dark:text-surface-0 text-sm font-semibold">
-                                    {{ item.title }}
-                                </div>
-                                <div class="text-surface-700 dark:text-surface-300 text-sm">{{ item.body }}</div>
-                                <div class="text-surface-500 dark:text-surface-400 text-xs">
-                                    {{ pastLabel(item.publishedAt) }}
-                                </div>
-                            </div>
-                        </article>
-                    }
-
-                    @case (FeedItemKind.ScheduleChange) {
-                        <article
-                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex flex-col gap-2 border p-4"
-                        >
-                            <div class="text-primary-500 flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
-                                <i class="pi pi-refresh"></i>
-                                <span>Schedule change</span>
-                            </div>
-                            <div class="text-surface-900 dark:text-surface-0 text-base font-semibold">
-                                {{ item.artist }} moved to {{ item.newStage }}
-                            </div>
-                            <div class="text-surface-600 dark:text-surface-300 text-sm">
-                                New time: {{ clock(item.newTime) }} · {{ futureLabel(item.newTime) }}
-                            </div>
-                            @if (item.reason) {
-                                <div class="text-surface-500 dark:text-surface-400 text-xs italic">
-                                    {{ item.reason }}
-                                </div>
-                            }
-                        </article>
-                    }
-
-                    @case (FeedItemKind.Photo) {
-                        <article class="bg-surface-0 dark:bg-surface-900 flex flex-col">
-                            <div class="aspect-[16/10] w-full bg-gradient-to-br {{ item.accent }}"></div>
-                            <div class="border-surface-200 dark:border-surface-700 flex flex-col gap-1 border border-t-0 p-3">
-                                <div class="text-surface-900 dark:text-surface-0 text-sm">{{ item.caption }}</div>
-                                <div class="text-surface-500 dark:text-surface-400 text-xs">
-                                    {{ item.author }} · {{ pastLabel(item.publishedAt) }}
-                                </div>
-                            </div>
-                        </article>
-                    }
-
-                    @case (FeedItemKind.Info) {
-                        <article
-                            class="bg-surface-50 dark:bg-surface-900/50 border-surface-200 dark:border-surface-700 flex items-start gap-3 border p-4"
-                        >
-                            <i class="pi {{ item.icon }} text-surface-500 mt-0.5 text-xl!"></i>
-                            <div class="flex min-w-0 flex-1 flex-col gap-1">
-                                <div class="text-surface-900 dark:text-surface-0 text-sm font-semibold">
-                                    {{ item.title }}
-                                </div>
-                                <div class="text-surface-700 dark:text-surface-300 text-sm">{{ item.body }}</div>
-                                <div class="text-surface-500 dark:text-surface-400 text-xs">
-                                    {{ pastLabel(item.publishedAt) }}
-                                </div>
-                            </div>
-                        </article>
-                    }
-
-                    @case (FeedItemKind.Social) {
-                        <article
-                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-center gap-3 border p-4"
-                        >
-                            <div class="bg-primary-500 text-surface-0 flex h-10 w-10 shrink-0 items-center justify-center text-sm font-bold">
-                                {{ item.primaryUser.charAt(0) }}
-                            </div>
-                            <div class="flex min-w-0 flex-1 flex-col">
-                                <div class="text-surface-900 dark:text-surface-0 text-sm">
-                                    <span class="font-semibold">{{ item.primaryUser }}</span>
-                                    @if (item.othersCount > 0) {
-                                        <span> & {{ item.othersCount }} others</span>
-                                    }
-                                    <span> are at {{ item.location }}</span>
-                                </div>
-                                <div class="text-surface-500 dark:text-surface-400 text-xs">
-                                    {{ pastLabel(item.publishedAt) }}
-                                </div>
-                            </div>
-                        </article>
-                    }
-                }
-            </li>
+    <nav
+        class="live-feed-filters sticky z-[calc(var(--z-sticky)-1)] flex gap-2 overflow-x-auto px-4 py-3"
+        style="
+            background-color: var(--ec-dark-navy);
+            top: calc(env(safe-area-inset-top) + var(--space-14));
+        "
+        aria-label="Feed filters"
+    >
+        @for (filter of filterOrder; track trackFilter($index, filter)) {
+            <button
+                type="button"
+                (click)="selectFilter(filter)"
+                [attr.aria-pressed]="selectedFilter() === filter"
+                class="filter-chip shrink-0 px-3 font-bold tracking-[0.06em] uppercase transition-colors"
+                style="
+                    height: 32px;
+                    font-size: 11px;
+                    border-radius: var(--radius-none);
+                    transition-duration: var(--duration-base);
+                "
+                [style.background-color]="
+                    selectedFilter() === filter ? 'var(--ec-yellow)' : 'transparent'
+                "
+                [style.color]="
+                    selectedFilter() === filter ? 'var(--ec-dark-navy)' : 'var(--ec-white)'
+                "
+                [style.border]="
+                    selectedFilter() === filter
+                        ? '1px solid var(--ec-yellow)'
+                        : '1px solid rgba(255, 255, 255, 0.3)'
+                "
+            >
+                {{ t(filterLabelKey[filter]) }}
+            </button>
         }
-    </ul>
+    </nav>
+
+    <div
+        class="flex flex-1 flex-col gap-3 px-4 pt-3 pb-24"
+        style="background-color: var(--ec-dark-navy)"
+    >
+        @if (pinned(); as capsule) {
+            <article
+                class="flex flex-col gap-2 p-4 text-white"
+                style="
+                    box-shadow: var(--shadow-2);
+                    border-radius: var(--radius-none);
+                "
+                [style.backgroundColor]="
+                    capsule.kind === PinnedKind.Safety ? 'var(--ec-red)' : 'var(--ec-dark-navy)'
+                "
+                [style.borderTop]="
+                    capsule.kind === PinnedKind.Safety
+                        ? 'none'
+                        : '3px solid ' + capsule.meta.accent
+                "
+            >
+                <div class="flex items-center gap-2">
+                    <i
+                        class="pi {{ capsule.meta.icon }}"
+                        style="font-size: 18px"
+                        [style.color]="
+                            capsule.kind === PinnedKind.Safety ? 'var(--ec-white)' : capsule.meta.accent
+                        "
+                    ></i>
+                    <span
+                        class="font-bold tracking-[0.1em] uppercase"
+                        style="font-size: 11px"
+                        [style.color]="
+                            capsule.kind === PinnedKind.Safety ? 'var(--ec-white)' : capsule.meta.accent
+                        "
+                    >
+                        {{ t(capsule.eyebrowKey) }}
+                    </span>
+                </div>
+                <div class="font-bold leading-tight" style="font-size: 17px; line-height: 1.3">
+                    {{ capsule.title }}
+                </div>
+                <div class="text-white/70" style="font-size: 13px">
+                    {{ capsule.subtitle }}
+                </div>
+                <button
+                    type="button"
+                    (click)="openPinned()"
+                    class="mt-1 self-start font-bold tracking-[0.1em] uppercase transition-colors"
+                    style="
+                        height: 36px;
+                        padding: 0 var(--space-3);
+                        font-size: 11px;
+                        background-color: transparent;
+                        border-radius: var(--radius-none);
+                        transition-duration: var(--duration-base);
+                    "
+                    [style.color]="
+                        capsule.kind === PinnedKind.Safety ? 'var(--ec-yellow)' : 'var(--ec-yellow)'
+                    "
+                    [style.border]="'2px solid var(--ec-yellow)'"
+                >
+                    {{ t(capsule.ctaLabelKey) }}
+                </button>
+            </article>
+        }
+
+        @if (emptyStateKey(); as key) {
+            <div class="mx-auto flex flex-col items-center gap-3 py-12 text-center">
+                <i
+                    class="pi pi-bell-slash"
+                    style="font-size: 48px; color: var(--ec-gray-mid)"
+                ></i>
+                <h2
+                    class="font-bold text-white"
+                    style="font-size: 18px; line-height: 1.3"
+                >
+                    {{ t(key + '.title') }}
+                </h2>
+                <p class="text-white/70" style="font-size: 13px; max-width: 280px">
+                    {{ t(key + '.body') }}
+                </p>
+            </div>
+        }
+
+        @for (item of visibleItems(); track trackItem($index, item)) {
+            <article
+                [id]="'feed-entry-' + item.entry.id"
+                class="feed-card flex flex-col gap-2 transition-shadow"
+                [class.feed-card--urgent]="item.meta.urgency === FeedUrgency.High"
+                style="
+                    background-color: var(--ec-off-white);
+                    color: var(--ec-dark-navy);
+                    box-shadow: var(--shadow-1);
+                    border-radius: var(--radius-none);
+                "
+                [style.borderLeft]="
+                    item.meta.urgency === FeedUrgency.High
+                        ? '6px solid ' + item.meta.accent
+                        : '4px solid ' + item.meta.accent
+                "
+                [style.padding]="
+                    item.meta.urgency === FeedUrgency.High
+                        ? 'var(--space-4) var(--space-4) var(--space-4) var(--space-3)'
+                        : 'var(--space-4) var(--space-4) var(--space-4) var(--space-3)'
+                "
+            >
+                <button
+                    type="button"
+                    (click)="toggleExpanded(item.entry.id)"
+                    [attr.aria-expanded]="item.isExpanded"
+                    [attr.aria-label]="
+                        item.isExpanded ? t('liveFeed.card.collapse') : t('liveFeed.card.expand')
+                    "
+                    class="flex w-full cursor-pointer flex-col gap-2 text-left"
+                    style="background: transparent; border: none; padding: 0; color: inherit"
+                >
+                    <div class="flex items-center gap-2">
+                        <i
+                            class="pi {{ item.meta.icon }}"
+                            [style.color]="item.meta.accent"
+                            [style.fontSize]="
+                                item.meta.urgency === FeedUrgency.High ? '18px' : '16px'
+                            "
+                        ></i>
+                        <span
+                            class="font-bold tracking-[0.06em] uppercase"
+                            [style.color]="item.meta.accent"
+                            style="font-size: 11px"
+                        >
+                            {{ item.categoryLabel }}
+                        </span>
+                        <span class="flex-1"></span>
+                        <span style="color: var(--ec-gray-mid); font-size: 12px">
+                            {{ item.relativeTime }}
+                        </span>
+                    </div>
+                    <h3
+                        class="font-bold leading-snug"
+                        style="font-size: 16px; line-height: 1.3"
+                    >
+                        {{ item.entry.title }}
+                    </h3>
+                    <p
+                        class="feed-card__body leading-relaxed"
+                        [class.feed-card__body--collapsed]="!item.isExpanded"
+                        style="font-size: 14px; color: rgba(15, 20, 40, 0.85)"
+                    >
+                        {{ item.entry.body }}
+                    </p>
+                </button>
+            </article>
+        }
+    </div>
 </section>

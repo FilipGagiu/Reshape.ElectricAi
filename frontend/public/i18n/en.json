@@ -6,7 +6,73 @@
     },
     "liveFeed": {
         "title": "Live feed",
-        "placeholder": "Real-time updates will appear here."
+        "subtitle": "Bonțida · Electric Castle",
+        "status": {
+            "live": "LIVE",
+            "offline": "OFFLINE",
+            "offlineHint": "Connection lost. Retrying..."
+        },
+        "filter": {
+            "all": "All",
+            "urgent": "Urgent",
+            "schedule": "Schedule",
+            "gettingAround": "Getting around",
+            "general": "General"
+        },
+        "category": {
+            "general": "General",
+            "transport": "Transport",
+            "accommodation": "Stay",
+            "food": "Food & Drink",
+            "music": "Music",
+            "lineup": "Line-Up",
+            "activity": "Activity",
+            "weather": "Weather",
+            "rules": "Rules",
+            "ticket": "Tickets",
+            "safety": "Safety",
+            "health": "Health"
+        },
+        "pinned": {
+            "eyebrow": {
+                "safety": "HEADS UP",
+                "weather": "WEATHER",
+                "transport": "DON'T MISS",
+                "artist": "FOR YOU"
+            },
+            "cta": {
+                "seeDetails": "SEE DETAILS",
+                "getThere": "GET THERE"
+            }
+        },
+        "card": {
+            "expand": "Show more",
+            "collapse": "Show less"
+        },
+        "empty": {
+            "personalized": {
+                "title": "Nothing here for your artists yet.",
+                "body": "Updates show up the moment organisers post them."
+            },
+            "urgent": {
+                "title": "All quiet on the urgent front.",
+                "body": "We'll surface anything that needs attention."
+            },
+            "filtered": {
+                "title": "Nothing in this filter.",
+                "body": "Try a different chip or wait a few minutes."
+            },
+            "firstLoad": {
+                "title": "The feed is warming up.",
+                "body": "Check back in a moment."
+            }
+        },
+        "time": {
+            "justNow": "just now",
+            "minutesAgo": "{{count}}m ago",
+            "hoursAgo": "{{count}}h ago",
+            "daysAgo": "{{count}}d ago"
+        }
     },
     "questions": {
         "title": "Questions and chat",
@@ -102,17 +168,6 @@
                 "headline": "YOUR LINEUP",
                 "bodySuffix": "Plus everything {{genres}} that the Main Stage and Hangar have to offer."
             },
-            "budget": {
-                "headline": "ALL IN",
-                "suffix": "Approximate, in RON",
-                "line": {
-                    "ticket": "Ticket",
-                    "sleep": "Sleep",
-                    "transport": "Transport",
-                    "food": "Food",
-                    "chaos": "Chaos fund"
-                }
-            },
             "food": {
                 "headline": "FOOD FOR THE FESTIVAL",
                 "cuisine": {
@@ -129,12 +184,23 @@
                 "fallback": "EC Village has 60+ food vendors. From sarmale to sushi. Come hungry.",
                 "allergyNote": "Allergy-friendly options are marked on the app map."
             },
-            "weather": {
-                "headline": "PACK FOR TRANSYLVANIA",
-                "tip": {
-                    "layers": "Bring layers. Warm days, cold nights.",
-                    "sunscreen": "Sunscreen. The sun bites in July.",
-                    "noGlass": "No glass bottles anywhere on site."
+            "activityVibe": {
+                "headline": "BEYOND THE MUSIC",
+                "body": "The in-between moments make the festival. Bring your curiosity.",
+                "activity": {
+                    "yoga": "Yoga",
+                    "workshops": "Workshops",
+                    "artTours": "Art tours",
+                    "lakeSwim": "Lake swim",
+                    "silentDisco": "Silent disco",
+                    "foodTour": "Food tour",
+                    "wellness": "Wellness",
+                    "castleTour": "Castle tour"
+                },
+                "vibe": {
+                    "curiousAndChill": "Curious & chill",
+                    "partyAnimal": "Party animal",
+                    "fullSend": "Full send"
                 }
             },
             "share": {

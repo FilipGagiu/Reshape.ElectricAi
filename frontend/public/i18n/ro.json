@@ -6,7 +6,73 @@
     },
     "liveFeed": {
         "title": "Feed live",
-        "placeholder": "Actualizările în timp real apar aici."
+        "subtitle": "Bonțida · Electric Castle",
+        "status": {
+            "live": "LIVE",
+            "offline": "OFFLINE",
+            "offlineHint": "Conexiune pierdută. Reîncercăm..."
+        },
+        "filter": {
+            "all": "Toate",
+            "urgent": "Urgent",
+            "schedule": "Program",
+            "gettingAround": "Transport",
+            "general": "General"
+        },
+        "category": {
+            "general": "General",
+            "transport": "Transport",
+            "accommodation": "Cazare",
+            "food": "Mâncare",
+            "music": "Muzică",
+            "lineup": "Line-Up",
+            "activity": "Activitate",
+            "weather": "Vreme",
+            "rules": "Regulament",
+            "ticket": "Bilete",
+            "safety": "Siguranță",
+            "health": "Sănătate"
+        },
+        "pinned": {
+            "eyebrow": {
+                "safety": "ATENȚIE",
+                "weather": "VREME",
+                "transport": "NU RATA",
+                "artist": "PENTRU TINE"
+            },
+            "cta": {
+                "seeDetails": "VEZI DETALII",
+                "getThere": "MERGI ACOLO"
+            }
+        },
+        "card": {
+            "expand": "Vezi mai mult",
+            "collapse": "Vezi mai puțin"
+        },
+        "empty": {
+            "personalized": {
+                "title": "Nimic pentru artiștii tăi deocamdată.",
+                "body": "Actualizările apar imediat ce organizatorii le publică."
+            },
+            "urgent": {
+                "title": "Totul e liniștit pe frontul urgent.",
+                "body": "Scoatem la suprafață orice are nevoie de atenție."
+            },
+            "filtered": {
+                "title": "Nimic la filtrul ăsta.",
+                "body": "Încearcă alt filtru sau mai așteaptă câteva minute."
+            },
+            "firstLoad": {
+                "title": "Feed-ul se pregătește.",
+                "body": "Mai verifică în câteva momente."
+            }
+        },
+        "time": {
+            "justNow": "acum",
+            "minutesAgo": "acum {{count}} min",
+            "hoursAgo": "acum {{count}} h",
+            "daysAgo": "acum {{count}} z"
+        }
     },
     "questions": {
         "title": "Întrebări și chat",
@@ -101,17 +167,6 @@
                 "headline": "LINE-UP-UL TĂU",
                 "bodySuffix": "Plus tot ce au de oferit scenele pentru {{genres}}."
             },
-            "budget": {
-                "headline": "TOT",
-                "suffix": "Aproximativ, în RON",
-                "line": {
-                    "ticket": "Bilet",
-                    "sleep": "Cazare",
-                    "transport": "Transport",
-                    "food": "Mâncare",
-                    "chaos": "Fond de haos"
-                }
-            },
             "food": {
                 "headline": "MÂNCARE PENTRU FESTIVAL",
                 "cuisine": {
@@ -128,12 +183,23 @@
                 "fallback": "EC Village are peste 60 de food vendori. De la sarmale la sushi. Vino cu poftă.",
                 "allergyNote": "Opțiunile pentru alergii sunt marcate pe harta din aplicație."
             },
-            "weather": {
-                "headline": "PREGĂTEȘTE-TE PENTRU TRANSILVANIA",
-                "tip": {
-                    "layers": "Adu straturi. Zile calde, nopți reci.",
-                    "sunscreen": "Cremă de soare. Soarele mușcă în iulie.",
-                    "noGlass": "Nicio sticlă pe teren."
+            "activityVibe": {
+                "headline": "DINCOLO DE MUZICĂ",
+                "body": "Și momentele dintre seturi contează. Adu-ți curiozitatea.",
+                "activity": {
+                    "yoga": "Yoga",
+                    "workshops": "Workshopuri",
+                    "artTours": "Tururi de artă",
+                    "lakeSwim": "Înot la lac",
+                    "silentDisco": "Silent disco",
+                    "foodTour": "Tur culinar",
+                    "wellness": "Wellness",
+                    "castleTour": "Tur al castelului"
+                },
+                "vibe": {
+                    "curiousAndChill": "Curios și relaxat",
+                    "partyAnimal": "Animal de petrecere",
+                    "fullSend": "La maxim"
                 }
             },
             "share": {

@@ -14,6 +14,17 @@ const ICON_BY_KIND: Record<AccommodationKind, string> = {
     imports: [TranslocoModule],
     template: `
         <div class="ec-slide">
+            <video
+                class="ec-slide__video"
+                src="/media/sliders/slide_3_bg.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                disablepictureinpicture
+                aria-hidden="true"
+            ></video>
+            <span class="ec-slide__scrim" aria-hidden="true"></span>
             <h1 class="ec-slide__headline">
                 {{ 'plan.story.sleep.headline' | transloco }}
             </h1>
@@ -44,6 +55,35 @@ const ICON_BY_KIND: Record<AccommodationKind, string> = {
             padding: var(--space-12) var(--space-6);
             gap: var(--space-4);
             text-align: center;
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .ec-slide__video {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: blur(3px);
+            transform: scale(1.04);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .ec-slide__scrim {
+            position: absolute;
+            inset: 0;
+            background-color: rgb(32 115 12 / 60%);
+            z-index: 1;
+            pointer-events: none;
+            filter: contrast(5);
+        }
+        .ec-slide__headline,
+        .ec-slide__accent,
+        .ec-slide__icon,
+        .ec-slide__location,
+        .ec-slide__body {
+            position: relative;
+            z-index: 2;
         }
         .ec-slide__headline {
             margin: 0;
