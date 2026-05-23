@@ -75,7 +75,7 @@ public class FeedCrudTests(PostgresFixture postgres) : IAsyncLifetime
             .Should().Be(HttpStatusCode.Unauthorized);
 
     [Fact]
-    public async Task SoftDeleteEntryById_WhenEntryExistsAsOrganizer_RemovesFromList()
+    public async Task DeleteEntryById_WhenEntryExistsAsOrganizer_RemovesFromList()
     {
         var org = OrganizerClient();
         var publish = await org.PostAsJsonAsync("/api/v1/feed",

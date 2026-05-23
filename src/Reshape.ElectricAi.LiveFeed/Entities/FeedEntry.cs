@@ -12,7 +12,6 @@ public class FeedEntry
     public Guid PublishedByUserId { get; set; }
     public DateTime PublishedUtc { get; set; }
     public DateTime? UpdatedUtc { get; set; }
-    public DateTime? DeletedUtc { get; set; }
 
     public List<FeedEntryArtist> TargetArtists { get; set; } = [];
     public List<FeedEntryGenre> TargetGenres { get; set; } = [];

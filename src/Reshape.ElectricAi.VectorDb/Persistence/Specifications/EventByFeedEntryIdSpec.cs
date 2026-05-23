@@ -5,9 +5,9 @@ namespace Reshape.ElectricAi.VectorDb.Persistence.Specifications;
 
 public sealed class EventByFeedEntryIdSpec : Specification<EventEntry>
 {
-    public EventByFeedEntryIdSpec(Guid feedEntryId)
+    public EventByFeedEntryIdSpec(Guid feedEntryId, bool asNoTracking = true)
     {
         Where(e => e.FeedEntryId == feedEntryId);
-        EnableNoTracking();
+        if (asNoTracking) EnableNoTracking();
     }
 }

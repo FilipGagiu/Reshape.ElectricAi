@@ -17,7 +17,11 @@ public sealed class ConversationController(IConversationService conversationServ
 {
     /// <summary>Ask the Electric Castle AI assistant a question.</summary>
     /// <remarks>
-    /// Performs parallel KNN search across documentation, FAQ, and event vector stores.
+    /// Performs KNN search across documentation, FAQ, and event vector stores.
+    /// If <c>userContext</c> is provided on the request, only items whose category tags
+    /// overlap the context are considered — same semantics as <c>POST /api/v1/faq/search</c>,
+    /// applied uniformly to every retrieval source. Omit or pass <c>null</c> to search all
+    /// categories.
     /// Top results above the relevance threshold are fed as context to the language model.
     /// Returns a fallback message when no sufficiently relevant context is found.
     /// </remarks>

@@ -32,7 +32,7 @@ internal sealed class RecordingScopeFactory : IServiceScopeFactory
     {
         public Task<FeedEntryDto> PublishEntryAsync(Guid o, PublishFeedEntryCommand c, CancellationToken ct) => throw new NotSupportedException();
         public Task<FeedEntryDto> UpdateEntryByIdAsync(Guid id, UpdateFeedEntryCommand c, CancellationToken ct) => throw new NotSupportedException();
-        public Task SoftDeleteEntryByIdAsync(Guid id, CancellationToken ct) => throw new NotSupportedException();
+        public Task DeleteEntryByIdAsync(Guid id, CancellationToken ct) => throw new NotSupportedException();
         public Task<FeedEntryDto?> GetEntryByIdAsync(Guid id, CancellationToken ct) => throw new NotSupportedException();
         public Task<IReadOnlyList<FeedEntryDto>> ListRecentEntriesMatchingPrefsAsync(UserFeedPrefs p, Category? c, int take, CancellationToken ct) => Task.FromResult(result);
         public Task<IReadOnlyList<FeedEntryDto>> ListEntriesSinceEventIdMatchingPrefsAsync(string lastId, UserFeedPrefs p, int take, CancellationToken ct) => Task.FromResult(result);

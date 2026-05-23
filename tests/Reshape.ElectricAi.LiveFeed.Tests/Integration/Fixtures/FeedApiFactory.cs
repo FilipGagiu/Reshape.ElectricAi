@@ -9,12 +9,17 @@ using Reshape.ElectricAi.Core.Dtos.Auth;
 using Reshape.ElectricAi.Core.Enums;
 using Reshape.ElectricAi.Core.Services;
 using Reshape.ElectricAi.LiveFeed.Persistence;
+using Reshape.ElectricAi.VectorDb.Persistence;
 
 namespace Reshape.ElectricAi.LiveFeed.Tests.Integration.Fixtures;
 
-public sealed class FeedApiFactory(PostgresFixture postgres) : WebApplicationFactory<Program>
+public class FeedApiFactory(PostgresFixture postgres) : WebApplicationFactory<Program>
 {
     public const string TestSigningKey = "QmpiVmRhTGJZWmNkRlJ3WGV1S2pQa2hRcmRJZ09pTm5BYmNkMDEyMzQ1Njc4OTA";
+    // MUST match the production ChatOptions.EmbeddingDimensions default (1536) so the
+    // VectorDbContext model snapshot does not drift. Changing this triggers EF's
+    // PendingModelChangesWarning during migration on test host boot.
+    public const int TestEmbeddingDimensions = 1536;
 
     private readonly PostgresFixture _postgres = postgres;
 
@@ -53,9 +58,15 @@ public sealed class FeedApiFactory(PostgresFixture postgres) : WebApplicationFac
 
         builder.ConfigureTestServices(services =>
         {
-            var descriptor = services.Single(d => d.ServiceType == typeof(IUserPrefsProvider));
-            services.Remove(descriptor);
+            var prefsDescriptor = services.Single(d => d.ServiceType == typeof(IUserPrefsProvider));
+            services.Remove(prefsDescriptor);
             services.AddScoped<IUserPrefsProvider>(_ => FakePrefs);
+
+            // Swap the OpenAI-backed embedder for a deterministic fake so the test host
+            // does not need a real API key and so tests are reproducible.
+            var embedDescriptor = services.Single(d => d.ServiceType == typeof(IEmbeddingService));
+            services.Remove(embedDescriptor);
+            services.AddScoped<IEmbeddingService>(_ => new FakeEmbeddingService(TestEmbeddingDimensions));
         });
     }
 
@@ -70,6 +81,14 @@ public sealed class FeedApiFactory(PostgresFixture postgres) : WebApplicationFac
         // is already in place by the time this method runs.
         await db.Database.ExecuteSqlRawAsync(
             "TRUNCATE feed.feed_entries, feed.feed_entry_artists, feed.feed_entry_genres RESTART IDENTITY CASCADE;");
+    }
+
+    public async Task ResetVectorEventsAsync()
+    {
+        using var scope = Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
+        await db.Database.ExecuteSqlRawAsync(
+            "TRUNCATE vector.event_entries RESTART IDENTITY CASCADE;");
     }
 
     public HttpClient CreateClientForUser(Guid userId, UserRole role = UserRole.User, string email = "tester@example.com")

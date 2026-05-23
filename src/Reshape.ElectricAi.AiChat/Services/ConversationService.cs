@@ -122,12 +122,15 @@ internal sealed partial class ConversationService(
 
         // Sequential: all three searches share the same scoped VectorDbContext instance,
         // which does not support concurrent operations on the same connection.
+        // UserContext is forwarded identically into each filter so a caller's category
+        // map narrows retrieval the same way across documents, FAQ, and events
+        // (mirrors the POST /api/v1/faq/search semantics).
         var chunks = await vectorSearch.SearchDocumentsAsync(
-            new DocumentSearchFilter(request.QuestionText, TopK: topK), cancellationToken);
+            new DocumentSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
         var qas = await vectorSearch.SearchQuestionsAsync(
-            new QuestionSearchFilter(request.QuestionText, TopK: topK), cancellationToken);
+            new QuestionSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
         var events = await vectorSearch.SearchEventsAsync(
-            new EventSearchFilter(request.QuestionText, TopK: topK), cancellationToken);
+            new EventSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
 
         var merged = chunks.Select(c => new ScoredContext(c.Content, c.Score))
             .Concat(qas.Select(q => new ScoredContext(BuildQaText(q), q.QuestionScore)))
