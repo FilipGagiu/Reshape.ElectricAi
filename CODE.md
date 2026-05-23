@@ -187,8 +187,12 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 - Embedding model fixed to `text-embedding-3-small` (1536 dims). Changing the model is a **migration event**: re-embed every chunk + drop and rebuild the HNSW index. Do not change casually.
 - Chunker: token-aware via `Microsoft.ML.Tokenizers` cl100k_base. Target 400 tokens per chunk, 50-token overlap.
 - Ingest is **idempotent** via `vector.documents.ContentHash` (SHA-256 of normalized content). If hash unchanged → skip re-embedding for that document.
-- Retrieval: cosine similarity (`<=>` operator) on the HNSW index. Default top-K = 6. Caller passes a `SearchFilter` to constrain by `Source[]` and metadata.
-- `IVectorSearchService.SearchAsync` returns `RetrievedChunk { DocumentId, ChunkIndex, Text, Source, SourceRef, Score, Metadata }`. Score is 1 - cosine_distance.
+- Retrieval: cosine similarity (`<=>` operator) on the HNSW index. Default top-K = 6. Caller passes a per-domain filter record with optional `CategoryValues` for GIN-based pre-filtering.
+- `IVectorSearchService` exposes three domain-specific methods:
+  - `SearchDocumentsAsync` → `RetrievedChunk { DocumentId, DocumentTitle, ChunkIndex, Content, Score }`
+  - `SearchQuestionsAsync` → `RetrievedQA { QuestionText, Answers: RetrievedAnswer[], QuestionScore }`
+  - `SearchEventsAsync` → `RetrievedEvent { FeedEntryId, Title, TextRepresentation, EventUtc, Score }`
+- Score is `1 - cosine_distance` (higher = more similar).
 
 ## SSE (LiveFeed)
 

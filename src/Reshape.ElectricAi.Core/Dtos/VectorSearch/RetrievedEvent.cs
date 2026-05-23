@@ -4,5 +4,5 @@ public sealed record RetrievedEvent(
     Guid FeedEntryId,
     string Title,
     string TextRepresentation,
-    DateTime EventUtc,
+    DateTimeOffset EventUtc,
     float Score);

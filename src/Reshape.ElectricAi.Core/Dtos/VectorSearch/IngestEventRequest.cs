@@ -6,5 +6,5 @@ public sealed record IngestEventRequest(
     Guid FeedEntryId,
     string Title,
     string TextRepresentation,
-    DateTime EventUtc,
+    DateTimeOffset EventUtc,
     IReadOnlyDictionary<Category, IReadOnlyList<string>>? CategoryValues = null);
