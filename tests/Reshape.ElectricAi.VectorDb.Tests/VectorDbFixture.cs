@@ -25,6 +25,9 @@ public sealed class VectorDbFixture : IAsyncLifetime
         _connectionString = _postgres.GetConnectionString();
 
         await using var context = CreateContext();
+        // NOTE: EnsureCreatedAsync builds the schema from the runtime model — vector(TestDimensions=32).
+        // The production migration hardcodes vector(1536). Do NOT switch to MigrateAsync without first
+        // aligning the migration to the configured EmbeddingDimensions (CODE.md "Vector DB" section).
         await context.Database.EnsureCreatedAsync();
     }
 
