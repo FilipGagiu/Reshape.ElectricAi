@@ -9,6 +9,14 @@ public class UserPreferences
     public Accommodation? Accommodation { get; set; }
     public TransportMode? Transport { get; set; }
     public AgeGroup? AgeGroup { get; set; }
+
+    public string? Name { get; set; }
+    public string? Origin { get; set; }
+    public CrewKind? CrewKind { get; set; }
+    public short? CrewEstimatedSize { get; set; }
+    public string? AccommodationNote { get; set; }
+    public string? TransportNote { get; set; }
+
     public DateTime UpdatedUtc { get; set; }
 
     public User? User { get; set; }
@@ -17,4 +25,5 @@ public class UserPreferences
     public List<UserPreferenceActivity> Activities { get; set; } = [];
     public List<UserPreferenceArtist> Artists { get; set; } = [];
     public List<UserPreferenceCuisine> Cuisines { get; set; } = [];
+    public List<UserPreferenceVibeTag> VibeTags { get; set; } = [];
 }

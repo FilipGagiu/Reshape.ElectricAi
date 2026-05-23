@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Reshape.ElectricAi.Core.Services;
+using Reshape.ElectricAi.Core.Services.Itinerary;
 using Reshape.ElectricAi.Plans.Tests.Fakes;
 
 namespace Reshape.ElectricAi.Plans.Tests.Integration.Fixtures;
@@ -12,11 +13,25 @@ public sealed class AuthApiFactory(PostgresFixture postgres) : WebApplicationFac
     public const string TestSigningKey = "QmpiVmRhTGJZWmNkRlJ3WGV1S2pQa2hRcmRJZ09pTm5BYmNkMDEyMzQ1Njc4OTA";
 
     private FakeOpenAiClient? _fakeOpenAi;
+    private FakeVectorSearchService? _fakeVectorSearch;
+    private FakeEventLookupService? _fakeEventLookup;
 
     public FakeOpenAiClient WithFakeOpenAi()
     {
         _fakeOpenAi = new FakeOpenAiClient();
         return _fakeOpenAi;
+    }
+
+    public FakeVectorSearchService WithFakeVectorSearch()
+    {
+        _fakeVectorSearch = new FakeVectorSearchService();
+        return _fakeVectorSearch;
+    }
+
+    public FakeEventLookupService WithFakeEventLookup()
+    {
+        _fakeEventLookup = new FakeEventLookupService();
+        return _fakeEventLookup;
     }
 
     protected override IHost CreateHost(IHostBuilder builder)
@@ -56,16 +71,31 @@ public sealed class AuthApiFactory(PostgresFixture postgres) : WebApplicationFac
         builder.UseEnvironment("Testing");
         builder.ConfigureServices(services =>
         {
-            if (_fakeOpenAi is null) return;
-
-            for (var i = services.Count - 1; i >= 0; i--)
+            if (_fakeOpenAi is not null)
             {
-                if (services[i].ServiceType == typeof(IOpenAiClient))
-                {
-                    services.RemoveAt(i);
-                }
+                ReplaceAll<IOpenAiClient>(services, _fakeOpenAi);
             }
-            services.AddSingleton<IOpenAiClient>(_fakeOpenAi);
+            if (_fakeVectorSearch is not null)
+            {
+                ReplaceAll<IVectorSearchService>(services, _fakeVectorSearch);
+            }
+            if (_fakeEventLookup is not null)
+            {
+                ReplaceAll<IEventLookupService>(services, _fakeEventLookup);
+            }
         });
+    }
+
+    private static void ReplaceAll<TService>(IServiceCollection services, object instance)
+        where TService : class
+    {
+        for (var i = services.Count - 1; i >= 0; i--)
+        {
+            if (services[i].ServiceType == typeof(TService))
+            {
+                services.RemoveAt(i);
+            }
+        }
+        services.AddSingleton(typeof(TService), instance);
     }
 }

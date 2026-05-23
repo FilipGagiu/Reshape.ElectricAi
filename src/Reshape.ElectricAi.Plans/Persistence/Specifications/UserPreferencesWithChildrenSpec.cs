@@ -13,6 +13,7 @@ public sealed class UserPreferencesWithChildrenSpec : Specification<UserPreferen
         AddInclude(p => p.Activities);
         AddInclude(p => p.Artists);
         AddInclude(p => p.Cuisines);
+        AddInclude(p => p.VibeTags);
         EnableSplitQuery();
     }
 }

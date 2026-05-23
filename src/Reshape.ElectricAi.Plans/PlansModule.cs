@@ -7,10 +7,13 @@ using Microsoft.Extensions.Options;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Core.Persistence;
 using Reshape.ElectricAi.Core.Services;
+using Reshape.ElectricAi.Core.Services.Itinerary;
 using Reshape.ElectricAi.Plans.Configuration;
 using Reshape.ElectricAi.Plans.Entities;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.Plans.Services;
+using Reshape.ElectricAi.Plans.Services.Itinerary;
+using Reshape.ElectricAi.Plans.Services.Itinerary.Sections;
 
 namespace Reshape.ElectricAi.Plans;
 
@@ -36,17 +39,12 @@ public static class PlansModule
         services.AddScoped<IRepository<Plan>, PlansRepository<Plan>>();
         services.AddScoped<IRepository<Group>, PlansRepository<Group>>();
         services.AddScoped<IRepository<GroupMember>, PlansRepository<GroupMember>>();
-        services.AddScoped<IRepository<GroupPreferences>, PlansRepository<GroupPreferences>>();
         services.AddScoped<IRepository<UserPreferenceActivity>, PlansRepository<UserPreferenceActivity>>();
         services.AddScoped<IRepository<UserPreferenceArtist>, PlansRepository<UserPreferenceArtist>>();
         services.AddScoped<IRepository<UserPreferenceFoodRestriction>, PlansRepository<UserPreferenceFoodRestriction>>();
         services.AddScoped<IRepository<UserPreferenceGenre>, PlansRepository<UserPreferenceGenre>>();
         services.AddScoped<IRepository<UserPreferenceCuisine>, PlansRepository<UserPreferenceCuisine>>();
-        services.AddScoped<IRepository<GroupPreferenceCuisine>, PlansRepository<GroupPreferenceCuisine>>();
-        services.AddScoped<IRepository<GroupPreferenceActivity>, PlansRepository<GroupPreferenceActivity>>();
-        services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
-        services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();
-        services.AddScoped<IRepository<GroupPreferenceGenre>, PlansRepository<GroupPreferenceGenre>>();
+        services.AddScoped<IRepository<UserPreferenceVibeTag>, PlansRepository<UserPreferenceVibeTag>>();
         services.AddScoped<IRepository<PushSubscription>, PlansRepository<PushSubscription>>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
@@ -55,21 +53,31 @@ public static class PlansModule
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPreferencesService, PreferencesService>();
         services.AddScoped<IGroupService, GroupService>();
-        services.AddScoped<IGroupPreferencesService, GroupPreferencesService>();
 
         var pushOptions = BuildPushOptions(configuration);
         services.AddSingleton(pushOptions);
         services.AddSingleton<IOptions<PushOptions>>(Options.Create(pushOptions));
         services.AddScoped<IPushService, PushService>();
 
-        services.AddOptions<PlanGenerationOptions>()
-            .Bind(configuration.GetSection(PlanGenerationOptions.SectionName))
-            .Validate(o => o.RateLimit.PerHour >= 1, "Chat:PlanGeneration:RateLimit:PerHour must be >= 1.")
-            .Validate(o => o.MaxCompletionTokens >= 256, "Chat:PlanGeneration:MaxCompletionTokens must be >= 256.")
+        services.AddSingleton<IRateLimiter, InMemorySlidingWindowRateLimiter>();
+
+        services.AddOptions<ItineraryGenerationOptions>()
+            .Bind(configuration.GetSection(ItineraryGenerationOptions.SectionName))
+            .Validate(o => o.MaxCompletionTokens > 0, "ItineraryGeneration:MaxCompletionTokens must be > 0.")
+            .Validate(o => o.RateLimit.PerHour >= 1, "ItineraryGeneration:RateLimit:PerHour must be >= 1.")
+            .Validate(o => o.PrefsRateLimit.PerHour >= 1, "ItineraryGeneration:PrefsRateLimit:PerHour must be >= 1.")
             .ValidateOnStart();
 
-        services.AddSingleton<IRateLimiter, InMemorySlidingWindowRateLimiter>();
-        services.AddScoped<IPlanGenerator, PlanGenerator>();
+        services.AddScoped<IPreferencesExtractor, PreferencesExtractor>();
+        services.AddScoped<IItineraryBuilder, ItineraryBuilder>();
+        services.AddScoped<IItineraryService, ItineraryService>();
+
+        services.AddScoped<IItinerarySection, GreetingSection>();
+        services.AddScoped<IItinerarySection, TransportSection>();
+        services.AddScoped<IItinerarySection, AccommodationSection>();
+        services.AddScoped<IItinerarySection, VibeActivitiesSection>();
+        services.AddScoped<IItinerarySection, FoodSection>();
+        services.AddScoped<IItinerarySection, TopArtistsSection>();
 
         RegisterValidators(services);
 

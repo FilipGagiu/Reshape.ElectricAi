@@ -45,6 +45,7 @@ public static class VectorDbModule
         services.AddSingleton(new EmbeddingClient(chatOptions.EmbeddingModel, apiKey));
         services.AddScoped<IEmbeddingService, OpenAiEmbeddingService>();
         services.AddScoped<IVectorSearchService, VectorSearchService>();
+        services.AddScoped<Reshape.ElectricAi.Core.Services.Itinerary.IEventLookupService, EventLookupService>();
         services.AddScoped<IIngestService, IngestService>();
         services.AddScoped<EcDataSeeder>();
 

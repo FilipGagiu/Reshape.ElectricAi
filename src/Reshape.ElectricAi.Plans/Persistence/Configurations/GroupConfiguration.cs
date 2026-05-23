@@ -19,11 +19,6 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
             .HasForeignKey(x => x.OwnerUserId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasOne(x => x.Preferences)
-            .WithOne(x => x.Group!)
-            .HasForeignKey<GroupPreferences>(x => x.GroupId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasMany(x => x.Members)
             .WithOne(x => x.Group!)
             .HasForeignKey(x => x.GroupId)

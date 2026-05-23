@@ -7,21 +7,58 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
 {
     public PreferencesReplaceRequestValidator()
     {
+        RuleFor(x => x.Name)
+            .MaximumLength(80).When(x => x.Name is not null)
+            .WithMessage("Name must be 80 characters or fewer.");
+
+        RuleFor(x => x.Origin)
+            .MaximumLength(120).When(x => x.Origin is not null)
+            .WithMessage("Origin must be 120 characters or fewer.");
+
+        When(x => x.Crew is not null, () =>
+        {
+            RuleFor(x => x.Crew!.Kind).IsInEnum().WithMessage("Crew.Kind must be a valid value.");
+            RuleFor(x => x.Crew!.EstimatedSize)
+                .InclusiveBetween(1, 200)
+                .When(x => x.Crew!.EstimatedSize is not null)
+                .WithMessage("Crew.EstimatedSize must be between 1 and 200.");
+        });
+
         RuleFor(x => x.TicketType)
             .IsInEnum().When(x => x.TicketType is not null)
             .WithMessage("TicketType must be a valid value.");
 
-        RuleFor(x => x.Accommodation)
-            .IsInEnum().When(x => x.Accommodation is not null)
-            .WithMessage("Accommodation must be a valid value.");
-
-        RuleFor(x => x.Transport)
-            .IsInEnum().When(x => x.Transport is not null)
-            .WithMessage("Transport must be a valid value.");
-
         RuleFor(x => x.AgeGroup)
             .IsInEnum().When(x => x.AgeGroup is not null)
             .WithMessage("AgeGroup must be a valid value.");
+
+        When(x => x.SuggestedTransport is not null, () =>
+        {
+            RuleFor(x => x.SuggestedTransport!.Mode)
+                .IsInEnum().WithMessage("SuggestedTransport.Mode must be a valid value.");
+            RuleFor(x => x.SuggestedTransport!.Note)
+                .MaximumLength(200).When(x => x.SuggestedTransport!.Note is not null)
+                .WithMessage("SuggestedTransport.Note must be 200 characters or fewer.");
+        });
+
+        When(x => x.SuggestedAccommodation is not null, () =>
+        {
+            RuleFor(x => x.SuggestedAccommodation!.Type)
+                .IsInEnum().WithMessage("SuggestedAccommodation.Type must be a valid value.");
+            RuleFor(x => x.SuggestedAccommodation!.Note)
+                .MaximumLength(200).When(x => x.SuggestedAccommodation!.Note is not null)
+                .WithMessage("SuggestedAccommodation.Note must be 200 characters or fewer.");
+        });
+
+        When(x => x.VibeTags is not null, () =>
+        {
+            RuleFor(x => x.VibeTags!.Count)
+                .LessThanOrEqualTo(6).WithMessage("VibeTags must contain at most 6 items.");
+            RuleForEach(x => x.VibeTags!)
+                .NotEmpty().WithMessage("VibeTag values must not be empty.")
+                .Must(value => value is not null && value.Trim().Length is >= 1 and <= 60)
+                .WithMessage("VibeTag values must be 1 to 60 characters.");
+        });
 
         When(x => x.MusicGenres is not null, () =>
         {
@@ -45,34 +82,6 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
                 .WithMessage("FoodRestrictions must not contain duplicates.");
         });
 
-        When(x => x.Activities is not null, () =>
-        {
-            RuleFor(x => x.Activities!.Count)
-                .LessThanOrEqualTo(7).WithMessage("Activities must contain at most 7 items.");
-            RuleForEach(x => x.Activities!)
-                .IsInEnum().WithMessage("Activities contains an invalid value.");
-            RuleFor(x => x.Activities!)
-                .Must(items => items.Distinct().Count() == items.Count)
-                .WithMessage("Activities must not contain duplicates.");
-        });
-
-        When(x => x.Artists is not null, () =>
-        {
-            RuleFor(x => x.Artists!.Count)
-                .LessThanOrEqualTo(20).WithMessage("Artists must contain at most 20 items.");
-            RuleForEach(x => x.Artists!)
-                .NotEmpty().WithMessage("Artist names must not be empty.")
-                .Must(name => name is not null && name.Trim().Length is >= 1 and <= 200)
-                .WithMessage("Artist names must be 1 to 200 characters.");
-            RuleFor(x => x.Artists!)
-                .Must(items => items
-                    .Where(s => !string.IsNullOrWhiteSpace(s))
-                    .Select(s => s.Trim().ToLowerInvariant())
-                    .Distinct()
-                    .Count() == items.Count(s => !string.IsNullOrWhiteSpace(s)))
-                .WithMessage("Artists must not contain duplicates (case-insensitive).");
-        });
-
         When(x => x.Cuisines is not null, () =>
         {
             RuleFor(x => x.Cuisines!.Count)
@@ -82,6 +91,34 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
             RuleFor(x => x.Cuisines!)
                 .Must(items => items.Distinct().Count() == items.Count)
                 .WithMessage("Cuisines must not contain duplicates.");
+        });
+
+        When(x => x.ActivityInterests is not null, () =>
+        {
+            RuleFor(x => x.ActivityInterests!.Count)
+                .LessThanOrEqualTo(7).WithMessage("ActivityInterests must contain at most 7 items.");
+            RuleForEach(x => x.ActivityInterests!)
+                .IsInEnum().WithMessage("ActivityInterests contains an invalid value.");
+            RuleFor(x => x.ActivityInterests!)
+                .Must(items => items.Distinct().Count() == items.Count)
+                .WithMessage("ActivityInterests must not contain duplicates.");
+        });
+
+        When(x => x.MustSeeArtists is not null, () =>
+        {
+            RuleFor(x => x.MustSeeArtists!.Count)
+                .LessThanOrEqualTo(20).WithMessage("MustSeeArtists must contain at most 20 items.");
+            RuleForEach(x => x.MustSeeArtists!)
+                .NotEmpty().WithMessage("MustSeeArtists names must not be empty.")
+                .Must(name => name is not null && name.Trim().Length is >= 1 and <= 200)
+                .WithMessage("MustSeeArtists names must be 1 to 200 characters.");
+            RuleFor(x => x.MustSeeArtists!)
+                .Must(items => items
+                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                    .Select(s => s.Trim().ToLowerInvariant())
+                    .Distinct()
+                    .Count() == items.Count(s => !string.IsNullOrWhiteSpace(s)))
+                .WithMessage("MustSeeArtists must not contain duplicates (case-insensitive).");
         });
     }
 }

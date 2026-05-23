@@ -8,6 +8,5 @@ public class Group
     public DateTime CreatedUtc { get; set; }
 
     public User? Owner { get; set; }
-    public GroupPreferences? Preferences { get; set; }
     public List<GroupMember> Members { get; set; } = [];
 }

@@ -13,14 +13,9 @@ public class PlansDbContext(DbContextOptions<PlansDbContext> options) : DbContex
     public DbSet<UserPreferenceActivity> UserPreferenceActivities => Set<UserPreferenceActivity>();
     public DbSet<UserPreferenceArtist> UserPreferenceArtists => Set<UserPreferenceArtist>();
     public DbSet<UserPreferenceCuisine> UserPreferenceCuisines => Set<UserPreferenceCuisine>();
+    public DbSet<UserPreferenceVibeTag> UserPreferenceVibeTags => Set<UserPreferenceVibeTag>();
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<GroupMember> GroupMembers => Set<GroupMember>();
-    public DbSet<GroupPreferences> GroupPreferences => Set<GroupPreferences>();
-    public DbSet<GroupPreferenceGenre> GroupPreferenceGenres => Set<GroupPreferenceGenre>();
-    public DbSet<GroupPreferenceFoodRestriction> GroupPreferenceFoodRestrictions => Set<GroupPreferenceFoodRestriction>();
-    public DbSet<GroupPreferenceActivity> GroupPreferenceActivities => Set<GroupPreferenceActivity>();
-    public DbSet<GroupPreferenceArtist> GroupPreferenceArtists => Set<GroupPreferenceArtist>();
-    public DbSet<GroupPreferenceCuisine> GroupPreferenceCuisines => Set<GroupPreferenceCuisine>();
     public DbSet<Plan> Plans => Set<Plan>();
     public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
 
