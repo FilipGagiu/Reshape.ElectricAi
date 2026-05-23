@@ -7,4 +7,7 @@
     <Project Path="src/Reshape.ElectricAi.Presentation/Reshape.ElectricAi.Presentation.csproj" />
     <Project Path="src/Reshape.ElectricAi.VectorDb/Reshape.ElectricAi.VectorDb.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Reshape.ElectricAi.Plans.Tests/Reshape.ElectricAi.Plans.Tests.csproj" />
+  </Folder>
 </Solution>
