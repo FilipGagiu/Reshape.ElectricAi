@@ -137,7 +137,8 @@ if (app.Environment.IsDevelopment())
     await feedDb.Database.MigrateAsync();
 
     app.UseSwagger();
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+        options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();

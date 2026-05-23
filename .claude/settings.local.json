@@ -3,7 +3,8 @@
     "allow": [
       "Bash(dotnet build *)",
       "Bash(dotnet test *)",
-      "Bash(curl -s https://raw.githubusercontent.com/msitarzewski/agency-agents/main/README.md)"
+      "Bash(curl -s https://raw.githubusercontent.com/msitarzewski/agency-agents/main/README.md)",
+      "Bash(git log *)"
     ]
   }
 }
