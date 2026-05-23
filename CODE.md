@@ -13,7 +13,7 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | Runtime | .NET 10 GA (SDK 10.0.300+) |
 | Language | C# 13, `<LangVersion>latest</LangVersion>` |
 | Web framework | ASP.NET Core 10, **Controllers only** — no Minimal APIs, no MVC views, no Razor |
-| ORM | EF Core 10 (`10.0.*` floating) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
+| ORM | EF Core 10 (`10.0.8` pinned) + `Npgsql.EntityFrameworkCore.PostgreSQL` (`10.0.*`) + `Pgvector.EntityFrameworkCore` `0.3.0` (NOT `.PostgreSQL` suffix — that package id does not exist on nuget.org) |
 | Database | PostgreSQL 16+ with `pgvector` extension enabled |
 | LLM | OpenAI .NET SDK (`OpenAI` official package, 2.10.0) |
 | Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
