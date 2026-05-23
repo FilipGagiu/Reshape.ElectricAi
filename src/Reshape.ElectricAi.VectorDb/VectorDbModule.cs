@@ -1,6 +1,8 @@
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using OpenAI.Embeddings;
 using Pgvector.EntityFrameworkCore;
@@ -46,7 +48,22 @@ public static class VectorDbModule
         services.AddScoped<IIngestService, IngestService>();
         services.AddScoped<EcDataSeeder>();
 
+        RegisterValidators(services);
+
         return services;
+    }
+
+    private static void RegisterValidators(IServiceCollection services)
+    {
+        var validatorInterface = typeof(IValidator<>);
+        var registrations = typeof(VectorDbModule).Assembly.GetTypes()
+            .Where(t => t is { IsAbstract: false, IsInterface: false, IsClass: true })
+            .SelectMany(t => t.GetInterfaces()
+                .Where(i => i.IsGenericType && i.GetGenericTypeDefinition() == validatorInterface)
+                .Select(i => new { Service = i, Implementation = t }));
+
+        foreach (var r in registrations)
+            services.TryAddScoped(r.Service, r.Implementation);
     }
 
     private static ChatOptions BuildChatOptions(IConfiguration configuration)
