@@ -1,0 +1,83 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex w-full flex-col gap-6 rounded-2xl border p-6 shadow-sm"
+    novalidate
+>
+    <header class="flex flex-col gap-1 text-center">
+        <h1 class="text-surface-900 dark:text-surface-0 text-xl font-semibold">
+            {{ 'auth.login.title' | transloco }}
+        </h1>
+        <p class="text-surface-500 dark:text-surface-400 text-sm">
+            {{ 'auth.login.subtitle' | transloco }}
+        </p>
+    </header>
+
+    <div class="flex flex-col gap-2">
+        <label for="login-email" class="text-surface-700 dark:text-surface-200 text-sm font-medium">
+            {{ 'auth.field.email' | transloco }}
+        </label>
+        <input
+            pInputText
+            id="login-email"
+            type="email"
+            autocomplete="email"
+            formControlName="email"
+            [placeholder]="'auth.field.emailPlaceholder' | transloco"
+        />
+        @if (form.controls.email.touched && form.controls.email.invalid) {
+            <small class="text-red-500">{{ 'auth.error.emailInvalid' | transloco }}</small>
+        }
+    </div>
+
+    <div class="flex flex-col gap-2">
+        <label
+            for="login-password"
+            class="text-surface-700 dark:text-surface-200 text-sm font-medium"
+        >
+            {{ 'auth.field.password' | transloco }}
+        </label>
+        <p-password
+            inputId="login-password"
+            formControlName="password"
+            [feedback]="false"
+            [toggleMask]="true"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+            [placeholder]="'auth.field.passwordPlaceholder' | transloco"
+        />
+        @if (form.controls.password.touched && form.controls.password.invalid) {
+            <small class="text-red-500">{{ 'auth.error.passwordRequired' | transloco }}</small>
+        }
+    </div>
+
+    @if (errorKey()) {
+        <p-message severity="error" [text]="errorKey()! | transloco" styleClass="w-full" />
+    }
+
+    <p-button
+        type="submit"
+        [label]="'auth.login.submit' | transloco"
+        [loading]="submitting()"
+        styleClass="w-full"
+    />
+
+    <p-button
+        type="button"
+        severity="secondary"
+        [outlined]="true"
+        [label]="'auth.login.bypass' | transloco"
+        styleClass="w-full"
+        (onClick)="bypass()"
+    />
+
+    <p class="text-surface-500 dark:text-surface-400 text-center text-sm">
+        {{ 'auth.login.noAccount' | transloco }}
+        <a
+            routerLink="/register"
+            class="text-primary-500 hover:text-primary-600 ml-1 font-medium underline-offset-2 hover:underline"
+        >
+            {{ 'auth.login.registerCta' | transloco }}
+        </a>
+    </p>
+</form>

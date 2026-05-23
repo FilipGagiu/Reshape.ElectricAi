@@ -1,0 +1,25 @@
+@if (darkModeService.currentTheme() === themesEnum.DARK) {
+    <p-button
+        icon="pi pi-sun"
+        (click)="darkModeService.toggleTheme()"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        [pTooltip]="
+            darkModeService.isFollowingSystemPreference() ? 'Switch to light mode (currently following system)' : 'Switch to light mode'
+        "
+        tooltipPosition="bottom"
+    />
+} @else {
+    <p-button
+        icon="pi pi-moon"
+        (click)="darkModeService.toggleTheme()"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        [pTooltip]="
+            darkModeService.isFollowingSystemPreference() ? 'Switch to dark mode (currently following system)' : 'Switch to dark mode'
+        "
+        tooltipPosition="bottom"
+    />
+}

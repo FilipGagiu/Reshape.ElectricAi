@@ -1,0 +1,170 @@
+<section class="flex flex-col">
+    <header
+        class="live-feed-header bg-surface-50 dark:bg-surface-950 border-surface-200 dark:border-surface-700 sticky z-10 flex flex-col gap-2 border-b px-4 pt-4 pb-3"
+    >
+        <div class="flex items-baseline justify-between">
+            <h1 class="text-surface-900 dark:text-surface-0 text-2xl leading-none font-bold tracking-tight">Live feed</h1>
+            <span class="text-surface-500 dark:text-surface-400 text-xs">Bonțida · Electric Castle</span>
+        </div>
+        <button
+            type="button"
+            (click)="triggerDemoNotification()"
+            [disabled]="demoArmed()"
+            class="bg-primary-500 text-surface-0 hover:bg-primary-600 disabled:bg-primary-400 flex items-center justify-center gap-2 self-start px-3 py-1.5 text-xs font-semibold tracking-wide uppercase transition disabled:cursor-not-allowed"
+        >
+            <i class="pi pi-bell"></i>
+            @if (demoArmed()) {
+                <span>Incoming in 5s…</span>
+            } @else {
+                <span>Send demo notification</span>
+            }
+        </button>
+    </header>
+
+    <ul class="flex flex-col gap-3 px-3 pb-4">
+        @for (item of feed(); track trackById($index, item)) {
+            <li>
+                @switch (item.kind) {
+                    @case (FeedItemKind.NowPlaying) {
+                        <article
+                            class="bg-primary-500 text-surface-0 flex flex-col gap-2 p-4 shadow-sm"
+                        >
+                            <div class="flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
+                                <span class="inline-block h-2 w-2 animate-pulse bg-white"></span>
+                                <span>On stage now</span>
+                                <span class="opacity-80">· {{ clock(item.startsAt) }} – {{ clock(item.endsAt) }}</span>
+                            </div>
+                            <div class="text-2xl leading-tight font-extrabold">{{ item.artist }}</div>
+                            <div class="text-sm opacity-90">{{ item.stage }}</div>
+                        </article>
+                    }
+
+                    @case (FeedItemKind.UpNext) {
+                        <article
+                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-center gap-3 border p-4"
+                        >
+                            <div class="bg-primary-500/10 text-primary-600 dark:text-primary-400 flex h-12 w-12 shrink-0 items-center justify-center">
+                                <i class="pi pi-clock text-xl!"></i>
+                            </div>
+                            <div class="flex min-w-0 flex-1 flex-col">
+                                <div class="text-surface-500 dark:text-surface-400 text-xs font-medium tracking-wide uppercase">
+                                    Up next · {{ futureLabel(item.startsAt) }}
+                                </div>
+                                <div class="text-surface-900 dark:text-surface-0 truncate text-base font-semibold">
+                                    {{ item.artist }}
+                                </div>
+                                <div class="text-surface-600 dark:text-surface-300 truncate text-sm">
+                                    {{ item.stage }} · {{ clock(item.startsAt) }}
+                                </div>
+                            </div>
+                        </article>
+                    }
+
+                    @case (FeedItemKind.Alert) {
+                        <article
+                            class="flex items-start gap-3 border-l-4 p-4"
+                            [class.bg-yellow-50]="item.level === AlertLevel.Warning"
+                            [class.dark:bg-yellow-950]="item.level === AlertLevel.Warning"
+                            [class.border-yellow-500]="item.level === AlertLevel.Warning"
+                            [class.bg-red-50]="item.level === AlertLevel.Danger"
+                            [class.dark:bg-red-950]="item.level === AlertLevel.Danger"
+                            [class.border-red-500]="item.level === AlertLevel.Danger"
+                            [class.bg-blue-50]="item.level === AlertLevel.Info"
+                            [class.dark:bg-blue-950]="item.level === AlertLevel.Info"
+                            [class.border-blue-500]="item.level === AlertLevel.Info"
+                        >
+                            <i
+                                class="pi {{ item.icon }} mt-0.5 text-xl!"
+                                [class.text-yellow-600]="item.level === AlertLevel.Warning"
+                                [class.text-red-600]="item.level === AlertLevel.Danger"
+                                [class.text-blue-600]="item.level === AlertLevel.Info"
+                            ></i>
+                            <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                <div class="text-surface-900 dark:text-surface-0 text-sm font-semibold">
+                                    {{ item.title }}
+                                </div>
+                                <div class="text-surface-700 dark:text-surface-300 text-sm">{{ item.body }}</div>
+                                <div class="text-surface-500 dark:text-surface-400 text-xs">
+                                    {{ pastLabel(item.publishedAt) }}
+                                </div>
+                            </div>
+                        </article>
+                    }
+
+                    @case (FeedItemKind.ScheduleChange) {
+                        <article
+                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex flex-col gap-2 border p-4"
+                        >
+                            <div class="text-primary-500 flex items-center gap-2 text-xs font-semibold tracking-wide uppercase">
+                                <i class="pi pi-refresh"></i>
+                                <span>Schedule change</span>
+                            </div>
+                            <div class="text-surface-900 dark:text-surface-0 text-base font-semibold">
+                                {{ item.artist }} moved to {{ item.newStage }}
+                            </div>
+                            <div class="text-surface-600 dark:text-surface-300 text-sm">
+                                New time: {{ clock(item.newTime) }} · {{ futureLabel(item.newTime) }}
+                            </div>
+                            @if (item.reason) {
+                                <div class="text-surface-500 dark:text-surface-400 text-xs italic">
+                                    {{ item.reason }}
+                                </div>
+                            }
+                        </article>
+                    }
+
+                    @case (FeedItemKind.Photo) {
+                        <article class="bg-surface-0 dark:bg-surface-900 flex flex-col">
+                            <div class="aspect-[16/10] w-full bg-gradient-to-br {{ item.accent }}"></div>
+                            <div class="border-surface-200 dark:border-surface-700 flex flex-col gap-1 border border-t-0 p-3">
+                                <div class="text-surface-900 dark:text-surface-0 text-sm">{{ item.caption }}</div>
+                                <div class="text-surface-500 dark:text-surface-400 text-xs">
+                                    {{ item.author }} · {{ pastLabel(item.publishedAt) }}
+                                </div>
+                            </div>
+                        </article>
+                    }
+
+                    @case (FeedItemKind.Info) {
+                        <article
+                            class="bg-surface-50 dark:bg-surface-900/50 border-surface-200 dark:border-surface-700 flex items-start gap-3 border p-4"
+                        >
+                            <i class="pi {{ item.icon }} text-surface-500 mt-0.5 text-xl!"></i>
+                            <div class="flex min-w-0 flex-1 flex-col gap-1">
+                                <div class="text-surface-900 dark:text-surface-0 text-sm font-semibold">
+                                    {{ item.title }}
+                                </div>
+                                <div class="text-surface-700 dark:text-surface-300 text-sm">{{ item.body }}</div>
+                                <div class="text-surface-500 dark:text-surface-400 text-xs">
+                                    {{ pastLabel(item.publishedAt) }}
+                                </div>
+                            </div>
+                        </article>
+                    }
+
+                    @case (FeedItemKind.Social) {
+                        <article
+                            class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-center gap-3 border p-4"
+                        >
+                            <div class="bg-primary-500 text-surface-0 flex h-10 w-10 shrink-0 items-center justify-center text-sm font-bold">
+                                {{ item.primaryUser.charAt(0) }}
+                            </div>
+                            <div class="flex min-w-0 flex-1 flex-col">
+                                <div class="text-surface-900 dark:text-surface-0 text-sm">
+                                    <span class="font-semibold">{{ item.primaryUser }}</span>
+                                    @if (item.othersCount > 0) {
+                                        <span> & {{ item.othersCount }} others</span>
+                                    }
+                                    <span> are at {{ item.location }}</span>
+                                </div>
+                                <div class="text-surface-500 dark:text-surface-400 text-xs">
+                                    {{ pastLabel(item.publishedAt) }}
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
+            </li>
+        }
+    </ul>
+</section>

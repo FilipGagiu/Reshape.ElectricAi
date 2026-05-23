@@ -1,0 +1,8 @@
+:host {
+    display: block;
+}
+
+.live-feed-header {
+    /* Stick directly under the dynamic island / status bar. */
+    top: env(safe-area-inset-top);
+}
