@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Core.Persistence;
 using Reshape.ElectricAi.Core.Services;
+using Reshape.ElectricAi.Plans.Entities;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.Plans.Services;
 
@@ -28,7 +29,21 @@ public static class PlansModule
             options.UseNpgsql(connectionString, npgsql =>
                 npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "plans")));
 
-        services.AddScoped(typeof(IRepository<>), typeof(PlansRepository<>));
+        services.AddScoped<IRepository<User>, PlansRepository<User>>();
+        services.AddScoped<IRepository<RefreshToken>, PlansRepository<RefreshToken>>();
+        services.AddScoped<IRepository<UserPreferences>, PlansRepository<UserPreferences>>();
+        services.AddScoped<IRepository<Plan>, PlansRepository<Plan>>();
+        services.AddScoped<IRepository<Group>, PlansRepository<Group>>();
+        services.AddScoped<IRepository<GroupMember>, PlansRepository<GroupMember>>();
+        services.AddScoped<IRepository<GroupPreferences>, PlansRepository<GroupPreferences>>();
+        services.AddScoped<IRepository<UserPreferenceActivity>, PlansRepository<UserPreferenceActivity>>();
+        services.AddScoped<IRepository<UserPreferenceArtist>, PlansRepository<UserPreferenceArtist>>();
+        services.AddScoped<IRepository<UserPreferenceFoodRestriction>, PlansRepository<UserPreferenceFoodRestriction>>();
+        services.AddScoped<IRepository<UserPreferenceGenre>, PlansRepository<UserPreferenceGenre>>();
+        services.AddScoped<IRepository<GroupPreferenceActivity>, PlansRepository<GroupPreferenceActivity>>();
+        services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
+        services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();
+        services.AddScoped<IRepository<GroupPreferenceGenre>, PlansRepository<GroupPreferenceGenre>>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
