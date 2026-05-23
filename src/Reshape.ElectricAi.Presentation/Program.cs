@@ -129,23 +129,19 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"))
+using var scope = app.Services.CreateScope();
+var plansDb = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
+await plansDb.Database.MigrateAsync();
+var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
+await vectorDb.Database.MigrateAsync();
+var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
+await feedDb.Database.MigrateAsync();
+
+if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
-    var plansDb = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
-    await plansDb.Database.MigrateAsync();
-    var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
-    await vectorDb.Database.MigrateAsync();
-    var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
-    await feedDb.Database.MigrateAsync();
-
-    if (app.Environment.IsDevelopment())
-    {
-        var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
-        var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
-        await seeder.SeedAsync(dataRoot);
-
-    }
+    var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
+    var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
+    await seeder.SeedAsync(dataRoot);
 }
 
 app.UseSwagger();
