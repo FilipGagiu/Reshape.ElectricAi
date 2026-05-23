@@ -18,11 +18,11 @@ If a rule below conflicts with what feels convenient at the keyboard, the rule w
 | LLM | OpenAI .NET SDK (`OpenAI` official package, 2.4.0) |
 | Embeddings | OpenAI `text-embedding-3-small` (1536 dims) — **do not change without a migration plan** |
 | Default chat model | `gpt-4o-mini` (overridable via `Chat:DefaultModel`) |
-| Password hashing | `BCrypt.Net-Next` `4.0.3` |
-| JWT | `Microsoft.AspNetCore.Authentication.JwtBearer` (`10.0.*`) + `System.IdentityModel.Tokens.Jwt` `8.5.0` + `Microsoft.IdentityModel.Tokens` `8.5.0` |
-| Validation | `FluentValidation` `11.11.0` + `FluentValidation.DependencyInjectionExtensions` `11.11.0` (NOT the deprecated `.AspNetCore` package) |
-| Logging | `Serilog.AspNetCore` `9.0.0` + `Serilog.Sinks.Console` `6.0.0` (+ `Seq` later if useful) |
-| OpenAPI | `Swashbuckle.AspNetCore` `7.2.0` + `Scalar.AspNetCore` `2.6.5` UI |
+| Password hashing | `BCrypt.Net-Next` `4.2.0` |
+| JWT | `Microsoft.AspNetCore.Authentication.JwtBearer` (`10.0.*`) + `System.IdentityModel.Tokens.Jwt` `8.18.0` + `Microsoft.IdentityModel.Tokens` `8.18.0` |
+| Validation | `FluentValidation` `12.1.1` only — v12 removed the MVC auto-validation package (`FluentValidation.AspNetCore` and `FluentValidation.DependencyInjectionExtensions.AddFluentValidationAutoValidation()` are gone). Use the hand-rolled `Presentation/Filters/FluentValidationFilter.cs` (`IAsyncActionFilter`) instead. `FluentValidation.DependencyInjectionExtensions` `12.1.1` is on Presentation only (for any future use); Plans registers its validators via a reflection scan in `PlansModule.RegisterValidators` to avoid adding the package there. |
+| Logging | `Serilog.AspNetCore` `10.0.0` + `Serilog.Sinks.Console` `6.1.1` (+ `Seq` later if useful) |
+| OpenAPI | `Swashbuckle.AspNetCore` `10.1.7` + `Scalar.AspNetCore` `2.14.14` UI |
 | Tokenizer | `Microsoft.ML.Tokenizers` `1.0.2` (cl100k_base) |
 | Tests | `xUnit` + `FluentAssertions` + `Testcontainers.PostgreSql` (added when first test project is scaffolded) |
 | Solution file | `ElectricCastle.slnx` — XML solution format (new .NET 10 default from `dotnet new sln`, replaces classic `.sln`) |
