@@ -11,5 +11,6 @@ public sealed record PreferencesDto(
     IReadOnlyList<FoodRestriction> FoodRestrictions,
     IReadOnlyList<ActivityType> Activities,
     IReadOnlyList<string> Artists,
+    IReadOnlyList<Cuisine> Cuisines,
     int CompletionPercent,
     DateTime UpdatedUtc);

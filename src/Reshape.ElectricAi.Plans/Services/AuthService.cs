@@ -19,24 +19,19 @@ public sealed class AuthService(
     ITokenService tokenService,
     IOptions<AuthOptions> options) : IAuthService
 {
-    private readonly IRepository<User> _userRepository = userRepository;
-    private readonly IRepository<RefreshToken> _refreshTokenRepository = refreshTokenRepository;
-    private readonly IRefreshTokenStore _refreshTokenStore = refreshTokenStore;
-    private readonly IPasswordHasher _passwordHasher = passwordHasher;
-    private readonly ITokenService _tokenService = tokenService;
     private readonly AuthOptions _options = options.Value;
 
     public async Task<AuthResponse> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
     {
         var normalizedEmail = NormalizeEmail(request.Email);
 
-        var emailTaken = await _userRepository.AnyAsync(new UserByEmailSpec(normalizedEmail), cancellationToken);
+        var emailTaken = await userRepository.AnyAsync(new UserByEmailSpec(normalizedEmail), cancellationToken);
         if (emailTaken)
         {
             throw new ConflictException("email-in-use", "Email already registered.");
         }
 
-        var hash = _passwordHasher.Hash(request.Password);
+        var hash = passwordHasher.Hash(request.Password);
         var nowUtc = DateTime.UtcNow;
 
         var user = new User
@@ -50,8 +45,8 @@ public sealed class AuthService(
             UpdatedUtc = nowUtc
         };
 
-        await _userRepository.AddAsync(user, cancellationToken);
-        await _userRepository.SaveChangesAsync(cancellationToken);
+        await userRepository.AddAsync(user, cancellationToken);
+        await userRepository.SaveChangesAsync(cancellationToken);
 
         return await IssueTokensAsync(user, cancellationToken);
     }
@@ -60,15 +55,15 @@ public sealed class AuthService(
     {
         var normalizedEmail = NormalizeEmail(request.Email);
 
-        var user = await _userRepository.FirstOrDefaultAsync(new UserByEmailSpec(normalizedEmail), cancellationToken);
+        var user = await userRepository.FirstOrDefaultAsync(new UserByEmailSpec(normalizedEmail), cancellationToken);
 
         if (user is null)
         {
-            _passwordHasher.VerifyDummy();
+            passwordHasher.VerifyDummy();
             throw new UnauthorizedException("invalid-credentials", "Invalid email or password.");
         }
 
-        if (!_passwordHasher.Verify(request.Password, user.PasswordHash, user.PasswordSalt))
+        if (!passwordHasher.Verify(request.Password, user.PasswordHash, user.PasswordSalt))
         {
             throw new UnauthorizedException("invalid-credentials", "Invalid email or password.");
         }
@@ -78,11 +73,11 @@ public sealed class AuthService(
 
     public async Task<AuthResponse> RefreshAsync(RefreshRequest request, CancellationToken cancellationToken)
     {
-        var incomingHash = _tokenService.HashRefreshToken(request.RefreshToken);
+        var incomingHash = tokenService.HashRefreshToken(request.RefreshToken);
         var nowUtc = DateTime.UtcNow;
-        var refresh = _tokenService.IssueRefreshToken();
+        var refresh = tokenService.IssueRefreshToken();
 
-        var rotated = await _refreshTokenStore.ClaimAndRotateAsync(
+        var rotated = await refreshTokenStore.ClaimAndRotateAsync(
             incomingHash,
             refresh.TokenHash,
             refresh.ExpiresUtc,
@@ -94,7 +89,7 @@ public sealed class AuthService(
             throw new UnauthorizedException("invalid-refresh-token", "Refresh token invalid or expired.");
         }
 
-        var access = _tokenService.IssueAccessToken(new TokenSubject(rotated.UserId, rotated.Email, rotated.Role));
+        var access = tokenService.IssueAccessToken(new TokenSubject(rotated.UserId, rotated.Email, rotated.Role));
 
         return new AuthResponse(
             access.Token,
@@ -105,7 +100,7 @@ public sealed class AuthService(
 
     public async Task<UserDto> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(userId, cancellationToken);
+        var user = await userRepository.GetByIdAsync(userId, cancellationToken);
         if (user is null)
         {
             throw new NotFoundException("user-not-found", "User not found.");
@@ -115,8 +110,8 @@ public sealed class AuthService(
 
     private async Task<AuthResponse> IssueTokensAsync(User user, CancellationToken cancellationToken)
     {
-        var access = _tokenService.IssueAccessToken(new TokenSubject(user.Id, user.Email, user.Role));
-        var refresh = _tokenService.IssueRefreshToken();
+        var access = tokenService.IssueAccessToken(new TokenSubject(user.Id, user.Email, user.Role));
+        var refresh = tokenService.IssueRefreshToken();
 
         var nowUtc = DateTime.UtcNow;
         var refreshRow = new RefreshToken
@@ -127,8 +122,8 @@ public sealed class AuthService(
             CreatedUtc = nowUtc,
             ExpiresUtc = refresh.ExpiresUtc
         };
-        await _refreshTokenRepository.AddAsync(refreshRow, cancellationToken);
-        await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
+        await refreshTokenRepository.AddAsync(refreshRow, cancellationToken);
+        await refreshTokenRepository.SaveChangesAsync(cancellationToken);
 
         return new AuthResponse(
             access.Token,

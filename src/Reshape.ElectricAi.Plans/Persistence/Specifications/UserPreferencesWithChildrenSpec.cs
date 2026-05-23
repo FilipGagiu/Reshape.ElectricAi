@@ -12,6 +12,7 @@ public sealed class UserPreferencesWithChildrenSpec : Specification<UserPreferen
         AddInclude(p => p.FoodRestrictions);
         AddInclude(p => p.Activities);
         AddInclude(p => p.Artists);
+        AddInclude(p => p.Cuisines);
         EnableSplitQuery();
     }
 }

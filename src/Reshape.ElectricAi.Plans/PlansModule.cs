@@ -40,6 +40,7 @@ public static class PlansModule
         services.AddScoped<IRepository<UserPreferenceArtist>, PlansRepository<UserPreferenceArtist>>();
         services.AddScoped<IRepository<UserPreferenceFoodRestriction>, PlansRepository<UserPreferenceFoodRestriction>>();
         services.AddScoped<IRepository<UserPreferenceGenre>, PlansRepository<UserPreferenceGenre>>();
+        services.AddScoped<IRepository<UserPreferenceCuisine>, PlansRepository<UserPreferenceCuisine>>();
         services.AddScoped<IRepository<GroupPreferenceActivity>, PlansRepository<GroupPreferenceActivity>>();
         services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
         services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();

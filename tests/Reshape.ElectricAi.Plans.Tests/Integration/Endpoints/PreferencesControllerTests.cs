@@ -23,13 +23,12 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private readonly PostgresFixture _postgres = postgres;
     private AuthApiFactory _factory = null!;
     private HttpClient _client = null!;
 
     public Task InitializeAsync()
     {
-        _factory = new AuthApiFactory(_postgres);
+        _factory = new AuthApiFactory(postgres);
         _client = _factory.CreateClient();
         return Task.CompletedTask;
     }
@@ -58,6 +57,7 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         dto.FoodRestrictions.Should().BeEmpty();
         dto.Activities.Should().BeEmpty();
         dto.Artists.Should().BeEmpty();
+        dto.Cuisines.Should().BeEmpty();
         dto.CompletionPercent.Should().Be(0);
     }
 
@@ -73,7 +73,8 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
             [MusicGenre.Techno, MusicGenre.House],
             [FoodRestriction.Vegan],
             [ActivityType.Relax, ActivityType.Social],
-            ["Justin Timberlake", "Queens of the Stone Age"]);
+            ["Justin Timberlake", "Queens of the Stone Age"],
+            [Cuisine.Italian, Cuisine.Japanese]);
 
         var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
@@ -87,6 +88,7 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         dto.FoodRestrictions.Should().BeEquivalentTo([FoodRestriction.Vegan]);
         dto.Activities.Should().BeEquivalentTo([ActivityType.Relax, ActivityType.Social]);
         dto.Artists.Should().BeEquivalentTo(["Justin Timberlake", "Queens of the Stone Age"]);
+        dto.Cuisines.Should().BeEquivalentTo([Cuisine.Italian, Cuisine.Japanese]);
         dto.CompletionPercent.Should().Be(100);
     }
 
@@ -97,11 +99,13 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
-            ["X", "Y"]), token);
+            ["X", "Y"],
+            null), token);
 
         var second = await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
+            null,
             null), token);
 
         var dto = await second.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
@@ -120,10 +124,11 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
             [MusicGenre.Rock],
             null,
             [ActivityType.Energetic],
-            ["Alice"]), token);
+            ["Alice"],
+            [Cuisine.Romanian]), token);
 
         var response = await SendAsync(HttpMethod.Patch, "/api/v1/preferences", new PreferencesPatchRequest(
-            TicketType.Vip, null, null, null, null, null, null, null), token);
+            TicketType.Vip, null, null, null, null, null, null, null, null), token);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
         var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
@@ -131,6 +136,7 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         dto.Accommodation.Should().Be(Accommodation.Camping);
         dto.MusicGenres.Should().BeEquivalentTo([MusicGenre.Rock]);
         dto.Artists.Should().BeEquivalentTo(["Alice"]);
+        dto.Cuisines.Should().BeEquivalentTo([Cuisine.Romanian]);
     }
 
     [Fact]
@@ -140,10 +146,11 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
-            ["Persistent"]), token);
+            ["Persistent"],
+            null), token);
 
         var response = await SendAsync(HttpMethod.Patch, "/api/v1/preferences", new PreferencesPatchRequest(
-            TicketType.Standard, null, null, null, null, null, null, null), token);
+            TicketType.Standard, null, null, null, null, null, null, null, null), token);
 
         var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
         dto!.Artists.Should().BeEquivalentTo(["Persistent"]);
@@ -156,10 +163,11 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
-            ["ToRemove"]), token);
+            ["ToRemove"],
+            null), token);
 
         var response = await SendAsync(HttpMethod.Patch, "/api/v1/preferences", new PreferencesPatchRequest(
-            null, null, null, null, null, null, null, []), token);
+            null, null, null, null, null, null, null, [], null), token);
 
         var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
         dto!.Artists.Should().BeEmpty();
@@ -173,7 +181,8 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         var body = new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
-            artists);
+            artists,
+            null);
 
         var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
@@ -187,7 +196,8 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         var body = new PreferencesReplaceRequest(
             null, null, null, null,
             [MusicGenre.Techno, MusicGenre.Techno],
-            null, null, null);
+            null, null, null,
+            null);
 
         var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
@@ -201,7 +211,8 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         var body = new PreferencesReplaceRequest(
             null, null, null, null,
             null, null, null,
-            ["", "Real Artist"]);
+            ["", "Real Artist"],
+            null);
 
         var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
@@ -226,11 +237,11 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
 
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             TicketType.Standard, null, null, null,
-            null, null, null, ["UserAArtist"]), tokenA);
+            null, null, null, ["UserAArtist"], null), tokenA);
 
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
             TicketType.Vip, null, null, null,
-            null, null, null, ["UserBArtist"]), tokenB);
+            null, null, null, ["UserBArtist"], null), tokenB);
 
         var getA = await SendAsync(HttpMethod.Get, "/api/v1/preferences", null, tokenA);
         var dtoA = await getA.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
@@ -251,12 +262,13 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
             TicketType.Standard,
             null, null, null,
             [MusicGenre.House],
-            null, null, null);
+            null, null, null,
+            null);
 
         var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
         var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
-        dto!.CompletionPercent.Should().Be(25);
+        dto!.CompletionPercent.Should().Be(22);
     }
 
     [Fact]
@@ -270,7 +282,8 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
             [MusicGenre.Metal],
             null,
             null,
-            ["Persisted"]);
+            ["Persisted"],
+            [Cuisine.Mediterranean]);
 
         await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
 
@@ -279,11 +292,104 @@ public sealed class PreferencesControllerTests(PostgresFixture postgres) : IAsyn
         var row = await db.UserPreferences.AsNoTracking()
             .Include(p => p.Genres)
             .Include(p => p.Artists)
+            .Include(p => p.Cuisines)
             .SingleAsync();
         row.TicketType.Should().Be(TicketType.Black);
         row.Accommodation.Should().Be(Accommodation.Glamping);
         row.Genres.Select(g => g.Genre).Should().BeEquivalentTo([MusicGenre.Metal]);
         row.Artists.Select(a => a.ArtistName).Should().BeEquivalentTo(["Persisted"]);
+        row.Cuisines.Select(c => c.Cuisine).Should().BeEquivalentTo([Cuisine.Mediterranean]);
+    }
+
+    [Fact]
+    public async Task Put_WithCuisines_ReturnsCuisinesInDto()
+    {
+        var token = await RegisterAndGetTokenAsync("put-cuisines");
+        var body = new PreferencesReplaceRequest(
+            null, null, null, null,
+            null, null, null, null,
+            [Cuisine.American, Cuisine.Italian, Cuisine.Bbq]);
+
+        var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
+        dto!.Cuisines.Should().BeEquivalentTo([Cuisine.American, Cuisine.Italian, Cuisine.Bbq]);
+    }
+
+    [Fact]
+    public async Task Patch_AddCuisines_PreservesOtherFields()
+    {
+        var token = await RegisterAndGetTokenAsync("patch-cuisines");
+        await SendAsync(HttpMethod.Put, "/api/v1/preferences", new PreferencesReplaceRequest(
+            TicketType.Vip,
+            null, null, null,
+            [MusicGenre.Rock],
+            null,
+            null,
+            ["Existing"],
+            null), token);
+
+        var response = await SendAsync(HttpMethod.Patch, "/api/v1/preferences", new PreferencesPatchRequest(
+            null, null, null, null, null, null, null, null,
+            [Cuisine.Greek, Cuisine.Thai]), token);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
+        dto!.TicketType.Should().Be(TicketType.Vip);
+        dto.MusicGenres.Should().BeEquivalentTo([MusicGenre.Rock]);
+        dto.Artists.Should().BeEquivalentTo(["Existing"]);
+        dto.Cuisines.Should().BeEquivalentTo([Cuisine.Greek, Cuisine.Thai]);
+    }
+
+    [Fact]
+    public async Task Put_OverCuisineCap_Returns400()
+    {
+        var token = await RegisterAndGetTokenAsync("put-cap-cuisines");
+        var cuisines = Enumerable.Repeat(Cuisine.Other, 16).ToArray();
+        var body = new PreferencesReplaceRequest(
+            null, null, null, null,
+            null, null, null, null,
+            cuisines);
+
+        var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task Put_DuplicateCuisine_Returns400()
+    {
+        var token = await RegisterAndGetTokenAsync("put-dup-cuisines");
+        var body = new PreferencesReplaceRequest(
+            null, null, null, null,
+            null, null, null, null,
+            [Cuisine.Italian, Cuisine.Italian]);
+
+        var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task CompletionPercent_NineDimensions_Capped100()
+    {
+        var token = await RegisterAndGetTokenAsync("completion-nine");
+        var body = new PreferencesReplaceRequest(
+            TicketType.UltraVip,
+            Accommodation.Camping,
+            TransportMode.EcTrain,
+            AgeGroup.Adult35To44,
+            [MusicGenre.Pop],
+            [FoodRestriction.Vegetarian],
+            [ActivityType.Discovery],
+            ["A1"],
+            [Cuisine.French]);
+
+        var response = await SendAsync(HttpMethod.Put, "/api/v1/preferences", body, token);
+
+        var dto = await response.Content.ReadFromJsonAsync<PreferencesDto>(JsonOptions);
+        dto!.CompletionPercent.Should().Be(100);
     }
 
     private async Task<string> RegisterAndGetTokenAsync(string prefix)

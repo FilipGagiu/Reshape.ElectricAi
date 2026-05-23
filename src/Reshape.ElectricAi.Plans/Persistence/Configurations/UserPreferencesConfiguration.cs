@@ -42,5 +42,10 @@ public class UserPreferencesConfiguration : IEntityTypeConfiguration<UserPrefere
             .WithOne(x => x.UserPreferences!)
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Cuisines)
+            .WithOne(x => x.UserPreferences!)
+            .HasForeignKey(x => x.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

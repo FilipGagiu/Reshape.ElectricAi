@@ -23,16 +23,14 @@ public sealed partial class PushService(
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    private readonly IRepository<PushSubscriptionEntity> _repository = repository;
     private readonly PushOptions _options = options.Value;
-    private readonly ILogger<PushService> _logger = logger;
     private readonly WebPushClient _webPushClient = new();
 
     public string GetVapidPublicKey() => _options.VapidPublicKey;
 
     public async Task SubscribeAsync(SubscribeRequest request, Guid? userId, CancellationToken cancellationToken)
     {
-        var existing = await _repository.FirstOrDefaultAsync(
+        var existing = await repository.FirstOrDefaultAsync(
             new PushSubscriptionByEndpointSpec(request.Endpoint), cancellationToken);
 
         var nowUtc = DateTime.UtcNow;
@@ -44,7 +42,7 @@ public sealed partial class PushService(
             existing.UserAgent = request.UserAgent;
             existing.UserId = userId;
             existing.LastSeenUtc = nowUtc;
-            _repository.Update(existing);
+            repository.Update(existing);
         }
         else
         {
@@ -59,15 +57,15 @@ public sealed partial class PushService(
                 CreatedUtc = nowUtc,
                 LastSeenUtc = nowUtc
             };
-            await _repository.AddAsync(entity, cancellationToken);
+            await repository.AddAsync(entity, cancellationToken);
         }
 
-        await _repository.SaveChangesAsync(cancellationToken);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UnsubscribeAsync(string endpoint, CancellationToken cancellationToken)
     {
-        var existing = await _repository.FirstOrDefaultAsync(
+        var existing = await repository.FirstOrDefaultAsync(
             new PushSubscriptionByEndpointSpec(endpoint), cancellationToken);
 
         if (existing is null)
@@ -75,8 +73,8 @@ public sealed partial class PushService(
             return;
         }
 
-        _repository.Remove(existing);
-        await _repository.SaveChangesAsync(cancellationToken);
+        repository.Remove(existing);
+        await repository.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<SendResult> SendToAllAsync(PushPayload payload, CancellationToken cancellationToken)
@@ -84,7 +82,7 @@ public sealed partial class PushService(
         var vapidDetails = new VapidDetails(_options.Subject, _options.VapidPublicKey, _options.VapidPrivateKey);
         var serializedPayload = JsonSerializer.Serialize(payload, PayloadJsonOptions);
 
-        var subscriptions = await _repository.ListAsync(cancellationToken);
+        var subscriptions = await repository.ListAsync(cancellationToken);
         var delivered = 0;
         var pruned = 0;
         var failed = 0;
@@ -109,7 +107,7 @@ public sealed partial class PushService(
             catch (WebPushException ex)
             {
                 failed++;
-                LogPushFailed(_logger, (int)ex.StatusCode, subscription.Endpoint, ex);
+                LogPushFailed(logger, (int)ex.StatusCode, subscription.Endpoint, ex);
             }
             catch (OperationCanceledException)
             {
@@ -118,7 +116,7 @@ public sealed partial class PushService(
             catch (Exception ex)
             {
                 failed++;
-                LogPushUnhandled(_logger, subscription.Endpoint, ex);
+                LogPushUnhandled(logger, subscription.Endpoint, ex);
             }
         }
 
@@ -126,10 +124,10 @@ public sealed partial class PushService(
         {
             foreach (var dead in deadSubscriptions)
             {
-                _repository.Remove(dead);
+                repository.Remove(dead);
             }
-            await _repository.SaveChangesAsync(cancellationToken);
-            LogPruned(_logger, deadSubscriptions.Count);
+            await repository.SaveChangesAsync(cancellationToken);
+            LogPruned(logger, deadSubscriptions.Count);
         }
 
         return new SendResult(delivered, pruned, failed);

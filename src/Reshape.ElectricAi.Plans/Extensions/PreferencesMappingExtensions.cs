@@ -6,6 +6,8 @@ namespace Reshape.ElectricAi.Plans.Extensions;
 
 internal static class PreferencesMappingExtensions
 {
+    private const int DimensionCount = 9;
+
     public static PreferencesDto ToDto(this UserPreferences? entity)
     {
         if (entity is null)
@@ -19,6 +21,7 @@ internal static class PreferencesMappingExtensions
                 FoodRestrictions: [],
                 Activities: [],
                 Artists: [],
+                Cuisines: [],
                 CompletionPercent: 0,
                 UpdatedUtc: default);
         }
@@ -27,6 +30,7 @@ internal static class PreferencesMappingExtensions
         var foodRestrictions = entity.FoodRestrictions.Select(f => f.Restriction).ToArray();
         var activities = entity.Activities.Select(a => a.Activity).ToArray();
         var artists = entity.Artists.Select(a => a.ArtistName).ToArray();
+        var cuisines = entity.Cuisines.Select(c => c.Cuisine).ToArray();
 
         var filled = 0;
         if (entity.TicketType is not null) filled++;
@@ -37,8 +41,9 @@ internal static class PreferencesMappingExtensions
         if (foodRestrictions.Length > 0) filled++;
         if (activities.Length > 0) filled++;
         if (artists.Length > 0) filled++;
+        if (cuisines.Length > 0) filled++;
 
-        var completionPercent = filled * 100 / 8;
+        var completionPercent = filled * 100 / DimensionCount;
 
         return new PreferencesDto(
             entity.TicketType,
@@ -49,6 +54,7 @@ internal static class PreferencesMappingExtensions
             foodRestrictions,
             activities,
             artists,
+            cuisines,
             completionPercent,
             entity.UpdatedUtc);
     }
@@ -65,6 +71,7 @@ internal static class PreferencesMappingExtensions
         ReplaceFoodRestrictions(entity, request.FoodRestrictions ?? []);
         ReplaceActivities(entity, request.Activities ?? []);
         ReplaceArtists(entity, request.Artists ?? []);
+        ReplaceCuisines(entity, request.Cuisines ?? []);
     }
 
     public static void ApplyPatch(this UserPreferences entity, PreferencesPatchRequest request, DateTime nowUtc)
@@ -78,6 +85,7 @@ internal static class PreferencesMappingExtensions
         if (request.FoodRestrictions is not null) ReplaceFoodRestrictions(entity, request.FoodRestrictions);
         if (request.Activities is not null) ReplaceActivities(entity, request.Activities);
         if (request.Artists is not null) ReplaceArtists(entity, request.Artists);
+        if (request.Cuisines is not null) ReplaceCuisines(entity, request.Cuisines);
 
         entity.UpdatedUtc = nowUtc;
     }
@@ -119,6 +127,15 @@ internal static class PreferencesMappingExtensions
             if (name.Length == 0) continue;
             if (!seen.Add(name)) continue;
             entity.Artists.Add(new UserPreferenceArtist { UserId = entity.UserId, ArtistName = name });
+        }
+    }
+
+    private static void ReplaceCuisines(UserPreferences entity, IReadOnlyList<Cuisine> cuisines)
+    {
+        entity.Cuisines.Clear();
+        foreach (var c in cuisines.Distinct())
+        {
+            entity.Cuisines.Add(new UserPreferenceCuisine { UserId = entity.UserId, Cuisine = c });
         }
     }
 }

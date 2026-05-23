@@ -7,8 +7,6 @@ namespace Reshape.ElectricAi.Presentation.Filters;
 
 public sealed class FluentValidationFilter(IServiceProvider serviceProvider) : IAsyncActionFilter
 {
-    private readonly IServiceProvider _serviceProvider = serviceProvider;
-
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         foreach (var argument in context.ActionArguments.Values)
@@ -19,7 +17,7 @@ public sealed class FluentValidationFilter(IServiceProvider serviceProvider) : I
             }
 
             var validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType());
-            var validator = _serviceProvider.GetService(validatorType) as IValidator;
+            var validator = serviceProvider.GetService(validatorType) as IValidator;
             if (validator is null)
             {
                 continue;

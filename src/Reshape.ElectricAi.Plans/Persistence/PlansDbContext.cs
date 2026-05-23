@@ -12,6 +12,7 @@ public class PlansDbContext(DbContextOptions<PlansDbContext> options) : DbContex
     public DbSet<UserPreferenceFoodRestriction> UserPreferenceFoodRestrictions => Set<UserPreferenceFoodRestriction>();
     public DbSet<UserPreferenceActivity> UserPreferenceActivities => Set<UserPreferenceActivity>();
     public DbSet<UserPreferenceArtist> UserPreferenceArtists => Set<UserPreferenceArtist>();
+    public DbSet<UserPreferenceCuisine> UserPreferenceCuisines => Set<UserPreferenceCuisine>();
     public DbSet<Group> Groups => Set<Group>();
     public DbSet<GroupMember> GroupMembers => Set<GroupMember>();
     public DbSet<GroupPreferences> GroupPreferences => Set<GroupPreferences>();

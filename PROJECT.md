@@ -30,7 +30,7 @@ The above assignment is a recommendation — the team confirms or rearranges at 
 
 ## Solution layout
 
-> **Status: scaffolded; Plans auth + preferences slices landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations + auth (register/login/refresh/me) + preferences (GET/PUT/PATCH `/api/v1/preferences`) + generic repository abstraction. Test project `Plans.Tests` exists with 32 passing tests + 13 preferences integration tests (Docker-gated). Other libs are empty scaffolds.
+> **Status: scaffolded; Plans auth + preferences (incl. cuisines) slices landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations (InitialPlansSchema + AddPushSubscriptions + AddPreferenceCuisines) + auth (register/login/refresh/me) + preferences (GET/PUT/PATCH `/api/v1/preferences` across 9 dimensions) + generic repository abstraction. Test project `Plans.Tests` has 32 base passing tests + 18 preferences integration tests (Docker-gated). Other libs are empty scaffolds.
 
 ```
 ElectricCastle/
@@ -84,7 +84,7 @@ One Postgres database (`electric_ai`), four schemas, one `DbContext` per lib (CO
 
 | Schema | Owner | Key tables |
 |---|---|---|
-| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
+| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `UserPreferenceCuisines`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
 | `vector` | VectorDb lib | `documents`, `document_chunks` (with `embedding vector(1536)` + HNSW index) |
 | `feed` | LiveFeed lib | `feed_entries`, `feed_deliveries` |
 | `chat` | AiChat lib | `chat_sessions`, `chat_messages`, `chat_budgets`, `faq_hot_questions` |

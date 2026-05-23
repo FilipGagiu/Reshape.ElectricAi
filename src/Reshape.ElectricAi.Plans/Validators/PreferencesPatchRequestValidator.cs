@@ -72,5 +72,16 @@ public sealed class PreferencesPatchRequestValidator : AbstractValidator<Prefere
                     .Count() == items.Count(s => !string.IsNullOrWhiteSpace(s)))
                 .WithMessage("Artists must not contain duplicates (case-insensitive).");
         });
+
+        When(x => x.Cuisines is not null, () =>
+        {
+            RuleFor(x => x.Cuisines!.Count)
+                .LessThanOrEqualTo(15).WithMessage("Cuisines must contain at most 15 items.");
+            RuleForEach(x => x.Cuisines!)
+                .IsInEnum().WithMessage("Cuisines contains an invalid value.");
+            RuleFor(x => x.Cuisines!)
+                .Must(items => items.Distinct().Count() == items.Count)
+                .WithMessage("Cuisines must not contain duplicates.");
+        });
     }
 }

@@ -11,12 +11,10 @@ namespace Reshape.ElectricAi.Presentation.Controllers;
 [Route("api/v1/[controller]")]
 public sealed class PushController(IPushService pushService) : ControllerBase
 {
-    private readonly IPushService _pushService = pushService;
-
     [HttpGet("public-key")]
     [AllowAnonymous]
     public ActionResult<VapidPublicKeyResponse> GetPublicKey() =>
-        Ok(new VapidPublicKeyResponse(_pushService.GetVapidPublicKey()));
+        Ok(new VapidPublicKeyResponse(pushService.GetVapidPublicKey()));
 
     [HttpPost("subscribe")]
     [AllowAnonymous]
@@ -25,7 +23,7 @@ public sealed class PushController(IPushService pushService) : ControllerBase
         CancellationToken cancellationToken)
     {
         var userId = ResolveUserId();
-        await _pushService.SubscribeAsync(request, userId, cancellationToken);
+        await pushService.SubscribeAsync(request, userId, cancellationToken);
         return NoContent();
     }
 
@@ -35,7 +33,7 @@ public sealed class PushController(IPushService pushService) : ControllerBase
         [FromBody] UnsubscribeRequest request,
         CancellationToken cancellationToken)
     {
-        await _pushService.UnsubscribeAsync(request.Endpoint, cancellationToken);
+        await pushService.UnsubscribeAsync(request.Endpoint, cancellationToken);
         return NoContent();
     }
 
@@ -46,7 +44,7 @@ public sealed class PushController(IPushService pushService) : ControllerBase
         CancellationToken cancellationToken)
     {
         var payload = new PushPayload(request.Title, request.Body, request.Icon, request.Badge, request.Url);
-        var result = await _pushService.SendToAllAsync(payload, cancellationToken);
+        var result = await pushService.SendToAllAsync(payload, cancellationToken);
         return Ok(result);
     }
 

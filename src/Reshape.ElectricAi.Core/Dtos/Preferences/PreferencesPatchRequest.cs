@@ -10,4 +10,5 @@ public sealed record PreferencesPatchRequest(
     IReadOnlyList<MusicGenre>? MusicGenres,
     IReadOnlyList<FoodRestriction>? FoodRestrictions,
     IReadOnlyList<ActivityType>? Activities,
-    IReadOnlyList<string>? Artists);
+    IReadOnlyList<string>? Artists,
+    IReadOnlyList<Cuisine>? Cuisines);

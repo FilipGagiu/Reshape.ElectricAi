@@ -13,13 +13,11 @@ namespace Reshape.ElectricAi.Presentation.Controllers;
 [Route("api/v1/[controller]")]
 public sealed class PreferencesController(IPreferencesService preferencesService) : ControllerBase
 {
-    private readonly IPreferencesService _preferencesService = preferencesService;
-
     [HttpGet]
     public async Task<ActionResult<PreferencesDto>> GetAsync(CancellationToken cancellationToken)
     {
         var userId = ResolveUserId();
-        var dto = await _preferencesService.GetAsync(userId, cancellationToken);
+        var dto = await preferencesService.GetAsync(userId, cancellationToken);
         return Ok(dto);
     }
 
@@ -29,7 +27,7 @@ public sealed class PreferencesController(IPreferencesService preferencesService
         CancellationToken cancellationToken)
     {
         var userId = ResolveUserId();
-        var dto = await _preferencesService.ReplaceAsync(userId, request, cancellationToken);
+        var dto = await preferencesService.ReplaceAsync(userId, request, cancellationToken);
         return Ok(dto);
     }
 
@@ -39,7 +37,7 @@ public sealed class PreferencesController(IPreferencesService preferencesService
         CancellationToken cancellationToken)
     {
         var userId = ResolveUserId();
-        var dto = await _preferencesService.PatchAsync(userId, request, cancellationToken);
+        var dto = await preferencesService.PatchAsync(userId, request, cancellationToken);
         return Ok(dto);
     }
 
