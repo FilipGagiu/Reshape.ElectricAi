@@ -67,6 +67,15 @@ body {
     height: 100%;
 }
 
+/* iOS PWA: prevent the body from scrolling under the status bar when the soft
+   keyboard opens. The app shell owns its own dynamic-viewport sizing; each
+   scrollable region (chat messages, live feed list, etc.) handles its own overflow. */
+html,
+body {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
 button,
 a,
 [role='button'] {

@@ -1,5 +1,6 @@
 import {
     Accommodation,
+    AgeGroup,
     SelectOption,
     TicketType,
     Transportation,
@@ -64,6 +65,14 @@ export const ACCOMMODATION_OPTIONS: ReadonlyArray<TypedSelectOption<Accommodatio
         labelKey: 'onboarding.accommodation.cluj',
         icon: 'pi-building',
     },
+];
+
+export const AGE_GROUP_OPTIONS: ReadonlyArray<TypedSelectOption<AgeGroup>> = [
+    { id: AgeGroup.Under18, value: AgeGroup.Under18, labelKey: 'onboarding.ageGroup.under18', icon: '🧒' },
+    { id: AgeGroup.Adult18To24, value: AgeGroup.Adult18To24, labelKey: 'onboarding.ageGroup.adult18To24', icon: '🎓' },
+    { id: AgeGroup.Adult25To34, value: AgeGroup.Adult25To34, labelKey: 'onboarding.ageGroup.adult25To34', icon: '🧑' },
+    { id: AgeGroup.Adult35To44, value: AgeGroup.Adult35To44, labelKey: 'onboarding.ageGroup.adult35To44', icon: '🧔' },
+    { id: AgeGroup.Adult45Plus, value: AgeGroup.Adult45Plus, labelKey: 'onboarding.ageGroup.adult45Plus', icon: '🧓' },
 ];
 
 export const TRANSPORTATION_OPTIONS: ReadonlyArray<TypedSelectOption<Transportation>> = [

@@ -212,6 +212,77 @@
                 "replayCta": "Watch again",
                 "shareText": "Check out my Electric Castle 2026 plan. See you at the castle?"
             }
+        },
+        "intake": {
+            "greeting": "Hey! Let's build your EC plan together. A few quick questions and you're set.",
+            "submitting": "Saving your plan...",
+            "thanks": "Got it. Your plan's brewing. We'll have it ready in a bit.",
+            "error": "Couldn't save your answers. Try again in a moment.",
+            "retry": "Try again",
+            "input": {
+                "placeholder": "Type your answer..."
+            },
+            "q": {
+                "name": {
+                    "prompt": "What should we call you?",
+                    "placeholder": "Your first name"
+                },
+                "origin": {
+                    "prompt": "Where are you coming in from, and with how many?",
+                    "placeholder": "City + group size",
+                    "chip": {
+                        "clujSolo": "Cluj-Napoca, solo",
+                        "bucharestCrew": "Bucharest, with friends",
+                        "abroadGroup": "Abroad, big group"
+                    }
+                },
+                "accommodation": {
+                    "prompt": "Where are you staying during the festival?",
+                    "placeholder": "Festival camping, hotel, Airbnb...",
+                    "chip": {
+                        "festivalCamping": "Festival camping",
+                        "bontida": "Bontida village",
+                        "cluj": "Cluj-Napoca",
+                        "undecided": "Still figuring it out"
+                    }
+                },
+                "vibe": {
+                    "prompt": "What's your festival vibe, and what calls you between sets?",
+                    "placeholder": "Energy level + downtime plans",
+                    "chip": {
+                        "chillExplore": "Chill, explore, lake breaks",
+                        "raveFood": "Front row, food truck hunts",
+                        "discoveryWorkshops": "New sounds + workshops"
+                    }
+                },
+                "music": {
+                    "prompt": "Any must-see acts? Drop your favourite genres or artists too.",
+                    "placeholder": "Artists, genres, anything",
+                    "chip": {
+                        "surprise": "Surprise me",
+                        "electronic": "Electronic",
+                        "rock": "Rock / indie",
+                        "hipHop": "Hip-hop"
+                    }
+                },
+                "dietary": {
+                    "prompt": "Anything you can't (or won't) eat?",
+                    "placeholder": "Allergies, diets, anything we should know",
+                    "chip": {
+                        "none": "No restrictions",
+                        "vegetarian": "Vegetarian",
+                        "vegan": "Vegan",
+                        "glutenFree": "Gluten-free"
+                    }
+                },
+                "extra": {
+                    "prompt": "Anything else we should know? The floor is yours.",
+                    "placeholder": "Or skip if you're done",
+                    "chip": {
+                        "nothing": "Nothing else"
+                    }
+                }
+            }
         }
     },
     "auth": {
@@ -264,7 +335,11 @@
         "step": {
             "basics": {
                 "title": "About you",
-                "subtitle": "Tell us your name and age."
+                "subtitle": "Tell us your name."
+            },
+            "ageGroup": {
+                "title": "Your age group",
+                "subtitle": "Pick the range you fall into."
             },
             "ticket": {
                 "title": "Your ticket",
@@ -301,8 +376,14 @@
         },
         "field": {
             "name": "Name",
-            "namePlaceholder": "How should we call you?",
-            "age": "Age"
+            "namePlaceholder": "How should we call you?"
+        },
+        "ageGroup": {
+            "under18": "Under 18",
+            "adult18To24": "18–24",
+            "adult25To34": "25–34",
+            "adult35To44": "35–44",
+            "adult45Plus": "45+"
         },
         "ticket": {
             "noTicket": "No ticket yet",

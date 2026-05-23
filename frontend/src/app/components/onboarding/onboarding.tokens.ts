@@ -2,6 +2,7 @@ import { OnboardingMode, OnboardingStepId } from './onboarding.model';
 
 export const INDIVIDUAL_STEP_REGISTRY: ReadonlyArray<OnboardingStepId> = [
     OnboardingStepId.Basics,
+    OnboardingStepId.AgeGroup,
     OnboardingStepId.Ticket,
     OnboardingStepId.Accommodation,
     OnboardingStepId.Transport,
@@ -26,6 +27,10 @@ export const STEP_META: Readonly<Record<OnboardingStepId, StepMeta>> = {
     [OnboardingStepId.Basics]: {
         icon: '👋',
         heroGradient: 'from-primary-400 via-primary-500 to-accent-500',
+    },
+    [OnboardingStepId.AgeGroup]: {
+        icon: '🎂',
+        heroGradient: 'from-pink-400 via-rose-500 to-fuchsia-500',
     },
     [OnboardingStepId.Ticket]: {
         icon: '🎟️',

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, effect, inject, untracked } from '@
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TranslocoModule } from '@jsverse/transloco';
-import { InputNumberModule } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
 import { auditTime } from 'rxjs';
 
@@ -10,16 +9,13 @@ import { OnboardingService } from '../../onboarding.service';
 
 interface BasicsControls {
     name: FormControl<string>;
-    age: FormControl<number | null>;
 }
 
-const MIN_AGE = 13;
-const MAX_AGE = 120;
 const PATCH_DEBOUNCE_MS = 200;
 
 @Component({
     selector: 'app-step-basics',
-    imports: [ReactiveFormsModule, TranslocoModule, InputTextModule, InputNumberModule],
+    imports: [ReactiveFormsModule, TranslocoModule, InputTextModule],
     templateUrl: './step-basics.component.html',
     styleUrl: './step-basics.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,19 +28,13 @@ export class StepBasicsComponent {
             nonNullable: true,
             validators: [Validators.required],
         }),
-        age: new FormControl<number | null>(null, {
-            validators: [Validators.min(MIN_AGE), Validators.max(MAX_AGE)],
-        }),
     });
 
     constructor() {
         effect(() => {
             const profile = this.onboarding.profile();
             untracked(() => {
-                this.form.setValue(
-                    { name: profile.name, age: profile.age },
-                    { emitEvent: false },
-                );
+                this.form.setValue({ name: profile.name }, { emitEvent: false });
             });
         });
 
@@ -52,7 +42,7 @@ export class StepBasicsComponent {
             .pipe(auditTime(PATCH_DEBOUNCE_MS), takeUntilDestroyed())
             .subscribe(() => {
                 const raw = this.form.getRawValue();
-                this.onboarding.patchProfile({ name: raw.name, age: raw.age });
+                this.onboarding.patchProfile({ name: raw.name });
             });
     }
 }

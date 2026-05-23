@@ -16,6 +16,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
+export interface PrefillRequest {
+    readonly text: string;
+    readonly nonce: number;
+}
+
 /**
  * EC chat input. Two visual variants:
  *  - 'sticky' (default): dark-navy bar with 3px EC Red top stripe, off-white
@@ -45,6 +50,7 @@ export class ChatInputComponent implements AfterViewInit {
     readonly placeholderKey = input<string>('questions.input.placeholder');
     readonly autoFocus = input<boolean, boolean>(false, { transform: booleanAttribute });
     readonly disabled = input<boolean, boolean>(false, { transform: booleanAttribute });
+    readonly prefill = input<PrefillRequest | null>(null);
 
     readonly send = output<string>();
 
@@ -84,6 +90,17 @@ export class ChatInputComponent implements AfterViewInit {
             this.textValue();
             queueMicrotask(() => this.resizeTextarea());
         });
+
+        effect(() => {
+            const request = this.prefill();
+            if (!request) return;
+            this.textControl.setValue(request.text);
+            this.hasUserInteracted.set(true);
+            queueMicrotask(() => {
+                this.textareaRef()?.nativeElement.focus();
+                this.resizeTextarea();
+            });
+        });
     }
 
     ngAfterViewInit(): void {
@@ -112,6 +129,11 @@ export class ChatInputComponent implements AfterViewInit {
             this.textareaRef()?.nativeElement.focus();
             this.resizeTextarea();
         });
+    }
+
+    protected onFormSubmit(event: Event): void {
+        event.preventDefault();
+        this.submit();
     }
 
     protected submit(): void {

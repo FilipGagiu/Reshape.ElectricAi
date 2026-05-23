@@ -21,6 +21,14 @@ export enum Transportation {
     OnFoot = 'onFoot',
 }
 
+export enum AgeGroup {
+    Under18 = 'under18',
+    Adult18To24 = 'adult18To24',
+    Adult25To34 = 'adult25To34',
+    Adult35To44 = 'adult35To44',
+    Adult45Plus = 'adult45Plus',
+}
+
 export enum OnboardingMode {
     Individual = 'individual',
     Group = 'group',
@@ -28,6 +36,7 @@ export enum OnboardingMode {
 
 export enum OnboardingStepId {
     Basics = 'basics',
+    AgeGroup = 'ageGroup',
     Ticket = 'ticket',
     Accommodation = 'accommodation',
     Transport = 'transport',
@@ -40,7 +49,7 @@ export enum OnboardingStepId {
 
 export interface OnboardingProfile {
     readonly name: string;
-    readonly age: number | null;
+    readonly ageGroup: AgeGroup | null;
     readonly ticket: TicketType | null;
     readonly accommodation: Accommodation | null;
     readonly transportationIds: ReadonlyArray<string>;
@@ -74,7 +83,7 @@ export const ONBOARDING_STATE_VERSION = 1;
 
 export const EMPTY_ONBOARDING_PROFILE: OnboardingProfile = {
     name: '',
-    age: null,
+    ageGroup: null,
     ticket: null,
     accommodation: null,
     transportationIds: [],
