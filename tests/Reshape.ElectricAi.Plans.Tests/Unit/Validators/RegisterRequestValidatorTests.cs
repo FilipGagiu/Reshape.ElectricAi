@@ -13,7 +13,8 @@ public sealed class RegisterRequestValidatorTests
     {
         var result = _validator.TestValidate(new RegisterRequest("alice@example.com", "Short1!"));
 
-        result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+              .WithErrorMessage("Password must be at least 10 characters.");
     }
 
     [Fact]
@@ -21,7 +22,8 @@ public sealed class RegisterRequestValidatorTests
     {
         var result = _validator.TestValidate(new RegisterRequest("alice@example.com", "NoDigitsHere!"));
 
-        result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+              .WithErrorMessage("Password must contain at least one digit.");
     }
 
     [Fact]
@@ -29,7 +31,8 @@ public sealed class RegisterRequestValidatorTests
     {
         var result = _validator.TestValidate(new RegisterRequest("alice@example.com", "NoSymbolHere1"));
 
-        result.ShouldHaveValidationErrorFor(x => x.Password);
+        result.ShouldHaveValidationErrorFor(x => x.Password)
+              .WithErrorMessage("Password must contain at least one symbol.");
     }
 
     [Fact]
@@ -37,7 +40,8 @@ public sealed class RegisterRequestValidatorTests
     {
         var result = _validator.TestValidate(new RegisterRequest("not-an-email", "ValidPass1!"));
 
-        result.ShouldHaveValidationErrorFor(x => x.Email);
+        result.ShouldHaveValidationErrorFor(x => x.Email)
+              .WithErrorMessage("Email must be a valid address.");
     }
 
     [Fact]

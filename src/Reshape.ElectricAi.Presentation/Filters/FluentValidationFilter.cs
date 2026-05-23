@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Reshape.ElectricAi.Presentation.Middleware;
 
 namespace Reshape.ElectricAi.Presentation.Filters;
 
@@ -37,15 +38,8 @@ public sealed class FluentValidationFilter(IServiceProvider serviceProvider) : I
                     g => string.IsNullOrEmpty(g.Key) ? "_" : g.Key,
                     g => g.Select(e => e.ErrorMessage).ToArray());
 
-            context.Result = new BadRequestObjectResult(new
-            {
-                error = new
-                {
-                    code = "validation-failed",
-                    message = "One or more validation errors occurred.",
-                    details
-                }
-            });
+            context.Result = new BadRequestObjectResult(
+                ErrorEnvelope.WithDetails("validation-failed", "One or more validation errors occurred.", details));
             return;
         }
 

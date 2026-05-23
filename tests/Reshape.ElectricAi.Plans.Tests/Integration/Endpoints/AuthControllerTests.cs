@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Reshape.ElectricAi.Core.Dtos.Auth;
@@ -13,6 +15,11 @@ namespace Reshape.ElectricAi.Plans.Tests.Integration.Endpoints;
 public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifetime
 {
     private const string ValidPassword = "ValidPass1!";
+
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
 
     private readonly PostgresFixture _postgres = postgres;
     private AuthApiFactory _factory = null!;
@@ -39,7 +46,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest(email, ValidPassword));
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>();
+        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOptions);
         payload.Should().NotBeNull();
         payload!.AccessToken.Should().NotBeNullOrEmpty();
         payload.RefreshToken.Should().NotBeNullOrEmpty();
@@ -55,7 +62,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest(mixedCaseEmail, ValidPassword));
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>();
+        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOptions);
         payload!.User.Email.Should().Be(mixedCaseEmail.ToLowerInvariant());
     }
 
@@ -68,7 +75,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest(email, ValidPassword));
 
         response.StatusCode.Should().Be(HttpStatusCode.Conflict);
-        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>();
+        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
         envelope!.Error.Code.Should().Be("email-in-use");
     }
 
@@ -102,7 +109,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.PostAsJsonAsync("/api/v1/auth/login", new LoginRequest(email, "WrongPass1!"));
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>();
+        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
         envelope!.Error.Code.Should().Be("invalid-credentials");
     }
 
@@ -114,7 +121,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
             new LoginRequest(UniqueEmail("login-missing"), ValidPassword));
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>();
+        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
         envelope!.Error.Code.Should().Be("invalid-credentials");
     }
 
@@ -127,7 +134,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.PostAsJsonAsync("/api/v1/auth/refresh", new RefreshRequest(registered.RefreshToken));
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>();
+        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOptions);
         payload!.RefreshToken.Should().NotBe(registered.RefreshToken);
         payload.AccessToken.Should().NotBe(registered.AccessToken);
     }
@@ -143,7 +150,7 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var replay = await _client.PostAsJsonAsync("/api/v1/auth/refresh", new RefreshRequest(registered.RefreshToken));
 
         replay.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
-        var envelope = await replay.Content.ReadFromJsonAsync<ErrorEnvelope>();
+        var envelope = await replay.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
         envelope!.Error.Code.Should().Be("invalid-refresh-token");
     }
 
@@ -167,16 +174,36 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         var response = await _client.SendAsync(request);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var dto = await response.Content.ReadFromJsonAsync<UserDto>();
+        var dto = await response.Content.ReadFromJsonAsync<UserDto>(JsonOptions);
         dto!.Email.Should().Be(email);
     }
 
     [Fact]
-    public async Task Me_NoToken_Returns401()
+    public async Task Me_NoToken_Returns401WithEnvelope()
     {
         var response = await _client.GetAsync("/api/v1/auth/me");
 
         response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
+        envelope.Should().NotBeNull();
+        envelope!.Error.Code.Should().Be("missing-token");
+    }
+
+    [Fact]
+    public async Task Me_TamperedToken_Returns401WithInvalidTokenCode()
+    {
+        var email = UniqueEmail("me-tampered");
+        var registered = await RegisterAndReadAsync(email);
+        var tampered = registered.AccessToken[..^4] + "AAAA";
+
+        var request = new HttpRequestMessage(HttpMethod.Get, "/api/v1/auth/me");
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tampered);
+
+        var response = await _client.SendAsync(request);
+
+        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        var envelope = await response.Content.ReadFromJsonAsync<ErrorEnvelope>(JsonOptions);
+        envelope!.Error.Code.Should().Be("invalid-token");
     }
 
     [Fact]
@@ -188,24 +215,47 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         using var scope = _factory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
 
-        var rowBeforeRotate = await db.RefreshTokens.AsNoTracking().FirstOrDefaultAsync(rt => rt.UserId != Guid.Empty && rt.RevokedUtc == null);
-        rowBeforeRotate.Should().NotBeNull();
-        rowBeforeRotate!.TokenHash.Should().NotBe(registered.RefreshToken);
+        var user = await db.Users.AsNoTracking().SingleAsync(u => u.Email == email);
+        var rowBeforeRotate = await db.RefreshTokens.AsNoTracking()
+            .SingleAsync(rt => rt.UserId == user.Id && rt.RevokedUtc == null);
+        rowBeforeRotate.TokenHash.Should().NotBe(registered.RefreshToken);
 
         var rotate = await _client.PostAsJsonAsync("/api/v1/auth/refresh", new RefreshRequest(registered.RefreshToken));
         rotate.EnsureSuccessStatusCode();
 
-        var rowsAfter = await db.RefreshTokens.AsNoTracking().Where(rt => rt.UserId == rowBeforeRotate.UserId).ToListAsync();
-        var rotated = rowsAfter.Single(rt => rt.Id == rowBeforeRotate.Id);
+        var rotated = await db.RefreshTokens.AsNoTracking().SingleAsync(rt => rt.Id == rowBeforeRotate.Id);
         rotated.RevokedUtc.Should().NotBeNull();
         rotated.ReplacedByHash.Should().NotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task Refresh_ConcurrentRequestsWithSameToken_OnlyOneSucceeds()
+    {
+        var email = UniqueEmail("refresh-race");
+        var registered = await RegisterAndReadAsync(email);
+
+        var t1 = _client.PostAsJsonAsync("/api/v1/auth/refresh", new RefreshRequest(registered.RefreshToken));
+        var t2 = _client.PostAsJsonAsync("/api/v1/auth/refresh", new RefreshRequest(registered.RefreshToken));
+        var results = await Task.WhenAll(t1, t2);
+
+        var successes = results.Count(r => r.StatusCode == HttpStatusCode.OK);
+        var unauthorized = results.Count(r => r.StatusCode == HttpStatusCode.Unauthorized);
+        successes.Should().Be(1, "rotation must be atomic — only one concurrent rotate may succeed");
+        unauthorized.Should().Be(1);
+
+        using var scope = _factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
+        var user = await db.Users.AsNoTracking().SingleAsync(u => u.Email == email);
+        var activeCount = await db.RefreshTokens.AsNoTracking()
+            .CountAsync(rt => rt.UserId == user.Id && rt.RevokedUtc == null);
+        activeCount.Should().Be(1, "exactly one active refresh token per user should remain after concurrent rotate");
     }
 
     private async Task<AuthResponse> RegisterAndReadAsync(string email)
     {
         var response = await _client.PostAsJsonAsync("/api/v1/auth/register", new RegisterRequest(email, ValidPassword));
         response.EnsureSuccessStatusCode();
-        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>();
+        var payload = await response.Content.ReadFromJsonAsync<AuthResponse>(JsonOptions);
         return payload!;
     }
 

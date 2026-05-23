@@ -33,12 +33,11 @@ public sealed class PasswordHasherTests
     }
 
     [Fact]
-    public void Verify_WithEmptyHash_ReturnsFalseAndDoesNotThrow()
+    public void Verify_WithEmptyHash_ReturnsFalse()
     {
-        var action = () => _hasher.Verify("anything", string.Empty, []);
+        var result = _hasher.Verify("anything", string.Empty, []);
 
-        action.Should().NotThrow();
-        action().Should().BeFalse();
+        result.Should().BeFalse();
     }
 
     [Fact]

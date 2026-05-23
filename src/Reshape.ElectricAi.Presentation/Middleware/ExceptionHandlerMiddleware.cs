@@ -50,10 +50,11 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
         _ => (int)HttpStatusCode.BadRequest
     };
 
-    private static async Task WriteEnvelopeAsync(HttpContext context, int status, string code, string message)
+    private async Task WriteEnvelopeAsync(HttpContext context, int status, string code, string message)
     {
         if (context.Response.HasStarted)
         {
+            LogResponseAlreadyStarted(_logger, code);
             return;
         }
 
@@ -61,11 +62,7 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
         context.Response.StatusCode = status;
         context.Response.ContentType = "application/json; charset=utf-8";
 
-        var payload = new
-        {
-            error = new { code, message }
-        };
-        await JsonSerializer.SerializeAsync(context.Response.Body, payload, JsonOptions);
+        await JsonSerializer.SerializeAsync(context.Response.Body, ErrorEnvelope.Simple(code, message), JsonOptions);
     }
 
     [LoggerMessage(EventId = 1001, Level = LogLevel.Error, Message = "Domain exception with 5xx mapping: {Code}")]
@@ -76,4 +73,7 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
 
     [LoggerMessage(EventId = 1003, Level = LogLevel.Error, Message = "Unhandled exception.")]
     private static partial void LogUnhandled(ILogger logger, Exception exception);
+
+    [LoggerMessage(EventId = 1004, Level = LogLevel.Warning, Message = "Response already started; dropped envelope for code {Code}.")]
+    private static partial void LogResponseAlreadyStarted(ILogger logger, string code);
 }

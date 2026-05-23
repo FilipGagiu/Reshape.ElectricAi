@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +48,8 @@ public sealed class AuthController(IAuthService authService) : ControllerBase
     [Authorize]
     public async Task<ActionResult<UserDto>> GetMeAsync(CancellationToken cancellationToken)
     {
-        var idClaim = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var idClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub)
+                      ?? User.FindFirstValue(ClaimTypes.NameIdentifier);
         if (!Guid.TryParse(idClaim, out var userId))
         {
             throw new UnauthorizedException("invalid-token", "Access token is missing a valid subject.");

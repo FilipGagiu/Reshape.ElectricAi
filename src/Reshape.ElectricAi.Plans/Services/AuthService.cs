@@ -14,12 +14,14 @@ namespace Reshape.ElectricAi.Plans.Services;
 public sealed class AuthService(
     IRepository<User> userRepository,
     IRepository<RefreshToken> refreshTokenRepository,
+    IRefreshTokenStore refreshTokenStore,
     IPasswordHasher passwordHasher,
     ITokenService tokenService,
     IOptions<AuthOptions> options) : IAuthService
 {
     private readonly IRepository<User> _userRepository = userRepository;
     private readonly IRepository<RefreshToken> _refreshTokenRepository = refreshTokenRepository;
+    private readonly IRefreshTokenStore _refreshTokenStore = refreshTokenStore;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly ITokenService _tokenService = tokenService;
     private readonly AuthOptions _options = options.Value;
@@ -62,14 +64,7 @@ public sealed class AuthService(
 
         if (user is null)
         {
-            if (_passwordHasher is PasswordHasher hasher)
-            {
-                hasher.VerifyDummy();
-            }
-            else
-            {
-                _ = _passwordHasher.Verify(request.Password, string.Empty, []);
-            }
+            _passwordHasher.VerifyDummy();
             throw new UnauthorizedException("invalid-credentials", "Invalid email or password.");
         }
 
@@ -84,41 +79,28 @@ public sealed class AuthService(
     public async Task<AuthResponse> RefreshAsync(RefreshRequest request, CancellationToken cancellationToken)
     {
         var incomingHash = _tokenService.HashRefreshToken(request.RefreshToken);
+        var nowUtc = DateTime.UtcNow;
+        var refresh = _tokenService.IssueRefreshToken();
 
-        var existing = await _refreshTokenRepository.FirstOrDefaultAsync(
-            new ActiveRefreshTokenByHashSpec(incomingHash, DateTime.UtcNow),
+        var rotated = await _refreshTokenStore.ClaimAndRotateAsync(
+            incomingHash,
+            refresh.TokenHash,
+            refresh.ExpiresUtc,
+            nowUtc,
             cancellationToken);
 
-        if (existing is null || existing.User is null)
+        if (rotated is null)
         {
             throw new UnauthorizedException("invalid-refresh-token", "Refresh token invalid or expired.");
         }
 
-        var nowUtc = DateTime.UtcNow;
-        var refresh = _tokenService.IssueRefreshToken();
-
-        existing.RevokedUtc = nowUtc;
-        existing.ReplacedByHash = refresh.TokenHash;
-        _refreshTokenRepository.Update(existing);
-
-        var newRow = new RefreshToken
-        {
-            Id = Guid.NewGuid(),
-            UserId = existing.UserId,
-            TokenHash = refresh.TokenHash,
-            CreatedUtc = nowUtc,
-            ExpiresUtc = refresh.ExpiresUtc
-        };
-        await _refreshTokenRepository.AddAsync(newRow, cancellationToken);
-        await _refreshTokenRepository.SaveChangesAsync(cancellationToken);
-
-        var access = _tokenService.IssueAccessToken(new TokenSubject(existing.User.Id, existing.User.Email, existing.User.Role));
+        var access = _tokenService.IssueAccessToken(new TokenSubject(rotated.UserId, rotated.Email, rotated.Role));
 
         return new AuthResponse(
             access.Token,
             refresh.PlainToken,
             _options.AccessTokenMinutes * 60,
-            existing.User.ToUserDto());
+            new UserDto(rotated.UserId, rotated.Email, rotated.Role));
     }
 
     public async Task<UserDto> GetCurrentUserAsync(Guid userId, CancellationToken cancellationToken)
