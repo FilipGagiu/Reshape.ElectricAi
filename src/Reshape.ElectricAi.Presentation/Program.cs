@@ -137,12 +137,12 @@ await vectorDb.Database.MigrateAsync();
 var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
 await feedDb.Database.MigrateAsync();
 
-if (app.Environment.IsDevelopment())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
-    var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
-    await seeder.SeedAsync(dataRoot);
-}
+// if (app.Environment.IsDevelopment())
+// {
+    // var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
+    // var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
+    // await seeder.SeedAsync(dataRoot);
+// }
 
 app.UseSwagger();
 app.MapScalarApiReference(options =>
