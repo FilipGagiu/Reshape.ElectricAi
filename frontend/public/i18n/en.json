@@ -2,7 +2,8 @@
     "nav": {
         "liveFeed": "Live feed",
         "questions": "Questions",
-        "plan": "My EC plan"
+        "plan": "My EC plan",
+        "steps": "Steps"
     },
     "liveFeed": {
         "title": "Live feed",
@@ -210,6 +211,21 @@
                 "shareCta": "Share",
                 "replayCta": "Watch again",
                 "shareText": "Check out my Electric Castle 2026 plan. See you at the castle?"
+            }
+        },
+        "steps": {
+            "questionCounter": "Question {{current}} of {{total}}",
+            "suggestionsLabel": "Quick picks",
+            "actions": {
+                "continue": "Continue",
+                "finish": "Finish",
+                "back": "Back",
+                "reset": "Start over"
+            },
+            "completed": {
+                "title": "You're all set",
+                "body": "Answers saved. Your plan's brewing.",
+                "cta": "OPEN PLAN"
             }
         },
         "intake": {

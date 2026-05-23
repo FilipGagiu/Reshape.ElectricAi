@@ -20,5 +20,6 @@ export class MobileLayoutComponent {
         { icon: 'pi-bolt', labelKey: 'nav.liveFeed', route: '/' },
         { icon: 'pi-comments', labelKey: 'nav.questions', route: '/questions' },
         { icon: 'pi-list-check', labelKey: 'nav.plan', route: '/plan' },
+        { icon: 'pi-sparkles', labelKey: 'nav.steps', route: '/plan-steps' },
     ];
 }

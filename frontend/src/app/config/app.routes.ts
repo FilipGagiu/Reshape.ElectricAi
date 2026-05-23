@@ -62,6 +62,13 @@ export const routes: Routes = [
                         (m) => m.MyEcPlanComponent,
                     ),
             },
+            {
+                path: 'plan-steps',
+                loadComponent: () =>
+                    import('@components/my-ec-plan/plan-steps/plan-steps.component').then(
+                        (m) => m.PlanStepsComponent,
+                    ),
+            },
         ],
     },
     { path: '**', redirectTo: '' },
