@@ -20,6 +20,7 @@ public class PlansDbContext(DbContextOptions<PlansDbContext> options) : DbContex
     public DbSet<GroupPreferenceFoodRestriction> GroupPreferenceFoodRestrictions => Set<GroupPreferenceFoodRestriction>();
     public DbSet<GroupPreferenceActivity> GroupPreferenceActivities => Set<GroupPreferenceActivity>();
     public DbSet<GroupPreferenceArtist> GroupPreferenceArtists => Set<GroupPreferenceArtist>();
+    public DbSet<GroupPreferenceCuisine> GroupPreferenceCuisines => Set<GroupPreferenceCuisine>();
     public DbSet<Plan> Plans => Set<Plan>();
     public DbSet<PushSubscription> PushSubscriptions => Set<PushSubscription>();
 

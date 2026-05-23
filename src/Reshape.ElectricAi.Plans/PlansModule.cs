@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Core.Persistence;
 using Reshape.ElectricAi.Core.Services;
+using Reshape.ElectricAi.Plans.Configuration;
 using Reshape.ElectricAi.Plans.Entities;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.Plans.Services;
@@ -41,6 +42,7 @@ public static class PlansModule
         services.AddScoped<IRepository<UserPreferenceFoodRestriction>, PlansRepository<UserPreferenceFoodRestriction>>();
         services.AddScoped<IRepository<UserPreferenceGenre>, PlansRepository<UserPreferenceGenre>>();
         services.AddScoped<IRepository<UserPreferenceCuisine>, PlansRepository<UserPreferenceCuisine>>();
+        services.AddScoped<IRepository<GroupPreferenceCuisine>, PlansRepository<GroupPreferenceCuisine>>();
         services.AddScoped<IRepository<GroupPreferenceActivity>, PlansRepository<GroupPreferenceActivity>>();
         services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
         services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();
@@ -52,11 +54,22 @@ public static class PlansModule
         services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IPreferencesService, PreferencesService>();
+        services.AddScoped<IGroupService, GroupService>();
+        services.AddScoped<IGroupPreferencesService, GroupPreferencesService>();
 
         var pushOptions = BuildPushOptions(configuration);
         services.AddSingleton(pushOptions);
         services.AddSingleton<IOptions<PushOptions>>(Options.Create(pushOptions));
         services.AddScoped<IPushService, PushService>();
+
+        services.AddOptions<PlanGenerationOptions>()
+            .Bind(configuration.GetSection(PlanGenerationOptions.SectionName))
+            .Validate(o => o.RateLimit.PerHour >= 1, "Chat:PlanGeneration:RateLimit:PerHour must be >= 1.")
+            .Validate(o => o.MaxCompletionTokens >= 256, "Chat:PlanGeneration:MaxCompletionTokens must be >= 256.")
+            .ValidateOnStart();
+
+        services.AddSingleton<IRateLimiter, InMemorySlidingWindowRateLimiter>();
+        services.AddScoped<IPlanGenerator, PlanGenerator>();
 
         RegisterValidators(services);
 

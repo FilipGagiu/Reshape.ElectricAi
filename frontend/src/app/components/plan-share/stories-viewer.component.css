@@ -1,0 +1,173 @@
+:host {
+    display: block;
+}
+
+.ec-stories {
+    position: fixed;
+    inset: 0;
+    background-color: var(--ec-dark-navy);
+    overflow: hidden;
+    user-select: none;
+    touch-action: manipulation;
+    z-index: var(--z-modal);
+}
+
+.ec-stories__placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ec-white);
+    background-color: var(--ec-dark-navy);
+}
+
+.ec-stories__placeholder--centered {
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.ec-stories__placeholder-icon {
+    font-size: 56px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.ec-stories__placeholder-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--ec-white);
+}
+
+.ec-stories__placeholder-body {
+    margin: 0;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 320px;
+}
+
+.ec-stories__placeholder-cta {
+    margin-top: var(--space-3);
+    min-height: 48px;
+    padding: var(--space-3) var(--space-6);
+    background-color: var(--ec-yellow);
+    color: var(--ec-dark-navy);
+    border: 0;
+    border-radius: var(--radius-none);
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+.ec-stories__spinner {
+    /*
+     * Loading spinners are the documented exception that uses --radius-pill
+     * (see visual-design-language.md §00). All other surfaces stay square.
+     */
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-pill);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: var(--ec-yellow);
+    animation: ec-stories-spin 800ms linear infinite;
+}
+
+@keyframes ec-stories-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.ec-stories__progress {
+    position: absolute;
+    top: env(safe-area-inset-top, 0);
+    left: 0;
+    right: 0;
+    padding-top: var(--space-3);
+    z-index: 3;
+}
+
+.ec-stories__slide {
+    position: absolute;
+    inset: 0;
+}
+
+.ec-stories__close {
+    position: absolute;
+    top: calc(env(safe-area-inset-top, 0) + var(--space-8));
+    right: var(--space-4);
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    color: var(--ec-white);
+    border: 0;
+    border-radius: var(--radius-none);
+    cursor: pointer;
+    z-index: 4;
+    transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.ec-stories__close:hover {
+    background-color: rgba(0, 0, 0, 0.45);
+}
+
+.ec-stories__close .pi {
+    font-size: 22px;
+}
+
+.ec-stories__brand {
+    position: absolute;
+    bottom: calc(env(safe-area-inset-bottom, 0) + var(--space-4));
+    left: var(--space-4);
+    width: 32px;
+    height: 24px;
+    background-color: var(--ec-red);
+    border-radius: var(--radius-sm);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    z-index: 3;
+}
+
+.ec-stories__brand-letters {
+    color: var(--ec-white);
+    font-style: italic;
+    font-weight: 900;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.ec-stories__pause {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(15, 20, 40, var(--opacity-scrim));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;
+    animation: ec-stories-pause-in var(--duration-base) var(--ease-out) both;
+    pointer-events: none;
+}
+
+@keyframes ec-stories-pause-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.ec-stories__pause-icon {
+    font-size: 56px;
+    color: rgba(255, 255, 255, 0.8);
+}

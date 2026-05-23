@@ -4,6 +4,17 @@ import { authGuard, guestGuard } from '@shared/guards/auth.guard';
 
 export const routes: Routes = [
     {
+        // Public stories viewer — accepts a UUID, fetches the plan, renders
+        // the Spotify-Wrapped-style slideshow. No layout chrome (fully
+        // immersive). No auth guard so share links work for friends without
+        // an account.
+        path: 'p/:uuid',
+        loadComponent: () =>
+            import('@components/plan-share/stories-viewer.component').then(
+                (m) => m.StoriesViewerComponent,
+            ),
+    },
+    {
         path: '',
         canMatch: [guestGuard],
         loadComponent: () =>

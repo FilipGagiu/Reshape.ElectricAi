@@ -44,6 +44,8 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
         NotFoundException => (int)HttpStatusCode.NotFound,
         ConflictException => (int)HttpStatusCode.Conflict,
         PreconditionFailedException => 422,
+        TooManyRequestsException => (int)HttpStatusCode.TooManyRequests,
+        LlmException => (int)HttpStatusCode.BadGateway,
         _ => (int)HttpStatusCode.BadRequest
     };
 

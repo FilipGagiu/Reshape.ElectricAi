@@ -3,8 +3,22 @@
 }
 
 .ec-modal-backdrop {
+    /*
+     * Position and height are driven by the JS effect in EcModalComponent
+     * that listens to window.visualViewport. Both --ec-modal-vt (offsetTop)
+     * and --ec-modal-vh (height) are needed because on iOS the visual
+     * viewport not only shrinks when the keyboard appears, it also shifts
+     * DOWN inside the layout viewport (iOS auto-scrolls focused inputs
+     * into view). Tracking offsetTop keeps the backdrop within the visible
+     * area; tracking height keeps it the right size.
+     * Fallbacks (`0`, `100dvh`) cover browsers without visualViewport
+     * support and the initial paint before the effect runs.
+     */
     position: fixed;
-    inset: 0;
+    top: var(--ec-modal-vt, 0px);
+    left: 0;
+    width: 100%;
+    height: var(--ec-modal-vh, 100dvh);
     z-index: var(--z-modal-backdrop);
     background-color: rgba(15, 20, 40, 0);
     opacity: 0;
@@ -23,6 +37,11 @@
 }
 
 .ec-modal-container {
+    /*
+     * max-height: 100% fits inside the visualViewport-driven backdrop.
+     * On mobile with soft keyboard up, the backdrop shrinks; the container
+     * shrinks with it and the inner body scrolls.
+     */
     position: relative;
     z-index: var(--z-modal);
     background-color: var(--ec-auth-card-bg);
@@ -30,7 +49,7 @@
     border-radius: var(--radius-none);
     box-shadow: var(--shadow-3);
     width: 100%;
-    max-height: 95dvh;
+    max-height: 100%;
     transform: translateY(24px);
     opacity: 0;
     transition: transform var(--duration-slow) var(--ease-out),
@@ -74,16 +93,12 @@
         max-width: 720px;
     }
 
+    /*
+     * Desktop has no soft-keyboard concern, so cap the modal at 85% of the
+     * visual viewport to keep it from filling the whole screen.
+     */
     .ec-modal-container {
-        max-height: 85dvh;
-    }
-}
-
-/* On mobile the modal hugs the bottom edge (slide-up). On desktop, centered. */
-@media (max-width: 767.98px) {
-    .ec-modal-container {
-        max-height: 95dvh;
-        min-height: 70dvh;
+        max-height: 85%;
     }
 }
 

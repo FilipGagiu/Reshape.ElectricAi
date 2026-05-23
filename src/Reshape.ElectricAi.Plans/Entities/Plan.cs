@@ -2,7 +2,7 @@ using Reshape.ElectricAi.Core.Enums;
 
 namespace Reshape.ElectricAi.Plans.Entities;
 
-public class Plan
+public sealed class Plan
 {
     public Guid Id { get; set; }
     public PlanScope Scope { get; set; }
@@ -10,6 +10,7 @@ public class Plan
     public Guid? GroupId { get; set; }
     public TicketType TicketType { get; set; }
     public string ContentJson { get; set; } = "{}";
+    public string? Tip { get; set; }
     public DateTime GeneratedUtc { get; set; }
     public DateTime? ExportedUtc { get; set; }
 

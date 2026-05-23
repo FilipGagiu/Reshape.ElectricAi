@@ -58,7 +58,94 @@
     },
     "plan": {
         "title": "Planul meu EC",
-        "placeholder": "Planul tău extracurricular trăiește aici."
+        "placeholder": "Planul tău extracurricular trăiește aici.",
+        "cta": {
+            "watchRecap": "Vezi rezumatul"
+        },
+        "story": {
+            "close": "Închide",
+            "pause": "Pe pauză",
+            "notFound": {
+                "title": "Planul nu a fost găsit",
+                "body": "Linkul ăsta s-a rătăcit în pădure.",
+                "cta": "Înapoi la castel"
+            },
+            "welcome": {
+                "headline": "PRIMUL TĂU ELECTRIC CASTLE",
+                "body": "{{name}}, o să fie mult. În cel mai bun sens. Iată planul tău pentru 16-19 iulie."
+            },
+            "transport": {
+                "headline": "CUM AJUNGI",
+                "method": {
+                    "car": "Cu mașina. Parcarea se deschide la 10:00.",
+                    "train": "Cu trenul. Naveta pleacă din Cluj-Napoca la fiecare 30 de minute.",
+                    "bus": "Cu autobuzul. Navetele pleacă din Cluj-Napoca la fiecare 30 de minute.",
+                    "bike": "Cu bicicleta. Parcare sigură la fața locului.",
+                    "onFoot": "Pe jos. Adu pantofi buni."
+                }
+            },
+            "sleep": {
+                "headline": "TABĂRA TA",
+                "accommodation": {
+                    "festivalCamping": "Camping Festival",
+                    "bontida": "Bonțida",
+                    "cluj": "Cluj-Napoca"
+                },
+                "tip": {
+                    "festivalCamping": "Adu un sac de dormit bun. Nopțile în Transilvania sunt reci.",
+                    "bontida": "La pas de porți. Bun-venit dopurilor de urechi.",
+                    "cluj": "La 45 de minute de porți. Planifică-ți diminețile."
+                }
+            },
+            "music": {
+                "headline": "LINE-UP-UL TĂU",
+                "bodySuffix": "Plus tot ce au de oferit scenele pentru {{genres}}."
+            },
+            "budget": {
+                "headline": "TOT",
+                "suffix": "Aproximativ, în RON",
+                "line": {
+                    "ticket": "Bilet",
+                    "sleep": "Cazare",
+                    "transport": "Transport",
+                    "food": "Mâncare",
+                    "chaos": "Fond de haos"
+                }
+            },
+            "food": {
+                "headline": "MÂNCARE PENTRU FESTIVAL",
+                "cuisine": {
+                    "italian": "Italiană",
+                    "romanian": "Românească",
+                    "asian": "Asiatică",
+                    "mexican": "Mexicană",
+                    "middleEastern": "Orientul Mijlociu",
+                    "indian": "Indiană",
+                    "bbq": "BBQ",
+                    "vegan": "Plant-based"
+                },
+                "body": "EC Village are peste 60 de vendori. Vino cu poftă.",
+                "fallback": "EC Village are peste 60 de food vendori. De la sarmale la sushi. Vino cu poftă.",
+                "allergyNote": "Opțiunile pentru alergii sunt marcate pe harta din aplicație."
+            },
+            "weather": {
+                "headline": "PREGĂTEȘTE-TE PENTRU TRANSILVANIA",
+                "tip": {
+                    "layers": "Adu straturi. Zile calde, nopți reci.",
+                    "sunscreen": "Cremă de soare. Soarele mușcă în iulie.",
+                    "noGlass": "Nicio sticlă pe teren."
+                }
+            },
+            "share": {
+                "headline": "SPUNE-LE LA GRUP",
+                "body": "Planul tău e salvat. Trimite-l și află cine vine.",
+                "copyCta": "COPIAZĂ LINK-UL",
+                "copied": "LINK COPIAT",
+                "shareCta": "Distribuie",
+                "replayCta": "Vezi din nou",
+                "shareText": "Uite planul meu pentru Electric Castle 2026. Ne vedem la castel?"
+            }
+        }
     },
     "auth": {
         "login": {

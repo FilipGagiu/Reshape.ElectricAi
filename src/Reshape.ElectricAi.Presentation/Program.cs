@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Reshape.ElectricAi.AiChat;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.LiveFeed;
 using Reshape.ElectricAi.LiveFeed.Persistence;
@@ -28,6 +29,7 @@ builder.Host.UseSerilog((context, services, configuration) =>
 builder.Services.AddPlansModule(builder.Configuration);
 builder.Services.AddVectorDbModule(builder.Configuration);
 builder.Services.AddLiveFeedModule(builder.Configuration);
+builder.Services.AddAiChatModule(builder.Configuration);
 
 
 builder.Services.AddScoped<FluentValidationFilter>();
@@ -127,24 +129,26 @@ var app = builder.Build();
 
 app.UseSerilogRequestLogging();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Testing"))
 {
     using var scope = app.Services.CreateScope();
     var plansDb = scope.ServiceProvider.GetRequiredService<PlansDbContext>();
     await plansDb.Database.MigrateAsync();
     var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
     await vectorDb.Database.MigrateAsync();
-
-    var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
-    var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
-    await seeder.SeedAsync(dataRoot);
-    
     var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
     await feedDb.Database.MigrateAsync();
 
-    app.UseSwagger();
-    app.MapScalarApiReference(options =>
-        options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
+    if (app.Environment.IsDevelopment())
+    {
+        var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
+        var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
+        await seeder.SeedAsync(dataRoot);
+
+        app.UseSwagger();
+        app.MapScalarApiReference(options =>
+            options.WithOpenApiRoutePattern("/swagger/{documentName}/swagger.json"));
+    }
 }
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
