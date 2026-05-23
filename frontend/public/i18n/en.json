@@ -220,7 +220,8 @@
                 "continue": "Continue",
                 "finish": "Finish",
                 "back": "Back",
-                "reset": "Start over"
+                "forward": "Next",
+                "skip": "Skip this one"
             },
             "completed": {
                 "title": "You're all set",
@@ -234,17 +235,20 @@
             "thanks": "Got it. Your plan's brewing. We'll have it ready in a bit.",
             "error": "Couldn't save your answers. Try again in a moment.",
             "retry": "Try again",
+            "skipped": "Skipped",
             "input": {
                 "placeholder": "Type your answer..."
             },
             "q": {
                 "name": {
                     "prompt": "What should we call you?",
-                    "placeholder": "Your first name"
+                    "placeholder": "Your first name",
+                    "description": "First name's plenty. We'll keep things casual from here."
                 },
                 "origin": {
                     "prompt": "Where are you coming in from, and how big's the crew?",
                     "placeholder": "City + group size",
+                    "description": "Helps us think about your route in and how the days flow for your group.",
                     "chip": {
                         "clujSolo": "Cluj-Napoca, solo",
                         "bucharestCrew": "Bucharest, with friends",
@@ -254,6 +258,7 @@
                 "accommodation": {
                     "prompt": "Where will you call home for EC?",
                     "placeholder": "Festival camping, hotel, Airbnb...",
+                    "description": "Your base camp shapes your mornings and how late you can stay out.",
                     "chip": {
                         "festivalCamping": "Festival camping",
                         "bontida": "Bontida village",
@@ -264,6 +269,7 @@
                 "vibe": {
                     "prompt": "What's your festival vibe, and what calls you between sets?",
                     "placeholder": "Energy level + downtime plans",
+                    "description": "Tells us how to balance the big stages with the in-between magic.",
                     "chip": {
                         "chillExplore": "Chill, explore, lake breaks",
                         "raveFood": "Front row, food truck hunts",
@@ -273,6 +279,7 @@
                 "music": {
                     "prompt": "Anyone you can't miss? Drop your favourite genres or artists too.",
                     "placeholder": "Artists, genres, anything",
+                    "description": "We'll line up your schedule around the sets you actually want to catch.",
                     "chip": {
                         "surprise": "Surprise me",
                         "electronic": "Electronic",
@@ -283,6 +290,7 @@
                 "dietary": {
                     "prompt": "Anything you can't (or won't) eat?",
                     "placeholder": "Allergies, diets, anything we should know",
+                    "description": "EC Village has 60+ vendors. We'll point you at the safe-bet stalls.",
                     "chip": {
                         "none": "No restrictions",
                         "vegetarian": "Vegetarian",
@@ -293,6 +301,7 @@
                 "extra": {
                     "prompt": "Anything else we should know? The floor is yours.",
                     "placeholder": "Or skip if you're done",
+                    "description": "Quirks, must-dos, group chaos. Anything we'd otherwise miss.",
                     "chip": {
                         "nothing": "Nothing else"
                     }

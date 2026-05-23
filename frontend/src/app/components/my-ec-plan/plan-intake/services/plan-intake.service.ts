@@ -46,6 +46,10 @@ export class PlanIntakeService {
     );
     readonly answeredCount: Signal<number> = computed(() => this.stateSignal().answers.length);
     readonly totalQuestions: Signal<number> = computed(() => PLAN_INTAKE_QUESTIONS.length);
+    readonly currentIndex: Signal<number> = computed(() => this.stateSignal().currentIndex);
+    readonly answers: Signal<ReadonlyArray<PlanIntakeAnswer>> = computed(
+        () => this.stateSignal().answers,
+    );
     readonly isAssistantTyping = this.isAssistantTypingSignal.asReadonly();
 
     readonly currentQuestion: Signal<PlanIntakeQuestion | null> = computed(() => {
@@ -74,10 +78,20 @@ export class PlanIntakeService {
     submitAnswer(rawText: string): void {
         const text = rawText.trim();
         if (!text) return;
+        this.recordAnswerAndAdvance({ text, skipped: false });
+    }
 
+    /**
+     * Record an empty/skipped answer for the current question and advance.
+     * Stepped variant only — chat mode never calls this.
+     */
+    skipCurrent(): void {
+        this.recordAnswerAndAdvance({ text: '', skipped: true });
+    }
+
+    private recordAnswerAndAdvance(payload: { text: string; skipped: boolean }): void {
         const current = this.stateSignal();
         if (current.status !== 'collecting') return;
-        // Drop concurrent submits while the assistant is "typing" its next prompt.
         if (this.isAssistantTypingSignal()) return;
 
         const question = PLAN_INTAKE_QUESTIONS[current.currentIndex];
@@ -85,19 +99,25 @@ export class PlanIntakeService {
 
         const answer: PlanIntakeAnswer = {
             questionId: question.id,
-            text,
+            text: payload.text,
+            skipped: payload.skipped,
             answeredAt: new Date().toISOString(),
         };
+
+        const existing = current.answers;
+        const nextAnswers =
+            current.currentIndex < existing.length
+                ? existing.map((entry, idx) => (idx === current.currentIndex ? answer : entry))
+                : [...existing, answer];
 
         const nextIndex = current.currentIndex + 1;
         const isLast = nextIndex >= PLAN_INTAKE_QUESTIONS.length;
 
-        // Step 1: show the user's bubble + flip to typing immediately.
         this.stateSignal.set({
             ...current,
             status: isLast ? 'submitting' : 'collecting',
             currentIndex: nextIndex,
-            answers: [...current.answers, answer],
+            answers: nextAnswers,
             errorCode: undefined,
             updatedAt: new Date().toISOString(),
         });
@@ -107,7 +127,6 @@ export class PlanIntakeService {
             return;
         }
 
-        // Step 2: short typing delay before the next assistant prompt reveals.
         this.startAssistantTyping();
     }
 
@@ -140,21 +159,38 @@ export class PlanIntakeService {
     }
 
     /**
-     * Step back one question. Pops the last answer and rewinds currentIndex.
-     * No-op on the first question. Used by the stepped (non-chat) variant.
+     * Step back one question. Preserves answers so prefill works on return.
+     * No-op on the first question. Stepped variant only.
      */
     previous(): void {
         const current = this.stateSignal();
         if (current.currentIndex <= 0) return;
         this.clearTypingTimer();
         this.isAssistantTypingSignal.set(false);
-        const nextIndex = current.currentIndex - 1;
-        const nextAnswers = current.answers.slice(0, nextIndex);
         this.stateSignal.set({
             ...current,
             status: 'collecting',
-            currentIndex: nextIndex,
-            answers: nextAnswers,
+            currentIndex: current.currentIndex - 1,
+            errorCode: undefined,
+            updatedAt: new Date().toISOString(),
+        });
+    }
+
+    /**
+     * Step forward one question — only if the next slot is already answered
+     * (or skipped). Prevents leap-frogging over unanswered questions.
+     * Stepped variant only.
+     */
+    goForward(): void {
+        const current = this.stateSignal();
+        if (current.currentIndex >= PLAN_INTAKE_QUESTIONS.length - 1) return;
+        if (current.currentIndex >= current.answers.length) return;
+        this.clearTypingTimer();
+        this.isAssistantTypingSignal.set(false);
+        this.stateSignal.set({
+            ...current,
+            status: 'collecting',
+            currentIndex: current.currentIndex + 1,
             errorCode: undefined,
             updatedAt: new Date().toISOString(),
         });
@@ -252,13 +288,20 @@ export class PlanIntakeService {
             items.push({
                 id: `plan-intake-answer-${answer.questionId}`,
                 role: 'user',
-                kind: 'literal',
-                text: answer.text,
+                kind: answer.skipped ? 'i18n' : 'literal',
+                text: answer.skipped ? 'plan.intake.skipped' : answer.text,
                 createdAt: answer.answeredAt,
             });
         });
 
-        if (state.status === 'collecting' && !this.isAssistantTypingSignal()) {
+        // Only append a "next prompt" bubble when the user is at the unanswered
+        // frontier. If they navigated back via the stepped variant, currentIndex
+        // sits inside the already-answered range — no fresh prompt needed.
+        if (
+            state.status === 'collecting' &&
+            !this.isAssistantTypingSignal() &&
+            state.currentIndex === state.answers.length
+        ) {
             const next = PLAN_INTAKE_QUESTIONS[state.currentIndex];
             if (next) {
                 items.push({
