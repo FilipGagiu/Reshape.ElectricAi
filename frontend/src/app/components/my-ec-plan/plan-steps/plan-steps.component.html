@@ -1,0 +1,119 @@
+<section class="ec-plan-steps">
+    <header class="ec-plan-steps__top">
+        <button
+            type="button"
+            class="ec-plan-steps__icon-btn"
+            (click)="back()"
+            [attr.aria-label]="'plan.steps.actions.back' | transloco"
+        >
+            <i class="pi pi-arrow-left"></i>
+        </button>
+
+        @if (!isCompleted()) {
+            <app-wizard-progress class="ec-plan-steps__progress" [steps]="progressSteps()" />
+        } @else {
+            <span class="ec-plan-steps__progress" aria-hidden="true"></span>
+        }
+
+        <button
+            type="button"
+            class="ec-plan-steps__icon-btn"
+            (click)="reset()"
+            [attr.aria-label]="'plan.steps.actions.reset' | transloco"
+        >
+            <i class="pi pi-refresh"></i>
+        </button>
+    </header>
+
+    <div class="ec-plan-steps__body">
+        @if (isCompleted()) {
+            <div class="ec-plan-steps__completed" role="status">
+                <span class="ec-plan-steps__completed-icon">
+                    <i class="pi pi-check"></i>
+                </span>
+                <h2 class="ec-plan-steps__completed-title">
+                    {{ 'plan.steps.completed.title' | transloco }}
+                </h2>
+                <p class="ec-plan-steps__completed-body">
+                    {{ 'plan.steps.completed.body' | transloco }}
+                </p>
+                <button
+                    type="button"
+                    class="ec-plan-steps__cta"
+                    (click)="gotoPlan()"
+                >
+                    {{ 'plan.steps.completed.cta' | transloco }}
+                </button>
+            </div>
+        } @else if (currentQuestion(); as question) {
+            <div class="ec-plan-steps__card">
+                <p class="ec-plan-steps__counter">
+                    {{ 'plan.steps.questionCounter' | transloco: counterParams() }}
+                </p>
+                <h1 class="ec-plan-steps__prompt">
+                    {{ promptKey() | transloco }}
+                </h1>
+
+                @if (suggestionKeys().length) {
+                    <div
+                        class="ec-plan-steps__chips"
+                        role="group"
+                        [attr.aria-label]="'plan.steps.suggestionsLabel' | transloco"
+                    >
+                        @for (key of suggestionKeys(); track key) {
+                            <button
+                                type="button"
+                                class="ec-plan-steps__chip"
+                                (click)="applyChipKey(key)"
+                            >
+                                {{ key | transloco }}
+                            </button>
+                        }
+                    </div>
+                }
+
+                <div class="ec-plan-steps__field">
+                    <textarea
+                        #textarea
+                        class="ec-plan-steps__textarea"
+                        rows="1"
+                        autocomplete="off"
+                        autocapitalize="sentences"
+                        [formControl]="textControl"
+                        [placeholder]="placeholderKey() | transloco"
+                        (keydown)="onKeydown($event)"
+                    ></textarea>
+                </div>
+            </div>
+        } @else if (isSubmitting()) {
+            <div class="ec-plan-steps__status" role="status">
+                <span class="ec-plan-steps__spinner" aria-hidden="true"></span>
+                <p class="ec-plan-steps__status-text">
+                    {{ 'plan.intake.submitting' | transloco }}
+                </p>
+            </div>
+        } @else if (hasError()) {
+            <div class="ec-plan-steps__error" role="alert">
+                <p class="ec-plan-steps__error-text">
+                    {{ 'plan.intake.error' | transloco }}
+                </p>
+                <button type="button" class="ec-plan-steps__retry" (click)="retry()">
+                    {{ 'plan.intake.retry' | transloco }}
+                </button>
+            </div>
+        }
+    </div>
+
+    @if (!isCompleted() && isCollecting()) {
+        <footer class="ec-plan-steps__footer">
+            <button
+                type="button"
+                class="ec-plan-steps__cta"
+                [disabled]="!canContinue()"
+                (click)="submit()"
+            >
+                {{ continueLabelKey() | transloco }}
+            </button>
+        </footer>
+    }
+</section>

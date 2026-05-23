@@ -2,11 +2,78 @@
     "nav": {
         "liveFeed": "Feed live",
         "questions": "Întrebări",
-        "plan": "Planul meu EC"
+        "plan": "Planul meu EC",
+        "steps": "Pași"
     },
     "liveFeed": {
         "title": "Feed live",
-        "placeholder": "Actualizările în timp real apar aici."
+        "subtitle": "Bonțida · Electric Castle",
+        "status": {
+            "live": "LIVE",
+            "offline": "OFFLINE",
+            "offlineHint": "Conexiune pierdută. Reîncercăm..."
+        },
+        "filter": {
+            "all": "Toate",
+            "urgent": "Urgent",
+            "schedule": "Program",
+            "gettingAround": "Transport",
+            "general": "General"
+        },
+        "category": {
+            "general": "General",
+            "transport": "Transport",
+            "accommodation": "Cazare",
+            "food": "Mâncare",
+            "music": "Muzică",
+            "lineup": "Line-Up",
+            "activity": "Activitate",
+            "weather": "Vreme",
+            "rules": "Regulament",
+            "ticket": "Bilete",
+            "safety": "Siguranță",
+            "health": "Sănătate"
+        },
+        "pinned": {
+            "eyebrow": {
+                "safety": "ATENȚIE",
+                "weather": "VREME",
+                "transport": "NU RATA",
+                "artist": "PENTRU TINE"
+            },
+            "cta": {
+                "seeDetails": "VEZI DETALII",
+                "getThere": "MERGI ACOLO"
+            }
+        },
+        "card": {
+            "expand": "Vezi mai mult",
+            "collapse": "Vezi mai puțin"
+        },
+        "empty": {
+            "personalized": {
+                "title": "Nimic pentru artiștii tăi deocamdată.",
+                "body": "Actualizările apar imediat ce organizatorii le publică."
+            },
+            "urgent": {
+                "title": "Totul e liniștit pe frontul urgent.",
+                "body": "Scoatem la suprafață orice are nevoie de atenție."
+            },
+            "filtered": {
+                "title": "Nimic la filtrul ăsta.",
+                "body": "Încearcă alt filtru sau mai așteaptă câteva minute."
+            },
+            "firstLoad": {
+                "title": "Feed-ul se pregătește.",
+                "body": "Mai verifică în câteva momente."
+            }
+        },
+        "time": {
+            "justNow": "acum",
+            "minutesAgo": "acum {{count}} min",
+            "hoursAgo": "acum {{count}} h",
+            "daysAgo": "acum {{count}} z"
+        }
     },
     "questions": {
         "title": "Întrebări și chat",
@@ -101,17 +168,6 @@
                 "headline": "LINE-UP-UL TĂU",
                 "bodySuffix": "Plus tot ce au de oferit scenele pentru {{genres}}."
             },
-            "budget": {
-                "headline": "TOT",
-                "suffix": "Aproximativ, în RON",
-                "line": {
-                    "ticket": "Bilet",
-                    "sleep": "Cazare",
-                    "transport": "Transport",
-                    "food": "Mâncare",
-                    "chaos": "Fond de haos"
-                }
-            },
             "food": {
                 "headline": "MÂNCARE PENTRU FESTIVAL",
                 "cuisine": {
@@ -128,12 +184,23 @@
                 "fallback": "EC Village are peste 60 de food vendori. De la sarmale la sushi. Vino cu poftă.",
                 "allergyNote": "Opțiunile pentru alergii sunt marcate pe harta din aplicație."
             },
-            "weather": {
-                "headline": "PREGĂTEȘTE-TE PENTRU TRANSILVANIA",
-                "tip": {
-                    "layers": "Adu straturi. Zile calde, nopți reci.",
-                    "sunscreen": "Cremă de soare. Soarele mușcă în iulie.",
-                    "noGlass": "Nicio sticlă pe teren."
+            "activityVibe": {
+                "headline": "DINCOLO DE MUZICĂ",
+                "body": "Și momentele dintre seturi contează. Adu-ți curiozitatea.",
+                "activity": {
+                    "yoga": "Yoga",
+                    "workshops": "Workshopuri",
+                    "artTours": "Tururi de artă",
+                    "lakeSwim": "Înot la lac",
+                    "silentDisco": "Silent disco",
+                    "foodTour": "Tur culinar",
+                    "wellness": "Wellness",
+                    "castleTour": "Tur al castelului"
+                },
+                "vibe": {
+                    "curiousAndChill": "Curios și relaxat",
+                    "partyAnimal": "Animal de petrecere",
+                    "fullSend": "La maxim"
                 }
             },
             "share": {
@@ -144,6 +211,93 @@
                 "shareCta": "Distribuie",
                 "replayCta": "Vezi din nou",
                 "shareText": "Uite planul meu pentru Electric Castle 2026. Ne vedem la castel?"
+            }
+        },
+        "onboardingHeading": "Termină configurarea ca să-ți deblochezi planul personalizat.",
+        "steps": {
+            "questionCounter": "Întrebarea {{current}} din {{total}}",
+            "suggestionsLabel": "Sugestii rapide",
+            "actions": {
+                "continue": "Mai departe",
+                "finish": "Gata",
+                "back": "Înapoi",
+                "reset": "De la capăt"
+            },
+            "completed": {
+                "title": "Gata, ești setat",
+                "body": "Răspunsurile sunt salvate. Planul se pregătește.",
+                "cta": "DESCHIDE PLANUL"
+            }
+        },
+        "intake": {
+            "greeting": "Salut! Hai să construim împreună planul tău EC. Câteva întrebări scurte și ești gata.",
+            "submitting": "Îți salvăm planul...",
+            "thanks": "Am notat. Planul tău se pregătește. Revenim imediat cu el.",
+            "error": "Nu am putut salva răspunsurile. Mai încearcă într-un moment.",
+            "retry": "Încearcă din nou",
+            "input": {
+                "placeholder": "Scrie răspunsul..."
+            },
+            "q": {
+                "name": {
+                    "prompt": "Cum să-ți zicem?",
+                    "placeholder": "Prenumele tău"
+                },
+                "origin": {
+                    "prompt": "De unde vii și cât de mare-i gașca?",
+                    "placeholder": "Oraș + dimensiunea grupului",
+                    "chip": {
+                        "clujSolo": "Cluj-Napoca, singur/ă",
+                        "bucharestCrew": "București, cu prietenii",
+                        "abroadGroup": "Din străinătate, grup mare"
+                    }
+                },
+                "accommodation": {
+                    "prompt": "Unde îți faci tabăra la EC?",
+                    "placeholder": "Camping festival, hotel, Airbnb...",
+                    "chip": {
+                        "festivalCamping": "Camping festival",
+                        "bontida": "Bonțida",
+                        "cluj": "Cluj-Napoca",
+                        "undecided": "Încă mă decid"
+                    }
+                },
+                "vibe": {
+                    "prompt": "Care-i vibe-ul tău de festival și ce te atrage între concerte?",
+                    "placeholder": "Nivel de energie + planuri pentru pauze",
+                    "chip": {
+                        "chillExplore": "Relaxat, explorat, pauze la lac",
+                        "raveFood": "Primul rând, vânătoare de food trucks",
+                        "discoveryWorkshops": "Sunete noi + ateliere"
+                    }
+                },
+                "music": {
+                    "prompt": "Vreun artist pe care nu-l ratezi? Spune-ne și genurile sau artiștii preferați.",
+                    "placeholder": "Artiști, genuri, orice",
+                    "chip": {
+                        "surprise": "Surprinde-mă",
+                        "electronic": "Electronică",
+                        "rock": "Rock / indie",
+                        "hipHop": "Hip-hop"
+                    }
+                },
+                "dietary": {
+                    "prompt": "Ceva ce nu mănânci sau preferi să eviți?",
+                    "placeholder": "Alergii, diete, orice ar trebui să știm",
+                    "chip": {
+                        "none": "Fără restricții",
+                        "vegetarian": "Vegetarian",
+                        "vegan": "Vegan",
+                        "glutenFree": "Fără gluten"
+                    }
+                },
+                "extra": {
+                    "prompt": "Mai e ceva ce ar trebui să știm? Spune-ne tot.",
+                    "placeholder": "Sau sari dacă ești gata",
+                    "chip": {
+                        "nothing": "Nimic în plus"
+                    }
+                }
             }
         }
     },
@@ -178,6 +332,148 @@
             "passwordsMismatch": "Parolele nu se potrivesc.",
             "emailTaken": "E-mailul ăsta e deja folosit.",
             "invalidCredentials": "E-mail sau parolă greșite."
+        }
+    },
+    "onboarding": {
+        "title": "Configurează-ți festivalul",
+        "subtitle": "Câteva atingeri și îți personalizăm EC-ul.",
+        "progress": "Pasul {{current}} din {{total}}",
+        "action": {
+            "next": "Înainte",
+            "back": "Înapoi",
+            "skip": "Sari peste",
+            "continue": "Continuă",
+            "finish": "Gata",
+            "devReset": "Resetează",
+            "itemsSelected": "{{count}} selectate",
+            "noneSelected": "Niciuna selectată"
+        },
+        "step": {
+            "basics": {
+                "title": "Despre tine",
+                "subtitle": "Spune-ne numele tău."
+            },
+            "ageGroup": {
+                "title": "Grupa ta de vârstă",
+                "subtitle": "Alege intervalul în care te încadrezi."
+            },
+            "ticket": {
+                "title": "Biletul tău",
+                "subtitle": "Ce abonament ai?"
+            },
+            "accommodation": {
+                "title": "Unde dormi",
+                "subtitle": "Alege-ți baza."
+            },
+            "transport": {
+                "title": "Cum te deplasezi",
+                "subtitle": "Bifează toate opțiunile pe care le folosești."
+            },
+            "artists": {
+                "title": "Artiști pe care îi iubești",
+                "subtitle": "Bifează tot ce-ți place."
+            },
+            "music": {
+                "title": "Sunetul tău",
+                "subtitle": "Genuri pe care nu le poți rata."
+            },
+            "cuisine": {
+                "title": "Mâncarea pe care o poftești",
+                "subtitle": "Alege bucătăriile preferate."
+            },
+            "allergies": {
+                "title": "Nevoi alimentare",
+                "subtitle": "Filtrăm recomandările pentru tine."
+            },
+            "activities": {
+                "title": "Dincolo de muzică",
+                "subtitle": "Experiențe de zi care ți-ar plăcea."
+            }
+        },
+        "field": {
+            "name": "Nume",
+            "namePlaceholder": "Cum să-ți spunem?"
+        },
+        "ageGroup": {
+            "under18": "Sub 18",
+            "adult18To24": "18–24",
+            "adult25To34": "25–34",
+            "adult35To44": "35–44",
+            "adult45Plus": "45+"
+        },
+        "ticket": {
+            "noTicket": "Încă fără bilet",
+            "fullPass": "Abonament complet",
+            "dayTicket": "Bilet de o zi",
+            "vip": "VIP",
+            "ultraVip": "Ultra VIP",
+            "blackTicket": "Bilet Black"
+        },
+        "accommodation": {
+            "festivalCamping": "Camping festival",
+            "bontida": "Bonțida",
+            "cluj": "Cluj-Napoca"
+        },
+        "transport": {
+            "car": "Mașină",
+            "train": "Tren",
+            "bus": "Autobuz",
+            "bike": "Bicicletă",
+            "onFoot": "Pe jos"
+        },
+        "artist": {
+            "bmth": "Bring Me The Horizon",
+            "apashe": "Apashe",
+            "skepta": "Skepta",
+            "subFocus": "Sub Focus",
+            "tameImpala": "Tame Impala",
+            "arcticMonkeys": "Arctic Monkeys",
+            "fkaTwigs": "FKA Twigs",
+            "fourTet": "Four Tet",
+            "massiveAttack": "Massive Attack",
+            "idles": "Idles"
+        },
+        "genre": {
+            "rock": "Rock",
+            "electronic": "Electronică",
+            "house": "House",
+            "techno": "Techno",
+            "dnb": "Drum & Bass",
+            "hipHop": "Hip-hop",
+            "indie": "Indie",
+            "pop": "Pop",
+            "metal": "Metal",
+            "jazz": "Jazz"
+        },
+        "cuisine": {
+            "italian": "Italiană",
+            "romanian": "Românească",
+            "asian": "Asiatică",
+            "mexican": "Mexicană",
+            "middleEastern": "Orientul Mijlociu",
+            "indian": "Indiană",
+            "bbq": "Grătar",
+            "vegan": "Pe bază de plante"
+        },
+        "allergy": {
+            "vegan": "Vegan",
+            "vegetarian": "Vegetarian",
+            "glutenFree": "Fără gluten",
+            "dairyFree": "Fără lactate",
+            "nutAllergy": "Alergie la nuci",
+            "halal": "Halal",
+            "kosher": "Cușer",
+            "pescatarian": "Pescatarian"
+        },
+        "activity": {
+            "yoga": "Yoga",
+            "workshops": "Ateliere",
+            "artTours": "Tururi de artă",
+            "lakeSwim": "Înot în lac",
+            "silentDisco": "Silent disco",
+            "foodTour": "Tur culinar",
+            "wellness": "Wellness",
+            "castleTour": "Tur al castelului"
         }
     }
 }

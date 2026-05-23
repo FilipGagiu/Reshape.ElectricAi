@@ -18,17 +18,17 @@ import { TranslocoModule } from '@jsverse/transloco';
 import {
     HOLD_TO_PAUSE_THRESHOLD_MS,
     PlanData,
+    PlanSlide,
     SLIDE_DURATION_MS,
 } from './plan-share.model';
 import { PlanShareService } from './plan-share.service';
 import { StoryProgressComponent } from './story-progress.component';
-import { BudgetSlideComponent } from './slides/budget-slide.component';
+import { ActivityVibeSlideComponent } from './slides/activity-vibe-slide.component';
 import { FoodSlideComponent } from './slides/food-slide.component';
 import { MusicSlideComponent } from './slides/music-slide.component';
 import { ShareSlideComponent } from './slides/share-slide.component';
 import { SleepSlideComponent } from './slides/sleep-slide.component';
 import { TransportSlideComponent } from './slides/transport-slide.component';
-import { WeatherSlideComponent } from './slides/weather-slide.component';
 import { WelcomeSlideComponent } from './slides/welcome-slide.component';
 
 type LoadState = 'loading' | 'ready' | 'not-found';
@@ -42,9 +42,8 @@ type LoadState = 'loading' | 'ready' | 'not-found';
         TransportSlideComponent,
         SleepSlideComponent,
         MusicSlideComponent,
-        BudgetSlideComponent,
         FoodSlideComponent,
-        WeatherSlideComponent,
+        ActivityVibeSlideComponent,
         ShareSlideComponent,
     ],
     templateUrl: './stories-viewer.component.html',
@@ -80,6 +79,26 @@ export class StoriesViewerComponent {
         () => this.slideCount() > 0 && this.currentIndex() >= this.slideCount() - 1,
     );
 
+    // Slide types that hold until the viewer taps / keyboards forward (no
+    // auto-advance). Welcome is intentionally a "freeze frame": the first
+    // moment lands and the viewer drives the next beat themselves.
+    // TEMP: every slide is manual while we iterate on slide HTML. Revert to
+    // just ['welcome'] when auto-advance should resume.
+    private readonly MANUAL_ADVANCE_TYPES: ReadonlySet<PlanSlide['type']> = new Set([
+        'welcome',
+        'transport',
+        'sleep',
+        'music',
+        'food',
+        'activityVibe',
+        'share',
+    ]);
+
+    protected readonly currentSlideAutoAdvances = computed(() => {
+        const slide = this.currentSlide();
+        return slide !== null && !this.MANUAL_ADVANCE_TYPES.has(slide.type);
+    });
+
     private animationFrame = 0;
     private lastTickMs = 0;
     private holdTimer: ReturnType<typeof setTimeout> | null = null;
@@ -114,18 +133,20 @@ export class StoriesViewerComponent {
             const isLast = this.isLastSlide();
             const isPaused = this.paused();
             const reduceMotion = this.prefersReducedMotion();
+            const autoAdvances = this.currentSlideAutoAdvances();
 
             this.stopTimer();
-            if (!ready || isPaused || isLast || reduceMotion) {
+            if (!ready || isPaused || isLast || reduceMotion || !autoAdvances) {
                 return;
             }
             this.startTimer();
         });
 
-        // Reset fraction when index changes.
+        // Reset fraction when index changes. Last slide stays "complete" so
+        // its progress bar reads as fully filled (no auto-advance follows).
         effect(() => {
             this.currentIndex();
-            this.progressFraction.set(0);
+            this.progressFraction.set(this.isLastSlide() ? 1 : 0);
         });
     }
 

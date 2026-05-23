@@ -1,6 +1,8 @@
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.ML.Tokenizers;
+using Npgsql;
 using Pgvector;
 using Reshape.ElectricAi.Core.Dtos.VectorSearch;
 using Reshape.ElectricAi.Core.Persistence;
@@ -20,7 +22,7 @@ public sealed class IngestService(
     private const int ChunkOverlapTokens = 50;
 
     private static readonly TiktokenTokenizer Tokenizer =
-        TiktokenTokenizer.CreateForModel("text-embedding-3-small");
+        TiktokenTokenizer.CreateForModel("text-embedding-3-large");
 
     public async Task IngestDocumentAsync(IngestDocumentRequest request, CancellationToken cancellationToken = default)
     {
@@ -54,8 +56,15 @@ public sealed class IngestService(
             });
         }
 
-        await documentRepository.AddAsync(document, cancellationToken);
-        await documentRepository.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await documentRepository.AddAsync(document, cancellationToken);
+            await documentRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+        {
+            // Lost the race: another concurrent caller inserted the same SourceHash. Idempotent success.
+        }
     }
 
     public async Task IngestQAAsync(IngestQARequest request, CancellationToken cancellationToken = default)
@@ -99,8 +108,15 @@ public sealed class IngestService(
             });
         }
 
-        await questionRepository.AddAsync(question, cancellationToken);
-        await questionRepository.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await questionRepository.AddAsync(question, cancellationToken);
+            await questionRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+        {
+            // Lost the race: another concurrent caller inserted the same TextHash. Idempotent success.
+        }
     }
 
     public async Task RemoveEventAsync(Guid feedEntryId, CancellationToken cancellationToken = default)
@@ -135,8 +151,15 @@ public sealed class IngestService(
             IngestedUtc = DateTimeOffset.UtcNow,
         };
 
-        await eventRepository.AddAsync(entry, cancellationToken);
-        await eventRepository.SaveChangesAsync(cancellationToken);
+        try
+        {
+            await eventRepository.AddAsync(entry, cancellationToken);
+            await eventRepository.SaveChangesAsync(cancellationToken);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException { SqlState: PostgresErrorCodes.UniqueViolation })
+        {
+            // Lost the race: another concurrent caller inserted the same FeedEntryId. Idempotent success.
+        }
     }
 
     private static string ComputeHash(string input)

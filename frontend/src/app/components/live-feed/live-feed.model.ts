@@ -1,81 +1,60 @@
-export enum FeedItemKind {
-    NowPlaying = 'nowPlaying',
-    UpNext = 'upNext',
-    Alert = 'alert',
-    ScheduleChange = 'scheduleChange',
-    Photo = 'photo',
-    Info = 'info',
-    Social = 'social',
+export enum FeedCategory {
+    General = 'General',
+    Transport = 'Transport',
+    Accommodation = 'Accommodation',
+    Food = 'Food',
+    Music = 'Music',
+    Lineup = 'Lineup',
+    Activity = 'Activity',
+    Weather = 'Weather',
+    Rules = 'Rules',
+    Ticket = 'Ticket',
+    Safety = 'Safety',
+    Health = 'Health',
 }
 
-export enum AlertLevel {
-    Info = 'info',
-    Warning = 'warning',
-    Danger = 'danger',
+export enum FeedUrgency {
+    Low = 'low',
+    Medium = 'medium',
+    High = 'high',
 }
 
-interface FeedItemBase {
-    id: string;
-    publishedAt: Date;
+export interface FeedEntry {
+    readonly id: string;
+    readonly category: FeedCategory;
+    readonly title: string;
+    readonly body: string;
+    readonly publishedAt: Date;
+    readonly isGeneral: boolean;
+    readonly targetArtists: ReadonlyArray<string>;
+    readonly targetGenres: ReadonlyArray<string>;
 }
 
-export interface NowPlayingItem extends FeedItemBase {
-    kind: FeedItemKind.NowPlaying;
-    artist: string;
-    stage: string;
-    startsAt: Date;
-    endsAt: Date;
+export enum FeedFilter {
+    All = 'all',
+    Urgent = 'urgent',
+    Schedule = 'schedule',
+    GettingAround = 'gettingAround',
+    General = 'general',
 }
 
-export interface UpNextItem extends FeedItemBase {
-    kind: FeedItemKind.UpNext;
-    artist: string;
-    stage: string;
-    startsAt: Date;
+export enum PinnedKind {
+    Safety = 'safety',
+    Weather = 'weather',
+    Transport = 'transport',
+    Artist = 'artist',
 }
 
-export interface AlertItem extends FeedItemBase {
-    kind: FeedItemKind.Alert;
-    level: AlertLevel;
-    title: string;
-    body: string;
-    icon: string;
+export interface PinnedCapsule {
+    readonly entryId: string;
+    readonly kind: PinnedKind;
+    readonly eyebrowKey: string;
+    readonly title: string;
+    readonly meta: string;
+    readonly ctaLabelKey: string;
 }
 
-export interface ScheduleChangeItem extends FeedItemBase {
-    kind: FeedItemKind.ScheduleChange;
-    artist: string;
-    newStage: string;
-    newTime: Date;
-    reason?: string;
+export interface FeedViewItem {
+    readonly entry: FeedEntry;
+    readonly relativeTime: string;
 }
-
-export interface PhotoItem extends FeedItemBase {
-    kind: FeedItemKind.Photo;
-    author: string;
-    caption: string;
-    accent: string;
-}
-
-export interface InfoItem extends FeedItemBase {
-    kind: FeedItemKind.Info;
-    title: string;
-    body: string;
-    icon: string;
-}
-
-export interface SocialItem extends FeedItemBase {
-    kind: FeedItemKind.Social;
-    primaryUser: string;
-    othersCount: number;
-    location: string;
-}
-
-export type FeedItem =
-    | NowPlayingItem
-    | UpNextItem
-    | AlertItem
-    | ScheduleChangeItem
-    | PhotoItem
-    | InfoItem
-    | SocialItem;

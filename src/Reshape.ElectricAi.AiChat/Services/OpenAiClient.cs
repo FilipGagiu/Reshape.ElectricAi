@@ -114,6 +114,72 @@ public sealed partial class OpenAiClient(
         throw new LlmException("llm-unavailable", "OpenAI retries exhausted.", lastError);
     }
 
+    public async Task<LlmTextResult> CompleteFreeTextAsync(
+        string systemPrompt,
+        string userPrompt,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken)
+    {
+        var modelId = string.IsNullOrWhiteSpace(model) ? "gpt-4o-mini" : model;
+        if (!_options.Models.TryGetValue(modelId, out var pricing))
+        {
+            throw new LlmException("model-not-configured", $"No pricing configured for model '{modelId}'.");
+        }
+
+        var client = new ChatClient(modelId, new ApiKeyCredential(_options.ApiKey));
+
+        var chatOptions = new ChatCompletionOptions
+        {
+            MaxOutputTokenCount = maxCompletionTokens ?? _options.Limits.MaxCompletionTokens
+        };
+
+        var messages = new List<ChatMessage>
+        {
+            ChatMessage.CreateSystemMessage(systemPrompt),
+            ChatMessage.CreateUserMessage(userPrompt)
+        };
+
+        Exception? lastError = null;
+        for (var attempt = 1; attempt <= 2; attempt++)
+        {
+            try
+            {
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                cts.CancelAfter(TimeSpan.FromSeconds(_options.Limits.TimeoutSeconds));
+                var sw = Stopwatch.StartNew();
+
+                var completion = await client.CompleteChatAsync(messages, chatOptions, cts.Token);
+                sw.Stop();
+
+                var text = completion.Value.Content[0].Text;
+                var usage = ComputeUsage(completion.Value.Usage, pricing);
+                LogCompleted(logger, modelId, usage.PromptTokens, usage.CompletionTokens, usage.CostCents, sw.ElapsedMilliseconds);
+                return new LlmTextResult(text, usage);
+            }
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
+            {
+                throw;
+            }
+            catch (LlmException)
+            {
+                throw;
+            }
+            catch (Exception ex) when (attempt == 1 && IsTransient(ex))
+            {
+                lastError = ex;
+                LogRetry(logger, attempt, ex.GetType().Name);
+                await Task.Delay(TimeSpan.FromSeconds(attempt), cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new LlmException("llm-unavailable", "OpenAI call failed.", ex);
+            }
+        }
+
+        throw new LlmException("llm-unavailable", "OpenAI retries exhausted.", lastError);
+    }
+
     private static bool IsTransient(Exception ex) =>
         ex is TaskCanceledException
         || ex is ClientResultException;
