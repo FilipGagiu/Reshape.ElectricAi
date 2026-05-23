@@ -360,6 +360,20 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.ToTable("UserPreferenceArtists", "plans");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceCuisine", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Cuisine")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("UserId", "Cuisine");
+
+                    b.ToTable("UserPreferenceCuisines", "plans");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceFoodRestriction", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -558,6 +572,17 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("UserPreferences");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceCuisine", b =>
+                {
+                    b.HasOne("Reshape.ElectricAi.Plans.Entities.UserPreferences", "UserPreferences")
+                        .WithMany("Cuisines")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserPreferences");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceFoodRestriction", b =>
                 {
                     b.HasOne("Reshape.ElectricAi.Plans.Entities.UserPreferences", "UserPreferences")
@@ -623,6 +648,8 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("Activities");
 
                     b.Navigation("Artists");
+
+                    b.Navigation("Cuisines");
 
                     b.Navigation("FoodRestrictions");
 

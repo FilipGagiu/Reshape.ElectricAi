@@ -10,7 +10,6 @@ namespace Reshape.ElectricAi.Plans.Tests.Integration.Persistence;
 [Collection(PostgresCollection.Name)]
 public sealed class EfRepositoryTests(PostgresFixture postgres) : IAsyncLifetime
 {
-    private readonly PostgresFixture _postgres = postgres;
     private PlansDbContext _context = null!;
     private PlansRepository<User> _users = null!;
     private PlansRepository<RefreshToken> _refreshTokens = null!;
@@ -18,7 +17,7 @@ public sealed class EfRepositoryTests(PostgresFixture postgres) : IAsyncLifetime
     public async Task InitializeAsync()
     {
         var options = new DbContextOptionsBuilder<PlansDbContext>()
-            .UseNpgsql(_postgres.ConnectionString, npgsql =>
+            .UseNpgsql(postgres.ConnectionString, npgsql =>
                 npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "plans"))
             .Options;
         _context = new PlansDbContext(options);

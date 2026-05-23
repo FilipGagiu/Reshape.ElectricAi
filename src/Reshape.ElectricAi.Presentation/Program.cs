@@ -10,6 +10,7 @@ using Reshape.ElectricAi.Plans;
 using Reshape.ElectricAi.Plans.Persistence;
 using Reshape.ElectricAi.VectorDb;
 using Reshape.ElectricAi.VectorDb.Persistence;
+using Reshape.ElectricAi.VectorDb.Services;
 using Reshape.ElectricAi.Presentation.Filters;
 using Reshape.ElectricAi.Presentation.Middleware;
 using Scalar.AspNetCore;
@@ -133,6 +134,11 @@ if (app.Environment.IsDevelopment())
     await plansDb.Database.MigrateAsync();
     var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
     await vectorDb.Database.MigrateAsync();
+
+    var seeder = scope.ServiceProvider.GetRequiredService<EcDataSeeder>();
+    var dataRoot = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "data"));
+    await seeder.SeedAsync(dataRoot);
+    
     var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
     await feedDb.Database.MigrateAsync();
 

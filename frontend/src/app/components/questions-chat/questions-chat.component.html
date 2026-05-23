@@ -1,0 +1,78 @@
+<div class="ec-questions-page">
+    <section class="ec-questions-section" aria-labelledby="hot-questions-heading">
+        <header class="ec-section-header">
+            <h2 id="hot-questions-heading" class="ec-section-header__label">
+                {{ 'questions.section.hot' | transloco }}
+            </h2>
+            <span class="ec-section-header__rule" aria-hidden="true"></span>
+        </header>
+
+        @if (hotQuestionsState() === 'ready') {
+            <div class="ec-questions-cards">
+                @for (question of hotQuestions(); track question.id) {
+                    <app-hot-question-card
+                        [question]="question"
+                        (expand)="openHotQuestion($event)"
+                    />
+                }
+            </div>
+        } @else {
+            <div class="ec-empty-state">
+                <i class="pi pi-thumbs-up ec-empty-state__icon" aria-hidden="true"></i>
+                <h3 class="ec-empty-state__title">
+                    {{ 'questions.empty.noHot.title' | transloco }}
+                </h3>
+                <p class="ec-empty-state__body">
+                    {{ 'questions.empty.noHot.body' | transloco }}
+                </p>
+            </div>
+        }
+    </section>
+
+    <section class="ec-questions-section" aria-labelledby="past-conversations-heading">
+        <header class="ec-section-header">
+            <h2 id="past-conversations-heading" class="ec-section-header__label">
+                {{ 'questions.section.history' | transloco }}
+            </h2>
+            <span class="ec-section-header__rule" aria-hidden="true"></span>
+        </header>
+
+        @if (conversationsState() === 'ready') {
+            <div class="ec-questions-list">
+                @for (conversation of conversations(); track conversation.id) {
+                    <app-past-conversation-row
+                        [conversation]="conversation"
+                        (open)="openConversation($event)"
+                    />
+                }
+            </div>
+        } @else {
+            <div class="ec-empty-state">
+                <i class="pi pi-comments ec-empty-state__icon" aria-hidden="true"></i>
+                <h3 class="ec-empty-state__title">
+                    {{ 'questions.empty.noConversations.title' | transloco }}
+                </h3>
+                <p class="ec-empty-state__body">
+                    {{ 'questions.empty.noConversations.body' | transloco }}
+                </p>
+            </div>
+        }
+    </section>
+</div>
+
+<div class="ec-questions-input-wrap">
+    <app-chat-input variant="sticky" (send)="onStickyInputSend($event)" />
+</div>
+
+<app-hot-question-modal
+    [question]="activeHotQuestion()"
+    [open]="hotModalOpen()"
+    (close)="closeHotQuestion()"
+    (askFollowUp)="onAskFollowUp($event)"
+/>
+
+<app-conversation-modal
+    [conversation]="activeConversation()"
+    [open]="conversationModalOpen()"
+    (close)="closeConversation()"
+/>

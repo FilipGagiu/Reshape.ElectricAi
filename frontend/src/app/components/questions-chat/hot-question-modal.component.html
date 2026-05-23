@@ -1,0 +1,39 @@
+<ec-modal
+    [open]="open()"
+    size="lg"
+    [labelledBy]="titleId"
+    (close)="close.emit()"
+>
+    <header ec-modal-header class="ec-hq-modal__header">
+        <button
+            type="button"
+            class="ec-hq-modal__close"
+            (click)="close.emit()"
+            [attr.aria-label]="'questions.modal.closeAria' | transloco"
+        >
+            <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+        @if (question()) {
+            <h2 [id]="titleId" class="ec-hq-modal__title">{{ question()!.text }}</h2>
+            <span class="ec-hq-modal__accent" aria-hidden="true"></span>
+        }
+    </header>
+
+    <div ec-modal-body class="ec-hq-modal__body">
+        @if (question()) {
+            @for (paragraph of paragraphs(); track $index) {
+                <p class="ec-hq-modal__paragraph">{{ paragraph }}</p>
+            }
+        }
+    </div>
+
+    <footer ec-modal-footer class="ec-hq-modal__footer">
+        <button
+            type="button"
+            class="ec-cta-primary"
+            (click)="onAskFollowUp()"
+        >
+            {{ 'questions.modal.askFollowUp' | transloco }}
+        </button>
+    </footer>
+</ec-modal>

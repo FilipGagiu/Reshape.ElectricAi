@@ -40,6 +40,7 @@ public static class PlansModule
         services.AddScoped<IRepository<UserPreferenceArtist>, PlansRepository<UserPreferenceArtist>>();
         services.AddScoped<IRepository<UserPreferenceFoodRestriction>, PlansRepository<UserPreferenceFoodRestriction>>();
         services.AddScoped<IRepository<UserPreferenceGenre>, PlansRepository<UserPreferenceGenre>>();
+        services.AddScoped<IRepository<UserPreferenceCuisine>, PlansRepository<UserPreferenceCuisine>>();
         services.AddScoped<IRepository<GroupPreferenceActivity>, PlansRepository<GroupPreferenceActivity>>();
         services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
         services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();
@@ -50,6 +51,7 @@ public static class PlansModule
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IPreferencesService, PreferencesService>();
 
         var pushOptions = BuildPushOptions(configuration);
         services.AddSingleton(pushOptions);

@@ -21,13 +21,12 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private readonly PostgresFixture _postgres = postgres;
     private AuthApiFactory _factory = null!;
     private HttpClient _client = null!;
 
     public Task InitializeAsync()
     {
-        _factory = new AuthApiFactory(_postgres);
+        _factory = new AuthApiFactory(postgres);
         _client = _factory.CreateClient();
         return Task.CompletedTask;
     }

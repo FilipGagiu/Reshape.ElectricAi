@@ -30,7 +30,7 @@ The above assignment is a recommendation — the team confirms or rearranges at 
 
 ## Solution layout
 
-> **Status: scaffolded; Plans auth slice landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations + auth (register/login/refresh/me) + generic repository abstraction. Test project `Plans.Tests` exists with 32 passing tests. Other libs are empty scaffolds.
+> **Status: scaffolded; Plans auth + preferences (incl. cuisines) slices landed.** Solution file is `ElectricCastle.slnx` (XML solution format). All six projects exist. `Plans` has entities + migrations (InitialPlansSchema + AddPushSubscriptions + AddPreferenceCuisines) + auth (register/login/refresh/me) + preferences (GET/PUT/PATCH `/api/v1/preferences` across 9 dimensions) + generic repository abstraction. Test project `Plans.Tests` has 32 base passing tests + 18 preferences integration tests (Docker-gated). Other libs are empty scaffolds.
 
 ```
 ElectricCastle/
@@ -84,7 +84,7 @@ One Postgres database (`electric_ai`), four schemas, one `DbContext` per lib (CO
 
 | Schema | Owner | Key tables |
 |---|---|---|
-| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
+| `plans` | Plans lib | `Users`, `RefreshTokens`, `UserPreferences`, `UserPreferenceGenres`, `UserPreferenceFoodRestrictions`, `UserPreferenceActivities`, `UserPreferenceArtists`, `UserPreferenceCuisines`, `Groups`, `GroupMembers`, `GroupPreferences`, `GroupPreferenceGenres`, `GroupPreferenceFoodRestrictions`, `GroupPreferenceActivities`, `GroupPreferenceArtists`, `Plans` (PascalCase identifiers — Postgres double-quoting required in `psql`) |
 | `vector` | VectorDb lib | `documents`, `document_chunks` (with `embedding vector(1536)` + HNSW index) |
 | `feed` | LiveFeed lib | `feed_entries`, `feed_deliveries` |
 | `chat` | AiChat lib | `chat_sessions`, `chat_messages`, `chat_budgets`, `faq_hot_questions` |
@@ -217,6 +217,8 @@ The original DOCX/XLSX/PDF files stay in `Client Generic Requirements/` as sourc
 
 1. ~~**Scaffolding plan**~~ — DONE. `ElectricCastle.slnx` + six `.csproj` + `Plans.Tests` test project all exist.
 2. **Knowledge-base seeding plan** — extract `Client Generic Requirements/*` to the `data/` folder in the documented JSON/MD shapes; wire the ingest source classes.
+3. **Plans next slices** — ~~Preferences endpoints (GET/PUT/PATCH)~~ DONE. Remaining: `POST /preferences/parse-freetext` (deferred until AiChat), Groups CRUD + invites + group preferences (mirror user-preferences pattern with `GroupId` PK + member check), Plan generation (LLM-backed). All use the existing `IRepository<T>` + `ISpecification<T>` foundation. Atomic multi-row ops go in dedicated stores (mirroring `RefreshTokenStore`).
+4. **Promote `EfRepository<TContext,T>` to a shared `Infrastructure` project** — trigger: when the second feature lib (LiveFeed / AiChat / VectorDb) needs EF persistence. Move `EfRepository`, `SpecificationEvaluator`, and adopt a per-lib closing-class pattern (e.g. `FeedRepository<T> : EfRepository<FeedDbContext, T>`).
 3. **Plans next slices** — Preferences endpoints (GET/PUT/PATCH + parse-freetext), Groups CRUD + invites, Plan generation (LLM-backed). All use the existing `IRepository<T>` + `ISpecification<T>` foundation. Atomic multi-row ops go in dedicated stores (mirroring `RefreshTokenStore`).
 4. ~~**Promote `EfRepository<TContext,T>` to a shared `Infrastructure` project**~~ — DONE alongside the LiveFeed initial slice. `EfRepository` + `SpecificationEvaluator` now live in `Reshape.ElectricAi.Infrastructure`; Plans + LiveFeed consume via closing classes (`PlansRepository<T>`, `FeedRepository<T>`).
 5. **Per-lib feature plans (other devs)** — VectorDb (ingest + retrieval), AiChat (chat + RAG + budget), LiveFeed (CRUD + SSE). Each follows the Plans pattern: entities → migration → `XxxModule.AddXxxModule()` → controllers → tests.

@@ -11,31 +11,28 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
     };
 
-    private readonly RequestDelegate _next = next;
-    private readonly ILogger<ExceptionHandlerMiddleware> _logger = logger;
-
     public async Task InvokeAsync(HttpContext context)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (DomainException ex)
         {
             var status = MapStatus(ex);
             if (status >= 500)
             {
-                LogDomainServerError(_logger, ex.Code, ex);
+                LogDomainServerError(logger, ex.Code, ex);
             }
             else
             {
-                LogDomainClientError(_logger, ex.Code, ex.Message);
+                LogDomainClientError(logger, ex.Code, ex.Message);
             }
             await WriteEnvelopeAsync(context, status, ex.Code, ex.Message);
         }
         catch (Exception ex)
         {
-            LogUnhandled(_logger, ex);
+            LogUnhandled(logger, ex);
             await WriteEnvelopeAsync(context, (int)HttpStatusCode.InternalServerError, "internal-error", "An unexpected error occurred.");
         }
     }
@@ -54,7 +51,7 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
     {
         if (context.Response.HasStarted)
         {
-            LogResponseAlreadyStarted(_logger, code);
+            LogResponseAlreadyStarted(logger, code);
             return;
         }
 

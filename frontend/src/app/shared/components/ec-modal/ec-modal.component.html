@@ -1,0 +1,19 @@
+<div
+    class="ec-modal-backdrop"
+    [class.ec-modal-backdrop--open]="open()"
+    (mousedown)="onBackdropMouseDown($event)"
+>
+    <div
+        #container
+        class="ec-modal-container"
+        [class.ec-modal-container--open]="open()"
+        [class]="'ec-modal-container--' + size()"
+        role="dialog"
+        aria-modal="true"
+        [attr.aria-labelledby]="labelledBy() ?? null"
+    >
+        <ng-content select="[ec-modal-header]"></ng-content>
+        <ng-content select="[ec-modal-body]"></ng-content>
+        <ng-content select="[ec-modal-footer]"></ng-content>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="ec-chat-input-shell">
+    @if (showSuggestions()) {
+        <div class="ec-chat-input__chips" role="group" aria-label="Suggestions">
+            @for (key of suggestionKeys; track key) {
+                <button
+                    type="button"
+                    class="ec-chat-input__chip"
+                    (click)="applySuggestion(key)"
+                >
+                    {{ key | transloco }}
+                </button>
+            }
+        </div>
+    }
+
+    <form class="ec-chat-input" (ngSubmit)="submit()">
+        <textarea
+            #textarea
+            class="ec-chat-input__field"
+            [formControl]="textControl"
+            [placeholder]="placeholderKey() | transloco"
+            rows="1"
+            (keydown)="onKeydown($event)"
+            (input)="onTextInput()"
+            spellcheck="true"
+            autocomplete="off"
+        ></textarea>
+
+        <button
+            type="submit"
+            class="ec-chat-input__send"
+            [disabled]="!canSend()"
+            [attr.aria-label]="sendAriaLabel()"
+        >
+            <i class="pi pi-send" aria-hidden="true"></i>
+        </button>
+    </form>
+</div>

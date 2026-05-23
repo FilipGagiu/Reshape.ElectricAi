@@ -93,12 +93,12 @@ All routes under `/api/v1`. JWT bearer required unless marked `[Anon]`. Status: 
 
 ### Preferences (`Reshape.ElectricAi.Plans`)
 
-| Method | Route | Auth | Summary |
-|---|---|---|---|
-| GET | `/preferences` | `[User]` | My preferences + completion %. |
-| PUT | `/preferences` | `[User]` | Replace all preferences. |
-| PATCH | `/preferences` | `[User]` | Partial update. |
-| POST | `/preferences/parse-freetext` | `[User]` | AI-extract preferences from free text. Returns preview; does NOT save. |
+| Method | Route | Auth | Summary | Status |
+|---|---|---|---|---|
+| GET | `/preferences` | `[User]` | My preferences + completion %. Empty default DTO when no row (no 404). | live |
+| PUT | `/preferences` | `[User]` | Full replace. `null` scalar = clear; `null` list = treated as empty. | live |
+| PATCH | `/preferences` | `[User]` | Partial update. `null` (or absent) = no change; `[]` = clear that list. | live |
+| POST | `/preferences/parse-freetext` | `[User]` | AI-extract preferences from free text. Returns preview; does NOT save. | deferred (needs AiChat) |
 
 ### Groups (`Reshape.ElectricAi.Plans`)
 
@@ -174,20 +174,39 @@ All routes under `/api/v1`. JWT bearer required unless marked `[Anon]`. Status: 
 
 ```json
 {
-  "musicGenres": ["techno", "house", "rock"],
-  "artists": ["Justin Timberlake", "Yungblud", "Queens of the Stone Age"],
-  "ticketType": "GeneralAccess",
+  "ticketType": "Standard",
   "accommodation": "Glamping",
   "transport": "EcBus",
-  "foodPreferences": ["vegan", "asian"],
-  "allergens": ["nuts"],
-  "activities": ["MainStage", "BeachStage", "EcVillage", "Crafts"],
   "ageGroup": "Adult25To34",
-  "completionPercent": 78
+  "musicGenres": ["Techno", "House", "Rock"],
+  "foodRestrictions": ["Vegan", "NoPeanuts"],
+  "activities": ["Relax", "Social"],
+  "artists": ["Justin Timberlake", "Queens of the Stone Age"],
+  "cuisines": ["Italian", "Japanese", "Mediterranean"],
+  "completionPercent": 100,
+  "updatedUtc": "2026-05-23T10:15:30Z"
 }
 ```
 
-Enums shipped in [CODE.md](CODE.md) → `Reshape.ElectricAi.Core/Enums/`. `completionPercent` is computed server-side, ignored on input.
+Enum values:
+
+| Field | Allowed values |
+|---|---|
+| `ticketType` | `Standard`, `Vip`, `UltraVip`, `Black` |
+| `accommodation` | `VillageRental`, `Camping`, `CarCamping`, `RvCamping`, `Glamping` |
+| `transport` | `RideShare`, `Car`, `EcTrain`, `EcBus`, `Helicopter` |
+| `ageGroup` | `Under18`, `Adult18To24`, `Adult25To34`, `Adult35To44`, `Adult45Plus` |
+| `musicGenres[]` | `HipHop`, `House`, `Balkan`, `Rock`, `Folk`, `Techno`, `Pop`, `Electronic`, `Jazz`, `Metal`, `Other` |
+| `foodRestrictions[]` | `Vegan`, `Vegetarian`, `NoPeanuts`, `NoMeat`, `NoPork`, `NoDairy`, `NoGluten`, `NoShellfish`, `NoEggs`, `Halal`, `Kosher` |
+| `activities[]` | `Relax`, `Energetic`, `Adrenaline`, `Social`, `Creative`, `Wellness`, `Discovery` |
+| `artists[]` | free-text strings, 1..200 chars each |
+| `cuisines[]` | `American`, `Italian`, `Romanian`, `Mexican`, `Chinese`, `Japanese`, `Indian`, `Thai`, `French`, `Greek`, `Mediterranean`, `MiddleEastern`, `Bbq`, `StreetFood`, `Other` |
+
+Source-of-truth enums live in [`src/Reshape.ElectricAi.Core/Enums/`](src/Reshape.ElectricAi.Core/Enums/). `completionPercent` is computed server-side (**9 dimensions** equal weight, integer divide × 100); `updatedUtc` is server-set. Both ignored on input.
+
+**Validation caps:** `artists` ≤ 20, `musicGenres` ≤ 11, `foodRestrictions` ≤ 11, `activities` ≤ 7, `cuisines` ≤ 15. Duplicates rejected with 400 + standard envelope. `artists` dedup is case-insensitive; strings trimmed.
+
+**PATCH semantics:** every field nullable. `null` (or absent) = no change for that field. Send `[]` on a list to clear it. Send PUT instead if you need to clear a scalar enum.
 
 ### `POST /plans/generate` — response (`PlanDto`)
 

@@ -16,7 +16,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is not null
+        var filterTags = filter.UserContext is { Count: > 0 }
             ? CategoryTagsHelper.ToTags(filter.UserContext)
             : null;
 
@@ -47,7 +47,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is not null
+        var filterTags = filter.UserContext is { Count: > 0 }
             ? CategoryTagsHelper.ToTags(filter.UserContext)
             : null;
 
@@ -95,7 +95,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is not null
+        var filterTags = filter.UserContext is { Count: > 0 }
             ? CategoryTagsHelper.ToTags(filter.UserContext)
             : null;
 

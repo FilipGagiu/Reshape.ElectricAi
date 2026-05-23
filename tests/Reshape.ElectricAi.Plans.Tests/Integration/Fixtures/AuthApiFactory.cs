@@ -8,11 +8,9 @@ public sealed class AuthApiFactory(PostgresFixture postgres) : WebApplicationFac
 {
     public const string TestSigningKey = "QmpiVmRhTGJZWmNkRlJ3WGV1S2pQa2hRcmRJZ09pTm5BYmNkMDEyMzQ1Njc4OTA";
 
-    private readonly PostgresFixture _postgres = postgres;
-
     protected override IHost CreateHost(IHostBuilder builder)
     {
-        Environment.SetEnvironmentVariable("ConnectionStrings__Postgres", _postgres.ConnectionString);
+        Environment.SetEnvironmentVariable("ConnectionStrings__Postgres", postgres.ConnectionString);
         Environment.SetEnvironmentVariable("Auth__JwtSigningKey", TestSigningKey);
         Environment.SetEnvironmentVariable("Auth__Issuer", "reshape-electric-ai");
         Environment.SetEnvironmentVariable("Auth__Audience", "reshape-electric-ai-api");

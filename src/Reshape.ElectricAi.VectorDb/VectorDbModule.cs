@@ -44,6 +44,7 @@ public static class VectorDbModule
         services.AddScoped<IEmbeddingService, OpenAiEmbeddingService>();
         services.AddScoped<IVectorSearchService, VectorSearchService>();
         services.AddScoped<IIngestService, IngestService>();
+        services.AddScoped<EcDataSeeder>();
 
         return services;
     }

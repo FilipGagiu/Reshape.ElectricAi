@@ -6,8 +6,6 @@ namespace Reshape.ElectricAi.Plans.Services;
 
 public sealed class RefreshTokenStore(PlansDbContext context) : IRefreshTokenStore
 {
-    private readonly PlansDbContext _context = context;
-
     public async Task<RotatedRefreshToken?> ClaimAndRotateAsync(
         string incomingHash,
         string newTokenHash,
@@ -15,7 +13,7 @@ public sealed class RefreshTokenStore(PlansDbContext context) : IRefreshTokenSto
         DateTime nowUtc,
         CancellationToken cancellationToken)
     {
-        var claimed = await _context.RefreshTokens
+        var claimed = await context.RefreshTokens
             .Where(rt => rt.TokenHash == incomingHash
                       && rt.RevokedUtc == null
                       && rt.ExpiresUtc > nowUtc)
@@ -29,7 +27,7 @@ public sealed class RefreshTokenStore(PlansDbContext context) : IRefreshTokenSto
             return null;
         }
 
-        var subject = await _context.RefreshTokens
+        var subject = await context.RefreshTokens
             .AsNoTracking()
             .Where(rt => rt.TokenHash == incomingHash)
             .Select(rt => new { rt.UserId, Email = rt.User!.Email, rt.User.Role })
@@ -40,7 +38,7 @@ public sealed class RefreshTokenStore(PlansDbContext context) : IRefreshTokenSto
             return null;
         }
 
-        _context.RefreshTokens.Add(new RefreshToken
+        context.RefreshTokens.Add(new RefreshToken
         {
             Id = Guid.NewGuid(),
             UserId = subject.UserId,
@@ -49,7 +47,7 @@ public sealed class RefreshTokenStore(PlansDbContext context) : IRefreshTokenSto
             ExpiresUtc = newTokenExpiresUtc
         });
 
-        await _context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
 
         return new RotatedRefreshToken(subject.UserId, subject.Email, subject.Role);
     }

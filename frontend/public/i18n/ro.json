@@ -10,7 +10,51 @@
     },
     "questions": {
         "title": "Întrebări și chat",
-        "placeholder": "Pune întrebări și discută cu ceilalți."
+        "placeholder": "Pune întrebări și discută cu ceilalți.",
+        "section": {
+            "hot": "Ce întreabă lumea",
+            "history": "Conversații anterioare"
+        },
+        "meta": {
+            "askedCountOne": "1 persoană a întrebat",
+            "askedCountOther": "{{count}} persoane au întrebat",
+            "askedCountMany": "{{count}} de persoane au întrebat"
+        },
+        "modal": {
+            "closeAria": "Închide",
+            "askFollowUp": "PUNE O ÎNTREBARE",
+            "continue": "CONTINUĂ"
+        },
+        "empty": {
+            "noConversations": {
+                "title": "Întrebările tale, toate la un loc.",
+                "body": "Pune orice mai jos. Conversațiile tale rămân aici."
+            },
+            "noHot": {
+                "title": "Nimic fierbinte acum.",
+                "body": "Revino în câteva minute."
+            }
+        },
+        "loading": {
+            "curatedAnswer": "Pregătim răspunsul...",
+            "chatReply": "Ne gândim...",
+            "longRunning": "Mai durează puțin. Stai lângă noi."
+        },
+        "input": {
+            "placeholder": "Întreabă orice despre EC...",
+            "sendAria": "Trimite",
+            "suggestion": {
+                "parking": "Parcare lângă castel?",
+                "camping": "E umbrit campingul?",
+                "travel": "Cum ajung la castel?"
+            }
+        },
+        "time": {
+            "justNow": "Acum",
+            "minutesAgo": "Acum {{count}} min",
+            "hoursAgo": "Acum {{count}} h",
+            "daysAgo": "Acum {{count}} z"
+        }
     },
     "plan": {
         "title": "Planul meu EC",

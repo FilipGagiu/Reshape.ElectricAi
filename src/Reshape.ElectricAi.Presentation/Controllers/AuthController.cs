@@ -12,15 +12,13 @@ namespace Reshape.ElectricAi.Presentation.Controllers;
 [Route("api/v1/[controller]")]
 public sealed class AuthController(IAuthService authService) : ControllerBase
 {
-    private readonly IAuthService _authService = authService;
-
     [HttpPost("register")]
     [AllowAnonymous]
     public async Task<ActionResult<AuthResponse>> RegisterAsync(
         [FromBody] RegisterRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _authService.RegisterAsync(request, cancellationToken);
+        var response = await authService.RegisterAsync(request, cancellationToken);
         return Ok(response);
     }
 
@@ -30,7 +28,7 @@ public sealed class AuthController(IAuthService authService) : ControllerBase
         [FromBody] LoginRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _authService.LoginAsync(request, cancellationToken);
+        var response = await authService.LoginAsync(request, cancellationToken);
         return Ok(response);
     }
 
@@ -40,7 +38,7 @@ public sealed class AuthController(IAuthService authService) : ControllerBase
         [FromBody] RefreshRequest request,
         CancellationToken cancellationToken)
     {
-        var response = await _authService.RefreshAsync(request, cancellationToken);
+        var response = await authService.RefreshAsync(request, cancellationToken);
         return Ok(response);
     }
 
@@ -55,7 +53,7 @@ public sealed class AuthController(IAuthService authService) : ControllerBase
             throw new UnauthorizedException("invalid-token", "Access token is missing a valid subject.");
         }
 
-        var user = await _authService.GetCurrentUserAsync(userId, cancellationToken);
+        var user = await authService.GetCurrentUserAsync(userId, cancellationToken);
         return Ok(user);
     }
 }

@@ -10,7 +10,51 @@
     },
     "questions": {
         "title": "Questions and chat",
-        "placeholder": "Ask questions and chat with others."
+        "placeholder": "Ask questions and chat with others.",
+        "section": {
+            "hot": "Hot questions",
+            "history": "Past conversations"
+        },
+        "meta": {
+            "askedCountOne": "1 person asked",
+            "askedCountOther": "{{count}} people asked",
+            "askedCountMany": "{{count}} people asked"
+        },
+        "modal": {
+            "closeAria": "Close",
+            "askFollowUp": "ASK A FOLLOW-UP",
+            "continue": "KEEP GOING"
+        },
+        "empty": {
+            "noConversations": {
+                "title": "Your questions, all in one place.",
+                "body": "Ask anything below. Your conversations live here."
+            },
+            "noHot": {
+                "title": "Nothing hot right now.",
+                "body": "Check back in a few minutes."
+            }
+        },
+        "loading": {
+            "curatedAnswer": "Getting the answer ready...",
+            "chatReply": "Thinking...",
+            "longRunning": "Taking a bit longer. Hang tight."
+        },
+        "input": {
+            "placeholder": "Ask anything about EC...",
+            "sendAria": "Send",
+            "suggestion": {
+                "parking": "Parking near the castle?",
+                "camping": "Is camping shaded?",
+                "travel": "How do I get there?"
+            }
+        },
+        "time": {
+            "justNow": "Just now",
+            "minutesAgo": "{{count}} min ago",
+            "hoursAgo": "{{count}}h ago",
+            "daysAgo": "{{count}}d ago"
+        }
     },
     "plan": {
         "title": "My EC plan",
