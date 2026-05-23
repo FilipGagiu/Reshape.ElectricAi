@@ -3,14 +3,18 @@ using Reshape.ElectricAi.Core.Enums;
 namespace Reshape.ElectricAi.Core.Dtos.Preferences;
 
 public sealed record PreferencesDto(
-    TicketType? TicketType,
-    Accommodation? Accommodation,
-    TransportMode? Transport,
-    AgeGroup? AgeGroup,
+    string? Name,
+    string? Origin,
+    CrewDto? Crew,
+    IReadOnlyList<string> VibeTags,
     IReadOnlyList<MusicGenre> MusicGenres,
+    IReadOnlyList<string> MustSeeArtists,
     IReadOnlyList<FoodRestriction> FoodRestrictions,
-    IReadOnlyList<ActivityType> Activities,
-    IReadOnlyList<string> Artists,
     IReadOnlyList<Cuisine> Cuisines,
+    IReadOnlyList<ActivityType> ActivityInterests,
+    TransportSuggestionDto? SuggestedTransport,
+    AccommodationSuggestionDto? SuggestedAccommodation,
+    TicketType? TicketType,
+    AgeGroup? AgeGroup,
     int CompletionPercent,
     DateTime UpdatedUtc);

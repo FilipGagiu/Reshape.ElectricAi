@@ -8,22 +8,12 @@ public sealed class PlanConfiguration : IEntityTypeConfiguration<Plan>
 {
     public void Configure(EntityTypeBuilder<Plan> builder)
     {
-        builder.ToTable("Plans", t => t.HasCheckConstraint(
-            "ck_plans_owner_xor_group",
-            "(\"OwnerUserId\" IS NULL) <> (\"GroupId\" IS NULL)"));
+        builder.ToTable("Plans");
 
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Scope).HasConversion<string>().HasMaxLength(20).IsRequired();
-        builder.Property(x => x.TicketType).HasConversion<string>().HasMaxLength(20).IsRequired();
-
+        builder.Property(x => x.OwnerUserId).IsRequired();
         builder.Property(x => x.ContentJson).HasColumnType("jsonb").IsRequired();
-
-        builder.Property(x => x.Tip)
-            .HasColumnType("text")
-            .HasMaxLength(500)
-            .IsRequired(false);
-
         builder.Property(x => x.GeneratedUtc).IsRequired();
 
         builder.Property<uint>("xmin")
@@ -34,16 +24,8 @@ public sealed class PlanConfiguration : IEntityTypeConfiguration<Plan>
         builder.HasOne(x => x.Owner)
             .WithMany()
             .HasForeignKey(x => x.OwnerUserId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(false);
+            .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(x => x.Group)
-            .WithMany()
-            .HasForeignKey(x => x.GroupId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired(false);
-
-        builder.HasIndex(x => x.OwnerUserId);
-        builder.HasIndex(x => x.GroupId);
+        builder.HasIndex(x => x.OwnerUserId).IsUnique();
     }
 }

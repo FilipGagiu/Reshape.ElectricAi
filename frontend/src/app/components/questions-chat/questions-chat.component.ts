@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 
+import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
+
 import { ChatInputComponent } from './chat-input.component';
 import { ConversationModalComponent } from './conversation-modal.component';
 import { HotQuestionCardComponent } from './hot-question-card.component';
@@ -19,6 +21,7 @@ import { QuestionsService } from './services/questions.service';
     selector: 'app-questions-chat',
     imports: [
         TranslocoModule,
+        EcTopbarComponent,
         HotQuestionCardComponent,
         PastConversationRowComponent,
         ChatInputComponent,

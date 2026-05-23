@@ -1,0 +1,16 @@
+:host {
+    display: contents;
+}
+
+.ec-topbar {
+    top: env(safe-area-inset-top);
+}
+
+.ec-topbar__logout:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.ec-topbar__logout:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-shadow);
+}

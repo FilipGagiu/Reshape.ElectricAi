@@ -112,6 +112,13 @@
     letter-spacing: -0.01em;
 }
 
+.ec-plan-steps__description {
+    margin: calc(-1 * var(--space-2)) 0 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ec-gray-mid);
+}
+
 .ec-plan-steps__chips {
     display: flex;
     flex-wrap: wrap;
@@ -284,9 +291,47 @@
 
 .ec-plan-steps__footer {
     flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-2);
     padding: var(--space-3) var(--space-4) var(--space-4);
     background-color: var(--ec-white);
     border-top: 1px solid rgba(120, 120, 120, 0.15);
+}
+
+.ec-plan-steps__skip {
+    align-self: center;
+    padding: var(--space-2) var(--space-3);
+    background-color: transparent;
+    color: var(--ec-gray-mid);
+    border: 0;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color var(--duration-base) var(--ease-out);
+}
+
+.ec-plan-steps__skip:hover {
+    color: var(--ec-dark-navy);
+}
+
+.ec-plan-steps__skip:focus-visible {
+    outline: none;
+    color: var(--ec-dark-navy);
+    box-shadow: 0 0 0 3px rgba(220, 53, 41, 0.18);
+}
+
+.ec-plan-steps__icon-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.ec-plan-steps__icon-btn:disabled:hover {
+    background-color: transparent;
 }
 
 .ec-plan-steps__cta {

@@ -65,111 +65,6 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.ToTable("GroupMembers", "plans");
                 });
 
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceActivity", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Activity")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.HasKey("GroupId", "Activity");
-
-                    b.ToTable("GroupPreferenceActivities", "plans");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceArtist", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ArtistName")
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.HasKey("GroupId", "ArtistName");
-
-                    b.ToTable("GroupPreferenceArtists", "plans");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceCuisine", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Cuisine")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.HasKey("GroupId", "Cuisine");
-
-                    b.ToTable("GroupPreferenceCuisines", "plans");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceFoodRestriction", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Restriction")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.HasKey("GroupId", "Restriction");
-
-                    b.ToTable("GroupPreferenceFoodRestrictions", "plans");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceGenre", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Genre")
-                        .HasMaxLength(30)
-                        .HasColumnType("character varying(30)");
-
-                    b.HasKey("GroupId", "Genre");
-
-                    b.ToTable("GroupPreferenceGenres", "plans");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferences", b =>
-                {
-                    b.Property<Guid>("GroupId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Accommodation")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("AgeGroup")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("TicketType")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Transport")
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<DateTime>("UpdatedUtc")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<uint>("xmin")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("xid")
-                        .HasColumnName("xmin");
-
-                    b.HasKey("GroupId");
-
-                    b.ToTable("GroupPreferences", "plans");
-                });
-
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.Plan", b =>
                 {
                     b.Property<Guid>("Id")
@@ -180,31 +75,11 @@ namespace Reshape.ElectricAi.Plans.Migrations
                         .IsRequired()
                         .HasColumnType("jsonb");
 
-                    b.Property<DateTime?>("ExportedUtc")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<DateTime>("GeneratedUtc")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("GroupId")
+                    b.Property<Guid>("OwnerUserId")
                         .HasColumnType("uuid");
-
-                    b.Property<Guid?>("OwnerUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Scope")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("TicketType")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
-                    b.Property<string>("Tip")
-                        .HasMaxLength(500)
-                        .HasColumnType("text");
 
                     b.Property<uint>("xmin")
                         .IsConcurrencyToken()
@@ -214,14 +89,10 @@ namespace Reshape.ElectricAi.Plans.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("OwnerUserId")
+                        .IsUnique();
 
-                    b.HasIndex("OwnerUserId");
-
-                    b.ToTable("Plans", "plans", t =>
-                        {
-                            t.HasCheckConstraint("ck_plans_owner_xor_group", "(\"OwnerUserId\" IS NULL) <> (\"GroupId\" IS NULL)");
-                        });
+                    b.ToTable("Plans", "plans");
                 });
 
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.PushSubscription", b =>
@@ -420,6 +291,20 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.ToTable("UserPreferenceGenres", "plans");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceVibeTag", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Value")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)");
+
+                    b.HasKey("UserId", "Value");
+
+                    b.ToTable("UserPreferenceVibeTags", "plans");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferences", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -429,9 +314,28 @@ namespace Reshape.ElectricAi.Plans.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<string>("AccommodationNote")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
                     b.Property<string>("AgeGroup")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<short?>("CrewEstimatedSize")
+                        .HasColumnType("smallint");
+
+                    b.Property<string>("CrewKind")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)");
+
+                    b.Property<string>("Origin")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)");
 
                     b.Property<string>("TicketType")
                         .HasMaxLength(20)
@@ -440,6 +344,10 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Property<string>("Transport")
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<string>("TransportNote")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<DateTime>("UpdatedUtc")
                         .HasColumnType("timestamp with time zone");
@@ -485,85 +393,13 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceActivity", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
-                        .WithMany("Activities")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPreferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceArtist", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
-                        .WithMany("Artists")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPreferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceCuisine", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
-                        .WithMany("Cuisines")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPreferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceFoodRestriction", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
-                        .WithMany("FoodRestrictions")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPreferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferenceGenre", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupPreferences")
-                        .WithMany("Genres")
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("GroupPreferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferences", b =>
-                {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.Group", "Group")
-                        .WithOne("Preferences")
-                        .HasForeignKey("Reshape.ElectricAi.Plans.Entities.GroupPreferences", "GroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Group");
-                });
-
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.Plan", b =>
                 {
-                    b.HasOne("Reshape.ElectricAi.Plans.Entities.Group", "Group")
-                        .WithMany()
-                        .HasForeignKey("GroupId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Reshape.ElectricAi.Plans.Entities.User", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Group");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Owner");
                 });
@@ -634,6 +470,17 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("UserPreferences");
                 });
 
+            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferenceVibeTag", b =>
+                {
+                    b.HasOne("Reshape.ElectricAi.Plans.Entities.UserPreferences", "UserPreferences")
+                        .WithMany("VibeTags")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserPreferences");
+                });
+
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.UserPreferences", b =>
                 {
                     b.HasOne("Reshape.ElectricAi.Plans.Entities.User", "User")
@@ -648,21 +495,6 @@ namespace Reshape.ElectricAi.Plans.Migrations
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.Group", b =>
                 {
                     b.Navigation("Members");
-
-                    b.Navigation("Preferences");
-                });
-
-            modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.GroupPreferences", b =>
-                {
-                    b.Navigation("Activities");
-
-                    b.Navigation("Artists");
-
-                    b.Navigation("Cuisines");
-
-                    b.Navigation("FoodRestrictions");
-
-                    b.Navigation("Genres");
                 });
 
             modelBuilder.Entity("Reshape.ElectricAi.Plans.Entities.User", b =>
@@ -685,6 +517,8 @@ namespace Reshape.ElectricAi.Plans.Migrations
                     b.Navigation("FoodRestrictions");
 
                     b.Navigation("Genres");
+
+                    b.Navigation("VibeTags");
                 });
 #pragma warning restore 612, 618
         }

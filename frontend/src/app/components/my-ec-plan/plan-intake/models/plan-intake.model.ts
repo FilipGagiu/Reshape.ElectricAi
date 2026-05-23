@@ -16,12 +16,14 @@ export interface PlanIntakeQuestion {
     readonly id: PlanIntakeQuestionId;
     readonly promptKey: string;
     readonly placeholderKey: string;
+    readonly descriptionKey?: string;
     readonly suggestionKeys: ReadonlyArray<string>;
 }
 
 export interface PlanIntakeAnswer {
     readonly questionId: PlanIntakeQuestionId;
     readonly text: string;
+    readonly skipped?: boolean;
     readonly answeredAt: string;
 }
 

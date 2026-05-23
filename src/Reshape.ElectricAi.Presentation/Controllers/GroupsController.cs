@@ -11,9 +11,7 @@ namespace Reshape.ElectricAi.Presentation.Controllers;
 [ApiController]
 [Authorize]
 [Route("api/v1/[controller]")]
-public sealed class GroupsController(
-    IGroupService groupService,
-    IGroupPreferencesService preferencesService) : ControllerBase
+public sealed class GroupsController(IGroupService groupService) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<GroupDto>> CreateAsync(
@@ -50,36 +48,6 @@ public sealed class GroupsController(
         var callerUserId = ResolveUserId();
         await groupService.RemoveMemberAsync(id, callerUserId, userId, cancellationToken);
         return NoContent();
-    }
-
-    [HttpGet("{id:guid}/preferences")]
-    public async Task<ActionResult<GroupPreferencesDto>> GetPreferencesAsync(Guid id, CancellationToken cancellationToken)
-    {
-        var userId = ResolveUserId();
-        var dto = await preferencesService.GetAsync(id, userId, cancellationToken);
-        return Ok(dto);
-    }
-
-    [HttpPut("{id:guid}/preferences")]
-    public async Task<ActionResult<GroupPreferencesDto>> ReplacePreferencesAsync(
-        Guid id,
-        [FromBody] GroupPreferencesReplaceRequest request,
-        CancellationToken cancellationToken)
-    {
-        var userId = ResolveUserId();
-        var dto = await preferencesService.ReplaceAsync(id, userId, request, cancellationToken);
-        return Ok(dto);
-    }
-
-    [HttpPatch("{id:guid}/preferences")]
-    public async Task<ActionResult<GroupPreferencesDto>> PatchPreferencesAsync(
-        Guid id,
-        [FromBody] GroupPreferencesPatchRequest request,
-        CancellationToken cancellationToken)
-    {
-        var userId = ResolveUserId();
-        var dto = await preferencesService.PatchAsync(id, userId, request, cancellationToken);
-        return Ok(dto);
     }
 
     private Guid ResolveUserId()
