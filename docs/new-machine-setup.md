@@ -9,7 +9,7 @@ Requirements and known gotchas for getting this project running on a fresh machi
 | Tool | Version | Check |
 |---|---|---|
 | .NET SDK | 10.0+ | `dotnet --version` → `10.x` |
-| PostgreSQL | 16+ | `psql --version` |
+| PostgreSQL | 18 | `psql --version` |
 | **pgvector extension** | 0.7.0+ | see below |
 | OpenAI account | — | API key with credits |
 | Git | any recent | — |
@@ -29,10 +29,8 @@ DETAIL:  Could not open extension control file "/usr/share/postgresql/16/extensi
 
 **Ubuntu / Debian:**
 ```bash
-sudo apt install postgresql-16-pgvector
+sudo apt install postgresql-18-pgvector
 ```
-
-For other Postgres versions, replace `16` with your version (`postgresql-15-pgvector`, etc.).
 
 **macOS (Homebrew):**
 ```bash

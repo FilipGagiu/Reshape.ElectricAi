@@ -9,7 +9,16 @@
       "Bash(python3 *)",
       "Bash(xargs cat)",
       "Bash(dotnet clean *)",
-      "Bash(dotnet test *)"
+      "Bash(dotnet test *)",
+      "Bash(dotnet-ilspycmd /home/mz/.nuget/packages/testcontainers.postgresql/4.12.0/lib/netstandard2.1/Testcontainers.PostgreSql.dll)",
+      "Bash(systemctl is-active *)",
+      "Bash(pg_lsclusters)",
+      "Read(//usr/lib/postgresql/17/lib/**)",
+      "Read(//usr/lib/postgresql/18/lib/**)",
+      "Read(//usr/share/postgresql/17/extension/**)",
+      "Read(//usr/share/postgresql/18/extension/**)",
+      "Read(//usr/lib/postgresql/**)",
+      "Read(//usr/share/postgresql/**)"
     ]
   }
 }
