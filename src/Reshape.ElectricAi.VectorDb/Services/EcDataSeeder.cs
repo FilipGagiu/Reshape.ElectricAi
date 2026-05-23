@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Reshape.ElectricAi.Core.Dtos.VectorSearch;
 using Reshape.ElectricAi.Core.Enums;
@@ -92,12 +93,12 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
         foreach (var entry in entries)
         {
             var genrePart = entry.Genres is { Length: > 0 }
-                ? $"\nGenres: {string.Join(", ", entry.Genres)}"
+                ? $"\nGenres: {string.Join(", ", entry.Genres.Select(ToDisplayName))}"
                 : string.Empty;
 
             var content = $"""
                 Artist: {entry.ArtistName}
-                Stage: {entry.Stage} at Electric Castle Festival
+                Stage: {ToDisplayName(entry.Stage)} at Electric Castle Festival
                 Day: {entry.Day} | Time: {entry.StartTime} – {entry.EndTime}
 
                 {entry.Description ?? string.Empty}{genrePart}
@@ -110,6 +111,9 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
 
         LogLineupSeeded(logger, entries.Length, null);
     }
+
+    private static string ToDisplayName(string pascalCase) =>
+        Regex.Replace(pascalCase, @"(?<=[a-z])(?=[A-Z])", " ");
 
     private static (string sourceRef, string body) ParseFrontmatter(string content)
     {
