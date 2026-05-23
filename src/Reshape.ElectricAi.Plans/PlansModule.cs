@@ -44,6 +44,7 @@ public static class PlansModule
         services.AddScoped<IRepository<GroupPreferenceArtist>, PlansRepository<GroupPreferenceArtist>>();
         services.AddScoped<IRepository<GroupPreferenceFoodRestriction>, PlansRepository<GroupPreferenceFoodRestriction>>();
         services.AddScoped<IRepository<GroupPreferenceGenre>, PlansRepository<GroupPreferenceGenre>>();
+        services.AddScoped<IRepository<PushSubscription>, PlansRepository<PushSubscription>>();
 
         services.AddSingleton<IPasswordHasher, PasswordHasher>();
         services.AddScoped<ITokenService, TokenService>();
