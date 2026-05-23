@@ -50,6 +50,11 @@ public static class PlansModule
         services.AddScoped<IRefreshTokenStore, RefreshTokenStore>();
         services.AddScoped<IAuthService, AuthService>();
 
+        var pushOptions = BuildPushOptions(configuration);
+        services.AddSingleton(pushOptions);
+        services.AddSingleton<IOptions<PushOptions>>(Options.Create(pushOptions));
+        services.AddScoped<IPushService, PushService>();
+
         RegisterValidators(services);
 
         return services;
@@ -69,6 +74,17 @@ public static class PlansModule
         {
             services.TryAddScoped(registration.Service, registration.Implementation);
         }
+    }
+
+    private static PushOptions BuildPushOptions(IConfiguration configuration)
+    {
+        var section = configuration.GetSection(PushOptions.SectionName);
+        return new PushOptions
+        {
+            VapidPublicKey = section["VapidPublicKey"] ?? string.Empty,
+            VapidPrivateKey = section["VapidPrivateKey"] ?? string.Empty,
+            Subject = section["Subject"] ?? string.Empty
+        };
     }
 
     private static AuthOptions BuildAuthOptions(IConfiguration configuration)
