@@ -32,21 +32,25 @@ export const CATEGORY_META: Readonly<Record<FeedCategory, CategoryMeta>> = {
         labelKey: 'liveFeed.category.food',
         urgency: FeedUrgency.Low,
     },
+    // Music + Lineup share pink/magenta — they are schedule-tier peers per UX.
+    // Activity gets purple to read as calm/discovery (yoga, art tours, lake swim).
+    // The pass tokens are reused here as a deliberate live-feed extension of the
+    // ticket-only scope documented in visual-design-language.md §10.
     [FeedCategory.Music]: {
         icon: 'pi-volume-up',
-        accent: 'var(--ec-yellow)',
+        accent: 'var(--ec-pass-vip)',
         labelKey: 'liveFeed.category.music',
         urgency: FeedUrgency.Medium,
     },
     [FeedCategory.Lineup]: {
         icon: 'pi-star',
-        accent: 'var(--ec-yellow)',
+        accent: 'var(--ec-pass-vip)',
         labelKey: 'liveFeed.category.lineup',
         urgency: FeedUrgency.Medium,
     },
     [FeedCategory.Activity]: {
         icon: 'pi-bolt',
-        accent: 'var(--ec-yellow)',
+        accent: 'var(--ec-pass-ultravip)',
         labelKey: 'liveFeed.category.activity',
         urgency: FeedUrgency.Low,
     },
