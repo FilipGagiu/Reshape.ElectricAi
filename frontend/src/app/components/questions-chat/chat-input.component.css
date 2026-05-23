@@ -1,0 +1,205 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.ec-chat-input-shell {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+/* --------------------------------------------------------------------
+ * STICKY variant: dark navy bar, 3px EC Red top stripe, suggestion chips
+ * Used at the bottom of the Questions page, sits above the bottom-nav.
+ * ------------------------------------------------------------------ */
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input-shell {
+    background-color: var(--ec-dark-navy);
+    border-top: 3px solid var(--ec-red);
+    box-shadow: 0 -16px 40px rgba(15, 20, 40, 0.32);
+    animation: ec-chat-input-slide-up var(--duration-deliberate) var(--ease-out) both;
+}
+
+@keyframes ec-chat-input-slide-up {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    :host(.ec-chat-input-host--sticky) .ec-chat-input-shell {
+        animation: none;
+    }
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chips {
+    display: flex;
+    gap: var(--space-2);
+    overflow-x: auto;
+    padding: var(--space-3) var(--space-3) 0;
+    scrollbar-width: none;
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chips::-webkit-scrollbar {
+    display: none;
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chip {
+    flex-shrink: 0;
+    min-height: 32px;
+    padding: var(--space-1) var(--space-3);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--ec-white);
+    border: 0;
+    border-radius: var(--radius-none);
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        background-color var(--duration-base) var(--ease-out),
+        transform var(--duration-fast) var(--ease-out);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chip:hover {
+    background-color: rgba(255, 255, 255, 0.18);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chip:focus-visible {
+    outline: none;
+    background-color: rgba(255, 255, 255, 0.18);
+    box-shadow: inset 0 0 0 1px var(--ec-yellow);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__chip:active {
+    transform: translateY(1px);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input {
+    background-color: transparent;
+    border-top: 0;
+    box-shadow: none;
+    padding: var(--space-3);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__field {
+    background-color: var(--ec-off-white);
+    color: var(--ec-dark-navy);
+    border: 1px solid var(--ec-auth-input-border);
+}
+
+:host(.ec-chat-input-host--sticky) .ec-chat-input__field::placeholder {
+    color: var(--ec-gray-mid);
+}
+
+/* --------------------------------------------------------------------
+ * INLINE variant: lighter chrome for use inside a modal footer.
+ * Used inside the conversation modal after "Keep going".
+ * ------------------------------------------------------------------ */
+
+:host(.ec-chat-input-host--inline) .ec-chat-input {
+    background-color: var(--ec-auth-card-bg);
+    border-top: 1px solid rgba(120, 120, 120, 0.2);
+    box-shadow: none;
+    padding: var(--space-3);
+}
+
+:host(.ec-chat-input-host--inline) .ec-chat-input__field {
+    background-color: var(--ec-white);
+    color: var(--ec-auth-card-text);
+    border: 1px solid rgba(120, 120, 120, 0.4);
+}
+
+:host(.ec-chat-input-host--inline) .ec-chat-input__field::placeholder {
+    color: var(--ec-gray-mid);
+    opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------
+ * Shared form + input + send button base styles
+ * ------------------------------------------------------------------ */
+
+.ec-chat-input {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+}
+
+.ec-chat-input__field {
+    flex: 1;
+    min-height: 40px;
+    max-height: 110px;
+    padding: 10px var(--space-3);
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.55;
+    border-radius: var(--radius-none);
+    resize: none;
+    overflow-y: hidden;
+    transition:
+        border-color var(--duration-base) var(--ease-out),
+        box-shadow var(--duration-base) var(--ease-out);
+}
+
+.ec-chat-input__field:hover:not(:disabled) {
+    border-color: rgba(220, 53, 41, 0.45);
+}
+
+.ec-chat-input__field:focus,
+.ec-chat-input__field:focus-visible {
+    border-color: var(--ec-red);
+    box-shadow: 0 0 0 3px var(--focus-ring-input);
+    outline: none;
+}
+
+.ec-chat-input__field:disabled {
+    background-color: rgba(120, 120, 120, 0.08);
+    opacity: var(--opacity-readonly);
+    cursor: not-allowed;
+}
+
+.ec-chat-input__send {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--ec-yellow);
+    color: var(--ec-dark-navy);
+    border: 0;
+    border-radius: var(--radius-none);
+    cursor: pointer;
+    transition:
+        filter var(--duration-fast) var(--ease-out),
+        box-shadow var(--duration-base) var(--ease-out),
+        opacity var(--duration-base) var(--ease-out);
+}
+
+.ec-chat-input__send:hover:not(:disabled) {
+    filter: brightness(0.93);
+    box-shadow: 0 0 0 4px rgba(255, 230, 0, 0.25);
+}
+
+.ec-chat-input__send:active:not(:disabled) {
+    filter: brightness(0.85);
+}
+
+.ec-chat-input__send:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring-on-yellow);
+}
+
+.ec-chat-input__send:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
+
+.ec-chat-input__send .pi {
+    font-size: 20px;
+}

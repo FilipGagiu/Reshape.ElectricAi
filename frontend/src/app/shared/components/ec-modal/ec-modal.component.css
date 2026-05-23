@@ -1,0 +1,95 @@
+:host {
+    display: contents;
+}
+
+.ec-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal-backdrop);
+    background-color: rgba(15, 20, 40, 0);
+    opacity: 0;
+    pointer-events: none;
+    transition: background-color var(--duration-base) var(--ease-in-out),
+        opacity var(--duration-base) var(--ease-in-out);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.ec-modal-backdrop--open {
+    opacity: 1;
+    pointer-events: auto;
+    background-color: rgba(15, 20, 40, var(--opacity-scrim));
+}
+
+.ec-modal-container {
+    position: relative;
+    z-index: var(--z-modal);
+    background-color: var(--ec-auth-card-bg);
+    color: var(--ec-auth-card-text);
+    border-radius: var(--radius-none);
+    box-shadow: var(--shadow-3);
+    width: 100%;
+    max-height: 95dvh;
+    transform: translateY(24px);
+    opacity: 0;
+    transition: transform var(--duration-slow) var(--ease-out),
+        opacity var(--duration-slow) var(--ease-out);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ec-modal-container--open {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Size variants. Below md breakpoint everything is full-bleed bottom-anchored. */
+.ec-modal-container--sm,
+.ec-modal-container--md,
+.ec-modal-container--lg,
+.ec-modal-container--fullscreen {
+    max-width: 100%;
+}
+
+@media (min-width: 768px) {
+    .ec-modal-backdrop {
+        align-items: center;
+    }
+
+    .ec-modal-container--sm {
+        max-width: 360px;
+    }
+
+    .ec-modal-container--md {
+        max-width: 520px;
+    }
+
+    .ec-modal-container--lg {
+        max-width: 720px;
+    }
+
+    .ec-modal-container--fullscreen {
+        max-width: 720px;
+    }
+
+    .ec-modal-container {
+        max-height: 85dvh;
+    }
+}
+
+/* On mobile the modal hugs the bottom edge (slide-up). On desktop, centered. */
+@media (max-width: 767.98px) {
+    .ec-modal-container {
+        max-height: 95dvh;
+        min-height: 70dvh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ec-modal-backdrop,
+    .ec-modal-container {
+        transition: none;
+    }
+}

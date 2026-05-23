@@ -1,0 +1,114 @@
+:host {
+    display: contents;
+}
+
+.ec-hq-modal__header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-4) var(--space-6) var(--space-3);
+    background-color: var(--ec-auth-card-bg);
+    color: var(--ec-auth-card-text);
+}
+
+.ec-hq-modal__close {
+    width: 48px;
+    height: 48px;
+    margin-left: calc(-1 * var(--space-3));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-none);
+    color: var(--ec-auth-card-text);
+    cursor: pointer;
+    transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.ec-hq-modal__close:hover {
+    background-color: rgba(120, 120, 120, 0.12);
+}
+
+.ec-hq-modal__close:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--ec-red);
+}
+
+.ec-hq-modal__close .pi {
+    font-size: 22px;
+}
+
+.ec-hq-modal__title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    color: var(--ec-auth-card-text);
+}
+
+.ec-hq-modal__accent {
+    display: block;
+    width: 48px;
+    height: 1px;
+    background-color: var(--ec-red);
+}
+
+.ec-hq-modal__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--space-4) var(--space-6) var(--space-6);
+    color: var(--ec-auth-card-text);
+}
+
+.ec-hq-modal__paragraph {
+    margin: 0 0 var(--space-4);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--ec-auth-card-text);
+}
+
+.ec-hq-modal__paragraph:last-child {
+    margin-bottom: 0;
+}
+
+.ec-hq-modal__footer {
+    padding: var(--space-4) var(--space-6);
+    background-color: var(--ec-auth-card-bg);
+    box-shadow: 0 -8px 24px rgba(15, 20, 40, 0.18);
+}
+
+.ec-cta-primary {
+    width: 100%;
+    min-height: 48px;
+    padding: var(--space-3) var(--space-4);
+    background-color: var(--ec-yellow);
+    color: var(--ec-dark-navy);
+    border: 0;
+    border-radius: var(--radius-none);
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    font-size: 13px;
+    cursor: pointer;
+    transition: filter var(--duration-fast) var(--ease-out);
+}
+
+.ec-cta-primary:hover:not(:disabled) {
+    filter: brightness(0.93);
+}
+
+.ec-cta-primary:active:not(:disabled) {
+    filter: brightness(0.85);
+}
+
+.ec-cta-primary:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--focus-ring-on-yellow);
+}
+
+.ec-cta-primary:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}

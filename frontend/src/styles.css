@@ -176,6 +176,15 @@ a,
     --ec-auth-card-border: rgba(15, 20, 40, 0.08);
     --ec-auth-input-border: rgba(15, 20, 40, 0.15);
     --ec-auth-stamp: var(--ec-gray-mid);
+
+    /*
+     * Page-level semantic tokens (content sitting directly on the page bg,
+     * NOT on a card). Cards continue to use --ec-auth-card-* tokens.
+     */
+    --ec-page-bg: var(--ec-gray-light);
+    --ec-page-text: var(--ec-dark-navy);
+    --ec-page-text-muted: var(--ec-gray-mid);
+    --ec-page-divider: rgba(15, 20, 40, 0.12);
 }
 
 .ec-hackaton-dark {
@@ -187,6 +196,12 @@ a,
     --ec-auth-card-border: rgba(15, 20, 40, 0.12);
     --ec-auth-input-border: rgba(15, 20, 40, 0.2);
     --ec-auth-stamp: var(--ec-off-white);
+
+    /* Page-level (DARK mode override) */
+    --ec-page-bg: var(--ec-dark-navy);
+    --ec-page-text: var(--ec-white);
+    --ec-page-text-muted: rgba(255, 255, 255, 0.6);
+    --ec-page-divider: rgba(255, 255, 255, 0.12);
 }
 
 /* Reduce motion accessibility. See visual §00. */

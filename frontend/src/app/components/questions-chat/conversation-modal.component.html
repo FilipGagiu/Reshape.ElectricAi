@@ -1,0 +1,58 @@
+<ec-modal
+    [open]="open()"
+    size="lg"
+    [labelledBy]="titleId"
+    (close)="close.emit()"
+>
+    <header ec-modal-header class="ec-cm__header">
+        <button
+            type="button"
+            class="ec-cm__close"
+            (click)="close.emit()"
+            [attr.aria-label]="'questions.modal.closeAria' | transloco"
+        >
+            <i class="pi pi-times" aria-hidden="true"></i>
+        </button>
+        @if (conversation()) {
+            <h2 [id]="titleId" class="ec-cm__title">{{ conversation()!.firstQuestion }}</h2>
+            <span class="ec-cm__accent" aria-hidden="true"></span>
+        }
+    </header>
+
+    <div #messages ec-modal-body class="ec-cm__messages">
+        @if (conversation()) {
+            @for (message of conversation()!.messages; track message.id) {
+                <app-chat-bubble [message]="message" />
+            }
+
+            @if (isPending()) {
+                <div class="ec-cm__pending" aria-live="polite">
+                    <span class="ec-cm__skeleton ec-cm__skeleton--w-60"></span>
+                    <span class="ec-cm__skeleton ec-cm__skeleton--w-40"></span>
+                    <span class="ec-cm__pending-caption">
+                        {{ 'questions.loading.chatReply' | transloco }}
+                    </span>
+                </div>
+            }
+        }
+    </div>
+
+    <footer ec-modal-footer class="ec-cm__footer">
+        @if (!inputRevealed()) {
+            <button
+                type="button"
+                class="ec-cta-primary"
+                (click)="onKeepGoing()"
+            >
+                {{ 'questions.modal.continue' | transloco }}
+            </button>
+        } @else {
+            <app-chat-input
+                variant="inline"
+                [autoFocus]="true"
+                [disabled]="isPending()"
+                (send)="onSend($event)"
+            />
+        }
+    </footer>
+</ec-modal>
