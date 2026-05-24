@@ -123,10 +123,11 @@ import { PlanShareSlide } from '../plan-share.model';
         }
         .ec-slide__body {
             margin: 0;
-            font-size: 14px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.92);
-            max-width: 320px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 340px;
         }
         .ec-slide__cta-primary {
             margin-top: var(--space-5);

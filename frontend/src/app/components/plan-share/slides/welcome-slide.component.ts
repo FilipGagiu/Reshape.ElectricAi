@@ -106,10 +106,11 @@ import { PlanWelcomeSlide } from '../plan-share.model';
         }
         .ec-slide__body {
             margin: 0;
-            font-size: 16px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.92);
-            max-width: 360px;
+            font-size: 23px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 380px;
             animation: ec-slide-fade-up var(--duration-deliberate) var(--ease-emphasized) 200ms both;
         }
         @keyframes ec-slide-fade-up {

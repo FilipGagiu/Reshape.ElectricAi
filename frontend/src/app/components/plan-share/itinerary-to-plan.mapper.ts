@@ -13,7 +13,7 @@ const TRANSPORT_FALLBACK: TransportMethod = 'car';
 const ACCOMMODATION_FALLBACK: AccommodationKind = 'cluj';
 const DEFAULT_NAME = 'friend';
 const DEFAULT_ORIGIN = 'your city';
-const DEFAULT_VIBE_KEY = 'curiousAndChill';
+const DEFAULT_VIBE_KEY = 'chill';
 
 const TRANSPORT_MAP: Partial<Record<TransportMode, TransportMethod>> = {
     RideShare: 'car',

@@ -65,7 +65,7 @@ export interface PlanData {
 }
 
 /** Default per-slide auto-advance duration in milliseconds. */
-export const SLIDE_DURATION_MS = 7000;
+export const SLIDE_DURATION_MS = 5000;
 
 /** Hold-to-pause threshold in milliseconds. */
 export const HOLD_TO_PAUSE_THRESHOLD_MS = 300;
