@@ -2,16 +2,10 @@
     display: block;
 }
 
-/* Mobile shell uses dynamic viewport units so the iOS keyboard cannot push
-   content under the status bar. Falls back to 100vh on browsers without dvh. */
 .mobile-shell {
-    height: 100vh;
-    height: 100dvh;
+    position: fixed;
+    inset: 0;
     overflow: hidden;
-}
-
-.status-bar-cover {
-    height: env(safe-area-inset-top);
 }
 
 .bottom-nav {
@@ -20,9 +14,61 @@
 }
 
 .main-content {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+    padding-top: calc(env(safe-area-inset-top) + var(--space-14));
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+}
+
+.more-backdrop {
+    background-color: rgba(0, 0, 0, 0.2);
+    animation: more-fade-in 120ms ease-out;
+    z-index: var(--z-modal-backdrop);
+}
+
+.more-popover {
+    right: 8px;
+    bottom: calc(4rem + env(safe-area-inset-bottom) + 8px);
+    min-width: 200px;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.08);
+    animation: more-pop-in 140ms ease-out;
+    z-index: var(--z-modal);
+}
+
+.more-popover__item {
+    padding: 12px 16px;
+    background: transparent;
+    border: 0;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+}
+
+.more-popover__item:hover,
+.more-popover__item:focus-visible {
+    background-color: var(--p-surface-100);
+}
+
+:host-context(.ec-hackaton-dark) .more-popover__item:hover,
+:host-context(.ec-hackaton-dark) .more-popover__item:focus-visible {
+    background-color: var(--p-surface-800);
+}
+
+.more-popover__item + .more-popover__item {
+    border-top: 1px solid var(--p-surface-200);
+}
+
+:host-context(.ec-hackaton-dark) .more-popover__item + .more-popover__item {
+    border-top-color: var(--p-surface-800);
+}
+
+@keyframes more-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes more-pop-in {
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }

@@ -2,7 +2,29 @@
     "nav": {
         "liveFeed": "Feed live",
         "questions": "Întrebări",
-        "plan": "Planul meu EC"
+        "plan": "Planul meu EC",
+        "more": "Mai mult"
+    },
+    "more": {
+        "faq": "Întrebări frecvente",
+        "settings": "Setări aplicație",
+        "logout": "Deconectare"
+    },
+    "faq": {
+        "title": "Întrebări frecvente",
+        "subtitle": "Răspunsuri de la Electric Castle"
+    },
+    "settings": {
+        "title": "Setări aplicație",
+        "subtitle": "Notificări și confidențialitate",
+        "push": {
+            "label": "Notificări push",
+            "hint": "Primește actualizările organizatorilor pe telefon."
+        },
+        "privacy": {
+            "label": "Politica de confidențialitate",
+            "hint": "Vezi ce colectăm și de ce."
+        }
     },
     "liveFeed": {
         "title": "Feed live",

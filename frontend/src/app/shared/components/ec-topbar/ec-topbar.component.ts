@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 
-import { AuthService } from '@shared/services/auth.service';
+import { LanguageSwitcherComponent } from '@i18n/language-switcher.component';
 
 @Component({
     selector: 'app-ec-topbar',
-    imports: [TranslocoModule],
+    imports: [TranslocoModule, LanguageSwitcherComponent],
     templateUrl: './ec-topbar.component.html',
     styleUrl: './ec-topbar.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -13,11 +13,4 @@ import { AuthService } from '@shared/services/auth.service';
 export class EcTopbarComponent {
     readonly titleKey = input.required<string>();
     readonly subtitleKey = input.required<string>();
-
-    private readonly authService = inject(AuthService);
-
-    protected logout(): void {
-        this.authService.logout();
-        window.location.assign('/login');
-    }
 }

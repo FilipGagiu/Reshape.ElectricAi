@@ -63,6 +63,18 @@ export const routes: Routes = [
                     ),
             },
             { path: 'plan-steps', redirectTo: 'plan' },
+            {
+                path: 'faq',
+                loadComponent: () =>
+                    import('@components/faq/faq.component').then((m) => m.FaqComponent),
+            },
+            {
+                path: 'settings',
+                loadComponent: () =>
+                    import('@components/settings/settings.component').then(
+                        (m) => m.SettingsComponent,
+                    ),
+            },
         ],
     },
     { path: '**', redirectTo: '' },

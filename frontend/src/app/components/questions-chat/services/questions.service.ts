@@ -65,8 +65,13 @@ export class QuestionsService {
         this.markPending(conversationId, false);
     }
 
-    /** Create a brand-new conversation from the sticky chat input. */
-    async startNewConversation(text: string): Promise<string | null> {
+    /**
+     * Create a brand-new conversation synchronously. Returns the id immediately
+     * so the caller can open the conversation UI without waiting for the AI
+     * reply. The assistant reply is fetched in the background and appended
+     * when it lands. `isPending(id)` is true while the reply is in flight.
+     */
+    startNewConversation(text: string): string | null {
         const trimmed = text.trim();
         if (!trimmed) return null;
 
@@ -88,20 +93,27 @@ export class QuestionsService {
 
         this.conversationsSignal.update((list) => [newConversation, ...list]);
         this.markPending(newId, true);
-
-        const replyText = await this.chatReply.generateReply(newId, [firstMessage]);
-
-        const assistantMessage: ChatMessage = {
-            id: this.makeId('msg'),
-            role: 'assistant',
-            text: replyText,
-            createdAt: new Date(),
-        };
-
-        this.applyMessageToConversation(newId, assistantMessage);
-        this.markPending(newId, false);
+        void this.requestReply(newId, [firstMessage]);
 
         return newId;
+    }
+
+    private async requestReply(
+        conversationId: string,
+        messages: readonly ChatMessage[],
+    ): Promise<void> {
+        try {
+            const replyText = await this.chatReply.generateReply(conversationId, messages);
+            const assistantMessage: ChatMessage = {
+                id: this.makeId('msg'),
+                role: 'assistant',
+                text: replyText,
+                createdAt: new Date(),
+            };
+            this.applyMessageToConversation(conversationId, assistantMessage);
+        } finally {
+            this.markPending(conversationId, false);
+        }
     }
 
     private applyMessageToConversation(conversationId: string, message: ChatMessage): void {
