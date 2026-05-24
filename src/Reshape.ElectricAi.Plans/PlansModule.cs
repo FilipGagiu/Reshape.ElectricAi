@@ -75,6 +75,7 @@ public static class PlansModule
             .ValidateOnStart();
 
         services.AddScoped<IPreferencesExtractor, PreferencesExtractor>();
+        services.AddScoped<IItineraryRefiner, ItineraryRefiner>();
         services.AddScoped<IItineraryBuilder, ItineraryBuilder>();
         services.AddScoped<IItineraryService, ItineraryService>();
 

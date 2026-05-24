@@ -35,6 +35,36 @@ public sealed class ItineraryController(IItineraryService service) : ControllerB
         return Ok(response);
     }
 
+    [HttpGet("latest-id")]
+    public async Task<ActionResult<LatestItineraryIdResponse>> GetLatestIdAsync(CancellationToken cancellationToken)
+    {
+        var userId = ResolveUserId();
+        var id = await service.GetLatestIdAsync(userId, cancellationToken);
+        return Ok(new LatestItineraryIdResponse(id));
+    }
+
+    [HttpGet("{id:guid}")]
+    public async Task<ActionResult<ItineraryResponse>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        // No owner check by design — v1 allows any logged-in user to read any itinerary by Id.
+        var response = await service.GetByIdAsync(id, cancellationToken);
+        if (response is null)
+        {
+            throw new NotFoundException("itinerary-not-found", "Itinerary does not exist.");
+        }
+        return Ok(response);
+    }
+
+    [HttpPost("refine")]
+    public async Task<ActionResult<ItineraryResponse>> RefineAsync(
+        [FromBody] ItineraryRefineRequest request,
+        CancellationToken cancellationToken)
+    {
+        var userId = ResolveUserId();
+        var response = await service.RefineAsync(userId, request, cancellationToken);
+        return Ok(response);
+    }
+
     private Guid ResolveUserId()
     {
         var idClaim = User.FindFirstValue(JwtRegisteredClaimNames.Sub)

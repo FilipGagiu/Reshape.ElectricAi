@@ -20,7 +20,8 @@ internal sealed partial class ItineraryBuilder(
             .OrderBy(r => r.Order)
             .Select(r => new ItinerarySectionDto(r.Key, r.Data, r.Diagnostic))
             .ToList();
-        return new ItineraryDto(DateTime.UtcNow, ordered);
+        // Id stamped by ItineraryService.UpsertPlanAsync before persistence — Plan.Id is the source of truth.
+        return new ItineraryDto(Guid.Empty, DateTime.UtcNow, ordered);
     }
 
     // Sections fail-soft for operational/transient errors (LLM down, DB down, vector search timeout)

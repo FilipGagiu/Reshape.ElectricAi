@@ -33,6 +33,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Services\Prompts\PreferencesExtractorSystemPrompt.md" />
+    <EmbeddedResource Include="Services\Prompts\ItineraryRefinerSystemPrompt.md" />
   </ItemGroup>
 
   <ItemGroup>
