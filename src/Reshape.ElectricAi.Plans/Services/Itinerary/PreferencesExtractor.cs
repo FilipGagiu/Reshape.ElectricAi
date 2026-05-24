@@ -9,6 +9,7 @@ using Reshape.ElectricAi.Core.Dtos.Itinerary;
 using Reshape.ElectricAi.Core.Dtos.Preferences;
 using Reshape.ElectricAi.Core.Services;
 using Reshape.ElectricAi.Core.Services.Itinerary;
+using Reshape.ElectricAi.Core.Services.Schema;
 using Reshape.ElectricAi.Plans.Configuration;
 
 namespace Reshape.ElectricAi.Plans.Services.Itinerary;
@@ -19,8 +20,8 @@ internal sealed partial class PreferencesExtractor(
     ILogger<PreferencesExtractor> logger) : IPreferencesExtractor
 {
     private static readonly string SystemPrompt = LoadEmbeddedPrompt();
-    private static readonly JsonNode ResponseSchema = JsonSchemaExporter.GetJsonSchemaAsNode(
-        LlmJsonOptions.Default, typeof(AiExtractedPreferences));
+    private static readonly JsonNode ResponseSchema = JsonSchemaStrictifier.Apply(
+        JsonSchemaExporter.GetJsonSchemaAsNode(LlmJsonOptions.Default, typeof(AiExtractedPreferences)));
 
     private readonly ItineraryGenerationOptions _options = options.Value;
 
