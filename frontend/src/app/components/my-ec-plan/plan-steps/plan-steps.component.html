@@ -1,6 +1,18 @@
 <app-ec-topbar titleKey="plan.title" subtitleKey="plan.placeholder" />
 
 <section class="ec-plan-steps">
+    @if (!isCompleted()) {
+        <div class="ec-plan-steps__skip-row">
+            <button
+                type="button"
+                class="ec-plan-steps__skip-onboarding"
+                (click)="skipOnboarding()"
+            >
+                {{ 'plan.steps.actions.skipOnboarding' | transloco }}
+            </button>
+        </div>
+    }
+
     <header class="ec-plan-steps__top">
         <button
             type="button"
@@ -88,10 +100,19 @@
                 </div>
             </div>
         } @else if (isSubmitting()) {
-            <div class="ec-plan-steps__status" role="status">
-                <span class="ec-plan-steps__spinner" aria-hidden="true"></span>
+            <div class="ec-plan-steps__status" role="status" aria-live="polite">
+                <div class="ec-plan-steps__loader">
+                    <span class="ec-plan-steps__loader-ring" aria-hidden="true"></span>
+                    @for (step of [loaderStep()]; track step.iconClass) {
+                        <i
+                            class="pi ec-plan-steps__loader-icon"
+                            [class]="'pi ' + step.iconClass + ' ec-plan-steps__loader-icon'"
+                            aria-hidden="true"
+                        ></i>
+                    }
+                </div>
                 <p class="ec-plan-steps__status-text">
-                    {{ 'plan.intake.submitting' | transloco }}
+                    {{ loaderStep().copyKey | transloco }}
                 </p>
             </div>
         } @else if (hasError()) {

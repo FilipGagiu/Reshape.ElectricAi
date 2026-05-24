@@ -1,14 +1,15 @@
 import { MOCK_PLAN_UUID, PlanData } from './plan-share.model';
 
 /**
+ * @deprecated Backend now serves plan data via `GET /api/v1/Itinerary`
+ * (tied to the JWT). `PlanShareService.getCurrent()` calls the real API
+ * + `itineraryToPlanData()` mapper. This mock is kept only so historical
+ * imports don't break; remove once no consumer references it.
+ *
  * Persona: Andra, 24, from Cluj-Napoca. Full festival pass, doesn't want to
  * camp, will stay at a Cluj hotel and take the shuttle. Likes electronic +
  * pop. Top artists picked: Bring Me The Horizon, Apashe, Sub Focus. Cuisine
  * Italian + Romanian, no allergies. Activities yoga + lake swim.
- *
- * This is the single hardcoded plan served by the mock PlanShareService for
- * the demo `MOCK_PLAN_UUID`. When the real backend lands, this file goes
- * away and the service calls the API instead.
  */
 export const MOCK_PLAN: PlanData = {
     uuid: MOCK_PLAN_UUID,

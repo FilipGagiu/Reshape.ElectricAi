@@ -14,6 +14,36 @@
     min-height: 0;
 }
 
+.ec-plan-steps__skip-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--space-2) var(--space-4) 0;
+    background-color: var(--ec-white);
+}
+
+.ec-plan-steps__skip-onboarding {
+    padding: var(--space-2) var(--space-3);
+    background-color: transparent;
+    color: var(--ec-gray-mid);
+    border: 0;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius-none);
+    transition: color var(--duration-base) var(--ease-out);
+}
+
+.ec-plan-steps__skip-onboarding:hover {
+    color: var(--ec-dark-navy);
+}
+
+.ec-plan-steps__skip-onboarding:focus-visible {
+    outline: none;
+    color: var(--ec-dark-navy);
+    box-shadow: 0 0 0 3px rgba(220, 53, 41, 0.35);
+}
+
 .ec-plan-steps__top {
     display: flex;
     align-items: center;
@@ -210,15 +240,59 @@
     animation: ec-plan-steps-spin 900ms linear infinite;
 }
 
+.ec-plan-steps__loader {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ec-plan-steps__loader-ring {
+    position: absolute;
+    inset: 0;
+    border: 3px solid rgba(15, 20, 40, 0.1);
+    border-top-color: var(--ec-red);
+    border-right-color: var(--ec-yellow);
+    border-radius: 50%;
+    animation: ec-plan-steps-spin 1800ms linear infinite;
+}
+
+.ec-plan-steps__loader-icon {
+    font-size: 36px;
+    color: var(--ec-dark-navy);
+    animation: ec-plan-steps-loader-pop var(--duration-slow) var(--ease-out) both;
+}
+
 @keyframes ec-plan-steps-spin {
     to {
         transform: rotate(360deg);
     }
 }
 
+@keyframes ec-plan-steps-loader-pop {
+    0% {
+        transform: scale(0.6);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.08);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
-    .ec-plan-steps__spinner {
+    .ec-plan-steps__spinner,
+    .ec-plan-steps__loader-ring {
         animation-duration: 2400ms;
+    }
+    .ec-plan-steps__loader-icon {
+        animation: none;
     }
 }
 
