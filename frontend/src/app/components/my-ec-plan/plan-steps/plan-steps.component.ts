@@ -18,7 +18,7 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import {
     WizardProgressComponent,
     WizardProgressStep,
-} from '@components/onboarding/ui/wizard-progress/wizard-progress.component';
+} from '@components/my-ec-plan/ui/wizard-progress/wizard-progress.component';
 
 import { PlanIntakeQuestion } from '../plan-intake/models/plan-intake.model';
 import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
