@@ -51,8 +51,9 @@
             },
             "targetArtists": {
                 "label": "Artiști vizați",
-                "placeholder": "Separați prin virgulă. ex: Apashe, FKA twigs",
-                "hint": "Până la 25. Duplicatele se ignoră."
+                "placeholder": "Alege artiști",
+                "filterPlaceholder": "Caută artiști...",
+                "emptyFilter": "Niciun artist găsit."
             },
             "targetGenres": {
                 "label": "Genuri vizate",

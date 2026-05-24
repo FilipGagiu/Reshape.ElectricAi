@@ -51,8 +51,9 @@
             },
             "targetArtists": {
                 "label": "Target artists",
-                "placeholder": "Comma separated. e.g. Apashe, FKA twigs",
-                "hint": "Up to 25. Case-insensitive dedupe."
+                "placeholder": "Pick artists",
+                "filterPlaceholder": "Search artists...",
+                "emptyFilter": "No artists match."
             },
             "targetGenres": {
                 "label": "Target genres",

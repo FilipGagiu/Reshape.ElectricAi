@@ -10,6 +10,7 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { MultiSelect } from 'primeng/multiselect';
 import { firstValueFrom } from 'rxjs';
 
+import { ALL_ARTIST_NAMES } from '@shared/api/artists';
 import { FeedApi, PublishFeedEntryRequest } from '@shared/api/feed-api';
 import { Category, CATEGORY_VALUES, FeedEntryDto } from '@shared/api/dto/feed.dto';
 import { MUSIC_GENRE_VALUES, MusicGenre } from '@shared/api/enums';
@@ -21,13 +22,13 @@ interface PublishFormControls {
     body: FormControl<string>;
     primaryCategory: FormControl<Category>;
     isGeneral: FormControl<boolean>;
-    targetArtistsText: FormControl<string>;
+    targetArtists: FormControl<string[]>;
     targetGenres: FormControl<MusicGenre[]>;
 }
 
-interface GenreOption {
+interface SelectOption {
     readonly label: string;
-    readonly value: MusicGenre;
+    readonly value: string;
 }
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
@@ -46,9 +47,13 @@ export class PublishFeedFormComponent implements OnInit {
     readonly published = output<FeedEntryDto>();
 
     protected readonly categories = CATEGORY_VALUES;
-    protected readonly genreOptions: GenreOption[] = MUSIC_GENRE_VALUES.map((value) => ({
+    protected readonly genreOptions: SelectOption[] = MUSIC_GENRE_VALUES.map((value) => ({
         label: humanizeEnum(value),
         value,
+    }));
+    protected readonly artistOptions: SelectOption[] = ALL_ARTIST_NAMES.map((name) => ({
+        label: name,
+        value: name,
     }));
 
     protected readonly status = signal<SubmitStatus>('idle');
@@ -59,7 +64,7 @@ export class PublishFeedFormComponent implements OnInit {
         body: this.fb.nonNullable.control('', [Validators.required, Validators.maxLength(4000)]),
         primaryCategory: this.fb.nonNullable.control<Category>('General', Validators.required),
         isGeneral: this.fb.nonNullable.control(true),
-        targetArtistsText: this.fb.nonNullable.control(''),
+        targetArtists: this.fb.nonNullable.control<string[]>([]),
         targetGenres: this.fb.nonNullable.control<MusicGenre[]>([]),
     });
 
@@ -74,7 +79,7 @@ export class PublishFeedFormComponent implements OnInit {
         }
 
         const raw = this.form.getRawValue();
-        const targetArtists = parseArtists(raw.targetArtistsText);
+        const targetArtists = raw.targetArtists;
         const targetGenres = raw.targetGenres;
 
         if (!raw.isGeneral && targetArtists.length === 0 && targetGenres.length === 0) {
@@ -114,22 +119,8 @@ export class PublishFeedFormComponent implements OnInit {
             body: '',
             primaryCategory: 'General',
             isGeneral: true,
-            targetArtistsText: '',
+            targetArtists: [],
             targetGenres: [],
         });
     }
-}
-
-function parseArtists(text: string): ReadonlyArray<string> {
-    const seen = new Set<string>();
-    const out: string[] = [];
-    for (const raw of text.split(',')) {
-        const trimmed = raw.trim();
-        if (!trimmed) continue;
-        const key = trimmed.toLowerCase();
-        if (seen.has(key)) continue;
-        seen.add(key);
-        out.push(trimmed);
-    }
-    return out;
 }
