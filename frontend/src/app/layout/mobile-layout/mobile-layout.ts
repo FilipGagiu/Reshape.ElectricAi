@@ -5,6 +5,9 @@ import { TranslocoModule } from '@jsverse/transloco';
 import { filter, map, startWith } from 'rxjs';
 
 import { AuthService } from '@shared/services/auth.service';
+import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
+
+import { PlanIntakeService } from '@components/my-ec-plan/plan-intake/services/plan-intake.service';
 
 type BottomNavItem = {
     icon: string;
@@ -34,6 +37,8 @@ const ALL_NAV_ITEMS: ReadonlyArray<BottomNavItem> = [
 export class MobileLayoutComponent {
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
+    private readonly planOnboarding = inject(PlanOnboardingService);
+    private readonly planIntake = inject(PlanIntakeService);
 
     constructor() {
         // Refresh the cached user profile (and role) from BE on every authed-layout
@@ -55,6 +60,21 @@ export class MobileLayoutComponent {
         return onAdmin
             ? ALL_NAV_ITEMS.filter((item) => item.route !== '/plan')
             : ALL_NAV_ITEMS;
+    });
+
+    /**
+     * Hide bottom chrome while the plan wizard is on screen. Keeps users
+     * inside the flow until they finish, hit the submission error card, or
+     * explicitly skip onboarding. Mirrors `MyPlanPageComponent`'s inverse
+     * `showResults` condition.
+     */
+    protected readonly wizardActive = computed(() => {
+        const url = this.currentUrl();
+        const onPlanRoute = url === '/plan' || url.startsWith('/plan?');
+        if (!onPlanRoute) return false;
+        if (this.planOnboarding.isCompleted(this.authService.currentUser()?.email)) return false;
+        if (this.planIntake.status() === 'error') return false;
+        return true;
     });
 
     protected readonly moreOpen = signal(false);
