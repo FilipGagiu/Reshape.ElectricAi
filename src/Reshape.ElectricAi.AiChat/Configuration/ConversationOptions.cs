@@ -6,7 +6,7 @@ public sealed class ConversationOptions
 
     public string Model { get; set; } = "gpt-5-mini";
     public int MaxCompletionTokens { get; set; } = 1024;
-    public float ScoreThreshold { get; set; } = 0.4f;
+    public float ScoreThreshold { get; set; } = 0.25f;
     public int TopKPerSource { get; set; } = 4;
     public int TopKFinal { get; set; } = 6;
     public int UserMessageCap { get; set; } = 20;
