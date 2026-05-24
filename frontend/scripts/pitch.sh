@@ -8,7 +8,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-DIST_DIR="$ROOT_DIR/dist/ec-hackaton/browser"
+DIST_DIR="$ROOT_DIR/dist/electric-ai/browser"
 PORT=8080
 HTTP_PID=""
 CF_PID=""
@@ -35,11 +35,11 @@ echo "→ initial production build..."
 npx --no-install ng build
 
 echo "→ starting watch rebuild (background)..."
-npx --no-install ng build --watch --configuration production > /tmp/ec-hackaton-build.log 2>&1 &
+npx --no-install ng build --watch --configuration production > /tmp/electric-ai-build.log 2>&1 &
 WATCH_PID=$!
 
 echo "→ starting http-server on :$PORT (background)..."
-npx --yes http-server "$DIST_DIR" -p "$PORT" -c-1 --proxy "http://localhost:$PORT?" > /tmp/ec-hackaton-http.log 2>&1 &
+npx --yes http-server "$DIST_DIR" -p "$PORT" -c-1 --proxy "http://localhost:$PORT?" > /tmp/electric-ai-http.log 2>&1 &
 HTTP_PID=$!
 
 # Wait for http-server to be ready
