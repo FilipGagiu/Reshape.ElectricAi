@@ -138,10 +138,11 @@ import { PlanMusicSlide } from '../plan-share.model';
         }
         .ec-slide__body {
             margin: var(--space-5) 0 0;
-            font-size: 14px;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.78);
-            max-width: 320px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 340px;
         }
         @keyframes ec-slide-fade-up {
             from {

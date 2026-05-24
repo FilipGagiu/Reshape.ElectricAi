@@ -129,10 +129,11 @@ import { PlanFoodSlide } from '../plan-share.model';
         }
         .ec-slide__body {
             margin: var(--space-4) 0 0;
-            font-size: 15px;
-            line-height: 1.55;
-            color: rgba(255, 255, 255, 0.85);
-            max-width: 340px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 360px;
         }
         .ec-slide__note {
             margin: var(--space-3) 0 0;

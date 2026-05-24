@@ -252,10 +252,23 @@ export class LiveFeedService {
     }
 }
 
+/** Lower-cased lookup so BE values in any casing (e.g. 'activity', 'WEATHER') map cleanly. */
+const FEED_CATEGORY_BY_LOWER: ReadonlyMap<string, FeedCategory> = new Map(
+    (Object.values(FeedCategory) as FeedCategory[]).map((value) => [value.toLowerCase(), value]),
+);
+
+function normalizeFeedCategory(raw: string | null | undefined, entryId: string): FeedCategory {
+    const lowered = raw?.toLowerCase();
+    const match = lowered ? FEED_CATEGORY_BY_LOWER.get(lowered) : undefined;
+    if (match) return match;
+    console.warn('[live-feed] unknown category, falling back to General', { id: entryId, category: raw });
+    return FeedCategory.General;
+}
+
 function toFeedEntry(dto: FeedEntryDto): FeedEntry {
     return {
         id: dto.id,
-        category: dto.primaryCategory as unknown as FeedCategory,
+        category: normalizeFeedCategory(dto.primaryCategory, dto.id),
         title: dto.title,
         body: dto.body,
         publishedAt: new Date(dto.publishedUtc),

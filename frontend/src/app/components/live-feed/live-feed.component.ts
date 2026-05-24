@@ -123,12 +123,6 @@ export class LiveFeedComponent {
         const expanded = this.expandedIds();
         return this.feedService.feed().map((entry) => {
             const meta = CATEGORY_META[entry.category] ?? CATEGORY_META[FeedCategory.General];
-            if (!CATEGORY_META[entry.category]) {
-                console.warn('[live-feed] unknown category, falling back to General', {
-                    id: entry.id,
-                    category: entry.category,
-                });
-            }
             return {
                 entry,
                 meta,

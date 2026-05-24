@@ -40,7 +40,7 @@ import { PlanActivityVibeSlide } from '../plan-share.model';
             </div>
 
             <p class="ec-slide__vibe">
-                {{ 'plan.story.activityVibe.vibe.' + slide().vibeKey | transloco }}
+                {{ slide().vibeKey }}
             </p>
 
             <p class="ec-slide__body">
@@ -128,19 +128,20 @@ import { PlanActivityVibeSlide } from '../plan-share.model';
         }
         .ec-slide__vibe {
             margin: var(--space-3) 0 0;
-            font-size: 22px;
+            font-size: 40px;
             font-weight: 900;
             font-style: italic;
-            color: var(--ec-dark-navy);
+            color: var(--ec-white);
             text-transform: uppercase;
             letter-spacing: 0.02em;
         }
         .ec-slide__body {
             margin: var(--space-2) 0 0;
-            font-size: 14px;
-            line-height: 1.55;
-            color: rgba(15, 20, 40, 0.85);
-            max-width: 320px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 340px;
         }
     `,
     changeDetection: ChangeDetectionStrategy.OnPush,

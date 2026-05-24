@@ -133,10 +133,11 @@ const ICON_BY_METHOD: Record<TransportMethod, string> = {
         }
         .ec-slide__body {
             margin: var(--space-4) 0 0;
-            font-size: 14px;
-            line-height: 1.5;
-            color: rgba(255, 255, 255, 0.75);
-            max-width: 320px;
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.45;
+            color: var(--ec-white);
+            max-width: 340px;
             animation: ec-slide-fade-up var(--duration-deliberate) var(--ease-emphasized) 200ms both;
         }
         @keyframes ec-slide-fade-up {
