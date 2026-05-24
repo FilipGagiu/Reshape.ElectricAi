@@ -21,8 +21,40 @@ public static class JsonSchemaStrictifier
     public static JsonNode Apply(JsonNode root)
     {
         ArgumentNullException.ThrowIfNull(root);
+        NormalizeRootType(root);
         Visit(root);
         return root;
+    }
+
+    private static void NormalizeRootType(JsonNode root)
+    {
+        // OpenAI structured-output strict mode requires the root "type" to be the bare
+        // string "object", not a union. STJ's JsonSchemaExporter is null-oblivious for
+        // reference-type roots and emits "type": ["object", "null"]. Collapse that union
+        // here so the schema we ship is accepted. Nested nullable properties continue to
+        // use the union form via WidenForNullable.
+        if (root is not JsonObject obj || obj["type"] is not JsonArray arr)
+        {
+            return;
+        }
+
+        string? single = null;
+        foreach (var item in arr)
+        {
+            if (item is not JsonValue v || !v.TryGetValue<string>(out var s) || s == "null")
+            {
+                continue;
+            }
+            if (single is not null)
+            {
+                return;
+            }
+            single = s;
+        }
+        if (single is not null)
+        {
+            obj["type"] = single;
+        }
     }
 
     private static void Visit(JsonNode? node)
