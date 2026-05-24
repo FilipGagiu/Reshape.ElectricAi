@@ -67,14 +67,25 @@
     @if (!form.controls.isGeneral.value) {
         <div class="ec-pub-form__field">
             <label class="ec-pub-form__label" for="pub-artists">{{ t('admin.publish.targetArtists.label') }}</label>
-            <input
-                id="pub-artists"
-                type="text"
-                formControlName="targetArtistsText"
-                class="ec-pub-form__input"
+            <p-multiSelect
+                inputId="pub-artists"
+                formControlName="targetArtists"
+                [options]="artistOptions"
+                optionLabel="label"
+                optionValue="value"
+                [filter]="true"
+                filterBy="label"
+                [showClear]="true"
+                [showToggleAll]="false"
+                display="chip"
+                [maxSelectedLabels]="3"
+                [selectionLimit]="25"
+                appendTo="body"
+                styleClass="ec-pub-form__multiselect w-full"
                 [placeholder]="t('admin.publish.targetArtists.placeholder')"
+                [filterPlaceHolder]="t('admin.publish.targetArtists.filterPlaceholder')"
+                [emptyFilterMessage]="t('admin.publish.targetArtists.emptyFilter')"
             />
-            <small class="ec-pub-form__hint">{{ t('admin.publish.targetArtists.hint') }}</small>
         </div>
 
         <div class="ec-pub-form__field">
