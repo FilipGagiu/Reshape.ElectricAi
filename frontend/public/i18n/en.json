@@ -199,8 +199,24 @@
             "greeting": "Hey {{name}}, your plan's ready.",
             "completion": "{{percent}}% complete",
             "storyCta": {
-                "eyebrow": "Your festival, wrapped",
+                "eyebrow": "Your festival, planned",
                 "action": "View my EC story"
+            },
+            "share": {
+                "share": "Share",
+                "copyLink": "Copy link",
+                "copied": "Copied!",
+                "shareTitle": "My Electric Castle plan",
+                "shareText": "Check out my Electric Castle 2026 plan."
+            },
+            "refine": {
+                "toggle": "Refine plan",
+                "hint": "Tell us what to tweak. Add a vibe, swap a stage, ask for more food picks.",
+                "placeholder": "More techno, less queue time...",
+                "submit": "Refine my plan",
+                "submitting": "Refining...",
+                "cancel": "Cancel",
+                "error": "Couldn't refine your plan. Try again in a moment."
             },
             "emptyState": {
                 "title": "Nothing here yet.",
@@ -215,107 +231,35 @@
                 "retrying": "Trying again...",
                 "redo": "Redo the wizard"
             },
-            "sections": {
-                "crew": "Your crew",
-                "origin": "Coming in from",
-                "vibe": "The vibe",
-                "music": "Your music",
-                "mustSee": "Must-see acts",
-                "food": "Food",
-                "cuisines": "Cuisines you'll chase",
-                "activities": "Activities",
-                "transport": "Transport",
-                "accommodation": "Where you sleep",
-                "ticket": "Your ticket",
-                "age": "Age group",
-                "itinerary": "Plan timeline",
-                "itineraryEmpty": "Your timeline is being built.",
-                "itineraryCardPlaceholder": "Details coming soon.",
-                "rawToggle": "Show raw (dev)"
+            "notFound": {
+                "title": "Plan not found.",
+                "body": "This share link looks like it's lost in the forest."
             },
-            "enum": {
-                "crew": {
-                    "Solo": "Solo",
-                    "WithGroup": "With a crew"
-                },
+            "hero": {
+                "eyebrow": "Your Electric Castle",
+                "namelessGreeting": "Your Electric Castle plan",
+                "fromLabel": "from {{origin}}",
+                "soloFallback": "Solo trip",
+                "crewLabel": "Crew of {{count}}"
+            },
+            "sections": {
                 "transport": {
-                    "RideShare": "Rideshare",
-                    "Car": "Car",
-                    "EcTrain": "EC train",
-                    "EcBus": "EC bus",
-                    "Helicopter": "Helicopter"
+                    "title": "How you'll get there",
+                    "empty": "Pick how you'll arrive when you're ready."
+                },
+                "activities": {
+                    "title": "Things to do"
+                },
+                "food": {
+                    "title": "Food picks",
+                    "cuisinesLabel": "Cuisines you'll chase"
+                },
+                "artists": {
+                    "title": "Don't miss"
                 },
                 "accommodation": {
-                    "VillageRental": "Village rental",
-                    "Camping": "Camping",
-                    "CarCamping": "Car camping",
-                    "RvCamping": "RV camping",
-                    "Glamping": "Glamping"
-                },
-                "ticket": {
-                    "Standard": "Standard",
-                    "Vip": "VIP",
-                    "UltraVip": "Ultra VIP",
-                    "Black": "Black ticket"
-                },
-                "age": {
-                    "Under18": "Under 18",
-                    "Adult18To24": "18–24",
-                    "Adult25To34": "25–34",
-                    "Adult35To44": "35–44",
-                    "Adult45Plus": "45+"
-                },
-                "music": {
-                    "HipHop": "Hip-hop",
-                    "House": "House",
-                    "Balkan": "Balkan",
-                    "Rock": "Rock",
-                    "Folk": "Folk",
-                    "Techno": "Techno",
-                    "Pop": "Pop",
-                    "Electronic": "Electronic",
-                    "Jazz": "Jazz",
-                    "Metal": "Metal",
-                    "Other": "Other"
-                },
-                "foodRestriction": {
-                    "Vegan": "Vegan",
-                    "Vegetarian": "Vegetarian",
-                    "NoPeanuts": "No peanuts",
-                    "NoMeat": "No meat",
-                    "NoPork": "No pork",
-                    "NoDairy": "No dairy",
-                    "NoGluten": "No gluten",
-                    "NoShellfish": "No shellfish",
-                    "NoEggs": "No eggs",
-                    "Halal": "Halal",
-                    "Kosher": "Kosher"
-                },
-                "cuisine": {
-                    "American": "American",
-                    "Italian": "Italian",
-                    "Romanian": "Romanian",
-                    "Mexican": "Mexican",
-                    "Chinese": "Chinese",
-                    "Japanese": "Japanese",
-                    "Indian": "Indian",
-                    "Thai": "Thai",
-                    "French": "French",
-                    "Greek": "Greek",
-                    "Mediterranean": "Mediterranean",
-                    "MiddleEastern": "Middle Eastern",
-                    "Bbq": "BBQ",
-                    "StreetFood": "Street food",
-                    "Other": "Other"
-                },
-                "activity": {
-                    "Relax": "Relax",
-                    "Energetic": "Energetic",
-                    "Adrenaline": "Adrenaline",
-                    "Social": "Social",
-                    "Creative": "Creative",
-                    "Wellness": "Wellness",
-                    "Discovery": "Discovery"
+                    "title": "Where you're sleeping",
+                    "empty": "Plug in where you're crashing."
                 }
             }
         },
@@ -332,7 +276,7 @@
             },
             "welcome": {
                 "headline": "YOUR FIRST ELECTRIC CASTLE",
-                "body": "{{name}}, this is going to be a lot. In the best way. Here's your plan for 16-19 July."
+                "body": "This is going to be a lot. In the best way. Here's your plan for 16-19 July."
             },
             "transport": {
                 "headline": "HOW YOU'RE GETTING THERE",
@@ -364,14 +308,23 @@
             "food": {
                 "headline": "FOOD FOR THE FESTIVAL",
                 "cuisine": {
-                    "italian": "Italian",
-                    "romanian": "Romanian",
-                    "asian": "Asian",
-                    "mexican": "Mexican",
-                    "middleEastern": "Middle Eastern",
-                    "indian": "Indian",
-                    "bbq": "BBQ",
-                    "vegan": "Plant-based"
+                    "American": "American",
+                    "Italian": "Italian",
+                    "Romanian": "Romanian",
+                    "Mexican": "Mexican",
+                    "Chinese": "Chinese",
+                    "Japanese": "Japanese",
+                    "Indian": "Indian",
+                    "Thai": "Thai",
+                    "French": "French",
+                    "Greek": "Greek",
+                    "Mediterranean": "Mediterranean",
+                    "MiddleEastern": "Middle Eastern",
+                    "Bbq": "BBQ",
+                    "StreetFood": "Street food",
+                    "Lebanese": "Lebanese",
+                    "Hungarian": "Hungarian",
+                    "Other": "Other"
                 },
                 "body": "EC Village has 60+ vendors. Come hungry.",
                 "fallback": "EC Village has 60+ food vendors. From sarmale to sushi. Come hungry.",
@@ -381,14 +334,13 @@
                 "headline": "BEYOND THE MUSIC",
                 "body": "The in-between moments make the festival. Bring your curiosity.",
                 "activity": {
-                    "yoga": "Yoga",
-                    "workshops": "Workshops",
-                    "artTours": "Art tours",
-                    "lakeSwim": "Lake swim",
-                    "silentDisco": "Silent disco",
-                    "foodTour": "Food tour",
-                    "wellness": "Wellness",
-                    "castleTour": "Castle tour"
+                    "Relax": "Relax",
+                    "Energetic": "Energetic",
+                    "Adrenaline": "Adrenaline",
+                    "Social": "Social",
+                    "Creative": "Creative",
+                    "Wellness": "Wellness",
+                    "Discovery": "Discovery"
                 },
                 "vibe": {
                     "curiousAndChill": "Curious & chill",

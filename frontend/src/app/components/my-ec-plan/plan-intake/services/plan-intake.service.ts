@@ -22,6 +22,8 @@ import { PLAN_INTAKE_QUESTIONS } from './plan-intake.questions';
 
 const STORAGE_PREFIX = 'ec-plan-intake-v3-';
 const ITINERARY_REQUEST_VERSION = 1;
+const GENERATE_MAX_ATTEMPTS = 3;
+const GENERATE_RETRY_DELAY_MS = 1000;
 const ANON_STORAGE_KEY = `${STORAGE_PREFIX}anonymous`;
 
 const ASSISTANT_TYPING_DELAY_MS = 750;
@@ -80,6 +82,7 @@ export class PlanIntakeService {
     submitAnswer(rawText: string): void {
         const text = rawText.trim();
         if (!text) return;
+        this.cancelAssistantTyping();
         this.recordAnswerAndAdvance({ text, skipped: false });
     }
 
@@ -88,7 +91,13 @@ export class PlanIntakeService {
      * Stepped variant only — chat mode never calls this.
      */
     skipCurrent(): void {
+        this.cancelAssistantTyping();
         this.recordAnswerAndAdvance({ text: '', skipped: true });
+    }
+
+    private cancelAssistantTyping(): void {
+        this.clearTypingTimer();
+        this.isAssistantTypingSignal.set(false);
     }
 
     private recordAnswerAndAdvance(payload: { text: string; skipped: boolean }): void {
@@ -212,20 +221,38 @@ export class PlanIntakeService {
         const snapshot = this.stateSignal();
         const request = this.buildGenerationRequest(snapshot.answers);
 
-        try {
-            const response = await firstValueFrom(this.itineraryApi.generate(request));
-            this.itineraryStore.set(response);
-            this.markSubmitted();
-        } catch (error) {
-            const envelope = extractErrorEnvelope(error);
-            console.error('[plan-intake] submit failed', envelope);
-            this.stateSignal.update((current) => ({
-                ...current,
-                status: 'error',
-                errorCode: envelope.code,
-                updatedAt: new Date().toISOString(),
-            }));
+        let lastError: unknown = null;
+        for (let attempt = 1; attempt <= GENERATE_MAX_ATTEMPTS; attempt += 1) {
+            try {
+                const response = await firstValueFrom(this.itineraryApi.generate(request));
+                this.itineraryStore.set(response);
+                this.markSubmitted();
+                return;
+            } catch (error) {
+                lastError = error;
+                console.warn(
+                    `[plan-intake] generate attempt ${attempt}/${GENERATE_MAX_ATTEMPTS} failed`,
+                    error,
+                );
+                if (attempt < GENERATE_MAX_ATTEMPTS) {
+                    // Brief backoff so transient backend hiccups get a chance to
+                    // clear before the next try. Status stays 'submitting' so
+                    // the loader animation keeps running silently.
+                    await new Promise<void>((resolve) =>
+                        setTimeout(resolve, GENERATE_RETRY_DELAY_MS),
+                    );
+                }
+            }
         }
+
+        const envelope = extractErrorEnvelope(lastError);
+        console.error('[plan-intake] submit failed after retries', envelope);
+        this.stateSignal.update((current) => ({
+            ...current,
+            status: 'error',
+            errorCode: envelope.code,
+            updatedAt: new Date().toISOString(),
+        }));
     }
 
     private buildGenerationRequest(answers: ReadonlyArray<PlanIntakeAnswer>): ItineraryGenerationRequest {

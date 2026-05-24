@@ -28,7 +28,7 @@ import { PlanWelcomeSlide } from '../plan-share.model';
                 {{ 'plan.story.welcome.headline' | transloco }}
             </h1>
             <p class="ec-slide__body">
-                {{ 'plan.story.welcome.body' | transloco: { name: slide().name } }}
+                {{ 'plan.story.welcome.body' | transloco }}
             </p>
         </div>
     `,

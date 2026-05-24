@@ -50,8 +50,6 @@ export class LoginComponent {
         }),
     });
 
-    protected readonly bypassEnabled = this.authService.devBypassEnabled;
-
     protected async submit(): Promise<void> {
         if (this.form.invalid || this.submitting()) {
             this.form.markAllAsTouched();
@@ -74,13 +72,6 @@ export class LoginComponent {
         } finally {
             this.submitting.set(false);
         }
-    }
-
-    protected bypass(): void {
-        if (!this.bypassEnabled) return;
-        this.authService.bypass();
-        const email = this.authService.currentUser()?.email;
-        void this.router.navigateByUrl(this.postAuthDestination(email));
     }
 
     private postAuthDestination(email: string | null | undefined): string {

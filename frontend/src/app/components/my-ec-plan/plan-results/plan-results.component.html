@@ -1,7 +1,16 @@
 <app-ec-topbar titleKey="plan.title" subtitleKey="plan.results.subtitle" />
 
 <section class="ec-plan-results">
-    @if (submissionError()) {
+    @if (notFound()) {
+        <div class="ec-plan-results__empty" role="status">
+            <h2 class="ec-plan-results__empty-title">
+                {{ 'plan.results.notFound.title' | transloco }}
+            </h2>
+            <p class="ec-plan-results__empty-body">
+                {{ 'plan.results.notFound.body' | transloco }}
+            </p>
+        </div>
+    } @else if (submissionError()) {
         <div class="ec-plan-results__error-card" role="alert">
             <span class="ec-plan-results__error-eyebrow">
                 {{ 'plan.results.errorState.eyebrow' | transloco }}
@@ -21,14 +30,16 @@
                 >
                     {{ (retrying() ? 'plan.results.errorState.retrying' : 'plan.results.errorState.retry') | transloco }}
                 </button>
-                <button type="button" class="ec-plan-results__secondary-cta" (click)="redoWizard()">
-                    {{ 'plan.results.errorState.redo' | transloco }}
-                </button>
+                @if (!readOnly()) {
+                    <button type="button" class="ec-plan-results__secondary-cta" (click)="redoWizard()">
+                        {{ 'plan.results.errorState.redo' | transloco }}
+                    </button>
+                }
             </div>
         </div>
     }
 
-    @if (!hasItinerary() && !submissionError()) {
+    @if (!notFound() && !hasItinerary() && !submissionError() && !readOnly()) {
         <div class="ec-plan-results__empty" role="status">
             <h2 class="ec-plan-results__empty-title">
                 {{ 'plan.results.emptyState.title' | transloco }}
@@ -41,7 +52,28 @@
             </button>
         </div>
     } @else if (hasItinerary()) {
-        <a class="ec-plan-results__story-card" [href]="storyHref">
+        @if (hero(); as heroSnapshot) {
+            <header class="ec-plan-results__hero">
+                <span class="ec-plan-results__hero-eyebrow">
+                    {{ 'plan.results.hero.eyebrow' | transloco }}
+                </span>
+                <h1 class="ec-plan-results__hero-title">{{ heroSnapshot.headline }}</h1>
+                <div class="ec-plan-results__hero-meta">
+                    @if (heroSnapshot.origin; as origin) {
+                        <span class="ec-plan-results__hero-pill">
+                            {{ 'plan.results.hero.fromLabel' | transloco: { origin: origin } }}
+                        </span>
+                    }
+                    @if (heroSnapshot.crewLabelKey; as crewKey) {
+                        <span class="ec-plan-results__hero-pill ec-plan-results__hero-pill--accent">
+                            {{ crewKey | transloco: (heroSnapshot.crewLabelParams ?? {}) }}
+                        </span>
+                    }
+                </div>
+            </header>
+        }
+
+        <button type="button" class="ec-plan-results__story-card" (click)="openStory()">
             <span class="ec-plan-results__story-eyebrow">
                 {{ 'plan.results.storyCta.eyebrow' | transloco }}
             </span>
@@ -51,216 +83,234 @@
             <span class="ec-plan-results__story-arrow" aria-hidden="true">
                 <i class="pi pi-arrow-right"></i>
             </span>
-        </a>
+        </button>
 
-        @if (preferences(); as prefs) {
-            <header class="ec-plan-results__header">
-                @if (displayName(); as name) {
-                    <p class="ec-plan-results__greeting">
-                        {{ 'plan.results.greeting' | transloco: { name: name } }}
-                    </p>
+        @if (shareUrl(); as url) {
+            <div class="ec-plan-results__share-row">
+                @if (canNativeShare) {
+                    <button
+                        type="button"
+                        class="ec-plan-results__share-btn"
+                        (click)="sharePlan()"
+                    >
+                        <i class="pi pi-share-alt" aria-hidden="true"></i>
+                        {{ 'plan.results.share.share' | transloco }}
+                    </button>
                 }
-                <div class="ec-plan-results__completion">
-                    <span
-                        class="ec-plan-results__completion-bar"
-                        [style.--ec-plan-results-progress.%]="completionPercent()"
-                        [attr.aria-label]="'plan.results.completion' | transloco: { percent: completionPercent() }"
-                    ></span>
-                    <span class="ec-plan-results__completion-label">
-                        {{ 'plan.results.completion' | transloco: { percent: completionPercent() } }}
-                    </span>
-                </div>
-            </header>
+                <button
+                    type="button"
+                    class="ec-plan-results__share-btn"
+                    (click)="copyShareLink()"
+                >
+                    <i class="pi" [class.pi-check]="copied()" [class.pi-link]="!copied()" aria-hidden="true"></i>
+                    {{ (copied() ? 'plan.results.share.copied' : 'plan.results.share.copyLink') | transloco }}
+                </button>
+            </div>
+        }
 
-            <div class="ec-plan-results__grid">
-                @if (crewLabel(); as crew) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.crew' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">
-                            {{ resolveLabelText(crew) }}
-                            @if (prefs.crew?.estimatedSize; as size) {
-                                <span class="ec-plan-results__card-meta">({{ size }})</span>
-                            }
+        @if (canRefine()) {
+            <section class="ec-plan-results__refine">
+                <button
+                    type="button"
+                    class="ec-plan-results__refine-toggle"
+                    [class.ec-plan-results__refine-toggle--open]="refineOpen()"
+                    (click)="toggleRefine()"
+                    [attr.aria-expanded]="refineOpen()"
+                >
+                    <i class="pi pi-pencil" aria-hidden="true"></i>
+                    {{ 'plan.results.refine.toggle' | transloco }}
+                </button>
+
+                @if (refineOpen()) {
+                    <div class="ec-plan-results__refine-panel">
+                        <p class="ec-plan-results__refine-hint">
+                            {{ 'plan.results.refine.hint' | transloco }}
                         </p>
-                    </article>
-                }
-
-                @if (prefs.origin) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.origin' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">{{ prefs.origin }}</p>
-                    </article>
-                }
-
-                @if (vibeTags().length) {
-                    <article class="ec-plan-results__card ec-plan-results__card--wide">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.vibe' | transloco }}
-                        </h3>
-                        <div class="ec-plan-results__chips">
-                            @for (tag of vibeTags(); track tag) {
-                                <span class="ec-plan-results__chip">{{ tag }}</span>
-                            }
+                        <textarea
+                            class="ec-plan-results__refine-textarea"
+                            rows="3"
+                            [formControl]="refineControl"
+                            [placeholder]="'plan.results.refine.placeholder' | transloco"
+                            [disabled]="refineSubmitting()"
+                        ></textarea>
+                        @if (refineError()) {
+                            <p class="ec-plan-results__refine-error" role="alert">
+                                {{ 'plan.results.refine.error' | transloco }}
+                            </p>
+                        }
+                        <div class="ec-plan-results__refine-actions">
+                            <button
+                                type="button"
+                                class="ec-plan-results__primary-cta"
+                                (click)="submitRefine()"
+                                [disabled]="refineSubmitting() || !refineControl.value.trim()"
+                            >
+                                {{ (refineSubmitting() ? 'plan.results.refine.submitting' : 'plan.results.refine.submit') | transloco }}
+                            </button>
+                            <button
+                                type="button"
+                                class="ec-plan-results__secondary-cta"
+                                (click)="toggleRefine()"
+                                [disabled]="refineSubmitting()"
+                            >
+                                {{ 'plan.results.refine.cancel' | transloco }}
+                            </button>
                         </div>
+                    </div>
+                }
+            </section>
+        }
+
+        @for (section of renderedBodySections(); track $index) {
+            @switch (section.kind) {
+                @case ('transport') {
+                    <article class="ec-plan-results__section">
+                        <h2 class="ec-plan-results__section-title">
+                            {{ 'plan.results.sections.transport.title' | transloco }}
+                        </h2>
+                        @if (section.isEmpty) {
+                            <p class="ec-plan-results__section-note">
+                                {{ 'plan.results.sections.transport.empty' | transloco }}
+                            </p>
+                        } @else {
+                            @if (section.mode; as mode) {
+                                <p class="ec-plan-results__section-lead">{{ mode }}</p>
+                            }
+                            @if (section.note; as note) {
+                                <p class="ec-plan-results__section-note">{{ note }}</p>
+                            }
+                        }
                     </article>
                 }
 
-                @if (musicLabels().length || mustSeeArtists().length) {
-                    <article class="ec-plan-results__card ec-plan-results__card--wide">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.music' | transloco }}
-                        </h3>
-                        @if (musicLabels().length) {
+                @case ('vibeActivities') {
+                    <article class="ec-plan-results__section">
+                        <h2 class="ec-plan-results__section-title">
+                            {{ 'plan.results.sections.activities.title' | transloco }}
+                        </h2>
+                        @if (section.vibeTags.length) {
                             <div class="ec-plan-results__chips">
-                                @for (item of musicLabels(); track item.raw) {
-                                    <span class="ec-plan-results__chip">
-                                        {{ resolveLabelText(item) }}
-                                    </span>
+                                @for (tag of section.vibeTags; track tag) {
+                                    <span class="ec-plan-results__chip">{{ tag }}</span>
                                 }
                             </div>
                         }
-                        @if (mustSeeArtists().length) {
-                            <h4 class="ec-plan-results__subtitle">
-                                {{ 'plan.results.sections.mustSee' | transloco }}
-                            </h4>
-                            <ul class="ec-plan-results__list">
-                                @for (artist of mustSeeArtists(); track artist) {
-                                    <li>{{ artist }}</li>
+                        @if (section.items.length) {
+                            <ul class="ec-plan-results__picks">
+                                @for (item of section.items; track item.id) {
+                                    <li class="ec-plan-results__pick">
+                                        <h3 class="ec-plan-results__pick-title">{{ item.title }}</h3>
+                                        @if (item.snippet) {
+                                            <p class="ec-plan-results__pick-body">{{ item.snippet }}</p>
+                                        }
+                                    </li>
                                 }
                             </ul>
                         }
                     </article>
                 }
 
-                @if (foodRestrictionLabels().length || cuisineLabels().length) {
-                    <article class="ec-plan-results__card ec-plan-results__card--wide">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.food' | transloco }}
-                        </h3>
-                        @if (foodRestrictionLabels().length) {
+                @case ('food') {
+                    <article class="ec-plan-results__section">
+                        <h2 class="ec-plan-results__section-title">
+                            {{ 'plan.results.sections.food.title' | transloco }}
+                        </h2>
+                        @if (section.restrictions.length) {
                             <div class="ec-plan-results__chips">
-                                @for (item of foodRestrictionLabels(); track item.raw) {
-                                    <span class="ec-plan-results__chip">
-                                        {{ resolveLabelText(item) }}
+                                @for (tag of section.restrictions; track tag) {
+                                    <span class="ec-plan-results__chip ec-plan-results__chip--accent">
+                                        {{ tag }}
                                     </span>
                                 }
                             </div>
                         }
-                        @if (cuisineLabels().length) {
-                            <h4 class="ec-plan-results__subtitle">
-                                {{ 'plan.results.sections.cuisines' | transloco }}
+                        @if (section.items.length) {
+                            <ul class="ec-plan-results__picks">
+                                @for (item of section.items; track item.id) {
+                                    <li class="ec-plan-results__pick">
+                                        <h3 class="ec-plan-results__pick-title">{{ item.title }}</h3>
+                                        @if (item.snippet) {
+                                            <p class="ec-plan-results__pick-body">{{ item.snippet }}</p>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        }
+                        @if (section.cuisines.length) {
+                            <h4 class="ec-plan-results__sub-title">
+                                {{ 'plan.results.sections.food.cuisinesLabel' | transloco }}
                             </h4>
                             <div class="ec-plan-results__chips">
-                                @for (item of cuisineLabels(); track item.raw) {
-                                    <span class="ec-plan-results__chip ec-plan-results__chip--ghost">
-                                        {{ resolveLabelText(item) }}
-                                    </span>
+                                @for (tag of section.cuisines; track tag) {
+                                    <span class="ec-plan-results__chip ec-plan-results__chip--ghost">{{ tag }}</span>
                                 }
                             </div>
                         }
                     </article>
                 }
 
-                @if (activityLabels().length) {
-                    <article class="ec-plan-results__card ec-plan-results__card--wide">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.activities' | transloco }}
-                        </h3>
-                        <div class="ec-plan-results__chips">
-                            @for (item of activityLabels(); track item.raw) {
-                                <span class="ec-plan-results__chip">
-                                    {{ resolveLabelText(item) }}
-                                </span>
+                @case ('topArtists') {
+                    <article class="ec-plan-results__section">
+                        <h2 class="ec-plan-results__section-title">
+                            {{ 'plan.results.sections.artists.title' | transloco }}
+                        </h2>
+                        @if (section.days.length) {
+                            @for (day of section.days; track day.date) {
+                                <section class="ec-plan-results__day">
+                                    <h3 class="ec-plan-results__day-heading">{{ day.heading }}</h3>
+                                    <ul class="ec-plan-results__picks">
+                                        @for (item of day.items; track item.id) {
+                                            <li class="ec-plan-results__pick">
+                                                <h4 class="ec-plan-results__pick-title">{{ item.title }}</h4>
+                                                @if (item.time) {
+                                                    <p class="ec-plan-results__pick-meta">{{ item.time }}</p>
+                                                }
+                                            </li>
+                                        }
+                                    </ul>
+                                </section>
                             }
-                        </div>
-                    </article>
-                }
-
-                @if (transportLabel(); as transport) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.transport' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">{{ resolveLabelText(transport) }}</p>
-                        @if (prefs.suggestedTransport?.note; as note) {
-                            <p class="ec-plan-results__card-note">{{ note }}</p>
+                        } @else if (section.overall.length) {
+                            <ul class="ec-plan-results__picks">
+                                @for (item of section.overall; track item.id) {
+                                    <li class="ec-plan-results__pick">
+                                        <h3 class="ec-plan-results__pick-title">{{ item.title }}</h3>
+                                        @if (item.time) {
+                                            <p class="ec-plan-results__pick-meta">{{ item.time }}</p>
+                                        }
+                                    </li>
+                                }
+                            </ul>
                         }
                     </article>
                 }
 
-                @if (accommodationLabel(); as accommodation) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.accommodation' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">{{ resolveLabelText(accommodation) }}</p>
-                        @if (prefs.suggestedAccommodation?.note; as note) {
-                            <p class="ec-plan-results__card-note">{{ note }}</p>
+                @case ('accommodation') {
+                    <article class="ec-plan-results__section">
+                        <h2 class="ec-plan-results__section-title">
+                            {{ 'plan.results.sections.accommodation.title' | transloco }}
+                        </h2>
+                        @if (section.isEmpty) {
+                            <p class="ec-plan-results__section-note">
+                                {{ 'plan.results.sections.accommodation.empty' | transloco }}
+                            </p>
+                        } @else {
+                            @if (section.type; as type) {
+                                <p class="ec-plan-results__section-lead">{{ type }}</p>
+                            }
+                            @if (section.note; as note) {
+                                <p class="ec-plan-results__section-note">{{ note }}</p>
+                            }
                         }
                     </article>
-                }
-
-                @if (ticketLabel(); as ticket) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.ticket' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">{{ resolveLabelText(ticket) }}</p>
-                    </article>
-                }
-
-                @if (ageLabel(); as age) {
-                    <article class="ec-plan-results__card">
-                        <h3 class="ec-plan-results__card-title">
-                            {{ 'plan.results.sections.age' | transloco }}
-                        </h3>
-                        <p class="ec-plan-results__card-body">{{ resolveLabelText(age) }}</p>
-                    </article>
-                }
-            </div>
-        }
-
-        <section class="ec-plan-results__timeline">
-            <h2 class="ec-plan-results__timeline-title">
-                {{ 'plan.results.sections.itinerary' | transloco }}
-            </h2>
-
-            @if (!sectionPreviews().length) {
-                <p class="ec-plan-results__timeline-empty">
-                    {{ 'plan.results.sections.itineraryEmpty' | transloco }}
-                </p>
-            } @else {
-                @for (section of sectionPreviews(); track $index) {
-                    <article class="ec-plan-results__timeline-card">
-                        <h3 class="ec-plan-results__timeline-card-title">
-                            {{ section.key || ('plan.results.sections.itinerary' | transloco) }}
-                        </h3>
-                        <p class="ec-plan-results__timeline-card-body">
-                            {{ 'plan.results.sections.itineraryCardPlaceholder' | transloco }}
-                        </p>
-                        @if (section.diagnostic) {
-                            <p class="ec-plan-results__timeline-card-note">{{ section.diagnostic }}</p>
-                        }
-                        @if (isDevMode && showRawSections()) {
-                            <pre class="ec-plan-results__timeline-raw">{{ section.rawJson }}</pre>
-                        }
-                    </article>
-                }
-
-                @if (isDevMode) {
-                    <button
-                        type="button"
-                        class="ec-plan-results__raw-toggle"
-                        (click)="toggleRawSections()"
-                    >
-                        {{ 'plan.results.sections.rawToggle' | transloco }}
-                    </button>
                 }
             }
-        </section>
+        }
+    }
+
+    @if (storyOpen()) {
+        <div class="ec-plan-results__story-overlay" role="dialog" aria-modal="true">
+            <app-stories-viewer [planData]="storyPlanData()" (closed)="closeStory()" />
+        </div>
     }
 </section>

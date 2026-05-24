@@ -220,6 +220,6 @@ export class ShareSlideComponent {
     }
 
     private buildShareUrl(): string {
-        return `${window.location.origin}/p/${this.slide().uuid}`;
+        return `${window.location.origin}/plan/${this.slide().uuid}`;
     }
 }

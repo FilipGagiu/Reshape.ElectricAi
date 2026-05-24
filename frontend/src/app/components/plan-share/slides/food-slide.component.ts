@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
+
+const MAX_DISPLAYED_CUISINES = 5;
 
 import { SlideLoopFadeDirective } from './loop-fade.directive';
 
@@ -26,9 +28,9 @@ import { PlanFoodSlide } from '../plan-share.model';
             </h1>
             <span class="ec-slide__accent" aria-hidden="true"></span>
 
-            @if (slide().cuisines.length > 0) {
+            @if (displayedCuisines().length > 0) {
                 <div class="ec-slide__chips">
-                    @for (cuisine of slide().cuisines; track cuisine) {
+                    @for (cuisine of displayedCuisines(); track cuisine) {
                         <span class="ec-slide__chip">
                             {{ 'plan.story.food.cuisine.' + cuisine | transloco }}
                         </span>
@@ -147,4 +149,8 @@ import { PlanFoodSlide } from '../plan-share.model';
 })
 export class FoodSlideComponent {
     readonly slide = input.required<PlanFoodSlide>();
+
+    protected readonly displayedCuisines = computed<ReadonlyArray<string>>(() =>
+        this.slide().cuisines.slice(0, MAX_DISPLAYED_CUISINES),
+    );
 }

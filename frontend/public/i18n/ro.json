@@ -199,13 +199,33 @@
             "greeting": "Salut {{name}}, planul tău e gata.",
             "completion": "{{percent}}% completat",
             "storyCta": {
-                "eyebrow": "Festivalul tău, împachetat",
+                "eyebrow": "Festivalul tău, plănuit",
                 "action": "Vezi povestea mea EC"
+            },
+            "share": {
+                "share": "Distribuie",
+                "copyLink": "Copiază link",
+                "copied": "Copiat!",
+                "shareTitle": "Planul meu Electric Castle",
+                "shareText": "Vezi planul meu pentru Electric Castle 2026."
+            },
+            "refine": {
+                "toggle": "Ajustează planul",
+                "hint": "Spune-ne ce să schimbăm. Adaugă un vibe, schimbă o scenă, cere mai multe locuri de mâncare.",
+                "placeholder": "Mai mult techno, mai puțin timp la coadă...",
+                "submit": "Ajustează planul",
+                "submitting": "Ajustăm...",
+                "cancel": "Renunță",
+                "error": "Nu am putut ajusta planul. Încearcă din nou în câteva momente."
             },
             "emptyState": {
                 "title": "Nimic aici încă.",
                 "body": "Termină wizardul rapid ca să-ți vezi planul.",
                 "action": "Deschide wizardul"
+            },
+            "notFound": {
+                "title": "Planul nu a fost găsit.",
+                "body": "Linkul ăsta s-a rătăcit în pădure."
             },
             "errorState": {
                 "eyebrow": "Ceva a luat-o razna",
@@ -215,25 +235,34 @@
                 "retrying": "Încercăm din nou...",
                 "redo": "Reia wizardul"
             },
-            "sections": {
-                "crew": "Gașca ta",
-                "origin": "Vii din",
-                "vibe": "Vibe-ul",
-                "music": "Muzica ta",
-                "mustSee": "Artiști obligatoriu de prins",
-                "food": "Mâncare",
-                "cuisines": "Bucătării de încercat",
-                "activities": "Activități",
-                "transport": "Transport",
-                "accommodation": "Unde dormi",
-                "ticket": "Biletul tău",
-                "age": "Grupă de vârstă",
-                "itinerary": "Cronologia planului",
-                "itineraryEmpty": "Cronologia ta se construiește.",
-                "itineraryCardPlaceholder": "Detalii în curând.",
-                "rawToggle": "Arată raw (dev)"
+            "hero": {
+                "eyebrow": "Electric Castle-ul tău",
+                "namelessGreeting": "Planul tău Electric Castle",
+                "fromLabel": "din {{origin}}",
+                "soloFallback": "Drum solo",
+                "crewLabel": "Gașcă de {{count}}"
             },
-            "enum": {
+            "sections": {
+                "transport": {
+                    "title": "Cum ajungi acolo",
+                    "empty": "Alege cum ajungi când ești gata."
+                },
+                "activities": {
+                    "title": "Ce ai de făcut"
+                },
+                "food": {
+                    "title": "Locuri de mâncare",
+                    "cuisinesLabel": "Bucătării de încercat"
+                },
+                "artists": {
+                    "title": "Nu rata"
+                },
+                "accommodation": {
+                    "title": "Unde dormi",
+                    "empty": "Spune-ne unde stai."
+                }
+            },
+            "deprecatedEnum": {
                 "crew": {
                     "Solo": "Solo",
                     "WithGroup": "Cu gașca"
@@ -332,7 +361,7 @@
             },
             "welcome": {
                 "headline": "PRIMUL TĂU ELECTRIC CASTLE",
-                "body": "{{name}}, o să fie mult. În cel mai bun sens. Iată planul tău pentru 16-19 iulie."
+                "body": "O să fie mult. În cel mai bun sens. Iată planul tău pentru 16-19 iulie."
             },
             "transport": {
                 "headline": "CUM AJUNGI",
@@ -364,14 +393,23 @@
             "food": {
                 "headline": "MÂNCARE PENTRU FESTIVAL",
                 "cuisine": {
-                    "italian": "Italiană",
-                    "romanian": "Românească",
-                    "asian": "Asiatică",
-                    "mexican": "Mexicană",
-                    "middleEastern": "Orientul Mijlociu",
-                    "indian": "Indiană",
-                    "bbq": "BBQ",
-                    "vegan": "Plant-based"
+                    "American": "Americană",
+                    "Italian": "Italiană",
+                    "Romanian": "Românească",
+                    "Mexican": "Mexicană",
+                    "Chinese": "Chinezească",
+                    "Japanese": "Japoneză",
+                    "Indian": "Indiană",
+                    "Thai": "Thailandeză",
+                    "French": "Franțuzească",
+                    "Greek": "Grecească",
+                    "Mediterranean": "Mediteraneană",
+                    "MiddleEastern": "Orientul Mijlociu",
+                    "Bbq": "BBQ",
+                    "StreetFood": "Street food",
+                    "Lebanese": "Libaneză",
+                    "Hungarian": "Maghiară",
+                    "Other": "Altele"
                 },
                 "body": "EC Village are peste 60 de vendori. Vino cu poftă.",
                 "fallback": "EC Village are peste 60 de food vendori. De la sarmale la sushi. Vino cu poftă.",
@@ -381,14 +419,13 @@
                 "headline": "DINCOLO DE MUZICĂ",
                 "body": "Și momentele dintre seturi contează. Adu-ți curiozitatea.",
                 "activity": {
-                    "yoga": "Yoga",
-                    "workshops": "Workshopuri",
-                    "artTours": "Tururi de artă",
-                    "lakeSwim": "Înot la lac",
-                    "silentDisco": "Silent disco",
-                    "foodTour": "Tur culinar",
-                    "wellness": "Wellness",
-                    "castleTour": "Tur al castelului"
+                    "Relax": "Relaxare",
+                    "Energetic": "Energic",
+                    "Adrenaline": "Adrenalină",
+                    "Social": "Social",
+                    "Creative": "Creativ",
+                    "Wellness": "Wellness",
+                    "Discovery": "Descoperire"
                 },
                 "vibe": {
                     "curiousAndChill": "Curios și relaxat",

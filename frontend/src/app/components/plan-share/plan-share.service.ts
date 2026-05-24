@@ -30,4 +30,13 @@ export class PlanShareService {
             return itineraryToPlanData(this.itineraryStore.itinerary());
         }
     }
+
+    async getById(id: string): Promise<PlanData | null> {
+        try {
+            const response = await firstValueFrom(this.itineraryApi.getById(id));
+            return itineraryToPlanData(response);
+        } catch {
+            return null;
+        }
+    }
 }

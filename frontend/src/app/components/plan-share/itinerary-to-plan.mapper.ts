@@ -45,6 +45,8 @@ export function itineraryToPlanData(response: ItineraryResponse | null): PlanDat
         (entry): entry is string => !!entry?.trim(),
     );
 
+    const planUuid = response.itinerary?.id?.trim() || MOCK_PLAN_UUID;
+
     const slides: PlanSlide[] = [
         { type: 'welcome', name },
         {
@@ -73,11 +75,11 @@ export function itineraryToPlanData(response: ItineraryResponse | null): PlanDat
             activityKeys: prefs.activityInterests ?? [],
             vibeKey: cleanedVibes[0] ?? DEFAULT_VIBE_KEY,
         },
-        { type: 'share', uuid: MOCK_PLAN_UUID },
+        { type: 'share', uuid: planUuid },
     ];
 
     return {
-        uuid: MOCK_PLAN_UUID,
+        uuid: planUuid,
         ownerName: name,
         slides,
         createdAt: response.itinerary?.generatedUtc ?? new Date().toISOString(),

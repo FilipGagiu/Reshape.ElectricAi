@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
+
+const MAX_DISPLAYED_ACTIVITIES = 5;
 
 import { SlideLoopFadeDirective } from './loop-fade.directive';
 
@@ -32,7 +34,7 @@ import { PlanActivityVibeSlide } from '../plan-share.model';
             <span class="ec-slide__accent" aria-hidden="true"></span>
 
             <div class="ec-slide__chips">
-                @for (key of slide().activityKeys; track key) {
+                @for (key of displayedActivities(); track key) {
                     <span class="ec-slide__chip">
                         {{ 'plan.story.activityVibe.activity.' + key | transloco }}
                     </span>
@@ -148,4 +150,8 @@ import { PlanActivityVibeSlide } from '../plan-share.model';
 })
 export class ActivityVibeSlideComponent {
     readonly slide = input.required<PlanActivityVibeSlide>();
+
+    protected readonly displayedActivities = computed<ReadonlyArray<string>>(() =>
+        this.slide().activityKeys.slice(0, MAX_DISPLAYED_ACTIVITIES),
+    );
 }

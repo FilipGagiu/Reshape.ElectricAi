@@ -1,138 +1,100 @@
-import { ChangeDetectionStrategy, Component, DestroyRef, Signal, computed, inject, isDevMode, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    DestroyRef,
+    Signal,
+    computed,
+    effect,
+    inject,
+    isDevMode,
+    signal,
+} from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
 import { ItineraryApi } from '@shared/api/itinerary-api';
 import { ItineraryStore } from '@shared/api/itinerary-store';
 import {
-    Accommodation,
-    ActivityType,
-    AgeGroup,
-    CrewKind,
-    Cuisine,
-    FoodRestriction,
-    MusicGenre,
-    PreferencesDto,
-    TicketType,
-    TransportMode,
-} from '@shared/api/dto/preferences.dto';
-import { ItinerarySectionDto } from '@shared/api/dto/itinerary.dto';
+    GreetingSectionData,
+    ItineraryResponse,
+    ItinerarySectionDto,
+    RetrievedItem,
+} from '@shared/api/dto/itinerary.dto';
+import { PreferencesDto } from '@shared/api/dto/preferences.dto';
 import { AuthService } from '@shared/services/auth.service';
 import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
-import { MOCK_PLAN_UUID } from '@components/plan-share/plan-share.model';
+import { itineraryToPlanData } from '@components/plan-share/itinerary-to-plan.mapper';
+import { PlanData } from '@components/plan-share/plan-share.model';
+import { StoriesViewerComponent } from '@components/plan-share/stories-viewer.component';
+
 import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
+import {
+    ParsedSection,
+    cleanSnippet,
+    cleanTitle,
+    formatDayHeading,
+    formatEventTime,
+    parseSection,
+} from './parse-section';
 
-const ENUM_KEY_PREFIX = 'plan.results.enum';
-
-const CREW_LABEL_KEYS: Readonly<Record<CrewKind, string>> = {
-    Solo: `${ENUM_KEY_PREFIX}.crew.Solo`,
-    WithGroup: `${ENUM_KEY_PREFIX}.crew.WithGroup`,
-};
-
-const TRANSPORT_LABEL_KEYS: Partial<Record<TransportMode, string>> = {
-    RideShare: `${ENUM_KEY_PREFIX}.transport.RideShare`,
-    Car: `${ENUM_KEY_PREFIX}.transport.Car`,
-    EcTrain: `${ENUM_KEY_PREFIX}.transport.EcTrain`,
-    EcBus: `${ENUM_KEY_PREFIX}.transport.EcBus`,
-    Helicopter: `${ENUM_KEY_PREFIX}.transport.Helicopter`,
-};
-
-const ACCOMMODATION_LABEL_KEYS: Partial<Record<Accommodation, string>> = {
-    VillageRental: `${ENUM_KEY_PREFIX}.accommodation.VillageRental`,
-    Camping: `${ENUM_KEY_PREFIX}.accommodation.Camping`,
-    CarCamping: `${ENUM_KEY_PREFIX}.accommodation.CarCamping`,
-    RvCamping: `${ENUM_KEY_PREFIX}.accommodation.RvCamping`,
-    Glamping: `${ENUM_KEY_PREFIX}.accommodation.Glamping`,
-};
-
-const TICKET_LABEL_KEYS: Readonly<Record<TicketType, string>> = {
-    Standard: `${ENUM_KEY_PREFIX}.ticket.Standard`,
-    Vip: `${ENUM_KEY_PREFIX}.ticket.Vip`,
-    UltraVip: `${ENUM_KEY_PREFIX}.ticket.UltraVip`,
-    Black: `${ENUM_KEY_PREFIX}.ticket.Black`,
-};
-
-const AGE_LABEL_KEYS: Readonly<Record<AgeGroup, string>> = {
-    Under18: `${ENUM_KEY_PREFIX}.age.Under18`,
-    Adult18To24: `${ENUM_KEY_PREFIX}.age.Adult18To24`,
-    Adult25To34: `${ENUM_KEY_PREFIX}.age.Adult25To34`,
-    Adult35To44: `${ENUM_KEY_PREFIX}.age.Adult35To44`,
-    Adult45Plus: `${ENUM_KEY_PREFIX}.age.Adult45Plus`,
-};
-
-const MUSIC_LABEL_KEYS: Partial<Record<MusicGenre, string>> = {
-    HipHop: `${ENUM_KEY_PREFIX}.music.HipHop`,
-    House: `${ENUM_KEY_PREFIX}.music.House`,
-    Balkan: `${ENUM_KEY_PREFIX}.music.Balkan`,
-    Rock: `${ENUM_KEY_PREFIX}.music.Rock`,
-    Folk: `${ENUM_KEY_PREFIX}.music.Folk`,
-    Techno: `${ENUM_KEY_PREFIX}.music.Techno`,
-    Pop: `${ENUM_KEY_PREFIX}.music.Pop`,
-    Electronic: `${ENUM_KEY_PREFIX}.music.Electronic`,
-    Jazz: `${ENUM_KEY_PREFIX}.music.Jazz`,
-    Metal: `${ENUM_KEY_PREFIX}.music.Metal`,
-    Other: `${ENUM_KEY_PREFIX}.music.Other`,
-};
-
-const FOOD_LABEL_KEYS: Readonly<Record<FoodRestriction, string>> = {
-    Vegan: `${ENUM_KEY_PREFIX}.foodRestriction.Vegan`,
-    Vegetarian: `${ENUM_KEY_PREFIX}.foodRestriction.Vegetarian`,
-    NoPeanuts: `${ENUM_KEY_PREFIX}.foodRestriction.NoPeanuts`,
-    NoMeat: `${ENUM_KEY_PREFIX}.foodRestriction.NoMeat`,
-    NoPork: `${ENUM_KEY_PREFIX}.foodRestriction.NoPork`,
-    NoDairy: `${ENUM_KEY_PREFIX}.foodRestriction.NoDairy`,
-    NoGluten: `${ENUM_KEY_PREFIX}.foodRestriction.NoGluten`,
-    NoShellfish: `${ENUM_KEY_PREFIX}.foodRestriction.NoShellfish`,
-    NoEggs: `${ENUM_KEY_PREFIX}.foodRestriction.NoEggs`,
-    Halal: `${ENUM_KEY_PREFIX}.foodRestriction.Halal`,
-    Kosher: `${ENUM_KEY_PREFIX}.foodRestriction.Kosher`,
-};
-
-const CUISINE_LABEL_KEYS: Partial<Record<Cuisine, string>> = {
-    American: `${ENUM_KEY_PREFIX}.cuisine.American`,
-    Italian: `${ENUM_KEY_PREFIX}.cuisine.Italian`,
-    Romanian: `${ENUM_KEY_PREFIX}.cuisine.Romanian`,
-    Mexican: `${ENUM_KEY_PREFIX}.cuisine.Mexican`,
-    Chinese: `${ENUM_KEY_PREFIX}.cuisine.Chinese`,
-    Japanese: `${ENUM_KEY_PREFIX}.cuisine.Japanese`,
-    Indian: `${ENUM_KEY_PREFIX}.cuisine.Indian`,
-    Thai: `${ENUM_KEY_PREFIX}.cuisine.Thai`,
-    French: `${ENUM_KEY_PREFIX}.cuisine.French`,
-    Greek: `${ENUM_KEY_PREFIX}.cuisine.Greek`,
-    Mediterranean: `${ENUM_KEY_PREFIX}.cuisine.Mediterranean`,
-    MiddleEastern: `${ENUM_KEY_PREFIX}.cuisine.MiddleEastern`,
-    Bbq: `${ENUM_KEY_PREFIX}.cuisine.Bbq`,
-    StreetFood: `${ENUM_KEY_PREFIX}.cuisine.StreetFood`,
-    Other: `${ENUM_KEY_PREFIX}.cuisine.Other`,
-};
-
-const ACTIVITY_LABEL_KEYS: Readonly<Record<ActivityType, string>> = {
-    Relax: `${ENUM_KEY_PREFIX}.activity.Relax`,
-    Energetic: `${ENUM_KEY_PREFIX}.activity.Energetic`,
-    Adrenaline: `${ENUM_KEY_PREFIX}.activity.Adrenaline`,
-    Social: `${ENUM_KEY_PREFIX}.activity.Social`,
-    Creative: `${ENUM_KEY_PREFIX}.activity.Creative`,
-    Wellness: `${ENUM_KEY_PREFIX}.activity.Wellness`,
-    Discovery: `${ENUM_KEY_PREFIX}.activity.Discovery`,
-};
-
-interface LabelledValue {
-    readonly raw: string;
-    readonly labelKey: string | null;
+interface RenderItem {
+    readonly id: string;
+    readonly title: string;
+    readonly snippet: string;
+    readonly time: string;
 }
 
-interface SectionPreview {
-    readonly key: string | null;
-    readonly diagnostic: string | null;
-    readonly rawJson: string;
+interface RenderDay {
+    readonly date: string;
+    readonly heading: string;
+    readonly items: ReadonlyArray<RenderItem>;
+}
+
+type RenderedSection =
+    | {
+          readonly kind: 'transport';
+          readonly mode: string | null;
+          readonly note: string | null;
+          readonly isEmpty: boolean;
+      }
+    | {
+          readonly kind: 'vibeActivities';
+          readonly vibeTags: ReadonlyArray<string>;
+          readonly items: ReadonlyArray<RenderItem>;
+      }
+    | {
+          readonly kind: 'food';
+          readonly restrictions: ReadonlyArray<string>;
+          readonly items: ReadonlyArray<RenderItem>;
+          readonly cuisines: ReadonlyArray<string>;
+      }
+    | {
+          readonly kind: 'topArtists';
+          readonly days: ReadonlyArray<RenderDay>;
+          readonly overall: ReadonlyArray<RenderItem>;
+      }
+    | {
+          readonly kind: 'accommodation';
+          readonly type: string | null;
+          readonly note: string | null;
+          readonly isEmpty: boolean;
+      };
+
+interface HeroSnapshot {
+    readonly headline: string;
+    readonly origin: string | null;
+    readonly crewLabelKey: string | null;
+    readonly crewLabelParams: { count: number } | null;
 }
 
 @Component({
     selector: 'app-plan-results',
-    imports: [EcTopbarComponent, TranslocoModule],
+    imports: [EcTopbarComponent, TranslocoModule, StoriesViewerComponent, ReactiveFormsModule],
     templateUrl: './plan-results.component.html',
     styleUrl: './plan-results.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -142,121 +104,232 @@ export class PlanResultsComponent {
     private readonly itineraryApi = inject(ItineraryApi);
     private readonly destroyRef = inject(DestroyRef);
     private readonly router = inject(Router);
+    private readonly route = inject(ActivatedRoute);
     private readonly transloco = inject(TranslocoService);
     private readonly auth = inject(AuthService);
     private readonly planOnboarding = inject(PlanOnboardingService);
     private readonly planIntake = inject(PlanIntakeService);
 
+    private readonly routeParams = toSignal(this.route.paramMap, {
+        initialValue: this.route.snapshot.paramMap,
+    });
+    protected readonly planUuid = computed<string | null>(() => this.routeParams().get('uuid'));
+    protected readonly readOnly = computed(() => this.planUuid() !== null);
+
+    private readonly sharedResponse = signal<ItineraryResponse | null>(null);
+    private readonly sharedNotFound = signal(false);
+
     protected readonly isDevMode = isDevMode();
-    protected readonly submissionError = computed(() => this.planIntake.status() === 'error');
+    protected readonly submissionError = computed(
+        () => !this.readOnly() && this.planIntake.status() === 'error',
+    );
     protected readonly retrying = signal(false);
-    protected readonly showRawSections = signal(false);
-    protected readonly storyHref = `/p/${MOCK_PLAN_UUID}`;
+    protected readonly storyOpen = signal(false);
     protected readonly refreshing = signal(false);
     protected readonly refreshFailed = signal(false);
 
-    protected readonly hasItinerary = this.store.hasItinerary;
-    protected readonly preferences: Signal<PreferencesDto | null> = this.store.preferences;
-    protected readonly sections: Signal<ReadonlyArray<ItinerarySectionDto>> = this.store.sections;
+    private readonly currentResponse = computed<ItineraryResponse | null>(() =>
+        this.readOnly() ? this.sharedResponse() : this.store.itinerary(),
+    );
 
-    protected readonly completionPercent = computed(() => {
-        const value = this.preferences()?.completionPercent ?? 0;
-        if (value <= 1) return Math.round(value * 100);
-        return Math.round(value);
+    protected readonly hasItinerary = computed(() => this.currentResponse() !== null);
+    protected readonly preferences: Signal<PreferencesDto | null> = computed(
+        () => this.currentResponse()?.preferences ?? null,
+    );
+    protected readonly sections: Signal<ReadonlyArray<ItinerarySectionDto>> = computed(
+        () => this.currentResponse()?.itinerary.sections ?? [],
+    );
+    protected readonly storyPlanData = computed<PlanData | null>(() =>
+        itineraryToPlanData(this.currentResponse()),
+    );
+    protected readonly notFound = computed(
+        () => this.readOnly() && this.sharedNotFound() && !this.sharedResponse(),
+    );
+
+    protected readonly shareUrl = computed<string | null>(() => {
+        const id = this.currentResponse()?.itinerary?.id;
+        if (!id || typeof window === 'undefined') return null;
+        return `${window.location.origin}/plan/${id}`;
+    });
+    protected readonly canNativeShare =
+        typeof navigator !== 'undefined' && typeof navigator.share === 'function';
+    protected readonly copied = signal(false);
+    private copiedResetHandle: ReturnType<typeof setTimeout> | null = null;
+
+    protected readonly refineOpen = signal(false);
+    protected readonly refineSubmitting = signal(false);
+    protected readonly refineError = signal(false);
+    protected readonly refineControl = new FormControl<string>('', { nonNullable: true });
+    protected readonly canRefine = computed(() => !this.readOnly() && !!this.currentResponse()?.itinerary?.id);
+
+    private readonly parsedSections = computed<ReadonlyArray<ParsedSection>>(() =>
+        this.sections()
+            .map((section) => parseSection(section))
+            .filter((parsed): parsed is ParsedSection => parsed !== null),
+    );
+
+    protected readonly hero = computed<HeroSnapshot>(() => {
+        const greeting = this.parsedSections().find(
+            (entry): entry is Extract<ParsedSection, { kind: 'greeting' }> =>
+                entry.kind === 'greeting',
+        );
+        const preferences = this.preferences();
+        return this.buildHero(greeting?.data ?? null, preferences);
     });
 
-    protected readonly displayName = computed(() => this.preferences()?.name?.trim() || null);
+    private readonly bodySections = computed<ReadonlyArray<ParsedSection>>(() =>
+        this.parsedSections().filter((entry) => entry.kind !== 'greeting'),
+    );
 
-    protected readonly crewLabel = computed(() => {
-        const crew = this.preferences()?.crew;
-        if (!crew) return null;
-        return this.resolveLabel(crew.kind, CREW_LABEL_KEYS as Partial<Record<string, string>>);
+    protected readonly renderedBodySections = computed<ReadonlyArray<RenderedSection>>(() => {
+        const locale = this.transloco.getActiveLang();
+        return this.bodySections()
+            .map((section): RenderedSection | null => this.toRenderedSection(section, locale))
+            .filter((entry): entry is RenderedSection => entry !== null);
     });
-
-    protected readonly transportLabel = computed(() => {
-        const mode = this.preferences()?.suggestedTransport?.mode;
-        if (!mode) return null;
-        return this.resolveLabel(mode, TRANSPORT_LABEL_KEYS as Partial<Record<string, string>>);
-    });
-
-    protected readonly accommodationLabel = computed(() => {
-        const type = this.preferences()?.suggestedAccommodation?.type;
-        if (!type) return null;
-        return this.resolveLabel(type, ACCOMMODATION_LABEL_KEYS as Partial<Record<string, string>>);
-    });
-
-    protected readonly ticketLabel = computed(() => {
-        const ticket = this.preferences()?.ticketType;
-        if (!ticket) return null;
-        return this.resolveLabel(ticket, TICKET_LABEL_KEYS as Partial<Record<string, string>>);
-    });
-
-    protected readonly ageLabel = computed(() => {
-        const age = this.preferences()?.ageGroup;
-        if (!age) return null;
-        return this.resolveLabel(age, AGE_LABEL_KEYS as Partial<Record<string, string>>);
-    });
-
-    protected readonly musicLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.musicGenres, MUSIC_LABEL_KEYS as Partial<Record<string, string>>),
-    );
-
-    protected readonly foodRestrictionLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.foodRestrictions, FOOD_LABEL_KEYS as Partial<Record<string, string>>),
-    );
-
-    protected readonly cuisineLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.cuisines, CUISINE_LABEL_KEYS as Partial<Record<string, string>>),
-    );
-
-    protected readonly activityLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.activityInterests, ACTIVITY_LABEL_KEYS as Partial<Record<string, string>>),
-    );
-
-    protected readonly vibeTags = computed<ReadonlyArray<string>>(
-        () => this.preferences()?.vibeTags?.filter((entry): entry is string => !!entry?.trim()) ?? [],
-    );
-
-    protected readonly mustSeeArtists = computed<ReadonlyArray<string>>(
-        () => this.preferences()?.mustSeeArtists?.filter((entry): entry is string => !!entry?.trim()) ?? [],
-    );
-
-    protected readonly sectionPreviews = computed<ReadonlyArray<SectionPreview>>(() =>
-        this.sections().map((section) => ({
-            key: section.key,
-            diagnostic: section.diagnostic,
-            rawJson: this.safeStringify(section.data),
-        })),
-    );
 
     constructor() {
-        this.refreshing.set(true);
-        this.itineraryApi
-            .getCurrent()
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe({
+        effect(() => {
+            const uuid = this.planUuid();
+            this.refreshing.set(true);
+            this.refreshFailed.set(false);
+            if (uuid) this.sharedNotFound.set(false);
+            const source$ = uuid
+                ? this.itineraryApi.getById(uuid)
+                : this.itineraryApi.getCurrent();
+            source$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
                 next: (response) => {
-                    if (response) {
+                    if (uuid) {
+                        this.sharedResponse.set(response ?? null);
+                        this.sharedNotFound.set(!response);
+                    } else if (response) {
                         this.store.set(response);
-                        this.refreshFailed.set(false);
                     }
                     this.refreshing.set(false);
                 },
                 error: () => {
-                    this.refreshFailed.set(true);
+                    if (uuid) {
+                        this.sharedResponse.set(null);
+                        this.sharedNotFound.set(true);
+                    } else {
+                        this.refreshFailed.set(true);
+                    }
                     this.refreshing.set(false);
                 },
             });
+        });
     }
 
-    protected resolveLabelText(value: LabelledValue): string {
-        if (!value.labelKey) return value.raw;
-        const translated = this.transloco.translate(value.labelKey);
-        return translated === value.labelKey ? value.raw : translated;
+    private mapItems(
+        items: ReadonlyArray<RetrievedItem>,
+        locale: string,
+    ): ReadonlyArray<RenderItem> {
+        return items.map((item) => ({
+            id: item.id,
+            title: cleanTitle(item.title),
+            snippet: cleanSnippet(item.snippet),
+            time: formatEventTime(item.eventUtc, locale),
+        }));
     }
 
-    protected toggleRawSections(): void {
-        this.showRawSections.update((current) => !current);
+    private mapDays(
+        days: ReadonlyArray<{ readonly date: string; readonly artists: ReadonlyArray<RetrievedItem> }>,
+        locale: string,
+    ): ReadonlyArray<RenderDay> {
+        return days
+            .filter((day) => day.artists.length > 0)
+            .map((day) => ({
+                date: day.date,
+                heading: formatDayHeading(day.date, locale),
+                items: this.mapItems(day.artists, locale),
+            }));
+    }
+
+    private toRenderedSection(section: ParsedSection, locale: string): RenderedSection | null {
+        switch (section.kind) {
+            case 'transport': {
+                const isEmpty = !section.data.mode && !section.data.note;
+                return {
+                    kind: 'transport',
+                    mode: section.data.mode,
+                    note: section.data.note,
+                    isEmpty,
+                };
+            }
+            case 'vibeActivities':
+                return {
+                    kind: 'vibeActivities',
+                    vibeTags: section.data.vibeTags ?? [],
+                    items: this.mapItems(section.data.topActivities ?? [], locale),
+                };
+            case 'food':
+                return {
+                    kind: 'food',
+                    restrictions: section.data.restrictions ?? [],
+                    items: this.mapItems(section.data.topRestaurants ?? [], locale),
+                    cuisines: (section.data.preferredCuisines ?? []).slice(0, 5),
+                };
+            case 'topArtists':
+                return {
+                    kind: 'topArtists',
+                    days: this.mapDays(section.data.byDay ?? [], locale),
+                    overall: this.mapItems(section.data.topOverall ?? [], locale),
+                };
+            case 'accommodation': {
+                const isEmpty = !section.data.type && !section.data.note;
+                return {
+                    kind: 'accommodation',
+                    type: section.data.type,
+                    note: section.data.note,
+                    isEmpty,
+                };
+            }
+            default:
+                return null;
+        }
+    }
+
+    protected openStory(): void {
+        if (!this.storyPlanData()) return;
+        this.storyOpen.set(true);
+    }
+
+    protected closeStory(): void {
+        this.storyOpen.set(false);
+    }
+
+    protected async sharePlan(): Promise<void> {
+        const url = this.shareUrl();
+        if (!url) return;
+        if (this.canNativeShare) {
+            try {
+                await navigator.share({
+                    title: this.transloco.translate('plan.results.share.shareTitle'),
+                    text: this.transloco.translate('plan.results.share.shareText'),
+                    url,
+                });
+                return;
+            } catch {
+                // user cancelled or share rejected; fall through to copy.
+            }
+        }
+        await this.copyShareLink();
+    }
+
+    protected async copyShareLink(): Promise<void> {
+        const url = this.shareUrl();
+        if (!url) return;
+        try {
+            await navigator.clipboard.writeText(url);
+        } catch {
+            return;
+        }
+        this.copied.set(true);
+        if (this.copiedResetHandle) clearTimeout(this.copiedResetHandle);
+        this.copiedResetHandle = setTimeout(() => {
+            this.copied.set(false);
+            this.copiedResetHandle = null;
+        }, 2000);
     }
 
     protected redoWizard(): void {
@@ -274,23 +347,64 @@ export class PlanResultsComponent {
         }
     }
 
-    private resolveLabel(raw: string, lookup: Partial<Record<string, string>>): LabelledValue {
-        return { raw, labelKey: lookup[raw] ?? null };
-    }
-
-    private mapLabels(
-        values: ReadonlyArray<string> | undefined,
-        lookup: Partial<Record<string, string>>,
-    ): ReadonlyArray<LabelledValue> {
-        if (!values?.length) return [];
-        return values.map((value) => this.resolveLabel(value, lookup));
-    }
-
-    private safeStringify(value: unknown): string {
-        try {
-            return JSON.stringify(value, null, 2);
-        } catch {
-            return '';
+    protected toggleRefine(): void {
+        this.refineOpen.update((open) => !open);
+        if (this.refineOpen()) {
+            this.refineError.set(false);
         }
+    }
+
+    protected async submitRefine(): Promise<void> {
+        const itineraryId = this.currentResponse()?.itinerary?.id;
+        const freeText = this.refineControl.value.trim();
+        if (!itineraryId || !freeText || this.refineSubmitting()) return;
+        this.refineSubmitting.set(true);
+        this.refineError.set(false);
+        try {
+            const response = await firstValueFrom(
+                this.itineraryApi.refine({
+                    locale: this.transloco.getActiveLang() ?? null,
+                    itineraryId,
+                    freeText,
+                }),
+            );
+            if (response) {
+                this.store.set(response);
+            }
+            this.refineControl.setValue('', { emitEvent: false });
+            this.refineOpen.set(false);
+        } catch {
+            this.refineError.set(true);
+        } finally {
+            this.refineSubmitting.set(false);
+        }
+    }
+
+    private buildHero(
+        greeting: GreetingSectionData | null,
+        preferences: PreferencesDto | null,
+    ): HeroSnapshot {
+        const origin = greeting?.origin?.trim() || preferences?.origin?.trim() || null;
+        const crewKind = greeting?.crew?.kind ?? preferences?.crew?.kind ?? null;
+        const crewSize = greeting?.crew?.size ?? preferences?.crew?.estimatedSize ?? null;
+        const headline = this.transloco.translate('plan.results.hero.namelessGreeting');
+
+        if (crewKind === 'Solo' || crewKind === 'solo') {
+            return {
+                headline,
+                origin,
+                crewLabelKey: 'plan.results.hero.soloFallback',
+                crewLabelParams: null,
+            };
+        }
+        if (typeof crewSize === 'number' && crewSize > 0) {
+            return {
+                headline,
+                origin,
+                crewLabelKey: 'plan.results.hero.crewLabel',
+                crewLabelParams: { count: crewSize },
+            };
+        }
+        return { headline, origin, crewLabelKey: null, crewLabelParams: null };
     }
 }

@@ -4,15 +4,14 @@ import {
     DestroyRef,
     ElementRef,
     HostListener,
-    Renderer2,
     computed,
     effect,
     inject,
+    input,
+    output,
     signal,
     viewChild,
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoModule } from '@jsverse/transloco';
 
 import {
@@ -21,7 +20,6 @@ import {
     PlanSlide,
     SLIDE_DURATION_MS,
 } from './plan-share.model';
-import { PlanShareService } from './plan-share.service';
 import { StoryProgressComponent } from './story-progress.component';
 import { ActivityVibeSlideComponent } from './slides/activity-vibe-slide.component';
 import { FoodSlideComponent } from './slides/food-slide.component';
@@ -51,16 +49,17 @@ type LoadState = 'loading' | 'ready' | 'not-found';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoriesViewerComponent {
-    private readonly route = inject(ActivatedRoute);
-    private readonly router = inject(Router);
-    private readonly planShareService = inject(PlanShareService);
-    private readonly renderer = inject(Renderer2);
     private readonly destroyRef = inject(DestroyRef);
 
-    private readonly uuid = toSignal(this.route.paramMap, { initialValue: null });
+    readonly planData = input<PlanData | null>(null);
+    readonly closed = output<void>();
 
-    protected readonly state = signal<LoadState>('loading');
-    protected readonly plan = signal<PlanData | null>(null);
+    protected readonly state = computed<LoadState>(() => {
+        const data = this.planData();
+        if (!data) return 'not-found';
+        return 'ready';
+    });
+    protected readonly plan = this.planData;
     protected readonly currentIndex = signal(0);
     protected readonly paused = signal(false);
     protected readonly progressFraction = signal(0);
@@ -98,13 +97,12 @@ export class StoriesViewerComponent {
     private pointerDownX = 0;
 
     constructor() {
+        // Reset playback state whenever a fresh planData is injected.
         effect(() => {
-            // Route `:uuid` is currently ignored — backend resolves the plan
-            // from the JWT (`GET /api/v1/Itinerary`). Subscribe to the
-            // paramMap signal anyway so we re-fetch if the route param ever
-            // becomes meaningful (per-plan share endpoints).
-            this.uuid();
-            this.loadCurrentPlan();
+            this.planData();
+            this.currentIndex.set(0);
+            this.progressFraction.set(0);
+            this.paused.set(false);
         });
 
         // Force dark mode while the stories viewer is mounted.
@@ -143,23 +141,8 @@ export class StoriesViewerComponent {
         });
     }
 
-    private async loadCurrentPlan(): Promise<void> {
-        this.state.set('loading');
-        const data = await this.planShareService.getCurrent();
-        if (!data) {
-            this.state.set('not-found');
-            this.plan.set(null);
-            return;
-        }
-        this.plan.set(data);
-        this.currentIndex.set(0);
-        this.progressFraction.set(0);
-        this.paused.set(false);
-        this.state.set('ready');
-    }
-
     protected onClose(): void {
-        this.router.navigateByUrl('/plan');
+        this.closed.emit();
     }
 
     protected onReplay(): void {

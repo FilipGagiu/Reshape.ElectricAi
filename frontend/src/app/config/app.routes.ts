@@ -4,15 +4,23 @@ import { authGuard, guestGuard } from '@shared/guards/auth.guard';
 
 export const routes: Routes = [
     {
-        // Public stories viewer — accepts a UUID, fetches the plan, renders
-        // the Spotify-Wrapped-style slideshow. No layout chrome (fully
-        // immersive). No auth guard so share links work for friends without
-        // an account.
-        path: 'p/:uuid',
+        // Public shareable plan view. Reuses MobileLayout so anonymous
+        // viewers still see the app chrome (top bar + bottom nav), with the
+        // read-only plan rendered inside. No auth guard — link works for
+        // everyone. Parent path is the full `plan/:uuid` segment so `/plan`
+        // (no uuid) skips this entry and falls through to the authed group.
+        path: 'plan/:uuid',
         loadComponent: () =>
-            import('@components/plan-share/stories-viewer.component').then(
-                (m) => m.StoriesViewerComponent,
-            ),
+            import('@layout/mobile-layout/mobile-layout').then((m) => m.MobileLayoutComponent),
+        children: [
+            {
+                path: '',
+                loadComponent: () =>
+                    import('@components/my-ec-plan/plan-results/plan-results.component').then(
+                        (m) => m.PlanResultsComponent,
+                    ),
+            },
+        ],
     },
     {
         path: '',

@@ -1,4 +1,5 @@
 import {
+    HttpContextToken,
     HttpErrorResponse,
     HttpHandlerFn,
     HttpInterceptorFn,
@@ -12,6 +13,14 @@ import { API_BASE_URL, apiUrl } from './api-config';
 import { AuthApi } from './auth-api';
 import { TokenStore } from './token-store';
 
+/**
+ * Per-request opt-out for the interceptor's 401 → `/login` redirect.
+ * Public endpoints (e.g. shareable plan view) attach this flag so an
+ * anonymous viewer hitting a 401 just sees the empty/not-found state
+ * instead of being yanked into the login flow.
+ */
+export const SKIP_AUTH_REDIRECT = new HttpContextToken<boolean>(() => false);
+
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const baseUrl = inject(API_BASE_URL);
     if (!isApiRequest(req, baseUrl)) {
@@ -23,6 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const authApi = inject(AuthApi);
     const refreshUrl = apiUrl(baseUrl, '/auth/refresh');
     const isRefreshCall = req.url === refreshUrl;
+    const skipRedirect = req.context.get(SKIP_AUTH_REDIRECT);
 
     const accessToken = tokens.accessToken();
     const outgoing = accessToken && !isRefreshCall ? withBearer(req, accessToken) : req;
@@ -30,6 +40,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     return next(outgoing).pipe(
         catchError((err) => {
             if (!(err instanceof HttpErrorResponse) || err.status !== 401 || isRefreshCall) {
+                return throwError(() => err);
+            }
+            if (skipRedirect) {
                 return throwError(() => err);
             }
             return handleUnauthorized(req, next, tokens, authApi, router);

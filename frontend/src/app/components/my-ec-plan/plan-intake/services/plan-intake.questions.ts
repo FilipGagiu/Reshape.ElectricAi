@@ -12,13 +12,6 @@ const chipKey = (id: PlanIntakeQuestionId, suffix: string): string =>
 
 export const PLAN_INTAKE_QUESTIONS: ReadonlyArray<PlanIntakeQuestion> = [
     {
-        id: PlanIntakeQuestionId.Name,
-        promptKey: promptKey(PlanIntakeQuestionId.Name),
-        placeholderKey: placeholderKey(PlanIntakeQuestionId.Name),
-        descriptionKey: descriptionKey(PlanIntakeQuestionId.Name),
-        suggestionKeys: [],
-    },
-    {
         id: PlanIntakeQuestionId.Location,
         promptKey: promptKey(PlanIntakeQuestionId.Location),
         placeholderKey: placeholderKey(PlanIntakeQuestionId.Location),

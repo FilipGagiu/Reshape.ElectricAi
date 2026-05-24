@@ -128,6 +128,7 @@ export class PlanStepsComponent {
 
     private readonly textareaRef = viewChild<ElementRef<HTMLTextAreaElement>>('textarea');
 
+    private readonly suppressNextFocus = signal(false);
     private readonly loaderStepIndex = signal(0);
     protected readonly loaderStep = computed<LoaderStep>(
         () => LOADER_STEPS[this.loaderStepIndex() % LOADER_STEPS.length],
@@ -142,8 +143,10 @@ export class PlanStepsComponent {
                 const existing = this.service.answers()[index];
                 const prefill = existing && !existing.skipped ? existing.text : '';
                 this.textControl.setValue(prefill, { emitEvent: false });
+                const skipFocus = this.suppressNextFocus();
+                if (skipFocus) this.suppressNextFocus.set(false);
                 queueMicrotask(() => {
-                    this.textareaRef()?.nativeElement.focus();
+                    if (!skipFocus) this.textareaRef()?.nativeElement.focus();
                     this.resizeTextarea();
                 });
             });
@@ -169,11 +172,13 @@ export class PlanStepsComponent {
 
     protected applyChipKey(chipKey: string): void {
         const translated = this.transloco.translate(chipKey);
-        this.textControl.setValue(translated);
-        queueMicrotask(() => {
-            this.textareaRef()?.nativeElement.focus();
-            this.resizeTextarea();
-        });
+        // Blur any focused element so mobile keyboard collapses before we
+        // advance, and skip the next auto-focus so it doesn't pop back up.
+        const active = typeof document !== 'undefined' ? document.activeElement : null;
+        if (active instanceof HTMLElement) active.blur();
+        this.suppressNextFocus.set(true);
+        this.textControl.setValue(translated, { emitEvent: false });
+        this.service.submitAnswer(translated);
     }
 
     protected submit(): void {
