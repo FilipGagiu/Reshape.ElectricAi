@@ -111,17 +111,17 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
     [Fact]
     public async Task Ask_WithMismatchedUserContext_ReturnsFallback()
     {
-        var questionText = $"Where is the food court? {Guid.NewGuid()}";
+        var questionText = $"What time does the rock stage open? {Guid.NewGuid()}";
         await _client.PostAsJsonAsync("/api/v1/faq",
-            new IngestQARequest(questionText, [new IngestAnswerRequest("North gate.")],
+            new IngestQARequest(questionText, [new IngestAnswerRequest("Rock stage opens at 16:00.")],
                 QuestionCategoryValues: new Dictionary<Category, IReadOnlyList<string>>
-                    { { Category.Food, ["Vegan"] } }),
+                    { { Category.Music, ["Rock"] } }),
             JsonOptions);
 
         var request = new ConversationRequest(
             questionText,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
-                { { Category.Transport, ["Car"] } });
+                { { Category.Music, ["DrumAndBass"] } });
         var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -196,7 +196,7 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
         var request = new ConversationRequest(
             docContent,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
-                { { Category.Transport, ["Car"] } });
+                { { Category.Food, ["Carnivore"] } });
         var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -254,7 +254,7 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
         var request = new ConversationRequest(
             textRep,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
-                { { Category.Transport, ["Car"] } });
+                { { Category.Food, ["Carnivore"] } });
         var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);

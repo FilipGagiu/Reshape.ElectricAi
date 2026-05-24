@@ -9,4 +9,15 @@ internal static class CategoryTagsHelper
             .SelectMany(kvp => kvp.Value.Select(v => $"{kvp.Key}.{v}".ToLowerInvariant()))
             .ToArray();
 
+    internal static IReadOnlyList<CategoryTagFilter> ToPerCategoryTagFilters(
+        IReadOnlyDictionary<Category, IReadOnlyList<string>> categoryValues) =>
+        categoryValues
+            .Select(kvp => new CategoryTagFilter(
+                CategoryPrefix: $"{kvp.Key}.".ToLowerInvariant(),
+                AllowedTags: kvp.Value
+                    .Select(v => $"{kvp.Key}.{v}".ToLowerInvariant())
+                    .ToArray()))
+            .ToList();
 }
+
+internal readonly record struct CategoryTagFilter(string CategoryPrefix, string[] AllowedTags);

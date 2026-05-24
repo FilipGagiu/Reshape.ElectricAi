@@ -61,8 +61,9 @@ public sealed class VectorSearchServiceTests(VectorDbFixture fixture)
                 UserContext: new Dictionary<Category, IReadOnlyList<string>> { { Category.Ticket, ["VIP"] } },
                 TopK: 10));
 
-        results.Should().NotBeEmpty();
-        results.Should().AllSatisfy(r => r.DocumentTitle.Should().Be("VIP Doc"));
+        var titles = results.Select(r => r.DocumentTitle).ToList();
+        titles.Should().Contain("VIP Doc");
+        titles.Should().NotContain("General Doc");
     }
 
     [Fact]
@@ -84,10 +85,40 @@ public sealed class VectorSearchServiceTests(VectorDbFixture fixture)
     }
 
     [Fact]
-    public async Task SearchQuestionsAsync_WithCategoryFilter_ExcludesNonMatchingCategory()
+    public async Task SearchQuestionsAsync_WithCategoryFilter_ExcludesMismatchedValueWithinSameCategory()
     {
-        var musicQ = $"Who headlines the music stage? {Guid.NewGuid()}";
-        var foodQ = $"What food stalls are available? {Guid.NewGuid()}";
+        var lineupQ = $"Who headlines the lineup tonight? {Guid.NewGuid()}";
+        var stageQ = $"Where is the main stage located? {Guid.NewGuid()}";
+
+        await using (var ingestCtx = fixture.CreateContext())
+        {
+            var svc = BuildIngestService(ingestCtx);
+            await svc.IngestQAAsync(new IngestQARequest(lineupQ,
+                [new IngestAnswerRequest("Top artists perform each night.")],
+                QuestionCategoryValues: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["Lineup"] } }));
+            await svc.IngestQAAsync(new IngestQARequest(stageQ,
+                [new IngestAnswerRequest("Center of the festival grounds.")],
+                QuestionCategoryValues: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["Stage"] } }));
+        }
+
+        await using var searchCtx = fixture.CreateContext();
+        var results = await BuildSearchService(searchCtx).SearchQuestionsAsync(
+            new QuestionSearchFilter(
+                QueryText: lineupQ,
+                UserContext: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["Lineup"] } },
+                TopK: 10));
+
+        var questionTexts = results.Select(r => r.QuestionText).ToList();
+        questionTexts.Should().Contain(lineupQ);
+        questionTexts.Should().NotContain(stageQ);
+    }
+
+    [Fact]
+    public async Task SearchQuestionsAsync_WithCategoryFilter_IncludesCrossCategoryEntries()
+    {
+        var musicQ = $"Who headlines the music lineup? {Guid.NewGuid()}";
+        var foodMarker = $"foodmarker{Guid.NewGuid():N}";
+        var foodQ = $"What food stalls are available {foodMarker}?";
 
         await using (var ingestCtx = fixture.CreateContext())
         {
@@ -103,12 +134,11 @@ public sealed class VectorSearchServiceTests(VectorDbFixture fixture)
         await using var searchCtx = fixture.CreateContext();
         var results = await BuildSearchService(searchCtx).SearchQuestionsAsync(
             new QuestionSearchFilter(
-                QueryText: musicQ,
+                QueryText: foodQ,
                 UserContext: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["Lineup"] } },
                 TopK: 10));
 
-        results.Should().NotBeEmpty();
-        results.Should().AllSatisfy(r => r.QuestionText.Should().Contain("music stage"));
+        results.Should().Contain(r => r.QuestionText.Contains(foodMarker));
     }
 
     [Fact]
@@ -132,30 +162,101 @@ public sealed class VectorSearchServiceTests(VectorDbFixture fixture)
     }
 
     [Fact]
-    public async Task SearchEventsAsync_WithCategoryFilter_ExcludesNonMatchingCategory()
+    public async Task SearchEventsAsync_WithCategoryFilter_ExcludesMismatchedValueWithinSameCategory()
     {
-        var musicEvent = $"Drum and Bass night {Guid.NewGuid()}";
-        var weatherEvent = $"Storm warning issued {Guid.NewGuid()}";
+        var dnbEvent = $"Drum and Bass night {Guid.NewGuid()}";
+        var rockEvent = $"Heavy rock showcase {Guid.NewGuid()}";
 
         await using (var ingestCtx = fixture.CreateContext())
         {
             var svc = BuildIngestService(ingestCtx);
             await svc.IngestEventAsync(new IngestEventRequest(
-                Guid.NewGuid(), "DnB Night", musicEvent, DateTimeOffset.UtcNow.AddDays(1),
+                Guid.NewGuid(), "DnB Night", dnbEvent, DateTimeOffset.UtcNow.AddDays(1),
                 new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["DnB"] } }));
             await svc.IngestEventAsync(new IngestEventRequest(
-                Guid.NewGuid(), "Weather Alert", weatherEvent, DateTimeOffset.UtcNow.AddDays(1),
-                new Dictionary<Category, IReadOnlyList<string>> { { Category.Weather, ["Storm"] } }));
+                Guid.NewGuid(), "Rock Showcase", rockEvent, DateTimeOffset.UtcNow.AddDays(1),
+                new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["Rock"] } }));
         }
 
         await using var searchCtx = fixture.CreateContext();
         var results = await BuildSearchService(searchCtx).SearchEventsAsync(
             new EventSearchFilter(
-                QueryText: musicEvent,
+                QueryText: dnbEvent,
                 UserContext: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["DnB"] } },
                 TopK: 10));
 
-        results.Should().NotBeEmpty();
-        results.Should().AllSatisfy(r => r.Title.Should().Be("DnB Night"));
+        var titles = results.Select(r => r.Title).ToList();
+        titles.Should().Contain("DnB Night");
+        titles.Should().NotContain("Rock Showcase");
+    }
+
+    [Fact]
+    public async Task SearchDocumentsAsync_WithCategoryFilter_IncludesUntaggedEntries()
+    {
+        var marker = $"untaggedmarker{Guid.NewGuid():N}";
+        var untaggedText = $"Lineup artist bio describing their style {marker}";
+
+        await using (var ingestCtx = fixture.CreateContext())
+        {
+            // No CategoryValues argument → CategoryTags = [] on the ingested chunk.
+            await BuildIngestService(ingestCtx).IngestDocumentAsync(
+                new IngestDocumentRequest("Untagged Artist", untaggedText));
+        }
+
+        await using var searchCtx = fixture.CreateContext();
+        var results = await BuildSearchService(searchCtx).SearchDocumentsAsync(
+            new DocumentSearchFilter(
+                QueryText: untaggedText,
+                UserContext: new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["DrumAndBass"] } },
+                TopK: 10));
+
+        results.Should().Contain(r => r.Content.Contains(marker));
+    }
+
+    [Fact]
+    public async Task SearchEventsAsync_WithMultiCategoryFilter_AppliesAndPerCategory()
+    {
+        var musicOnlyEvt = $"DnB only event {Guid.NewGuid()}";
+        var musicAndVipEvt = $"DnB plus VIP event {Guid.NewGuid()}";
+        var musicAndGeneralEvt = $"DnB plus General event {Guid.NewGuid()}";
+        var futureUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+        await using (var ingestCtx = fixture.CreateContext())
+        {
+            var svc = BuildIngestService(ingestCtx);
+            await svc.IngestEventAsync(new IngestEventRequest(
+                Guid.NewGuid(), "DnB Only", musicOnlyEvt, futureUtc,
+                new Dictionary<Category, IReadOnlyList<string>> { { Category.Music, ["DnB"] } }));
+            await svc.IngestEventAsync(new IngestEventRequest(
+                Guid.NewGuid(), "DnB VIP", musicAndVipEvt, futureUtc,
+                new Dictionary<Category, IReadOnlyList<string>>
+                {
+                    { Category.Music, ["DnB"] },
+                    { Category.Ticket, ["VIP"] },
+                }));
+            await svc.IngestEventAsync(new IngestEventRequest(
+                Guid.NewGuid(), "DnB General", musicAndGeneralEvt, futureUtc,
+                new Dictionary<Category, IReadOnlyList<string>>
+                {
+                    { Category.Music, ["DnB"] },
+                    { Category.Ticket, ["General"] },
+                }));
+        }
+
+        await using var searchCtx = fixture.CreateContext();
+        var results = await BuildSearchService(searchCtx).SearchEventsAsync(
+            new EventSearchFilter(
+                QueryText: musicAndVipEvt,
+                UserContext: new Dictionary<Category, IReadOnlyList<string>>
+                {
+                    { Category.Music, ["DnB"] },
+                    { Category.Ticket, ["VIP"] },
+                },
+                TopK: 10));
+
+        var titles = results.Select(r => r.Title).ToList();
+        titles.Should().Contain("DnB Only");
+        titles.Should().Contain("DnB VIP");
+        titles.Should().NotContain("DnB General");
     }
 }

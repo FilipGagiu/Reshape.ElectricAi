@@ -24,7 +24,8 @@
       "Bash(dotnet add *)",
       "Bash(grep -v \"^$\")",
       "Bash(grep -E \"\\\\.\\(cs|txt\\)$\")",
-      "Bash(mkdir -p /Users/raresmeleanca/Work/Reshape/hackathon/Reshape.ElectricAi/.claude/plans)"
+      "Bash(mkdir -p /Users/raresmeleanca/Work/Reshape/hackathon/Reshape.ElectricAi/.claude/plans)",
+      "Bash(xargs ls -la)"
     ]
   }
 }
