@@ -9,9 +9,11 @@ public sealed class FakeOpenAiClient : IOpenAiClient
 {
     private readonly Queue<QueuedResponse> _responses = new();
     private readonly List<RecordedCall> _calls = new();
+    private readonly List<RecordedChatCall> _chatCalls = new();
 
     public int CallCount => _calls.Count;
     public IReadOnlyList<RecordedCall> Calls => _calls;
+    public IReadOnlyList<RecordedChatCall> ChatCalls => _chatCalls;
 
     public FakeOpenAiClient WithEnvelope(object envelope, LlmUsage? usage = null)
     {
@@ -85,6 +87,28 @@ public sealed class FakeOpenAiClient : IOpenAiClient
         return Task.FromResult(new LlmTextResult(queued.Text ?? string.Empty, queued.Usage));
     }
 
+    public Task<LlmTextResult> CompleteChatAsync(
+        IReadOnlyList<LlmChatMessage> messages,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        _chatCalls.Add(new RecordedChatCall([.. messages], model, maxCompletionTokens));
+        if (_responses.Count == 0)
+        {
+            throw new InvalidOperationException("FakeOpenAiClient has no queued response.");
+        }
+
+        var queued = _responses.Dequeue();
+        if (queued.Exception is not null)
+        {
+            throw queued.Exception;
+        }
+
+        return Task.FromResult(new LlmTextResult(queued.Text ?? string.Empty, queued.Usage));
+    }
+
     private sealed record QueuedResponse(string? Json, string? Text, Exception? Exception, LlmUsage Usage);
 }
 
@@ -94,3 +118,8 @@ public sealed record RecordedCall(
     string? Model,
     int? MaxCompletionTokens,
     double? Temperature);
+
+public sealed record RecordedChatCall(
+    IReadOnlyList<LlmChatMessage> Messages,
+    string? Model,
+    int? MaxCompletionTokens);

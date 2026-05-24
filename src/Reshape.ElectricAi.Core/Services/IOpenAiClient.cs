@@ -20,4 +20,10 @@ public interface IOpenAiClient
         string? model,
         int? maxCompletionTokens,
         CancellationToken cancellationToken);
+
+    Task<LlmTextResult> CompleteChatAsync(
+        IReadOnlyList<LlmChatMessage> messages,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken);
 }

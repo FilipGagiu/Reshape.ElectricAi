@@ -6,8 +6,10 @@ using Reshape.ElectricAi.Core.Services;
 
 namespace Reshape.ElectricAi.Plans.Tests.Integration.Fixtures;
 
-public sealed class ConversationApiFactory(PostgresFixture postgres) : WebApplicationFactory<Program>
+public sealed class ConversationsApiFactory(PostgresFixture postgres) : WebApplicationFactory<Program>
 {
+    public ConversationsFakeOpenAiClient OpenAi { get; } = new();
+
     protected override IHost CreateHost(IHostBuilder builder)
     {
         Environment.SetEnvironmentVariable("ConnectionStrings__Postgres", postgres.ConnectionString);
@@ -35,7 +37,7 @@ public sealed class ConversationApiFactory(PostgresFixture postgres) : WebApplic
                 d => d.ServiceType == typeof(IOpenAiClient));
             if (openAiDescriptor is not null)
                 services.Remove(openAiDescriptor);
-            services.AddSingleton<IOpenAiClient, ConversationFakeOpenAiClient>();
+            services.AddSingleton<IOpenAiClient>(OpenAi);
         });
     }
 }

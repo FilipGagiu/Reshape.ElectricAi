@@ -3,7 +3,7 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection;
-using Reshape.ElectricAi.Core.Dtos.Conversation;
+using Reshape.ElectricAi.Core.Dtos.Ask;
 using Reshape.ElectricAi.Core.Dtos.VectorSearch;
 using Reshape.ElectricAi.Core.Enums;
 using Reshape.ElectricAi.Core.Services;
@@ -12,19 +12,19 @@ using Reshape.ElectricAi.Plans.Tests.Integration.Fixtures;
 namespace Reshape.ElectricAi.Plans.Tests.Integration.Endpoints;
 
 [Collection(PostgresCollection.Name)]
-public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsyncLifetime
+public sealed class AskControllerTests(PostgresFixture postgres) : IAsyncLifetime
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
     {
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private ConversationApiFactory _factory = null!;
+    private AskApiFactory _factory = null!;
     private HttpClient _client = null!;
 
     public Task InitializeAsync()
     {
-        _factory = new ConversationApiFactory(postgres);
+        _factory = new AskApiFactory(postgres);
         _client = _factory.CreateClient();
         return Task.CompletedTask;
     }
@@ -38,9 +38,9 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
     [Fact]
     public async Task Ask_EmptyQuestionText_Returns400()
     {
-        var request = new ConversationRequest("");
+        var request = new AskRequest("");
 
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -48,9 +48,9 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
     [Fact]
     public async Task Ask_QuestionTextExceedsMaxLength_Returns400()
     {
-        var request = new ConversationRequest(new string('x', 501));
+        var request = new AskRequest(new string('x', 501));
 
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
     }
@@ -63,13 +63,13 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
             new IngestQARequest(questionText, [new IngestAnswerRequest("Gates open at 14:00.")]),
             JsonOptions);
 
-        var request = new ConversationRequest(questionText);
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var request = new AskRequest(questionText);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
-        result!.Answer.Should().Be(ConversationFakeOpenAiClient.FakeAnswer);
+        result!.Answer.Should().Be(AskFakeOpenAiClient.FakeAnswer);
     }
 
     [Fact]
@@ -77,11 +77,11 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
     {
         var uniqueQuery = $"zzz-unrelated-{Guid.NewGuid():N}-zzz";
 
-        var request = new ConversationRequest(uniqueQuery);
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var request = new AskRequest(uniqueQuery);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
         result!.Answer.Should().Contain("Chads and Stacies");
     }
@@ -96,16 +96,16 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                     { { Category.Music, ["Rock"] } }),
             JsonOptions);
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             questionText,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Music, ["Rock"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
-        result!.Answer.Should().Be(ConversationFakeOpenAiClient.FakeAnswer);
+        result!.Answer.Should().Be(AskFakeOpenAiClient.FakeAnswer);
     }
 
     [Fact]
@@ -118,14 +118,14 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                     { { Category.Music, ["Rock"] } }),
             JsonOptions);
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             questionText,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Music, ["DrumAndBass"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
         result!.Answer.Should().Contain("Chads and Stacies");
     }
@@ -140,13 +140,13 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                     { { Category.Transport, ["Shuttle"] } }),
             JsonOptions);
 
-        var request = new ConversationRequest(questionText, UserContext: null);
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var request = new AskRequest(questionText, UserContext: null);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
-        result!.Answer.Should().Be(ConversationFakeOpenAiClient.FakeAnswer);
+        result!.Answer.Should().Be(AskFakeOpenAiClient.FakeAnswer);
     }
 
     [Fact]
@@ -165,16 +165,16 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                 CancellationToken.None);
         }
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             docContent,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Music, ["Rock"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
-        result!.Answer.Should().Be(ConversationFakeOpenAiClient.FakeAnswer);
+        result!.Answer.Should().Be(AskFakeOpenAiClient.FakeAnswer);
     }
 
     [Fact]
@@ -193,14 +193,14 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                 CancellationToken.None);
         }
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             docContent,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Food, ["Carnivore"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
         result!.Answer.Should().Contain("Chads and Stacies");
     }
@@ -222,16 +222,16 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                 CancellationToken.None);
         }
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             textRep,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Music, ["Rock"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
-        result!.Answer.Should().Be(ConversationFakeOpenAiClient.FakeAnswer);
+        result!.Answer.Should().Be(AskFakeOpenAiClient.FakeAnswer);
     }
 
     [Fact]
@@ -251,14 +251,14 @@ public sealed class ConversationControllerTests(PostgresFixture postgres) : IAsy
                 CancellationToken.None);
         }
 
-        var request = new ConversationRequest(
+        var request = new AskRequest(
             textRep,
             UserContext: new Dictionary<Category, IReadOnlyList<string>>
                 { { Category.Food, ["Carnivore"] } });
-        var response = await _client.PostAsJsonAsync("/api/v1/conversation", request, JsonOptions);
+        var response = await _client.PostAsJsonAsync("/api/v1/ask", request, JsonOptions);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var result = await response.Content.ReadFromJsonAsync<ConversationResponse>(JsonOptions);
+        var result = await response.Content.ReadFromJsonAsync<AskResponse>(JsonOptions);
         result.Should().NotBeNull();
         result!.Answer.Should().Contain("Chads and Stacies");
     }

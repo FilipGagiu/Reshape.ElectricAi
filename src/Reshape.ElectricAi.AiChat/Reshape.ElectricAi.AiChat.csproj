@@ -7,6 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <WarningsNotAsErrors>CS1591</WarningsNotAsErrors>
+    <!-- CA1825/CA1861 emitted only inside EF-generated Migrations/ files; silenced via NoWarn rather than promoted-to-warning to keep our hand-written source clean. -->
+    <NoWarn>$(NoWarn);CA1825;CA1861</NoWarn>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
