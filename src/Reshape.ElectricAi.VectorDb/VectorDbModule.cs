@@ -51,6 +51,10 @@ public static class VectorDbModule
         services.AddSingleton<SeedJobChannel>();
         services.AddHostedService<SeedBackgroundService>();
 
+        services.AddScoped<GenreBackfillService>();
+        services.AddSingleton<GenreBackfillJobChannel>();
+        services.AddHostedService<GenreBackfillBackgroundService>();
+
         RegisterValidators(services);
 
         return services;
