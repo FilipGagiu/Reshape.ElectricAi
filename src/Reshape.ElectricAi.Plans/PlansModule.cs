@@ -54,6 +54,12 @@ public static class PlansModule
         services.AddScoped<IPreferencesService, PreferencesService>();
         services.AddScoped<IGroupService, GroupService>();
 
+        // Bridge from Plans `UserPreferences` -> LiveFeed targeting prefs. Registered as
+        // AddScoped (not TryAdd) so this concrete provider wins over LiveFeed's fallback
+        // `EmptyUserPrefsProvider` which uses TryAdd. PlansModule runs before LiveFeedModule
+        // in Program.cs, so LiveFeed's TryAdd no-ops on top of this registration.
+        services.AddScoped<IUserPrefsProvider, PlansUserPrefsProvider>();
+
         var pushOptions = BuildPushOptions(configuration);
         services.AddSingleton(pushOptions);
         services.AddSingleton<IOptions<PushOptions>>(Options.Create(pushOptions));
