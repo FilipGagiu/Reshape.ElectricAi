@@ -80,8 +80,8 @@ export class QuestionsChatComponent {
         this.closeHotQuestion();
     }
 
-    protected async onStickyInputSend(text: string): Promise<void> {
-        const newConversationId = await this.questionsService.startNewConversation(text);
+    protected onStickyInputSend(text: string): void {
+        const newConversationId = this.questionsService.startNewConversation(text);
         if (newConversationId) {
             this.activeConversationId.set(newConversationId);
         }

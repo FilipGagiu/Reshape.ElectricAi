@@ -3,6 +3,27 @@
         <router-outlet></router-outlet>
     </main>
 
+    @if (moreOpen()) {
+        <div
+            class="more-backdrop fixed inset-0"
+            (click)="closeMore()"
+            aria-hidden="true"
+        ></div>
+        <div class="more-popover bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 fixed overflow-hidden border" role="menu">
+            @for (item of moreItems; track item.labelKey) {
+                <button
+                    type="button"
+                    class="more-popover__item text-surface-700 dark:text-surface-200 flex w-full items-center gap-3"
+                    role="menuitem"
+                    (click)="runMoreItem(item)"
+                >
+                    <i class="pi {{ item.icon }} text-lg leading-none"></i>
+                    <span class="text-sm font-medium">{{ item.labelKey | transloco }}</span>
+                </button>
+            }
+        </div>
+    }
+
     <nav
         class="bottom-nav bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-stretch border-t"
     >
@@ -17,5 +38,16 @@
                 <span class="text-xs leading-none font-medium">{{ item.labelKey | transloco }}</span>
             </a>
         }
+        <button
+            type="button"
+            class="text-surface-500 dark:text-surface-400 flex flex-1 cursor-pointer flex-col items-center justify-center gap-1 transition-colors"
+            [class.!text-primary-500]="moreOpen()"
+            (click)="toggleMore()"
+            [attr.aria-expanded]="moreOpen()"
+            [attr.aria-label]="'nav.more' | transloco"
+        >
+            <i class="pi pi-ellipsis-h text-xl! leading-none!"></i>
+            <span class="text-xs leading-none font-medium">{{ 'nav.more' | transloco }}</span>
+        </button>
     </nav>
 </div>

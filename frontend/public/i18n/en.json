@@ -2,7 +2,29 @@
     "nav": {
         "liveFeed": "Live feed",
         "questions": "Questions",
-        "plan": "My EC plan"
+        "plan": "My EC plan",
+        "more": "More"
+    },
+    "more": {
+        "faq": "FAQ",
+        "settings": "App settings",
+        "logout": "Sign out"
+    },
+    "faq": {
+        "title": "FAQ",
+        "subtitle": "Answers from Electric Castle"
+    },
+    "settings": {
+        "title": "App settings",
+        "subtitle": "Notifications and privacy",
+        "push": {
+            "label": "Push notifications",
+            "hint": "Get organizer updates pushed to your device."
+        },
+        "privacy": {
+            "label": "Privacy policy",
+            "hint": "Read what we collect and why."
+        }
     },
     "liveFeed": {
         "title": "Live feed",

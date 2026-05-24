@@ -1,0 +1,32 @@
+<app-ec-topbar titleKey="settings.title" subtitleKey="settings.subtitle" />
+
+<section class="ec-settings" *transloco="let t">
+    <div class="ec-settings__row">
+        <div class="ec-settings__row-text">
+            <span class="ec-settings__row-label">{{ t('settings.push.label') }}</span>
+            <span class="ec-settings__row-hint">{{ t('settings.push.hint') }}</span>
+        </div>
+        <button
+            type="button"
+            class="ec-settings__toggle"
+            [class.ec-settings__toggle--on]="pushEnabled()"
+            [attr.aria-pressed]="pushEnabled()"
+            [attr.aria-label]="t('settings.push.label')"
+            (click)="togglePush()"
+        >
+            <span class="ec-settings__toggle-knob" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <button
+        type="button"
+        class="ec-settings__row ec-settings__row--link"
+        (click)="openPrivacy()"
+    >
+        <div class="ec-settings__row-text">
+            <span class="ec-settings__row-label">{{ t('settings.privacy.label') }}</span>
+            <span class="ec-settings__row-hint">{{ t('settings.privacy.hint') }}</span>
+        </div>
+        <i class="pi pi-chevron-right ec-settings__row-chevron" aria-hidden="true"></i>
+    </button>
+</section>
