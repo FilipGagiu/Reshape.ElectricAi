@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
-import { AuthError, AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@shared/services/auth.service';
 
 interface LoginFormControls {
     email: FormControl<string>;
@@ -48,7 +48,7 @@ export class LoginComponent {
         }),
     });
 
-    protected submit(): void {
+    protected async submit(): Promise<void> {
         if (this.form.invalid || this.submitting()) {
             this.form.markAllAsTouched();
             return;
@@ -58,15 +58,16 @@ export class LoginComponent {
         this.errorKey.set(null);
 
         const { email, password } = this.form.getRawValue();
-        const result = this.authService.login(email, password);
+        const result = await this.authService.login(email, password);
 
-        if (result === AuthError.InvalidCredentials || result === AuthError.EmailTaken) {
+        if (typeof result === 'string') {
             this.errorKey.set(result);
             this.submitting.set(false);
             return;
         }
 
-        this.router.navigateByUrl('/');
+        this.submitting.set(false);
+        void this.router.navigateByUrl('/');
     }
 
     protected bypass(): void {

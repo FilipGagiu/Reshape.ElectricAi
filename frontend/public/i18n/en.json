@@ -350,7 +350,8 @@
             "passwordTooShort": "Min. {{length}} characters.",
             "passwordsMismatch": "Passwords don't match.",
             "emailTaken": "That email's already in use.",
-            "invalidCredentials": "Wrong email or password."
+            "invalidCredentials": "Wrong email or password.",
+            "network": "Connection lost. Try again."
         },
         "logout": {
             "label": "Sign out",

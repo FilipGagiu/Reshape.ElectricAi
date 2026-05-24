@@ -15,7 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
-import { AuthError, AuthService } from '@shared/services/auth.service';
+import { AuthService } from '@shared/services/auth.service';
 
 interface RegisterFormControls {
     email: FormControl<string>;
@@ -72,7 +72,7 @@ export class RegisterComponent {
         { validators: passwordsMatchValidator },
     );
 
-    protected submit(): void {
+    protected async submit(): Promise<void> {
         if (this.form.invalid || this.submitting()) {
             this.form.markAllAsTouched();
             return;
@@ -82,14 +82,15 @@ export class RegisterComponent {
         this.errorKey.set(null);
 
         const { email, password } = this.form.getRawValue();
-        const result = this.authService.register(email, password);
+        const result = await this.authService.register(email, password);
 
-        if (result === AuthError.EmailTaken || result === AuthError.InvalidCredentials) {
+        if (typeof result === 'string') {
             this.errorKey.set(result);
             this.submitting.set(false);
             return;
         }
 
-        this.router.navigateByUrl('/');
+        this.submitting.set(false);
+        void this.router.navigateByUrl('/');
     }
 }
