@@ -10,6 +10,7 @@ import {
     ConversationListItemDto,
     CreateConversationRequest,
     CreateConversationResponse,
+    HotQuestionDto,
 } from './dto/conversations.dto';
 
 @Injectable({ providedIn: 'root' })
@@ -20,6 +21,12 @@ export class ConversationsApi {
     list(): Observable<ReadonlyArray<ConversationListItemDto>> {
         return this.http.get<ReadonlyArray<ConversationListItemDto>>(
             apiUrl(this.baseUrl, '/conversations'),
+        );
+    }
+
+    hotQuestions(): Observable<ReadonlyArray<HotQuestionDto>> {
+        return this.http.get<ReadonlyArray<HotQuestionDto>>(
+            apiUrl(this.baseUrl, '/conversations/hot-questions'),
         );
     }
 

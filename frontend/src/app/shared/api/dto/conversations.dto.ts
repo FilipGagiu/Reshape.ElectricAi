@@ -44,3 +44,10 @@ export interface ContinueConversationRequest {
 export interface ContinueConversationResponse {
     readonly reply: ConversationReplyDto;
 }
+
+export interface HotQuestionDto {
+    readonly question: string;
+    readonly count: number;
+    /** Canned answer surfaced alongside the question — pre-computed, no LLM call needed. */
+    readonly answer: string;
+}

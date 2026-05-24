@@ -6,16 +6,14 @@ import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.compon
 import { ChatInputComponent } from './chat-input.component';
 import { ConversationModalComponent } from './conversation-modal.component';
 import { HotQuestionCardComponent } from './hot-question-card.component';
-import { HotQuestionModalComponent } from './hot-question-modal.component';
 import { Conversation, HotQuestion } from './models/question.model';
 import { PastConversationRowComponent } from './past-conversation-row.component';
 import { QuestionsService } from './services/questions.service';
 
 /**
  * Questions page: top hot questions, middle past conversations, sticky chat
- * input at the bottom. Modals rendered at page level via signal toggles.
- *
- * Plan: .claude/plans/in-the-folder-frontend-fluttering-sunbeam.md
+ * input at the bottom. Hot-question tap = start a new conversation with the
+ * question text. Conversation modal rendered at page level via signal toggle.
  */
 @Component({
     selector: 'app-questions-chat',
@@ -25,7 +23,6 @@ import { QuestionsService } from './services/questions.service';
         HotQuestionCardComponent,
         PastConversationRowComponent,
         ChatInputComponent,
-        HotQuestionModalComponent,
         ConversationModalComponent,
     ],
     templateUrl: './questions-chat.component.html',
@@ -40,14 +37,7 @@ export class QuestionsChatComponent {
     protected readonly hotQuestionsState = this.questionsService.hotQuestionsState;
     protected readonly conversationsState = this.questionsService.conversationsState;
 
-    private readonly activeHotQuestionId = signal<string | null>(null);
     private readonly activeConversationId = signal<string | null>(null);
-
-    protected readonly activeHotQuestion = computed<HotQuestion | null>(() => {
-        const id = this.activeHotQuestionId();
-        if (!id) return null;
-        return this.hotQuestions().find((q) => q.id === id) ?? null;
-    });
 
     protected readonly activeConversation = computed<Conversation | null>(() => {
         const id = this.activeConversationId();
@@ -55,15 +45,24 @@ export class QuestionsChatComponent {
         return this.conversations().find((c) => c.id === id) ?? null;
     });
 
-    protected readonly hotModalOpen = computed(() => this.activeHotQuestion() !== null);
     protected readonly conversationModalOpen = computed(() => this.activeConversation() !== null);
 
-    protected openHotQuestion(question: HotQuestion): void {
-        this.activeHotQuestionId.set(question.id);
-    }
-
-    protected closeHotQuestion(): void {
-        this.activeHotQuestionId.set(null);
+    protected async openHotQuestion(question: HotQuestion): Promise<void> {
+        // If the user already started a conversation with this exact question,
+        // re-open it instead of spawning a duplicate. Match is on the first
+        // user message of past conversations (BE preserves it verbatim), not
+        // the BE-generated title.
+        const existingId = await this.questionsService.findConversationByFirstMessage(
+            question.text,
+        );
+        if (existingId) {
+            this.activeConversationId.set(existingId);
+            return;
+        }
+        // Seed a local-only conversation with the canned Q+A — no BE call.
+        // The conversation persists on BE only once the user sends a follow-up.
+        const localId = this.questionsService.startHotQuestionConversation(question);
+        this.activeConversationId.set(localId);
     }
 
     protected openConversation(conversation: Conversation): void {
@@ -74,13 +73,11 @@ export class QuestionsChatComponent {
         this.activeConversationId.set(null);
     }
 
-    protected onAskFollowUp(_question: HotQuestion): void {
-        // Close the modal. The sticky input is already visible at the bottom of
-        // the page; the user picks up there. Prefill is intentionally out of v1.
-        this.closeHotQuestion();
+    protected onStickyInputSend(text: string): void {
+        this.startConversation(text);
     }
 
-    protected onStickyInputSend(text: string): void {
+    private startConversation(text: string): void {
         const newConversationId = this.questionsService.startNewConversation(text);
         if (newConversationId) {
             this.activeConversationId.set(newConversationId);

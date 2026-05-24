@@ -66,13 +66,6 @@
     <app-chat-input variant="sticky" (send)="onStickyInputSend($event)" />
 </div>
 
-<app-hot-question-modal
-    [question]="activeHotQuestion()"
-    [open]="hotModalOpen()"
-    (close)="closeHotQuestion()"
-    (askFollowUp)="onAskFollowUp($event)"
-/>
-
 <app-conversation-modal
     [conversation]="activeConversation()"
     [open]="conversationModalOpen()"
