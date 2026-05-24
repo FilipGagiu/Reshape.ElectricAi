@@ -161,6 +161,31 @@
             </section>
         }
 
+        @if (topArtists().length) {
+            <article class="ec-plan-results__dont-miss">
+                <span class="ec-plan-results__dont-miss-eyebrow">
+                    {{ 'plan.results.sections.artists.title' | transloco }}
+                </span>
+                <ul class="ec-plan-results__dont-miss-list">
+                    @for (row of topArtists(); track row.rank) {
+                        <li class="ec-plan-results__dont-miss-row">
+                            <span class="ec-plan-results__dont-miss-rank" aria-hidden="true">{{ row.rank }}</span>
+                            <span class="ec-plan-results__dont-miss-avatar">
+                                <img
+                                    class="ec-plan-results__dont-miss-img"
+                                    [src]="row.imagePath"
+                                    [alt]="row.name"
+                                    loading="lazy"
+                                    (error)="onArtistImgError($event)"
+                                />
+                            </span>
+                            <span class="ec-plan-results__dont-miss-name">{{ row.name }}</span>
+                        </li>
+                    }
+                </ul>
+            </article>
+        }
+
         @for (section of renderedBodySections(); track $index) {
             @switch (section.kind) {
                 @case ('transport') {
@@ -245,42 +270,6 @@
                                     <span class="ec-plan-results__chip ec-plan-results__chip--ghost">{{ tag }}</span>
                                 }
                             </div>
-                        }
-                    </article>
-                }
-
-                @case ('topArtists') {
-                    <article class="ec-plan-results__section">
-                        <h2 class="ec-plan-results__section-title">
-                            {{ 'plan.results.sections.artists.title' | transloco }}
-                        </h2>
-                        @if (section.days.length) {
-                            @for (day of section.days; track day.date) {
-                                <section class="ec-plan-results__day">
-                                    <h3 class="ec-plan-results__day-heading">{{ day.heading }}</h3>
-                                    <ul class="ec-plan-results__picks">
-                                        @for (item of day.items; track item.id) {
-                                            <li class="ec-plan-results__pick">
-                                                <h4 class="ec-plan-results__pick-title">{{ item.title }}</h4>
-                                                @if (item.time) {
-                                                    <p class="ec-plan-results__pick-meta">{{ item.time }}</p>
-                                                }
-                                            </li>
-                                        }
-                                    </ul>
-                                </section>
-                            }
-                        } @else if (section.overall.length) {
-                            <ul class="ec-plan-results__picks">
-                                @for (item of section.overall; track item.id) {
-                                    <li class="ec-plan-results__pick">
-                                        <h3 class="ec-plan-results__pick-title">{{ item.title }}</h3>
-                                        @if (item.time) {
-                                            <p class="ec-plan-results__pick-meta">{{ item.time }}</p>
-                                        }
-                                    </li>
-                                }
-                            </ul>
                         }
                     </article>
                 }

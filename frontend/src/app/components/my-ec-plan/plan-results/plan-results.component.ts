@@ -18,13 +18,19 @@ import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
 import { ItineraryApi } from '@shared/api/itinerary-api';
 import { ItineraryStore } from '@shared/api/itinerary-store';
+import { TopArtistsApi } from '@shared/api/top-artists-api';
 import {
     GreetingSectionData,
     ItineraryResponse,
     ItinerarySectionDto,
     RetrievedItem,
 } from '@shared/api/dto/itinerary.dto';
+import { TopArtistRow } from '@shared/api/dto/top-artists.dto';
 import { PreferencesDto } from '@shared/api/dto/preferences.dto';
+import {
+    PLACEHOLDER_ARTIST_IMAGE,
+    resolveArtistImageByName,
+} from '@shared/api/artists';
 import { AuthService } from '@shared/services/auth.service';
 import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
@@ -37,7 +43,6 @@ import {
     ParsedSection,
     cleanSnippet,
     cleanTitle,
-    formatDayHeading,
     formatEventTime,
     parseSection,
 } from './parse-section';
@@ -47,12 +52,6 @@ interface RenderItem {
     readonly title: string;
     readonly snippet: string;
     readonly time: string;
-}
-
-interface RenderDay {
-    readonly date: string;
-    readonly heading: string;
-    readonly items: ReadonlyArray<RenderItem>;
 }
 
 type RenderedSection =
@@ -72,11 +71,6 @@ type RenderedSection =
           readonly restrictions: ReadonlyArray<string>;
           readonly items: ReadonlyArray<RenderItem>;
           readonly cuisines: ReadonlyArray<string>;
-      }
-    | {
-          readonly kind: 'topArtists';
-          readonly days: ReadonlyArray<RenderDay>;
-          readonly overall: ReadonlyArray<RenderItem>;
       }
     | {
           readonly kind: 'accommodation';
@@ -102,6 +96,7 @@ interface HeroSnapshot {
 export class PlanResultsComponent {
     private readonly store = inject(ItineraryStore);
     private readonly itineraryApi = inject(ItineraryApi);
+    private readonly topArtistsApi = inject(TopArtistsApi);
     private readonly destroyRef = inject(DestroyRef);
     private readonly router = inject(Router);
     private readonly route = inject(ActivatedRoute);
@@ -139,8 +134,23 @@ export class PlanResultsComponent {
     protected readonly sections: Signal<ReadonlyArray<ItinerarySectionDto>> = computed(
         () => this.currentResponse()?.itinerary.sections ?? [],
     );
+    private readonly topArtistsFromApi = signal<ReadonlyArray<TopArtistRow>>([]);
+    private readonly topArtistsFromItinerary = computed<ReadonlyArray<TopArtistRow>>(() => {
+        const section = this.parsedSections().find(
+            (entry): entry is Extract<ParsedSection, { kind: 'topArtists' }> =>
+                entry.kind === 'topArtists',
+        );
+        const names = (section?.data.topOverall ?? []).map((item) => cleanTitle(item.title));
+        return this.toTopArtistRows(names);
+    });
+    protected readonly topArtists = computed<ReadonlyArray<TopArtistRow>>(() =>
+        this.auth.isAuthenticated() ? this.topArtistsFromApi() : this.topArtistsFromItinerary(),
+    );
+    private readonly topArtistNames = computed<ReadonlyArray<string>>(() =>
+        this.topArtists().map((row) => row.name),
+    );
     protected readonly storyPlanData = computed<PlanData | null>(() =>
-        itineraryToPlanData(this.currentResponse()),
+        itineraryToPlanData(this.currentResponse(), this.topArtistNames()),
     );
     protected readonly notFound = computed(
         () => this.readOnly() && this.sharedNotFound() && !this.sharedResponse(),
@@ -193,7 +203,14 @@ export class PlanResultsComponent {
             const uuid = this.planUuid();
             this.refreshing.set(true);
             this.refreshFailed.set(false);
-            if (uuid) this.sharedNotFound.set(false);
+            if (uuid) {
+                this.sharedNotFound.set(false);
+                this.topArtistsFromApi.set([]);
+            } else if (this.auth.isAuthenticated()) {
+                this.loadTopArtists();
+            } else {
+                this.topArtistsFromApi.set([]);
+            }
             const source$ = uuid
                 ? this.itineraryApi.getById(uuid)
                 : this.itineraryApi.getCurrent();
@@ -232,17 +249,22 @@ export class PlanResultsComponent {
         }));
     }
 
-    private mapDays(
-        days: ReadonlyArray<{ readonly date: string; readonly artists: ReadonlyArray<RetrievedItem> }>,
-        locale: string,
-    ): ReadonlyArray<RenderDay> {
-        return days
-            .filter((day) => day.artists.length > 0)
-            .map((day) => ({
-                date: day.date,
-                heading: formatDayHeading(day.date, locale),
-                items: this.mapItems(day.artists, locale),
-            }));
+    private loadTopArtists(): void {
+        this.topArtistsApi
+            .getTopArtists()
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe({
+                next: (artists) => this.topArtistsFromApi.set(this.toTopArtistRows(artists)),
+                error: () => this.topArtistsFromApi.set([]),
+            });
+    }
+
+    private toTopArtistRows(names: ReadonlyArray<string>): ReadonlyArray<TopArtistRow> {
+        return names.slice(0, 5).map((name, index) => ({
+            rank: index + 1,
+            name,
+            imagePath: resolveArtistImageByName(name),
+        }));
     }
 
     private toRenderedSection(section: ParsedSection, locale: string): RenderedSection | null {
@@ -270,11 +292,7 @@ export class PlanResultsComponent {
                     cuisines: (section.data.preferredCuisines ?? []).slice(0, 5),
                 };
             case 'topArtists':
-                return {
-                    kind: 'topArtists',
-                    days: this.mapDays(section.data.byDay ?? [], locale),
-                    overall: this.mapItems(section.data.topOverall ?? [], locale),
-                };
+                return null;
             case 'accommodation': {
                 const isEmpty = !section.data.type && !section.data.note;
                 return {
@@ -286,6 +304,13 @@ export class PlanResultsComponent {
             }
             default:
                 return null;
+        }
+    }
+
+    protected onArtistImgError(event: Event): void {
+        const target = event.target;
+        if (target instanceof HTMLImageElement && target.src !== PLACEHOLDER_ARTIST_IMAGE) {
+            target.src = PLACEHOLDER_ARTIST_IMAGE;
         }
     }
 

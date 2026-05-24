@@ -31,16 +31,23 @@ const ACCOMMODATION_MAP: Partial<Record<Accommodation, AccommodationKind>> = {
     Glamping: 'festivalCamping',
 };
 
-export function itineraryToPlanData(response: ItineraryResponse | null): PlanData | null {
+export function itineraryToPlanData(
+    response: ItineraryResponse | null,
+    topArtistNames?: ReadonlyArray<string>,
+): PlanData | null {
     if (!response?.preferences) return null;
 
     const prefs = response.preferences;
     const name = prefs.name?.trim() || DEFAULT_NAME;
     const transportMode = prefs.suggestedTransport?.mode;
     const accommodationType = prefs.suggestedAccommodation?.type;
-    const cleanedArtists = (prefs.mustSeeArtists ?? []).filter(
+    const cleanedTopArtists = (topArtistNames ?? []).filter(
         (entry): entry is string => !!entry?.trim(),
     );
+    const cleanedMustSee = (prefs.mustSeeArtists ?? []).filter(
+        (entry): entry is string => !!entry?.trim(),
+    );
+    const musicArtists = cleanedTopArtists.length ? cleanedTopArtists : cleanedMustSee;
     const cleanedVibes = (prefs.vibeTags ?? []).filter(
         (entry): entry is string => !!entry?.trim(),
     );
@@ -62,7 +69,7 @@ export function itineraryToPlanData(response: ItineraryResponse | null): PlanDat
         },
         {
             type: 'music',
-            artists: cleanedArtists,
+            artists: musicArtists,
             genres: prefs.musicGenres ?? [],
         },
         {
