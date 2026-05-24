@@ -26,9 +26,56 @@
             "hint": "Vezi ce colectăm și de ce."
         }
     },
+    "admin": {
+        "title": "Admin",
+        "subtitle": "Unelte demo pentru organizator",
+        "publish": {
+            "heading": "Publică un eveniment pe feed",
+            "hint": "Apare instant tuturor participanților care se potrivesc preferințelor.",
+            "title": {
+                "label": "Titlu",
+                "placeholder": "Titlu scurt (max 200 caractere)",
+                "error": "Titlul este obligatoriu."
+            },
+            "body": {
+                "label": "Conținut",
+                "placeholder": "Ce se întâmplă, unde, când. Scurt și la obiect.",
+                "error": "Conținutul este obligatoriu."
+            },
+            "category": {
+                "label": "Categorie"
+            },
+            "isGeneral": {
+                "label": "Trimite tuturor",
+                "hint": "Oprește dacă vrei să țintești artiști sau genuri specifice."
+            },
+            "targetArtists": {
+                "label": "Artiști vizați",
+                "placeholder": "Separați prin virgulă. ex: Apashe, FKA twigs",
+                "hint": "Până la 25. Duplicatele se ignoră."
+            },
+            "targetGenres": {
+                "label": "Genuri vizate",
+                "placeholder": "Alege genuri",
+                "filterPlaceholder": "Caută genuri...",
+                "emptyFilter": "Niciun gen găsit."
+            },
+            "submit": "Publică evenimentul",
+            "submitting": "Se publică...",
+            "success": "Evenimentul a fost publicat. E live pe feed.",
+            "error": {
+                "noTargeting": "Alege cel puțin un artist sau un gen, sau activează butonul „Trimite tuturor”."
+            }
+        }
+    },
     "liveFeed": {
         "title": "Feed live",
         "subtitle": "Bonțida · Electric Castle",
+        "publish": {
+            "openLabel": "Eveniment nou",
+            "openAria": "Publică un eveniment nou pe feed",
+            "modalTitle": "Eveniment nou pe feed"
+        },
         "status": {
             "live": "LIVE",
             "offline": "OFFLINE",

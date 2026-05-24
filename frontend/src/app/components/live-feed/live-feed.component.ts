@@ -10,6 +10,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
+import { EcModalComponent } from '@shared/components/ec-modal/ec-modal.component';
+import { TokenStore } from '@shared/api/token-store';
+
+import { PublishFeedFormComponent } from '@components/admin/publish-feed-form.component';
+import { FeedEntryDto } from '@shared/api/dto/feed.dto';
 
 import {
     CATEGORY_META,
@@ -62,7 +67,7 @@ const TICK_INTERVAL_MS = 30_000;
     selector: 'app-live-feed',
     templateUrl: './live-feed.component.html',
     styleUrl: './live-feed.component.css',
-    imports: [TranslocoModule, EcTopbarComponent],
+    imports: [TranslocoModule, EcTopbarComponent, EcModalComponent, PublishFeedFormComponent],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveFeedComponent {
@@ -75,6 +80,14 @@ export class LiveFeedComponent {
     private readonly feedService = inject(LiveFeedService);
     private readonly transloco = inject(TranslocoService);
     private readonly destroyRef = inject(DestroyRef);
+    private readonly tokens = inject(TokenStore);
+
+    protected readonly canPublish = computed(() => {
+        const user = this.tokens.user();
+        const result = user?.role === 'Organizer';
+        console.warn('[live-feed][canPublish]', { user, role: user?.role, canPublish: result });
+        return result;
+    });
 
     private readonly tick = signal(new Date());
     private readonly activeLang = toSignal(this.transloco.langChanges$, {
@@ -84,6 +97,24 @@ export class LiveFeedComponent {
     protected readonly selectedFilter = signal<FeedFilter>(FeedFilter.All);
     protected readonly expandedIds = signal<ReadonlySet<string>>(new Set());
     protected readonly isOnline = signal(true);
+    protected readonly publishOpen = signal(false);
+
+    protected openPublish(): void {
+        console.warn('[live-feed][openPublish] CLICKED — before:', this.publishOpen());
+        this.publishOpen.set(true);
+        console.warn('[live-feed][openPublish] AFTER set(true):', this.publishOpen());
+    }
+
+    protected closePublish(): void {
+        console.warn('[live-feed][closePublish]');
+        this.publishOpen.set(false);
+    }
+
+    protected onPublished(entry: FeedEntryDto): void {
+        console.warn('[live-feed][onPublished]', entry);
+        this.feedService.upsertEntry(entry);
+        this.publishOpen.set(false);
+    }
 
     protected readonly items = computed<ReadonlyArray<FeedItemViewModel>>(() => {
         // Subscribe to active language so all derived strings re-translate on EN ↔ RO switch.
@@ -91,7 +122,13 @@ export class LiveFeedComponent {
         const now = this.tick();
         const expanded = this.expandedIds();
         return this.feedService.feed().map((entry) => {
-            const meta = CATEGORY_META[entry.category];
+            const meta = CATEGORY_META[entry.category] ?? CATEGORY_META[FeedCategory.General];
+            if (!CATEGORY_META[entry.category]) {
+                console.warn('[live-feed] unknown category, falling back to General', {
+                    id: entry.id,
+                    category: entry.category,
+                });
+            }
             return {
                 entry,
                 meta,
@@ -166,6 +203,7 @@ export class LiveFeedComponent {
     });
 
     constructor() {
+        console.warn('[live-feed] component constructed; user at construct:', this.tokens.user());
         const handle = setInterval(() => this.tick.set(new Date()), TICK_INTERVAL_MS);
         this.destroyRef.onDestroy(() => clearInterval(handle));
     }

@@ -27,7 +27,7 @@
     <nav
         class="bottom-nav bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-stretch border-t"
     >
-        @for (item of navItems; track item.route) {
+        @for (item of navItems(); track item.route) {
             <a
                 [routerLink]="item.route"
                 routerLinkActive="!text-primary-500"

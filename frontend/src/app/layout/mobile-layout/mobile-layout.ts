@@ -1,6 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslocoModule } from '@jsverse/transloco';
+import { filter, map, startWith } from 'rxjs';
 
 import { AuthService } from '@shared/services/auth.service';
 
@@ -16,6 +18,12 @@ type MoreMenuItem = {
     action: () => void;
 };
 
+const ALL_NAV_ITEMS: ReadonlyArray<BottomNavItem> = [
+    { icon: 'pi-bolt', labelKey: 'nav.liveFeed', route: '/' },
+    { icon: 'pi-comments', labelKey: 'nav.questions', route: '/questions' },
+    { icon: 'pi-list-check', labelKey: 'nav.plan', route: '/plan' },
+];
+
 @Component({
     selector: 'app-mobile-layout',
     imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoModule],
@@ -27,11 +35,27 @@ export class MobileLayoutComponent {
     private readonly router = inject(Router);
     private readonly authService = inject(AuthService);
 
-    protected readonly navItems: ReadonlyArray<BottomNavItem> = [
-        { icon: 'pi-bolt', labelKey: 'nav.liveFeed', route: '/' },
-        { icon: 'pi-comments', labelKey: 'nav.questions', route: '/questions' },
-        { icon: 'pi-list-check', labelKey: 'nav.plan', route: '/plan' },
-    ];
+    constructor() {
+        // Refresh the cached user profile (and role) from BE on every authed-layout
+        // mount so role changes made server-side propagate without a full re-login.
+        void this.authService.refreshProfile();
+    }
+
+    private readonly currentUrl = toSignal(
+        this.router.events.pipe(
+            filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+            map((event) => event.urlAfterRedirects),
+            startWith(this.router.url),
+        ),
+        { initialValue: this.router.url },
+    );
+
+    protected readonly navItems = computed<ReadonlyArray<BottomNavItem>>(() => {
+        const onAdmin = this.currentUrl().startsWith('/admin');
+        return onAdmin
+            ? ALL_NAV_ITEMS.filter((item) => item.route !== '/plan')
+            : ALL_NAV_ITEMS;
+    });
 
     protected readonly moreOpen = signal(false);
 

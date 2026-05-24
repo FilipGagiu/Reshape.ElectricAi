@@ -130,6 +130,18 @@ export class LiveFeedService {
     readonly isUsingMock = this.isUsingMockSignal.asReadonly();
     readonly isConnected = computed(() => !this.isUsingMockSignal() && this.eventSource !== null);
 
+    /**
+     * Insert (or replace) a freshly-published entry. Used to optimistically reflect
+     * a successful POST /feed before the SSE broadcast lands. The SSE handler dedupes
+     * by id, so any later replay is a no-op.
+     */
+    upsertEntry(dto: FeedEntryDto): void {
+        const entry = toFeedEntry(dto);
+        this.entriesSignal.update((current) =>
+            [entry, ...current.filter((item) => item.id !== entry.id)].sort(byPublishedDesc),
+        );
+    }
+
     constructor() {
         // React to session changes: load fresh on login, switch to mock on bypass, clear on logout.
         effect(() => {

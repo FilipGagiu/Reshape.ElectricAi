@@ -4,6 +4,16 @@ import { Observable } from 'rxjs';
 
 import { API_BASE_URL, apiUrl } from './api-config';
 import { Category, FeedEntryDto } from './dto/feed.dto';
+import { MusicGenre } from './dto/preferences.dto';
+
+export interface PublishFeedEntryRequest {
+    readonly title: string;
+    readonly body: string;
+    readonly primaryCategory: Category;
+    readonly isGeneral: boolean;
+    readonly targetArtists: ReadonlyArray<string>;
+    readonly targetGenres: ReadonlyArray<MusicGenre>;
+}
 
 @Injectable({ providedIn: 'root' })
 export class FeedApi {
@@ -16,6 +26,10 @@ export class FeedApi {
             apiUrl(this.baseUrl, '/feed'),
             params ? { params } : {},
         );
+    }
+
+    publish(payload: PublishFeedEntryRequest): Observable<FeedEntryDto> {
+        return this.http.post<FeedEntryDto>(apiUrl(this.baseUrl, '/feed'), payload);
     }
 
     streamUrl(userId: string | null): string {

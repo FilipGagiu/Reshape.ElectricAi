@@ -26,9 +26,56 @@
             "hint": "Read what we collect and why."
         }
     },
+    "admin": {
+        "title": "Admin",
+        "subtitle": "Demo organizer tools",
+        "publish": {
+            "heading": "Publish a feed event",
+            "hint": "Goes live to every attendee whose preferences match.",
+            "title": {
+                "label": "Title",
+                "placeholder": "Short headline (max 200 chars)",
+                "error": "Title is required."
+            },
+            "body": {
+                "label": "Body",
+                "placeholder": "What's happening, where, when. Keep it scannable.",
+                "error": "Body is required."
+            },
+            "category": {
+                "label": "Category"
+            },
+            "isGeneral": {
+                "label": "Broadcast to everyone",
+                "hint": "Off lets you target specific artists or genres below."
+            },
+            "targetArtists": {
+                "label": "Target artists",
+                "placeholder": "Comma separated. e.g. Apashe, FKA twigs",
+                "hint": "Up to 25. Case-insensitive dedupe."
+            },
+            "targetGenres": {
+                "label": "Target genres",
+                "placeholder": "Pick genres",
+                "filterPlaceholder": "Search genres...",
+                "emptyFilter": "No genres match."
+            },
+            "submit": "Publish event",
+            "submitting": "Publishing...",
+            "success": "Event published. It's live on the feed now.",
+            "error": {
+                "noTargeting": "Pick at least one artist or genre, or flip the broadcast toggle on."
+            }
+        }
+    },
     "liveFeed": {
         "title": "Live feed",
         "subtitle": "Bonțida · Electric Castle",
+        "publish": {
+            "openLabel": "New event",
+            "openAria": "Publish a new feed event",
+            "modalTitle": "New feed event"
+        },
         "status": {
             "live": "LIVE",
             "offline": "OFFLINE",

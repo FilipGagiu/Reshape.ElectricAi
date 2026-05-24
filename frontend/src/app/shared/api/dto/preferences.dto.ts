@@ -1,31 +1,26 @@
-export type MusicGenre =
-    | 'HipHop' | 'House' | 'Balkan' | 'Rock' | 'Folk'
-    | 'Techno' | 'Pop' | 'Electronic' | 'Jazz' | 'Metal' | 'Other';
+export type {
+    Accommodation,
+    ActivityType,
+    AgeGroup,
+    CrewKind,
+    Cuisine,
+    FoodRestriction,
+    MusicGenre,
+    TicketType,
+    TransportMode,
+} from '../enums';
 
-export type FoodRestriction =
-    | 'Vegan' | 'Vegetarian' | 'NoPeanuts' | 'NoMeat' | 'NoPork'
-    | 'NoDairy' | 'NoGluten' | 'NoShellfish' | 'NoEggs' | 'Halal' | 'Kosher';
-
-export type ActivityType =
-    | 'Relax' | 'Energetic' | 'Adrenaline' | 'Social'
-    | 'Creative' | 'Wellness' | 'Discovery';
-
-export type Cuisine =
-    | 'American' | 'Italian' | 'Romanian' | 'Mexican' | 'Chinese'
-    | 'Japanese' | 'Indian' | 'Thai' | 'French' | 'Greek'
-    | 'Mediterranean' | 'MiddleEastern' | 'Bbq' | 'StreetFood' | 'Other';
-
-export type TicketType = 'Standard' | 'Vip' | 'UltraVip' | 'Black';
-
-export type Accommodation =
-    | 'VillageRental' | 'Camping' | 'CarCamping' | 'RvCamping' | 'Glamping';
-
-export type TransportMode = 'RideShare' | 'Car' | 'EcTrain' | 'EcBus' | 'Helicopter';
-
-export type AgeGroup =
-    | 'Under18' | 'Adult18To24' | 'Adult25To34' | 'Adult35To44' | 'Adult45Plus';
-
-export type CrewKind = 'Solo' | 'WithGroup';
+import type {
+    Accommodation,
+    ActivityType,
+    AgeGroup,
+    CrewKind,
+    Cuisine,
+    FoodRestriction,
+    MusicGenre,
+    TicketType,
+    TransportMode,
+} from '../enums';
 
 export interface CrewDto {
     readonly kind: CrewKind;

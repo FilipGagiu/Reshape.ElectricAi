@@ -1,9 +1,11 @@
-import { MusicGenre } from './preferences.dto';
+import { MusicGenre } from '../enums';
 
-export type Category =
-    | 'General' | 'Transport' | 'Accommodation' | 'Food' | 'Music'
-    | 'Lineup' | 'Activity' | 'Weather' | 'Rules' | 'Ticket'
-    | 'Safety' | 'Health';
+export const CATEGORY_VALUES = [
+    'General', 'Transport', 'Accommodation', 'Food', 'Music',
+    'Lineup', 'Activity', 'Weather', 'Rules', 'Ticket',
+    'Safety', 'Health',
+] as const;
+export type Category = (typeof CATEGORY_VALUES)[number];
 
 export interface FeedEntryDto {
     readonly id: string;
