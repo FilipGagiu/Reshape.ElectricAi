@@ -15,7 +15,7 @@ Emit a single `AiExtractedPreferences` object with these fields. Every field is 
 - `foodRestrictions` (enum array) — strict enum values from `FoodRestriction` (`Vegan`, `Vegetarian`, `NoPeanuts`, `NoMeat`, `NoPork`, `NoDairy`, `NoGluten`, `NoShellfish`, `NoEggs`, `Halal`, `Kosher`).
 - `cuisines` (enum array) — preferred cuisines from the project's `Cuisine` enum (Italian, Asian, Romanian, etc.).
 - `activityInterests` (enum array) — strict enum values from `ActivityType` (`Relax`, `Energetic`, `Adrenaline`, `Social`, `Creative`, `Wellness`, `Discovery`).
-- `suggestedTransport` `{ mode: Car|Train|Plane|Bus|..., note?: string ≤ 200 chars }` — your best guess at how the user will travel given `origin` + free text. Skip (null) when uncertain.
+- `suggestedTransport` `{ mode: Car|Train|Plane|Bus|..., note?: string ≤ 200 chars }` — your best guess at how the user will travel given `origin` + free text.
 - `suggestedAccommodation` `{ type: VillageRental|Camping|CarCamping|RvCamping|Glamping, note?: string ≤ 200 chars }` — your best guess at how they'll sleep.
 - `ticketType` (enum, optional) — pull a `TicketType` value only if the user explicitly named one.
 - `ageGroup` (enum, optional) — only if explicitly stated.
