@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Text;
 using System.Text.Json.Nodes;
-using System.Text.Json.Schema;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Reshape.ElectricAi.Core.Configuration;
@@ -21,7 +20,7 @@ internal sealed partial class PreferencesExtractor(
 {
     private static readonly string SystemPrompt = LoadEmbeddedPrompt();
     private static readonly JsonNode ResponseSchema = JsonSchemaStrictifier.Apply(
-        JsonSchemaExporter.GetJsonSchemaAsNode(LlmJsonOptions.Default, typeof(AiExtractedPreferences)));
+        LlmJsonOptions.ExportSchema(typeof(AiExtractedPreferences)));
 
     private readonly ItineraryGenerationOptions _options = options.Value;
 

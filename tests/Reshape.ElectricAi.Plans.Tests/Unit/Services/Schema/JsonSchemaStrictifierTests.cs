@@ -1,5 +1,4 @@
 using System.Text.Json.Nodes;
-using System.Text.Json.Schema;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Core.Services.Schema;
 using Reshape.ElectricAi.Core.Dtos.Preferences;
@@ -192,7 +191,7 @@ public class JsonSchemaStrictifierTests
     [Fact]
     public void End_to_end_AiExtractedPreferences_satisfies_strict_rules()
     {
-        var raw = JsonSchemaExporter.GetJsonSchemaAsNode(LlmJsonOptions.Default, typeof(AiExtractedPreferences));
+        var raw = LlmJsonOptions.ExportSchema(typeof(AiExtractedPreferences));
         var strict = JsonSchemaStrictifier.Apply(raw);
 
         AssertStrictlyCompliant(strict);
@@ -201,11 +200,39 @@ public class JsonSchemaStrictifierTests
     [Fact]
     public void Idempotent()
     {
-        var raw = JsonSchemaExporter.GetJsonSchemaAsNode(LlmJsonOptions.Default, typeof(AiExtractedPreferences));
+        var raw = LlmJsonOptions.ExportSchema(typeof(AiExtractedPreferences));
         var once = JsonSchemaStrictifier.Apply(JsonNode.Parse(raw.ToJsonString())!);
         var twice = JsonSchemaStrictifier.Apply(JsonNode.Parse(once.ToJsonString())!);
 
         Assert.Equal(once.ToJsonString(), twice.ToJsonString());
+    }
+
+    [Fact]
+    public void Root_type_is_object_string_not_union()
+    {
+        // Pins the production contract: OpenAI structured-output strict mode rejects
+        // a response_format schema whose root "type" is the union ["object", "null"].
+        // STJ's JsonSchemaExporter is null-oblivious for reference-type roots and emits
+        // the union form; JsonSchemaStrictifier MUST collapse it so what we send to
+        // OpenAI passes validation.
+        var raw = LlmJsonOptions.ExportSchema(typeof(AiExtractedPreferences));
+        var strict = JsonSchemaStrictifier.Apply(raw);
+
+        Assert.IsAssignableFrom<JsonValue>(strict["type"]);
+        Assert.Equal("object", strict["type"]!.GetValue<string>());
+    }
+
+    [Fact]
+    public void Root_type_union_with_only_object_and_null_collapses_to_object()
+    {
+        var schema = JsonNode.Parse("""
+            { "type": ["object", "null"], "properties": { "a": { "type": "string" } } }
+            """)!;
+
+        var result = JsonSchemaStrictifier.Apply(schema);
+
+        Assert.IsAssignableFrom<JsonValue>(result["type"]);
+        Assert.Equal("object", result["type"]!.GetValue<string>());
     }
 
     private static void AssertStrictlyCompliant(JsonNode? node)
@@ -243,13 +270,10 @@ public class JsonSchemaStrictifierTests
 
     private static bool IsObjectSchema(JsonObject obj)
     {
+        // Object schemas MUST have "type": "object" as a string value, not a union array.
+        // OpenAI strict mode rejects the array form; accepting it here would re-hide that bug.
         if (obj["properties"] is not JsonObject)
             return false;
-        var type = obj["type"];
-        if (type is JsonValue v && v.TryGetValue<string>(out var s) && s == "object")
-            return true;
-        if (type is JsonArray arr && arr.Any(n => n is JsonValue jv && jv.TryGetValue<string>(out var ss) && ss == "object"))
-            return true;
-        return false;
+        return obj["type"] is JsonValue v && v.TryGetValue<string>(out var s) && s == "object";
     }
 }
