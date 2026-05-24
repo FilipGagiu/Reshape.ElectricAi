@@ -2,16 +2,16 @@ import { PreferencesDto } from './preferences.dto';
 
 export interface WizardAnswer {
     readonly question: string;
-    readonly answer: string;
+    readonly answer: string | null;
     readonly answeredAt: string | null;
 }
 
 export interface ItineraryGenerationRequest {
     readonly version: number;
-    readonly locale: string;
+    readonly locale: string | null;
     readonly submittedAt: string;
     readonly answers: ReadonlyArray<WizardAnswer>;
-    readonly freeText?: string | null;
+    readonly freeText: string | null;
 }
 
 export interface ItinerarySectionDto {

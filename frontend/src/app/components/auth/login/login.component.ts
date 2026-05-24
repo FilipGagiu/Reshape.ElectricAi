@@ -9,6 +9,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
 import { AuthError, AuthService } from '@shared/services/auth.service';
+import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
 interface LoginFormControls {
     email: FormControl<string>;
@@ -33,6 +34,7 @@ interface LoginFormControls {
 export class LoginComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
+    private readonly planOnboarding = inject(PlanOnboardingService);
 
     protected readonly errorKey = signal<string | null>(null);
     protected readonly submitting = signal(false);
@@ -68,7 +70,7 @@ export class LoginComponent {
                 return;
             }
 
-            await this.router.navigateByUrl('/');
+            await this.router.navigateByUrl(this.postAuthDestination(email));
         } finally {
             this.submitting.set(false);
         }
@@ -77,7 +79,12 @@ export class LoginComponent {
     protected bypass(): void {
         if (!this.bypassEnabled) return;
         this.authService.bypass();
-        void this.router.navigateByUrl('/');
+        const email = this.authService.currentUser()?.email;
+        void this.router.navigateByUrl(this.postAuthDestination(email));
+    }
+
+    private postAuthDestination(email: string | null | undefined): string {
+        return this.planOnboarding.isCompleted(email) ? '/' : '/plan';
     }
 
     private isAuthErrorValue(value: unknown): value is AuthError {

@@ -1,23 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
-import { MOCK_PLAN } from './mock-plan';
-import { MOCK_PLAN_UUID, PlanData } from './plan-share.model';
+import { ItineraryApi } from '@shared/api/itinerary-api';
+import { ItineraryStore } from '@shared/api/itinerary-store';
+
+import { itineraryToPlanData } from './itinerary-to-plan.mapper';
+import { PlanData } from './plan-share.model';
 
 /**
- * Fetches the personalised plan by UUID. Backend not implemented yet:
- * for the demo we return a hardcoded mock for `MOCK_PLAN_UUID` and `null`
- * for everything else (which the viewer renders as a "plan not found"
- * empty state).
+ * Fetches the personalised plan tied to the current JWT.
  *
- * When the BE lands, replace the body with `firstValueFrom(this.http.get(...))`
- * keeping the same Promise<PlanData | null> signature.
+ * Backend currently exposes `GET /api/v1/Itinerary` with no id parameter —
+ * the plan is resolved from the bearer token. Once per-plan share UUIDs land
+ * we add a `getById(uuid)` overload; for now `getCurrent()` covers both the
+ * static plan view and the share/story view.
  */
 @Injectable({ providedIn: 'root' })
 export class PlanShareService {
-    private readonly MOCK_LATENCY_MS = 300;
+    private readonly itineraryApi = inject(ItineraryApi);
+    private readonly itineraryStore = inject(ItineraryStore);
 
-    async getPlanByUuid(uuid: string): Promise<PlanData | null> {
-        await new Promise((resolve) => setTimeout(resolve, this.MOCK_LATENCY_MS));
-        return uuid === MOCK_PLAN_UUID ? MOCK_PLAN : null;
+    async getCurrent(): Promise<PlanData | null> {
+        try {
+            const response = await firstValueFrom(this.itineraryApi.getCurrent());
+            if (!response) return null;
+            this.itineraryStore.set(response);
+            return itineraryToPlanData(response);
+        } catch {
+            return itineraryToPlanData(this.itineraryStore.itinerary());
+        }
     }
 }

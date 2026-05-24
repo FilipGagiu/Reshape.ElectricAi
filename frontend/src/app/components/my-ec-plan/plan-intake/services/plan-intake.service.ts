@@ -4,24 +4,24 @@ import { firstValueFrom } from 'rxjs';
 
 import { ItineraryApi } from '@shared/api/itinerary-api';
 import { ItineraryStore } from '@shared/api/itinerary-store';
+import { ItineraryGenerationRequest, WizardAnswer } from '@shared/api/dto/itinerary.dto';
 import { extractErrorEnvelope } from '@shared/api/error-envelope';
 import { AuthService } from '@shared/services/auth.service';
+import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
 import {
     EMPTY_PLAN_INTAKE_STATE,
-    PLAN_INTAKE_STATE_VERSION,
     PlanIntakeAnswer,
     PlanIntakeQuestion,
     PlanIntakeQuestionId,
     PlanIntakeState,
     PlanIntakeStatus,
-    PlanIntakeSubmission,
-    PlanIntakeSubmittedAnswer,
     PlanIntakeTranscriptItem,
 } from '../models/plan-intake.model';
 import { PLAN_INTAKE_QUESTIONS } from './plan-intake.questions';
 
 const STORAGE_PREFIX = 'ec-plan-intake-v3-';
+const ITINERARY_REQUEST_VERSION = 1;
 const ANON_STORAGE_KEY = `${STORAGE_PREFIX}anonymous`;
 
 const ASSISTANT_TYPING_DELAY_MS = 750;
@@ -35,6 +35,7 @@ export class PlanIntakeService {
     private readonly itineraryStore = inject(ItineraryStore);
     private readonly auth = inject(AuthService);
     private readonly transloco = inject(TranslocoService);
+    private readonly planOnboarding = inject(PlanOnboardingService);
 
     private readonly stateSignal = signal<PlanIntakeState>(this.loadInitialState());
     private readonly isAssistantTypingSignal = signal(false);
@@ -209,32 +210,10 @@ export class PlanIntakeService {
 
     private async submit(): Promise<void> {
         const snapshot = this.stateSignal();
-        const payload: PlanIntakeSubmission = {
-            version: PLAN_INTAKE_STATE_VERSION,
-            submittedAt: new Date().toISOString(),
-            locale: this.transloco.getActiveLang(),
-            answers: snapshot.answers.map((entry) => this.toSubmittedAnswer(entry)),
-        };
-
-        if (this.auth.isBypassActive()) {
-            console.info('[plan-intake] bypass mode — skipping network submit', payload);
-            this.markSubmitted();
-            return;
-        }
+        const request = this.buildGenerationRequest(snapshot.answers);
 
         try {
-            const response = await firstValueFrom(
-                this.itineraryApi.generate({
-                    version: payload.version,
-                    locale: payload.locale,
-                    submittedAt: payload.submittedAt,
-                    answers: payload.answers.map((entry) => ({
-                        question: entry.question,
-                        answer: entry.answer,
-                        answeredAt: entry.answeredAt,
-                    })),
-                }),
-            );
+            const response = await firstValueFrom(this.itineraryApi.generate(request));
             this.itineraryStore.set(response);
             this.markSubmitted();
         } catch (error) {
@@ -249,14 +228,38 @@ export class PlanIntakeService {
         }
     }
 
-    private toSubmittedAnswer(answer: PlanIntakeAnswer): PlanIntakeSubmittedAnswer {
-        const question = PLAN_INTAKE_QUESTIONS.find((entry) => entry.id === answer.questionId);
-        const promptText = question ? this.transloco.translate(question.promptKey) : answer.questionId;
+    private buildGenerationRequest(answers: ReadonlyArray<PlanIntakeAnswer>): ItineraryGenerationRequest {
+        const lastQuestionId = PLAN_INTAKE_QUESTIONS[PLAN_INTAKE_QUESTIONS.length - 1]?.id;
+        const freeTextAnswer = lastQuestionId
+            ? answers.find((entry) => entry.questionId === lastQuestionId)
+            : undefined;
+        const structuredAnswers = answers
+            .filter((entry) => entry.questionId !== lastQuestionId)
+            .map((entry) => this.toWizardAnswer(entry));
+
         return {
-            question: promptText,
-            answer: answer.text,
+            version: ITINERARY_REQUEST_VERSION,
+            locale: this.transloco.getActiveLang() ?? null,
+            submittedAt: new Date().toISOString(),
+            answers: structuredAnswers,
+            freeText: this.normalizeFreeText(freeTextAnswer),
+        };
+    }
+
+    private toWizardAnswer(answer: PlanIntakeAnswer): WizardAnswer {
+        const question = PLAN_INTAKE_QUESTIONS.find((entry) => entry.id === answer.questionId);
+        const questionText = question ? this.transloco.translate(question.promptKey) : answer.questionId;
+        return {
+            question: questionText,
+            answer: answer.skipped ? null : answer.text,
             answeredAt: answer.answeredAt,
         };
+    }
+
+    private normalizeFreeText(answer: PlanIntakeAnswer | undefined): string | null {
+        if (!answer || answer.skipped) return null;
+        const trimmed = answer.text.trim();
+        return trimmed.length > 0 ? trimmed : null;
     }
 
     private markSubmitted(): void {
@@ -266,6 +269,7 @@ export class PlanIntakeService {
             errorCode: undefined,
             updatedAt: new Date().toISOString(),
         }));
+        this.planOnboarding.markCompleted(this.auth.currentUser()?.email);
     }
 
     private buildTranscript(state: PlanIntakeState): ReadonlyArray<PlanIntakeTranscriptItem> {

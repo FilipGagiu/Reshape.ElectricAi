@@ -26,9 +26,56 @@
             "hint": "Vezi ce colectăm și de ce."
         }
     },
+    "admin": {
+        "title": "Admin",
+        "subtitle": "Unelte demo pentru organizator",
+        "publish": {
+            "heading": "Publică un eveniment pe feed",
+            "hint": "Apare instant tuturor participanților care se potrivesc preferințelor.",
+            "title": {
+                "label": "Titlu",
+                "placeholder": "Titlu scurt (max 200 caractere)",
+                "error": "Titlul este obligatoriu."
+            },
+            "body": {
+                "label": "Conținut",
+                "placeholder": "Ce se întâmplă, unde, când. Scurt și la obiect.",
+                "error": "Conținutul este obligatoriu."
+            },
+            "category": {
+                "label": "Categorie"
+            },
+            "isGeneral": {
+                "label": "Trimite tuturor",
+                "hint": "Oprește dacă vrei să țintești artiști sau genuri specifice."
+            },
+            "targetArtists": {
+                "label": "Artiști vizați",
+                "placeholder": "Separați prin virgulă. ex: Apashe, FKA twigs",
+                "hint": "Până la 25. Duplicatele se ignoră."
+            },
+            "targetGenres": {
+                "label": "Genuri vizate",
+                "placeholder": "Alege genuri",
+                "filterPlaceholder": "Caută genuri...",
+                "emptyFilter": "Niciun gen găsit."
+            },
+            "submit": "Publică evenimentul",
+            "submitting": "Se publică...",
+            "success": "Evenimentul a fost publicat. E live pe feed.",
+            "error": {
+                "noTargeting": "Alege cel puțin un artist sau un gen, sau activează butonul „Trimite tuturor”."
+            }
+        }
+    },
     "liveFeed": {
         "title": "Feed live",
         "subtitle": "Bonțida · Electric Castle",
+        "publish": {
+            "openLabel": "Eveniment nou",
+            "openAria": "Publică un eveniment nou pe feed",
+            "modalTitle": "Eveniment nou pe feed"
+        },
         "status": {
             "live": "LIVE",
             "offline": "OFFLINE",
@@ -147,6 +194,131 @@
     "plan": {
         "title": "Planul meu EC",
         "placeholder": "Planul tău extracurricular trăiește aici.",
+        "results": {
+            "subtitle": "Festivalul tău, esențializat.",
+            "greeting": "Salut {{name}}, planul tău e gata.",
+            "completion": "{{percent}}% completat",
+            "storyCta": {
+                "eyebrow": "Festivalul tău, împachetat",
+                "action": "Vezi povestea mea EC"
+            },
+            "emptyState": {
+                "title": "Nimic aici încă.",
+                "body": "Termină wizardul rapid ca să-ți vezi planul.",
+                "action": "Deschide wizardul"
+            },
+            "errorState": {
+                "eyebrow": "Ceva a luat-o razna",
+                "title": "Nu am putut construi planul tău.",
+                "body": "Camera de fermentat a castelului s-a poticnit. Încearcă din nou sau reia wizardul dacă insistă.",
+                "retry": "Încearcă din nou",
+                "retrying": "Încercăm din nou...",
+                "redo": "Reia wizardul"
+            },
+            "sections": {
+                "crew": "Gașca ta",
+                "origin": "Vii din",
+                "vibe": "Vibe-ul",
+                "music": "Muzica ta",
+                "mustSee": "Artiști obligatoriu de prins",
+                "food": "Mâncare",
+                "cuisines": "Bucătării de încercat",
+                "activities": "Activități",
+                "transport": "Transport",
+                "accommodation": "Unde dormi",
+                "ticket": "Biletul tău",
+                "age": "Grupă de vârstă",
+                "itinerary": "Cronologia planului",
+                "itineraryEmpty": "Cronologia ta se construiește.",
+                "itineraryCardPlaceholder": "Detalii în curând.",
+                "rawToggle": "Arată raw (dev)"
+            },
+            "enum": {
+                "crew": {
+                    "Solo": "Solo",
+                    "WithGroup": "Cu gașca"
+                },
+                "transport": {
+                    "RideShare": "Rideshare",
+                    "Car": "Mașină",
+                    "EcTrain": "Tren EC",
+                    "EcBus": "Autobuz EC",
+                    "Helicopter": "Elicopter"
+                },
+                "accommodation": {
+                    "VillageRental": "Cazare în sat",
+                    "Camping": "Camping",
+                    "CarCamping": "Camping cu mașina",
+                    "RvCamping": "Camping cu rulota",
+                    "Glamping": "Glamping"
+                },
+                "ticket": {
+                    "Standard": "Standard",
+                    "Vip": "VIP",
+                    "UltraVip": "Ultra VIP",
+                    "Black": "Bilet Black"
+                },
+                "age": {
+                    "Under18": "Sub 18",
+                    "Adult18To24": "18–24",
+                    "Adult25To34": "25–34",
+                    "Adult35To44": "35–44",
+                    "Adult45Plus": "45+"
+                },
+                "music": {
+                    "HipHop": "Hip-hop",
+                    "House": "House",
+                    "Balkan": "Balcanic",
+                    "Rock": "Rock",
+                    "Folk": "Folk",
+                    "Techno": "Techno",
+                    "Pop": "Pop",
+                    "Electronic": "Electronică",
+                    "Jazz": "Jazz",
+                    "Metal": "Metal",
+                    "Other": "Altele"
+                },
+                "foodRestriction": {
+                    "Vegan": "Vegan",
+                    "Vegetarian": "Vegetarian",
+                    "NoPeanuts": "Fără arahide",
+                    "NoMeat": "Fără carne",
+                    "NoPork": "Fără porc",
+                    "NoDairy": "Fără lactate",
+                    "NoGluten": "Fără gluten",
+                    "NoShellfish": "Fără fructe de mare",
+                    "NoEggs": "Fără ouă",
+                    "Halal": "Halal",
+                    "Kosher": "Kosher"
+                },
+                "cuisine": {
+                    "American": "Americană",
+                    "Italian": "Italiană",
+                    "Romanian": "Românească",
+                    "Mexican": "Mexicană",
+                    "Chinese": "Chinezească",
+                    "Japanese": "Japoneză",
+                    "Indian": "Indiană",
+                    "Thai": "Thailandeză",
+                    "French": "Franțuzească",
+                    "Greek": "Grecească",
+                    "Mediterranean": "Mediteraneană",
+                    "MiddleEastern": "Orientul Mijlociu",
+                    "Bbq": "BBQ",
+                    "StreetFood": "Street food",
+                    "Other": "Altele"
+                },
+                "activity": {
+                    "Relax": "Relaxare",
+                    "Energetic": "Energie",
+                    "Adrenaline": "Adrenalină",
+                    "Social": "Social",
+                    "Creative": "Creativ",
+                    "Wellness": "Wellness",
+                    "Discovery": "Descoperire"
+                }
+            }
+        },
         "cta": {
             "watchRecap": "Vezi rezumatul"
         },
@@ -243,7 +415,8 @@
                 "finish": "Gata",
                 "back": "Înapoi",
                 "forward": "Următoarea",
-                "skip": "Sari peste"
+                "skip": "Sari peste",
+                "skipOnboarding": "Mai târziu"
             },
             "completed": {
                 "title": "Gata, ești setat",
@@ -257,6 +430,14 @@
             "error": "Nu am putut salva răspunsurile. Mai încearcă într-un moment.",
             "retry": "Încearcă din nou",
             "skipped": "Sărită",
+            "loader": {
+                "curating": "Îți alegem coloana sonoră...",
+                "mapping": "Îți trasăm drumul spre Bonțida...",
+                "matching": "Te potrivim cu scenele tale...",
+                "tasting": "Adulmecăm tonetele de mâncare...",
+                "timing": "Aliniem nopțile tale...",
+                "polishing": "Lustruim ultimele detalii..."
+            },
             "input": {
                 "placeholder": "Scrie răspunsul..."
             },
@@ -266,14 +447,26 @@
                     "placeholder": "Prenumele tău",
                     "description": "Doar prenumele e de ajuns. Rămânem la relaxat."
                 },
-                "origin": {
-                    "prompt": "De unde vii și cât de mare-i gașca?",
-                    "placeholder": "Oraș + dimensiunea grupului",
-                    "description": "Ne ajută cu drumul tău spre EC și cu ritmul zilelor pentru grup.",
+                "location": {
+                    "prompt": "De unde vii?",
+                    "placeholder": "Oraș, țară, oriunde",
+                    "description": "Ne ajută să ne gândim la traseul tău spre castel.",
                     "chip": {
-                        "clujSolo": "Cluj-Napoca, singur/ă",
-                        "bucharestCrew": "București, cu prietenii",
-                        "abroadGroup": "Din străinătate, grup mare"
+                        "cluj": "Cluj-Napoca",
+                        "bucharest": "București",
+                        "otherRomania": "Alt loc din România",
+                        "abroad": "Din străinătate"
+                    }
+                },
+                "groupSize": {
+                    "prompt": "Cât de mare e gașca?",
+                    "placeholder": "Solo, în doi, gașcă mică, întreaga trupă...",
+                    "description": "Influențează cum decurg zilele și unde dormi.",
+                    "chip": {
+                        "solo": "Solo",
+                        "duo": "În doi",
+                        "smallCrew": "Gașcă mică (3-5)",
+                        "bigCrew": "Gașcă mare (6+)"
                     }
                 },
                 "accommodation": {

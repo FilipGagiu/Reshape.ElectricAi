@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 
+import { LANGUAGE_SWITCHER_ENABLED } from '@i18n/i18n.config';
 import { LanguageSwitcherComponent } from '@i18n/language-switcher.component';
 
 @Component({
@@ -13,4 +14,5 @@ import { LanguageSwitcherComponent } from '@i18n/language-switcher.component';
 export class EcTopbarComponent {
     readonly titleKey = input.required<string>();
     readonly subtitleKey = input.required<string>();
+    protected readonly languageSwitcherEnabled = LANGUAGE_SWITCHER_ENABLED;
 }

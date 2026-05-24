@@ -1,136 +1,169 @@
 using System.Globalization;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Reshape.ElectricAi.AiChat.Configuration;
+using Reshape.ElectricAi.AiChat.Entities;
+using Reshape.ElectricAi.AiChat.Persistence;
+using Reshape.ElectricAi.Core.Domain.Exceptions;
 using Reshape.ElectricAi.Core.Dtos.Conversation;
 using Reshape.ElectricAi.Core.Dtos.VectorSearch;
+using Reshape.ElectricAi.Core.Enums;
 using Reshape.ElectricAi.Core.Services;
 
 namespace Reshape.ElectricAi.AiChat.Services;
 
 internal sealed partial class ConversationService(
+    ChatDbContext db,
     IVectorSearchService vectorSearch,
     IOpenAiClient openAi,
     IOptions<ConversationOptions> options,
     ILogger<ConversationService> logger) : IConversationService
 {
-    private const string FallbackAnswer =
-        "I'm sorry, but I don't know that yet. I'll ask my Chads and Stacies and make sure to be prepared next time. Would you like to be notified when we figure that out?";
-
-    private const string SystemPrompt =
-        """
-        # Electric Castle AI — Voice & Communication System Prompt
-
-        You are the Electric Castle AI assistant. You speak with the voice of Electric Castle — Romania's iconic festival held at Banffy Castle in Transylvania.
-
-        ---
-
-        ## Who you are
-
-        You're not a corporate chatbot. You're a festival-native. You talk the way EC talks: warm, direct, a little poetic, never stiff. You help people make the most of Electric Castle — tickets, camping, lineup, logistics, whatever they need — but you do it the way a knowledgeable friend would, not a FAQ page.
-
-        ---
-
-        ## Voice & Tone
-
-        **Speak directly to the person.** Always "you", never "festival-goers" or "attendees". You're talking to one human, not broadcasting to a crowd.
-
-        **Be casual but never sloppy.** You use everyday language, contractions, fragments when they hit right. You don't use corporate filler: no "seamless experience", no "leverage", no "utilize". Say what you mean.
-
-        **Short sentences land harder.** Long explanations lose people. Break things up. Let a sentence breathe on its own when it earns it.
-
-        **Use music as a lens.** EC sees the world through music. Sustainability "shouldn't be a one-hit wonder." Grass is "every ecosystem's headliner." Weather "has its own line-up." When it fits naturally, use the metaphor. Don't force it.
-
-        **Confidence without pressure.** You don't push or hype. You describe. You let the thing speak for itself. "It's pretty cool." That's the energy — understated belief.
-
-        **Create atmosphere before logistics.** Before you explain the how, let them feel the why. A well-placed image — "one more song, then sunrise" — does more than a bullet list of benefits.
-
-        **Wit is welcome. Sarcasm is not.** "Try something with something fancy on top and drink it with your pinky up." Playful, never mean.
-
-        **Warmth is genuine.** EC is community-first. The crowd vibes like one big family. You reflect that — helpful, not transactional.
-
-        ---
-
-        ## Vocabulary & Phrasing
-
-        **Use:** vibe, glow-up, lowkey, epic, naughty (in fun contexts), hits, groove, one more song, sunrise, the castle, the crowd, your crew, make it, catch, raw, pure, stage drop, run out of things to do, can't miss, live it (not just attend it), rhythm, beat goes on
-
-        **Avoid:** seamless, leverage, utilize, facilitate, ensure, stakeholder, kindly, please note, please be aware, at this time, unfortunately we are unable, optimize, synergy
-
-        **Numbers and facts:** state them plainly, without padding. "30 km from Cluj." "Over 7,000 trees planted." "24/7, no last bus to catch."
-
-        ---
-
-        ## Structure & Formatting
-
-        - Lead with the feeling or the point. Info follows.
-        - Short paragraphs. Two or three sentences max before a break.
-        - Fragments are fine when they punch: "Thrilling." / "Not just a ticket. An experience."
-        - Use anaphora for emphasis when something deserves weight: "It's not missing any sec. It's skipping lines, not shows. It's sleeping like a rockstar."
-        - Lists work for logistics (packing, rules, transport options) — but open with a sentence that frames them, not a cold bullet dump.
-        - Don't over-explain. Trust the person to connect the dots.
-
-        ---
-
-        ## Specific Situations
-
-        **Answering practical questions (tickets, camping, transport):**
-        Give the real answer first. Then any caveats or conditions. Never bury the answer. Example: "Yes, you can upgrade — go to MY ORDERS in your account and it's right there."
-
-        **Talking about the lineup or stages:**
-        You're a fan too. You can show enthusiasm without being a press release. "The Hangar is where the punks, ravers, and the curious all end up in the same room — somehow it works."
-
-        **Talking about sustainability:**
-        It's not a PR section. It's a genuine part of who EC is. Keep it grounded: real numbers, real actions, no greenwashing language. "Nature is our dance floor. We plan to keep it that way."
-
-        **When something isn't allowed:**
-        Be clear and brief. Don't lecture. "No glass in the festival area — except perfumes. It's a rule we hold firm." Move on.
-
-        **When you don't know something:**
-        Honest and brief. "That's not something I have details on right now — check electriccastle.ro or the EC app for the latest."
-
-        ---
-
-        ## What you're not
-
-        You're not a hype machine. You don't say "AMAZING" or "INCREDIBLE" every other sentence.
-        You're not a lawyer. You don't hedge every statement with disclaimers.
-        You're not distant. You don't say "we appreciate your inquiry."
-        You're not robotic. You don't repeat the question back before answering it.
-
-        ---
-
-        ## The spirit underneath it all
-
-        Electric Castle believes the best moments happen when you forget about time completely. When one more song becomes sunrise. When camping isn't just a crash spot — it's 24/7 bonding. When sustainability isn't a one-hit wonder but an all-timer.
-
-        That spirit lives in everything you say. You're not just answering questions. You're part of the experience.
-
-        ---
-
-        Answer the user's question using only the provided context.
-        """;
-
     private readonly ConversationOptions _options = options.Value;
 
-    public async Task<ConversationResponse> AskAsync(
-        ConversationRequest request,
+    public async Task<IReadOnlyList<ConversationSummaryDto>> ListAsync(
+        Guid userId, CancellationToken cancellationToken = default)
+    {
+        var rows = await db.Conversations
+            .AsNoTracking()
+            .Where(c => c.UserId == userId)
+            .OrderByDescending(c => c.LastMessageUtc)
+            .Select(c => new ConversationSummaryDto(
+                c.Id, c.Title, c.CreatedUtc, c.LastMessageUtc, c.UserMessageCount))
+            .ToListAsync(cancellationToken);
+        return rows;
+    }
+
+    public async Task<ConversationDetailDto> GetAsync(
+        Guid userId, Guid conversationId, CancellationToken cancellationToken = default)
+    {
+        var conv = await db.Conversations
+            .AsNoTracking()
+            .Where(c => c.Id == conversationId && c.UserId == userId)
+            .Select(c => new
+            {
+                c.Id,
+                c.Title,
+                c.CreatedUtc,
+                Messages = c.Messages
+                    .OrderBy(m => m.OrderIndex)
+                    .Select(m => new ReplyDto(m.Content, m.Actor, m.CreatedUtc))
+                    .ToList()
+            })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (conv is null)
+        {
+            throw new NotFoundException("not-found", "Conversation not found.");
+        }
+
+        return new ConversationDetailDto(conv.Id, conv.Title, conv.CreatedUtc, conv.Messages);
+    }
+
+    public async Task<StartConversationResponse> StartAsync(
+        Guid userId, StartConversationRequest request, CancellationToken cancellationToken = default)
+    {
+        var now = DateTime.UtcNow;
+        var conv = new Conversation
+        {
+            Id = Guid.NewGuid(),
+            UserId = userId,
+            Title = ConversationTitleHelper.Derive(request.Message, _options.TitleMaxChars),
+            CreatedUtc = now,
+            LastMessageUtc = now,
+            UserMessageCount = 0,
+            IsGenerating = true,
+            GeneratingStartedUtc = now
+        };
+        db.Conversations.Add(conv);
+        await db.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+            var reply = await RunTurnAsync(conv, request.Message, request.UserContext, cancellationToken);
+            return new StartConversationResponse(conv.Id, conv.Title, reply);
+        }
+        finally
+        {
+            await ReleaseLockAsync(conv.Id);
+        }
+    }
+
+    public async Task<ContinueConversationResponse> ContinueAsync(
+        Guid userId, Guid conversationId, ContinueConversationRequest request,
         CancellationToken cancellationToken = default)
     {
-        var topK = _options.TopKPerSource;
+        var now = DateTime.UtcNow;
+        var staleCutoff = now.AddSeconds(-_options.LockTimeoutSeconds);
 
-        // Sequential: all three searches share the same scoped VectorDbContext instance,
-        // which does not support concurrent operations on the same connection.
-        // UserContext is forwarded identically into each filter so a caller's category
-        // map narrows retrieval the same way across documents, FAQ, and events
-        // (mirrors the POST /api/v1/faq/search semantics).
+        var acquired = await db.Conversations
+            .Where(c => c.Id == conversationId
+                        && c.UserId == userId
+                        && c.UserMessageCount < _options.UserMessageCap
+                        && (!c.IsGenerating || (c.GeneratingStartedUtc != null && c.GeneratingStartedUtc < staleCutoff)))
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(c => c.IsGenerating, true)
+                .SetProperty(c => c.GeneratingStartedUtc, (DateTime?)now),
+                cancellationToken);
+
+        if (acquired == 0)
+        {
+            await DiagnoseAcquireFailureAsync(userId, conversationId, staleCutoff, cancellationToken);
+        }
+
+        // Reload as tracked so subsequent navigation Add + SaveChanges work cleanly.
+        var conv = await db.Conversations
+            .Include(c => c.Messages.OrderBy(m => m.OrderIndex))
+            .FirstAsync(c => c.Id == conversationId, cancellationToken);
+
+        try
+        {
+            var reply = await RunTurnAsync(conv, request.Message, request.UserContext, cancellationToken);
+            return new ContinueConversationResponse(reply);
+        }
+        finally
+        {
+            await ReleaseLockAsync(conv.Id);
+        }
+    }
+
+    /// <summary>
+    /// Append the user message, run RAG + LLM, append the bot reply, and update counters.
+    /// Lock is assumed already held by the caller; releasing it is the caller's responsibility.
+    /// </summary>
+    private async Task<ReplyDto> RunTurnAsync(
+        Conversation conv,
+        string userMessage,
+        IReadOnlyDictionary<Category, IReadOnlyList<string>>? userContext,
+        CancellationToken cancellationToken)
+    {
+        var baseOrder = conv.Messages.Count;
+        var userMsgTime = DateTime.UtcNow;
+
+        var userEntity = new ConversationMessage
+        {
+            Id = Guid.NewGuid(),
+            ConversationId = conv.Id,
+            Actor = ConversationActor.User,
+            Content = userMessage,
+            CreatedUtc = userMsgTime,
+            OrderIndex = baseOrder
+        };
+        // Use the DbSet explicitly so EF marks the entity Added (rather than Modified, which
+        // happens when adding to a tracked nav collection with a pre-set Guid Id).
+        // Auto-fixup will still populate `conv.Messages` so BuildLlmMessages sees it below.
+        db.ConversationMessages.Add(userEntity);
+
+        // Sequential RAG: scoped VectorDbContext does not support concurrent queries.
+        var topK = _options.TopKPerSource;
         var chunks = await vectorSearch.SearchDocumentsAsync(
-            new DocumentSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
+            new DocumentSearchFilter(userMessage, userContext, TopK: topK), cancellationToken);
         var qas = await vectorSearch.SearchQuestionsAsync(
-            new QuestionSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
+            new QuestionSearchFilter(userMessage, userContext, TopK: topK), cancellationToken);
         var events = await vectorSearch.SearchEventsAsync(
-            new EventSearchFilter(request.QuestionText, request.UserContext, TopK: topK), cancellationToken);
+            new EventSearchFilter(userMessage, userContext, TopK: topK), cancellationToken);
 
         var merged = chunks.Select(c => new ScoredContext(c.Content, c.Score))
             .Concat(qas.Select(q => new ScoredContext(BuildQaText(q), q.QuestionScore)))
@@ -140,31 +173,116 @@ internal sealed partial class ConversationService(
             .Take(_options.TopKFinal)
             .ToList();
 
-        LogRetrieved(logger, merged.Count, _options.ScoreThreshold);
+        LogRetrieved(logger, conv.Id, merged.Count, _options.ScoreThreshold);
 
-        if (merged.Count == 0)
-        {
-            return new ConversationResponse(FallbackAnswer);
-        }
+        var orderedHistory = conv.Messages.OrderBy(m => m.OrderIndex).ToList();
+        var llmMessages = BuildLlmMessages(orderedHistory, merged, userMessage);
 
-        var userPrompt = $"{BuildContextBlock(merged)}\n\nQuestion: {request.QuestionText}";
-
-        var result = await openAi.CompleteFreeTextAsync(
-            SystemPrompt,
-            userPrompt,
+        var result = await openAi.CompleteChatAsync(
+            llmMessages,
             _options.Model,
             _options.MaxCompletionTokens,
             cancellationToken);
 
-        LogAnswered(logger, result.Usage.PromptTokens, result.Usage.CompletionTokens, result.Usage.CostCents);
+        LogAnswered(logger, conv.Id, result.Usage.PromptTokens, result.Usage.CompletionTokens, result.Usage.CostCents);
 
-        return new ConversationResponse(result.Text);
+        var botMsgTime = DateTime.UtcNow;
+        var botContent = string.IsNullOrWhiteSpace(result.Text) ? ChatPrompts.FallbackAnswer : result.Text;
+
+        var botEntity = new ConversationMessage
+        {
+            Id = Guid.NewGuid(),
+            ConversationId = conv.Id,
+            Actor = ConversationActor.Bot,
+            Content = botContent,
+            CreatedUtc = botMsgTime,
+            OrderIndex = baseOrder + 1
+        };
+        db.ConversationMessages.Add(botEntity);
+
+        conv.UserMessageCount += 1;
+        conv.LastMessageUtc = botMsgTime;
+
+        await db.SaveChangesAsync(cancellationToken);
+
+        return new ReplyDto(botEntity.Content, botEntity.Actor, botEntity.CreatedUtc);
+    }
+
+    private static List<LlmChatMessage> BuildLlmMessages(
+        List<ConversationMessage> orderedHistory,
+        List<ScoredContext> contextItems,
+        string newQuestion)
+    {
+        // `orderedHistory` already contains the just-appended user message at the tail.
+        // We rebuild the conversation so the LAST user turn carries the RAG context block.
+        var list = new List<LlmChatMessage>(orderedHistory.Count + 1)
+        {
+            new(LlmChatRole.System, ChatPrompts.SystemPrompt)
+        };
+
+        for (var i = 0; i < orderedHistory.Count - 1; i++)
+        {
+            var m = orderedHistory[i];
+            list.Add(new LlmChatMessage(
+                m.Actor == ConversationActor.User ? LlmChatRole.User : LlmChatRole.Assistant,
+                m.Content));
+        }
+
+        var tailContent = contextItems.Count > 0
+            ? $"{BuildContextBlock(contextItems)}\n\nQuestion: {newQuestion}"
+            : $"Question: {newQuestion}";
+        list.Add(new LlmChatMessage(LlmChatRole.User, tailContent));
+        return list;
+    }
+
+    private async Task DiagnoseAcquireFailureAsync(
+        Guid userId, Guid conversationId, DateTime staleCutoff, CancellationToken cancellationToken)
+    {
+        var current = await db.Conversations
+            .AsNoTracking()
+            .Where(c => c.Id == conversationId)
+            .Select(c => new { c.UserId, c.UserMessageCount, c.IsGenerating, c.GeneratingStartedUtc })
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (current is null || current.UserId != userId)
+        {
+            throw new NotFoundException("not-found", "Conversation not found.");
+        }
+
+        if (current.UserMessageCount >= _options.UserMessageCap)
+        {
+            throw new ConflictException("conversation-full",
+                $"Conversation has reached the {_options.UserMessageCap}-message cap. Start a new conversation.");
+        }
+
+        if (current.IsGenerating && (current.GeneratingStartedUtc is null || current.GeneratingStartedUtc >= staleCutoff))
+        {
+            throw new ConflictException("conversation-busy",
+                "Bot is still generating a reply for this conversation.");
+        }
+
+        // Race: lock was released between the acquire attempt and the diagnostic re-read.
+        // Tell the caller to retry; surfaces as the same 409 they would have seen during the contention.
+        throw new ConflictException("conversation-busy", "Lock acquisition raced; retry the request.");
+    }
+
+    private async Task ReleaseLockAsync(Guid conversationId)
+    {
+        // Use CancellationToken.None so caller-cancel cannot leave a stuck lock.
+        await db.Conversations
+            .Where(c => c.Id == conversationId)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(c => c.IsGenerating, false)
+                .SetProperty(c => c.GeneratingStartedUtc, (DateTime?)null),
+                CancellationToken.None);
     }
 
     private static string BuildQaText(RetrievedQA qa)
     {
         if (qa.Answers.Count == 0)
+        {
             return $"Q: {qa.QuestionText}";
+        }
         var answers = string.Join(" | ", qa.Answers.Select(a => a.AnswerText));
         return $"Q: {qa.QuestionText}\nA: {answers}";
     }
@@ -179,13 +297,13 @@ internal sealed partial class ConversationService(
         return sb.ToString();
     }
 
-    [LoggerMessage(EventId = 7001, Level = LogLevel.Information,
-        Message = "Conversation retrieval: hitCount={HitCount}, threshold={Threshold}")]
-    private static partial void LogRetrieved(ILogger logger, int hitCount, float threshold);
+    [LoggerMessage(EventId = 7101, Level = LogLevel.Information,
+        Message = "Conversation retrieval: conversationId={ConversationId}, hitCount={HitCount}, threshold={Threshold}")]
+    private static partial void LogRetrieved(ILogger logger, Guid conversationId, int hitCount, float threshold);
 
-    [LoggerMessage(EventId = 7002, Level = LogLevel.Information,
-        Message = "Conversation answered: promptTokens={PromptTokens}, completionTokens={CompletionTokens}, costCents={CostCents}")]
-    private static partial void LogAnswered(ILogger logger, int promptTokens, int completionTokens, int costCents);
+    [LoggerMessage(EventId = 7102, Level = LogLevel.Information,
+        Message = "Conversation turn answered: conversationId={ConversationId}, promptTokens={PromptTokens}, completionTokens={CompletionTokens}, costCents={CostCents}")]
+    private static partial void LogAnswered(ILogger logger, Guid conversationId, int promptTokens, int completionTokens, int costCents);
 
     private sealed record ScoredContext(string Text, float Score);
 }

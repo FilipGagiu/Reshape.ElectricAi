@@ -58,8 +58,8 @@ export const routes: Routes = [
             {
                 path: 'plan',
                 loadComponent: () =>
-                    import('@components/my-ec-plan/plan-steps/plan-steps.component').then(
-                        (m) => m.PlanStepsComponent,
+                    import('@components/my-ec-plan/my-plan-page/my-plan-page.component').then(
+                        (m) => m.MyPlanPageComponent,
                     ),
             },
             { path: 'plan-steps', redirectTo: 'plan' },
@@ -74,6 +74,11 @@ export const routes: Routes = [
                     import('@components/settings/settings.component').then(
                         (m) => m.SettingsComponent,
                     ),
+            },
+            {
+                path: 'admin',
+                loadComponent: () =>
+                    import('@components/admin/admin.component').then((m) => m.AdminComponent),
             },
         ],
     },

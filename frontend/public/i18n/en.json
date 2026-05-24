@@ -26,9 +26,56 @@
             "hint": "Read what we collect and why."
         }
     },
+    "admin": {
+        "title": "Admin",
+        "subtitle": "Demo organizer tools",
+        "publish": {
+            "heading": "Publish a feed event",
+            "hint": "Goes live to every attendee whose preferences match.",
+            "title": {
+                "label": "Title",
+                "placeholder": "Short headline (max 200 chars)",
+                "error": "Title is required."
+            },
+            "body": {
+                "label": "Body",
+                "placeholder": "What's happening, where, when. Keep it scannable.",
+                "error": "Body is required."
+            },
+            "category": {
+                "label": "Category"
+            },
+            "isGeneral": {
+                "label": "Broadcast to everyone",
+                "hint": "Off lets you target specific artists or genres below."
+            },
+            "targetArtists": {
+                "label": "Target artists",
+                "placeholder": "Comma separated. e.g. Apashe, FKA twigs",
+                "hint": "Up to 25. Case-insensitive dedupe."
+            },
+            "targetGenres": {
+                "label": "Target genres",
+                "placeholder": "Pick genres",
+                "filterPlaceholder": "Search genres...",
+                "emptyFilter": "No genres match."
+            },
+            "submit": "Publish event",
+            "submitting": "Publishing...",
+            "success": "Event published. It's live on the feed now.",
+            "error": {
+                "noTargeting": "Pick at least one artist or genre, or flip the broadcast toggle on."
+            }
+        }
+    },
     "liveFeed": {
         "title": "Live feed",
         "subtitle": "Bonțida · Electric Castle",
+        "publish": {
+            "openLabel": "New event",
+            "openAria": "Publish a new feed event",
+            "modalTitle": "New feed event"
+        },
         "status": {
             "live": "LIVE",
             "offline": "OFFLINE",
@@ -147,6 +194,131 @@
     "plan": {
         "title": "My EC plan",
         "placeholder": "Your extracurricular plan lives here.",
+        "results": {
+            "subtitle": "Your festival, distilled.",
+            "greeting": "Hey {{name}}, your plan's ready.",
+            "completion": "{{percent}}% complete",
+            "storyCta": {
+                "eyebrow": "Your festival, wrapped",
+                "action": "View my EC story"
+            },
+            "emptyState": {
+                "title": "Nothing here yet.",
+                "body": "Finish the quick wizard to see your plan.",
+                "action": "Open the wizard"
+            },
+            "errorState": {
+                "eyebrow": "Something went sideways",
+                "title": "We couldn't build your plan.",
+                "body": "The castle's brewing room hiccuped. Try again, or redo the wizard if it keeps failing.",
+                "retry": "Try again",
+                "retrying": "Trying again...",
+                "redo": "Redo the wizard"
+            },
+            "sections": {
+                "crew": "Your crew",
+                "origin": "Coming in from",
+                "vibe": "The vibe",
+                "music": "Your music",
+                "mustSee": "Must-see acts",
+                "food": "Food",
+                "cuisines": "Cuisines you'll chase",
+                "activities": "Activities",
+                "transport": "Transport",
+                "accommodation": "Where you sleep",
+                "ticket": "Your ticket",
+                "age": "Age group",
+                "itinerary": "Plan timeline",
+                "itineraryEmpty": "Your timeline is being built.",
+                "itineraryCardPlaceholder": "Details coming soon.",
+                "rawToggle": "Show raw (dev)"
+            },
+            "enum": {
+                "crew": {
+                    "Solo": "Solo",
+                    "WithGroup": "With a crew"
+                },
+                "transport": {
+                    "RideShare": "Rideshare",
+                    "Car": "Car",
+                    "EcTrain": "EC train",
+                    "EcBus": "EC bus",
+                    "Helicopter": "Helicopter"
+                },
+                "accommodation": {
+                    "VillageRental": "Village rental",
+                    "Camping": "Camping",
+                    "CarCamping": "Car camping",
+                    "RvCamping": "RV camping",
+                    "Glamping": "Glamping"
+                },
+                "ticket": {
+                    "Standard": "Standard",
+                    "Vip": "VIP",
+                    "UltraVip": "Ultra VIP",
+                    "Black": "Black ticket"
+                },
+                "age": {
+                    "Under18": "Under 18",
+                    "Adult18To24": "18–24",
+                    "Adult25To34": "25–34",
+                    "Adult35To44": "35–44",
+                    "Adult45Plus": "45+"
+                },
+                "music": {
+                    "HipHop": "Hip-hop",
+                    "House": "House",
+                    "Balkan": "Balkan",
+                    "Rock": "Rock",
+                    "Folk": "Folk",
+                    "Techno": "Techno",
+                    "Pop": "Pop",
+                    "Electronic": "Electronic",
+                    "Jazz": "Jazz",
+                    "Metal": "Metal",
+                    "Other": "Other"
+                },
+                "foodRestriction": {
+                    "Vegan": "Vegan",
+                    "Vegetarian": "Vegetarian",
+                    "NoPeanuts": "No peanuts",
+                    "NoMeat": "No meat",
+                    "NoPork": "No pork",
+                    "NoDairy": "No dairy",
+                    "NoGluten": "No gluten",
+                    "NoShellfish": "No shellfish",
+                    "NoEggs": "No eggs",
+                    "Halal": "Halal",
+                    "Kosher": "Kosher"
+                },
+                "cuisine": {
+                    "American": "American",
+                    "Italian": "Italian",
+                    "Romanian": "Romanian",
+                    "Mexican": "Mexican",
+                    "Chinese": "Chinese",
+                    "Japanese": "Japanese",
+                    "Indian": "Indian",
+                    "Thai": "Thai",
+                    "French": "French",
+                    "Greek": "Greek",
+                    "Mediterranean": "Mediterranean",
+                    "MiddleEastern": "Middle Eastern",
+                    "Bbq": "BBQ",
+                    "StreetFood": "Street food",
+                    "Other": "Other"
+                },
+                "activity": {
+                    "Relax": "Relax",
+                    "Energetic": "Energetic",
+                    "Adrenaline": "Adrenaline",
+                    "Social": "Social",
+                    "Creative": "Creative",
+                    "Wellness": "Wellness",
+                    "Discovery": "Discovery"
+                }
+            }
+        },
         "cta": {
             "watchRecap": "Watch the recap"
         },
@@ -242,7 +414,8 @@
                 "finish": "Finish",
                 "back": "Back",
                 "forward": "Next",
-                "skip": "Skip this one"
+                "skip": "Skip this one",
+                "skipOnboarding": "Skip for now"
             },
             "completed": {
                 "title": "You're all set",
@@ -256,6 +429,14 @@
             "error": "Couldn't save your answers. Try again in a moment.",
             "retry": "Try again",
             "skipped": "Skipped",
+            "loader": {
+                "curating": "Curating your soundtrack...",
+                "mapping": "Charting your route to Bonțida...",
+                "matching": "Matching you with the right stages...",
+                "tasting": "Sniffing out the food trucks...",
+                "timing": "Timing your nights right...",
+                "polishing": "Polishing the final details..."
+            },
             "input": {
                 "placeholder": "Type your answer..."
             },
@@ -265,14 +446,26 @@
                     "placeholder": "Your first name",
                     "description": "First name's plenty. We'll keep things casual from here."
                 },
-                "origin": {
-                    "prompt": "Where are you coming in from, and how big's the crew?",
-                    "placeholder": "City + group size",
-                    "description": "Helps us think about your route in and how the days flow for your group.",
+                "location": {
+                    "prompt": "Where you coming in from?",
+                    "placeholder": "City, country, anywhere",
+                    "description": "Helps us think about your route to the castle.",
                     "chip": {
-                        "clujSolo": "Cluj-Napoca, solo",
-                        "bucharestCrew": "Bucharest, with friends",
-                        "abroadGroup": "Abroad, big group"
+                        "cluj": "Cluj-Napoca",
+                        "bucharest": "Bucharest",
+                        "otherRomania": "Elsewhere in Romania",
+                        "abroad": "Abroad"
+                    }
+                },
+                "groupSize": {
+                    "prompt": "How big's the crew?",
+                    "placeholder": "Solo, duo, small crew, full caravan...",
+                    "description": "Shapes how the days flow and where you sleep.",
+                    "chip": {
+                        "solo": "Solo",
+                        "duo": "Duo",
+                        "smallCrew": "Small crew (3-5)",
+                        "bigCrew": "Big crew (6+)"
                     }
                 },
                 "accommodation": {

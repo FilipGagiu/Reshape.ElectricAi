@@ -2,7 +2,14 @@ import { isPlatformBrowser } from '@angular/common';
 import { effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 
-import { AppLang, I18N_AVAILABLE_LANGS, I18N_DEFAULT_LANG, I18N_STORAGE_KEY, isAppLang } from './i18n.config';
+import {
+    AppLang,
+    I18N_AVAILABLE_LANGS,
+    I18N_DEFAULT_LANG,
+    I18N_STORAGE_KEY,
+    LANGUAGE_SWITCHER_ENABLED,
+    isAppLang,
+} from './i18n.config';
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
@@ -19,17 +26,20 @@ export class LanguageService {
             const lang = this.currentLang();
             this.transloco.setActiveLang(lang);
 
-            if (isPlatformBrowser(this.platformId)) {
+            if (LANGUAGE_SWITCHER_ENABLED && isPlatformBrowser(this.platformId)) {
                 localStorage.setItem(I18N_STORAGE_KEY, lang);
             }
         });
     }
 
     setLang(lang: AppLang) {
+        if (!LANGUAGE_SWITCHER_ENABLED) return;
         this.currentLang.set(lang);
     }
 
     private resolveInitialLang(): AppLang {
+        if (!LANGUAGE_SWITCHER_ENABLED) return I18N_DEFAULT_LANG;
+
         if (!isPlatformBrowser(this.platformId)) {
             return I18N_DEFAULT_LANG;
         }

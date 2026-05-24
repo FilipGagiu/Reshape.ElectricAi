@@ -36,5 +36,7 @@
             >{{ 'liveFeed.status.live' | transloco }}</span
         >
     </div>
-    <app-language-switcher class="ec-topbar__lang shrink-0" />
+    @if (languageSwitcherEnabled) {
+        <app-language-switcher class="ec-topbar__lang shrink-0" />
+    }
 </header>

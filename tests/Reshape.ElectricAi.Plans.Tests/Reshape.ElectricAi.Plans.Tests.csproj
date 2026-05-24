@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Infrastructure\Reshape.ElectricAi.Infrastructure.csproj" />
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Plans\Reshape.ElectricAi.Plans.csproj" />
+    <ProjectReference Include="..\..\src\Reshape.ElectricAi.AiChat\Reshape.ElectricAi.AiChat.csproj" />
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Core\Reshape.ElectricAi.Core.csproj" />
     <ProjectReference Include="..\..\src\Reshape.ElectricAi.Presentation\Reshape.ElectricAi.Presentation.csproj" />
   </ItemGroup>

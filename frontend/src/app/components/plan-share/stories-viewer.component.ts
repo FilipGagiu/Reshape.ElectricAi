@@ -99,11 +99,12 @@ export class StoriesViewerComponent {
 
     constructor() {
         effect(() => {
-            const params = this.uuid();
-            const uuidValue = params?.get('uuid') ?? '';
-            if (uuidValue) {
-                this.loadPlan(uuidValue);
-            }
+            // Route `:uuid` is currently ignored — backend resolves the plan
+            // from the JWT (`GET /api/v1/Itinerary`). Subscribe to the
+            // paramMap signal anyway so we re-fetch if the route param ever
+            // becomes meaningful (per-plan share endpoints).
+            this.uuid();
+            this.loadCurrentPlan();
         });
 
         // Force dark mode while the stories viewer is mounted.
@@ -142,9 +143,9 @@ export class StoriesViewerComponent {
         });
     }
 
-    private async loadPlan(uuid: string): Promise<void> {
+    private async loadCurrentPlan(): Promise<void> {
         this.state.set('loading');
-        const data = await this.planShareService.getPlanByUuid(uuid);
+        const data = await this.planShareService.getCurrent();
         if (!data) {
             this.state.set('not-found');
             this.plan.set(null);

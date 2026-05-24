@@ -1,0 +1,114 @@
+<form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="ec-pub-form"
+    *transloco="let t"
+    novalidate
+>
+    <div class="ec-pub-form__field">
+        <label class="ec-pub-form__label" for="pub-title">{{ t('admin.publish.title.label') }}</label>
+        <input
+            id="pub-title"
+            type="text"
+            formControlName="title"
+            class="ec-pub-form__input"
+            maxlength="200"
+            [placeholder]="t('admin.publish.title.placeholder')"
+        />
+        @if (form.controls.title.touched && form.controls.title.invalid) {
+            <small class="ec-pub-form__error">{{ t('admin.publish.title.error') }}</small>
+        }
+    </div>
+
+    <div class="ec-pub-form__field">
+        <label class="ec-pub-form__label" for="pub-body">{{ t('admin.publish.body.label') }}</label>
+        <textarea
+            id="pub-body"
+            formControlName="body"
+            class="ec-pub-form__textarea"
+            rows="4"
+            maxlength="4000"
+            [placeholder]="t('admin.publish.body.placeholder')"
+        ></textarea>
+        @if (form.controls.body.touched && form.controls.body.invalid) {
+            <small class="ec-pub-form__error">{{ t('admin.publish.body.error') }}</small>
+        }
+    </div>
+
+    <div class="ec-pub-form__field">
+        <label class="ec-pub-form__label" for="pub-category">{{ t('admin.publish.category.label') }}</label>
+        <select
+            id="pub-category"
+            formControlName="primaryCategory"
+            class="ec-pub-form__select"
+        >
+            @for (cat of categories; track cat) {
+                <option [value]="cat">{{ t('liveFeed.category.' + cat.toLowerCase()) }}</option>
+            }
+        </select>
+    </div>
+
+    <div class="ec-pub-form__field ec-pub-form__field--inline">
+        <div class="ec-pub-form__inline-text">
+            <span class="ec-pub-form__label">{{ t('admin.publish.isGeneral.label') }}</span>
+            <span class="ec-pub-form__hint">{{ t('admin.publish.isGeneral.hint') }}</span>
+        </div>
+        <button
+            type="button"
+            class="ec-pub-form__toggle"
+            [class.ec-pub-form__toggle--on]="form.controls.isGeneral.value"
+            [attr.aria-pressed]="form.controls.isGeneral.value"
+            (click)="form.controls.isGeneral.setValue(!form.controls.isGeneral.value)"
+        >
+            <span class="ec-pub-form__toggle-knob" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    @if (!form.controls.isGeneral.value) {
+        <div class="ec-pub-form__field">
+            <label class="ec-pub-form__label" for="pub-artists">{{ t('admin.publish.targetArtists.label') }}</label>
+            <input
+                id="pub-artists"
+                type="text"
+                formControlName="targetArtistsText"
+                class="ec-pub-form__input"
+                [placeholder]="t('admin.publish.targetArtists.placeholder')"
+            />
+            <small class="ec-pub-form__hint">{{ t('admin.publish.targetArtists.hint') }}</small>
+        </div>
+
+        <div class="ec-pub-form__field">
+            <label class="ec-pub-form__label" for="pub-genres">{{ t('admin.publish.targetGenres.label') }}</label>
+            <p-multiSelect
+                inputId="pub-genres"
+                formControlName="targetGenres"
+                [options]="genreOptions"
+                optionLabel="label"
+                optionValue="value"
+                [filter]="true"
+                filterBy="label"
+                [showClear]="true"
+                [showToggleAll]="false"
+                display="chip"
+                [maxSelectedLabels]="3"
+                appendTo="body"
+                styleClass="ec-pub-form__multiselect w-full"
+                [placeholder]="t('admin.publish.targetGenres.placeholder')"
+                [filterPlaceHolder]="t('admin.publish.targetGenres.filterPlaceholder')"
+                [emptyFilterMessage]="t('admin.publish.targetGenres.emptyFilter')"
+            />
+        </div>
+    }
+
+    @if (status() === 'error' && errorMessage()) {
+        <div class="ec-pub-form__alert" role="alert">{{ errorMessage()! | transloco }}</div>
+    }
+
+    <button
+        type="submit"
+        class="ec-pub-form__cta"
+        [disabled]="status() === 'submitting'"
+    >
+        {{ status() === 'submitting' ? t('admin.publish.submitting') : t('admin.publish.submit') }}
+    </button>
+</form>

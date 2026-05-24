@@ -16,6 +16,8 @@ import { Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
 import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
+import { AuthService } from '@shared/services/auth.service';
+import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
 import {
     WizardProgressComponent,
@@ -24,6 +26,21 @@ import {
 
 import { PlanIntakeQuestion } from '../plan-intake/models/plan-intake.model';
 import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
+
+interface LoaderStep {
+    readonly iconClass: string;
+    readonly copyKey: string;
+}
+
+const LOADER_STEPS: ReadonlyArray<LoaderStep> = [
+    { iconClass: 'pi-headphones', copyKey: 'plan.intake.loader.curating' },
+    { iconClass: 'pi-map-marker', copyKey: 'plan.intake.loader.mapping' },
+    { iconClass: 'pi-ticket', copyKey: 'plan.intake.loader.matching' },
+    { iconClass: 'pi-shopping-bag', copyKey: 'plan.intake.loader.tasting' },
+    { iconClass: 'pi-sun', copyKey: 'plan.intake.loader.timing' },
+    { iconClass: 'pi-star', copyKey: 'plan.intake.loader.polishing' },
+];
+const LOADER_STEP_INTERVAL_MS = 1500;
 
 @Component({
     selector: 'app-plan-steps',
@@ -40,6 +57,8 @@ import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
 export class PlanStepsComponent {
     private readonly transloco = inject(TranslocoService);
     private readonly router = inject(Router);
+    private readonly auth = inject(AuthService);
+    private readonly planOnboarding = inject(PlanOnboardingService);
     protected readonly service = inject(PlanIntakeService);
 
     protected readonly textControl = new FormControl<string>('', { nonNullable: true });
@@ -109,6 +128,11 @@ export class PlanStepsComponent {
 
     private readonly textareaRef = viewChild<ElementRef<HTMLTextAreaElement>>('textarea');
 
+    private readonly loaderStepIndex = signal(0);
+    protected readonly loaderStep = computed<LoaderStep>(
+        () => LOADER_STEPS[this.loaderStepIndex() % LOADER_STEPS.length],
+    );
+
     constructor() {
         effect(() => {
             const question = this.currentQuestion();
@@ -123,6 +147,19 @@ export class PlanStepsComponent {
                     this.resizeTextarea();
                 });
             });
+        });
+
+        effect((onCleanup) => {
+            const running = this.isSubmitting();
+            if (!running) {
+                this.loaderStepIndex.set(0);
+                return;
+            }
+            const timerId = setInterval(
+                () => this.loaderStepIndex.update((value) => value + 1),
+                LOADER_STEP_INTERVAL_MS,
+            );
+            onCleanup(() => clearInterval(timerId));
         });
 
         this.textControl.valueChanges
@@ -173,6 +210,11 @@ export class PlanStepsComponent {
     protected skip(): void {
         if (!this.canSkip()) return;
         this.service.skipCurrent();
+    }
+
+    protected skipOnboarding(): void {
+        this.planOnboarding.markCompleted(this.auth.currentUser()?.email);
+        void this.router.navigateByUrl('/');
     }
 
     private resizeTextarea(): void {

@@ -51,12 +51,15 @@ export class ConversationModalComponent {
     });
 
     constructor() {
-        // Reset the input-revealed flag whenever the modal opens with a different conversation.
+        // Reset the input-revealed flag + hydrate replies whenever the modal opens
+        // with a different conversation. Hydration is a no-op if already loaded
+        // or if we're in bypass mode (local-only conversations).
         effect(() => {
             const conv = this.conversation();
             const opened = this.open();
             if (opened && conv) {
                 this.inputRevealed.set(false);
+                void this.questionsService.ensureHydrated(conv.id);
             }
         });
 

@@ -17,7 +17,10 @@ export interface ChatMessage {
 }
 
 export interface Conversation {
+    /** Stable view-id for the lifetime of the conversation. */
     readonly id: string;
+    /** BE-assigned id; absent until the conversation is persisted server-side. */
+    readonly beId?: string;
     readonly firstQuestion: string;
     readonly messages: readonly ChatMessage[];
     readonly updatedAt: Date;

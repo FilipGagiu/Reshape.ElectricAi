@@ -1,8 +1,4 @@
-export interface Environment {
-    readonly production: boolean;
-    readonly apiBaseUrl: string;
-    readonly allowDevBypass: boolean;
-}
+import type { Environment } from './environment.types';
 
 export const environment: Environment = {
     production: false,

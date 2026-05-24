@@ -114,13 +114,32 @@ public sealed partial class OpenAiClient(
         throw new LlmException("llm-unavailable", "OpenAI retries exhausted.", lastError);
     }
 
-    public async Task<LlmTextResult> CompleteFreeTextAsync(
+    public Task<LlmTextResult> CompleteFreeTextAsync(
         string systemPrompt,
         string userPrompt,
         string? model,
         int? maxCompletionTokens,
         CancellationToken cancellationToken)
     {
+        var messages = new LlmChatMessage[]
+        {
+            new(LlmChatRole.System, systemPrompt),
+            new(LlmChatRole.User, userPrompt)
+        };
+        return CompleteChatAsync(messages, model, maxCompletionTokens, cancellationToken);
+    }
+
+    public async Task<LlmTextResult> CompleteChatAsync(
+        IReadOnlyList<LlmChatMessage> messages,
+        string? model,
+        int? maxCompletionTokens,
+        CancellationToken cancellationToken)
+    {
+        if (messages is null || messages.Count == 0)
+        {
+            throw new ArgumentException("messages must contain at least one entry.", nameof(messages));
+        }
+
         var modelId = string.IsNullOrWhiteSpace(model) ? "gpt-4o-mini" : model;
         if (!_options.Models.TryGetValue(modelId, out var pricing))
         {
@@ -134,11 +153,17 @@ public sealed partial class OpenAiClient(
             MaxOutputTokenCount = maxCompletionTokens ?? _options.Limits.MaxCompletionTokens
         };
 
-        var messages = new List<ChatMessage>
+        var sdkMessages = new List<ChatMessage>(messages.Count);
+        foreach (var m in messages)
         {
-            ChatMessage.CreateSystemMessage(systemPrompt),
-            ChatMessage.CreateUserMessage(userPrompt)
-        };
+            sdkMessages.Add(m.Role switch
+            {
+                LlmChatRole.System => ChatMessage.CreateSystemMessage(m.Content),
+                LlmChatRole.User => ChatMessage.CreateUserMessage(m.Content),
+                LlmChatRole.Assistant => ChatMessage.CreateAssistantMessage(m.Content),
+                _ => throw new ArgumentOutOfRangeException(nameof(messages), $"Unknown role: {m.Role}")
+            });
+        }
 
         Exception? lastError = null;
         for (var attempt = 1; attempt <= 2; attempt++)
@@ -149,7 +174,7 @@ public sealed partial class OpenAiClient(
                 cts.CancelAfter(TimeSpan.FromSeconds(_options.Limits.TimeoutSeconds));
                 var sw = Stopwatch.StartNew();
 
-                var completion = await client.CompleteChatAsync(messages, chatOptions, cts.Token);
+                var completion = await client.CompleteChatAsync(sdkMessages, chatOptions, cts.Token);
                 sw.Stop();
 
                 var text = completion.Value.Content[0].Text;

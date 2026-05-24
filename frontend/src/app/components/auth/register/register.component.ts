@@ -16,6 +16,7 @@ import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
 import { AuthError, AuthService } from '@shared/services/auth.service';
+import { PlanOnboardingService } from '@shared/services/plan-onboarding.service';
 
 interface RegisterFormControls {
     email: FormControl<string>;
@@ -49,6 +50,7 @@ function passwordsMatchValidator(group: AbstractControl): ValidationErrors | nul
 export class RegisterComponent {
     private readonly authService = inject(AuthService);
     private readonly router = inject(Router);
+    private readonly planOnboarding = inject(PlanOnboardingService);
 
     protected readonly errorKey = signal<string | null>(null);
     protected readonly submitting = signal(false);
@@ -90,7 +92,8 @@ export class RegisterComponent {
                 return;
             }
 
-            await this.router.navigateByUrl('/');
+            const destination = this.planOnboarding.isCompleted(email) ? '/' : '/plan';
+            await this.router.navigateByUrl(destination);
         } finally {
             this.submitting.set(false);
         }

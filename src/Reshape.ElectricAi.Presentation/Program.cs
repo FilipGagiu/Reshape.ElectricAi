@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Reshape.ElectricAi.AiChat;
+using Reshape.ElectricAi.AiChat.Persistence;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.LiveFeed;
 using Reshape.ElectricAi.LiveFeed.Persistence;
@@ -20,6 +21,10 @@ using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
 LoadSecretsJson(builder.Configuration, Directory.GetCurrentDirectory());
+// Re-add env vars last so they override secrets.json (LoadSecretsJson runs after
+// WebApplication.CreateBuilder which already added env vars; without this re-add,
+// secrets.json would shadow test fixtures that inject config via environment).
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Host.UseSerilog((context, services, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration)
@@ -153,6 +158,8 @@ var vectorDb = scope.ServiceProvider.GetRequiredService<VectorDbContext>();
 await vectorDb.Database.MigrateAsync();
 var feedDb = scope.ServiceProvider.GetRequiredService<FeedDbContext>();
 await feedDb.Database.MigrateAsync();
+var chatDb = scope.ServiceProvider.GetRequiredService<ChatDbContext>();
+await chatDb.Database.MigrateAsync();
 
 // if (app.Environment.IsDevelopment())
 // {
