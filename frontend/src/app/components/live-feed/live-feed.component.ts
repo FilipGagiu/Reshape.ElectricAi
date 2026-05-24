@@ -14,7 +14,10 @@ import { EcModalComponent } from '@shared/components/ec-modal/ec-modal.component
 import { TokenStore } from '@shared/api/token-store';
 
 import { PublishFeedFormComponent } from '@components/admin/publish-feed-form.component';
+import { FeedApi } from '@shared/api/feed-api';
 import { FeedEntryDto } from '@shared/api/dto/feed.dto';
+import { extractErrorEnvelope } from '@shared/api/error-envelope';
+import { firstValueFrom } from 'rxjs';
 
 import {
     CATEGORY_META,
@@ -81,6 +84,7 @@ export class LiveFeedComponent {
     private readonly transloco = inject(TranslocoService);
     private readonly destroyRef = inject(DestroyRef);
     private readonly tokens = inject(TokenStore);
+    private readonly feedApi = inject(FeedApi);
 
     protected readonly canPublish = computed(() => {
         const user = this.tokens.user();
@@ -114,6 +118,27 @@ export class LiveFeedComponent {
         console.warn('[live-feed][onPublished]', entry);
         this.feedService.upsertEntry(entry);
         this.publishOpen.set(false);
+    }
+
+    protected async deleteEntry(entryId: string, entryTitle: string): Promise<void> {
+        const confirmMessage = this.transloco.translate('liveFeed.card.deleteConfirm', {
+            title: entryTitle,
+        });
+        if (!window.confirm(confirmMessage)) return;
+
+        // Optimistic removal; if the DELETE fails, the SSE broadcast won't reinstate
+        // the entry either — but we re-fetch the list as a safety net on error.
+        this.feedService.removeEntryById(entryId);
+
+        try {
+            await firstValueFrom(this.feedApi.remove(entryId));
+        } catch (err) {
+            const envelope = extractErrorEnvelope(err);
+            console.warn('[live-feed][deleteEntry] failed', envelope);
+            window.alert(
+                this.transloco.translate('liveFeed.card.deleteError', { code: envelope.code }),
+            );
+        }
     }
 
     protected readonly items = computed<ReadonlyArray<FeedItemViewModel>>(() => {

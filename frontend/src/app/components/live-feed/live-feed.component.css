@@ -6,6 +6,35 @@
     background-color: var(--ec-dark-navy);
 }
 
+.feed-card__delete {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(15, 20, 40, 0.08);
+    color: var(--ec-dark-navy, #0f1428);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease, transform 120ms ease;
+    z-index: 1;
+}
+
+.feed-card__delete:hover,
+.feed-card__delete:focus-visible {
+    background-color: var(--ec-red, #d32f2f);
+    color: white;
+    transform: scale(1.05);
+}
+
+.feed-card__delete i {
+    font-size: 13px;
+}
+
 .live-feed-fab {
     position: fixed;
     right: 16px;

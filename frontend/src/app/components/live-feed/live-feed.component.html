@@ -135,7 +135,7 @@
         @for (item of visibleItems(); track trackItem($index, item)) {
             <article
                 [id]="'feed-entry-' + item.entry.id"
-                class="feed-card flex flex-col gap-2 transition-shadow"
+                class="feed-card relative flex flex-col gap-2 transition-shadow"
                 [class.feed-card--urgent]="item.meta.urgency === FeedUrgency.High"
                 style="
                     background-color: var(--ec-off-white);
@@ -149,8 +149,8 @@
                         : '4px solid ' + item.meta.accent
                 "
                 [style.padding]="
-                    item.meta.urgency === FeedUrgency.High
-                        ? 'var(--space-4) var(--space-4) var(--space-4) var(--space-3)'
+                    canPublish()
+                        ? 'var(--space-4) calc(var(--space-4) + 36px) var(--space-4) var(--space-3)'
                         : 'var(--space-4) var(--space-4) var(--space-4) var(--space-3)'
                 "
             >
@@ -198,6 +198,18 @@
                         {{ item.entry.body }}
                     </p>
                 </button>
+
+                @if (canPublish()) {
+                    <button
+                        type="button"
+                        class="feed-card__delete"
+                        (click)="deleteEntry(item.entry.id, item.entry.title)"
+                        [attr.aria-label]="t('liveFeed.card.deleteAria')"
+                        [attr.title]="t('liveFeed.card.deleteAria')"
+                    >
+                        <i class="pi pi-trash" aria-hidden="true"></i>
+                    </button>
+                }
             </article>
         }
     </div>

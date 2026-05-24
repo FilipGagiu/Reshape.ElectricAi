@@ -32,6 +32,10 @@ export class FeedApi {
         return this.http.post<FeedEntryDto>(apiUrl(this.baseUrl, '/feed'), payload);
     }
 
+    remove(id: string): Observable<void> {
+        return this.http.delete<void>(apiUrl(this.baseUrl, `/feed/${encodeURIComponent(id)}`));
+    }
+
     streamUrl(userId: string | null): string {
         const base = apiUrl(this.baseUrl, '/feed/stream');
         return userId ? `${base}?userId=${encodeURIComponent(userId)}` : base;

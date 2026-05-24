@@ -123,6 +123,12 @@ export class LiveFeedService {
 
     private readonly entriesSignal = signal<ReadonlyArray<FeedEntry>>([]);
     private readonly isUsingMockSignal = signal(false);
+    /**
+     * Tombstones for entries the user just deleted. Prevents a late-arriving
+     * SSE `feed.created` (or a list re-fetch race) from resurrecting them in the
+     * UI. Cleared on session change / full reload — refresh is authoritative.
+     */
+    private readonly deletedIds = new Set<string>();
     private eventSource: EventSource | null = null;
     private reconnectHandle: ReturnType<typeof setTimeout> | null = null;
 
@@ -133,13 +139,25 @@ export class LiveFeedService {
     /**
      * Insert (or replace) a freshly-published entry. Used to optimistically reflect
      * a successful POST /feed before the SSE broadcast lands. The SSE handler dedupes
-     * by id, so any later replay is a no-op.
+     * by id, so any later replay is a no-op. Also clears any prior tombstone for
+     * this id (republish after delete is a valid sequence).
      */
     upsertEntry(dto: FeedEntryDto): void {
         const entry = toFeedEntry(dto);
+        this.deletedIds.delete(entry.id);
         this.entriesSignal.update((current) =>
             [entry, ...current.filter((item) => item.id !== entry.id)].sort(byPublishedDesc),
         );
+    }
+
+    /**
+     * Remove an entry by id. Used to optimistically reflect a successful DELETE /feed/{id}
+     * before the SSE feed.deleted broadcast lands. Idempotent (no-op if id is already gone).
+     * Records a tombstone so any late SSE `feed.created` / re-fetch can't resurrect it.
+     */
+    removeEntryById(id: string): void {
+        this.deletedIds.add(id);
+        this.entriesSignal.update((current) => current.filter((item) => item.id !== id));
     }
 
     constructor() {
@@ -166,7 +184,13 @@ export class LiveFeedService {
     private async loadAndStream(userId: string): Promise<void> {
         try {
             const entries = await this.fetchList();
-            this.entriesSignal.set(entries.map(toFeedEntry).sort(byPublishedDesc));
+            // Strip any tombstoned ids — guards against a list re-fetch firing
+            // before BE has propagated a recent delete.
+            const filtered = entries
+                .filter((dto) => !this.deletedIds.has(dto.id))
+                .map(toFeedEntry)
+                .sort(byPublishedDesc);
+            this.entriesSignal.set(filtered);
             this.isUsingMockSignal.set(false);
             this.openStream(userId);
         } catch (err) {
@@ -206,6 +230,7 @@ export class LiveFeedService {
     private handleCreated(event: MessageEvent): void {
         const dto = parseEntry(event.data);
         if (!dto) return;
+        if (this.deletedIds.has(dto.id)) return; // tombstoned — was just deleted client-side
         const entry = toFeedEntry(dto);
         this.entriesSignal.update((current) =>
             [entry, ...current.filter((item) => item.id !== entry.id)].sort(byPublishedDesc),

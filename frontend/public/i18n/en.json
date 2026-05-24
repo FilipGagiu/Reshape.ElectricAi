@@ -116,7 +116,10 @@
         },
         "card": {
             "expand": "Show more",
-            "collapse": "Show less"
+            "collapse": "Show less",
+            "deleteAria": "Delete this event",
+            "deleteConfirm": "Delete \"{{title}}\"? This cannot be undone.",
+            "deleteError": "Couldn't delete the event ({{code}}). Try again."
         },
         "empty": {
             "personalized": {

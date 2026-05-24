@@ -116,7 +116,10 @@
         },
         "card": {
             "expand": "Vezi mai mult",
-            "collapse": "Vezi mai puțin"
+            "collapse": "Vezi mai puțin",
+            "deleteAria": "Șterge acest eveniment",
+            "deleteConfirm": "Ștergi „{{title}}”? Acțiunea nu se poate anula.",
+            "deleteError": "Nu am putut șterge evenimentul ({{code}}). Încearcă din nou."
         },
         "empty": {
             "personalized": {
