@@ -6,17 +6,14 @@ import {
     computed,
     effect,
     inject,
+    signal,
     untracked,
-    viewChild
+    viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
-
-import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
-
-import { MOCK_PLAN_UUID } from '@components/plan-share/plan-share.model';
 
 import {
     WizardProgressComponent,
@@ -31,7 +28,6 @@ import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
     imports: [
         TranslocoModule,
         ReactiveFormsModule,
-        EcTopbarComponent,
         WizardProgressComponent,
     ],
     templateUrl: './plan-steps.component.html',
@@ -126,12 +122,6 @@ export class PlanStepsComponent {
             });
         });
 
-        effect(() => {
-            if (this.isCompleted()) {
-                untracked(() => this.gotoPlan());
-            }
-        });
-
         this.textControl.valueChanges
             .pipe(takeUntilDestroyed())
             .subscribe(() => queueMicrotask(() => this.resizeTextarea()));
@@ -180,10 +170,6 @@ export class PlanStepsComponent {
     protected skip(): void {
         if (!this.canSkip()) return;
         this.service.skipCurrent();
-    }
-
-    protected gotoPlan(): void {
-        this.router.navigateByUrl(`/p/${MOCK_PLAN_UUID}`);
     }
 
     private resizeTextarea(): void {

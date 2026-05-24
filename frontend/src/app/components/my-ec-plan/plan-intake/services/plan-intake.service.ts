@@ -1,8 +1,10 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Signal, computed, effect, inject, signal } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
-import { catchError, firstValueFrom, of, throwError } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
+import { ItineraryApi } from '@shared/api/itinerary-api';
+import { ItineraryStore } from '@shared/api/itinerary-store';
+import { extractErrorEnvelope } from '@shared/api/error-envelope';
 import { AuthService } from '@shared/services/auth.service';
 
 import {
@@ -21,9 +23,7 @@ import { PLAN_INTAKE_QUESTIONS } from './plan-intake.questions';
 
 const STORAGE_PREFIX = 'ec-plan-intake-v3-';
 const ANON_STORAGE_KEY = `${STORAGE_PREFIX}anonymous`;
-const SUBMIT_ENDPOINT = '/api/plan-intake';
 
-const SUBMIT_NETWORK_ENABLED = false;
 const ASSISTANT_TYPING_DELAY_MS = 750;
 
 const GREETING_KEY = 'plan.intake.greeting';
@@ -31,7 +31,8 @@ const THANKS_KEY = 'plan.intake.thanks';
 
 @Injectable({ providedIn: 'root' })
 export class PlanIntakeService {
-    private readonly http = inject(HttpClient);
+    private readonly itineraryApi = inject(ItineraryApi);
+    private readonly itineraryStore = inject(ItineraryStore);
     private readonly auth = inject(AuthService);
     private readonly transloco = inject(TranslocoService);
 
@@ -215,30 +216,34 @@ export class PlanIntakeService {
             answers: snapshot.answers.map((entry) => this.toSubmittedAnswer(entry)),
         };
 
-        console.info('[plan-intake] submit', payload);
-
-        if (!SUBMIT_NETWORK_ENABLED) {
+        if (this.auth.isBypassActive()) {
+            console.info('[plan-intake] bypass mode — skipping network submit', payload);
             this.markSubmitted();
             return;
         }
 
         try {
-            await firstValueFrom(
-                this.http.post(SUBMIT_ENDPOINT, payload).pipe(
-                    catchError((error: HttpErrorResponse) =>
-                        error.status === 0 || error.status >= 500
-                            ? throwError(() => error)
-                            : of(null),
-                    ),
-                ),
+            const response = await firstValueFrom(
+                this.itineraryApi.generate({
+                    version: payload.version,
+                    locale: payload.locale,
+                    submittedAt: payload.submittedAt,
+                    answers: payload.answers.map((entry) => ({
+                        question: entry.question,
+                        answer: entry.answer,
+                        answeredAt: entry.answeredAt,
+                    })),
+                }),
             );
+            this.itineraryStore.set(response);
             this.markSubmitted();
         } catch (error) {
-            console.error('[plan-intake] submit failed', error);
+            const envelope = extractErrorEnvelope(error);
+            console.error('[plan-intake] submit failed', envelope);
             this.stateSignal.update((current) => ({
                 ...current,
                 status: 'error',
-                errorCode: 'submit-failed',
+                errorCode: envelope.code,
                 updatedAt: new Date().toISOString(),
             }));
         }

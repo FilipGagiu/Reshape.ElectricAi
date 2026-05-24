@@ -124,7 +124,7 @@
     },
     "plan": {
         "title": "Planul meu EC",
-        "placeholder": "Electric Castle-ul tău, planificat.",
+        "placeholder": "Planul tău extracurricular trăiește aici.",
         "cta": {
             "watchRecap": "Vezi rezumatul"
         },
@@ -225,8 +225,7 @@
             },
             "completed": {
                 "title": "Gata, ești setat",
-                "body": "Răspunsurile sunt salvate. Planul se pregătește.",
-                "cta": "DESCHIDE PLANUL"
+                "body": "Răspunsurile sunt salvate. Planul se pregătește."
             }
         },
         "intake": {
@@ -245,26 +244,14 @@
                     "placeholder": "Prenumele tău",
                     "description": "Doar prenumele e de ajuns. Rămânem la relaxat."
                 },
-                "location": {
-                    "prompt": "De unde vii?",
-                    "placeholder": "Oraș sau țară",
-                    "description": "Ne ajută să gândim traseul și ziua de drum.",
+                "origin": {
+                    "prompt": "De unde vii și cât de mare-i gașca?",
+                    "placeholder": "Oraș + dimensiunea grupului",
+                    "description": "Ne ajută cu drumul tău spre EC și cu ritmul zilelor pentru grup.",
                     "chip": {
-                        "cluj": "Cluj-Napoca",
-                        "bucharest": "București",
-                        "otherRomania": "Altundeva în România",
-                        "abroad": "Din străinătate"
-                    }
-                },
-                "groupSize": {
-                    "prompt": "Cât de mare e gașca?",
-                    "placeholder": "Singur, cu prieteni...",
-                    "description": "Ca să potrivim ritmul recomandărilor pentru grupul tău.",
-                    "chip": {
-                        "solo": "Doar eu",
-                        "duo": "Cu încă unul",
-                        "smallCrew": "Gașcă mică (3-5)",
-                        "bigCrew": "Gașcă mare (6+)"
+                        "clujSolo": "Cluj-Napoca, singur/ă",
+                        "bucharestCrew": "București, cu prietenii",
+                        "abroadGroup": "Din străinătate, grup mare"
                     }
                 },
                 "accommodation": {
@@ -352,7 +339,8 @@
             "passwordsMismatch": "Parolele nu se potrivesc.",
             "emailTaken": "E-mailul ăsta e deja folosit.",
             "invalidCredentials": "E-mail sau parolă greșite.",
-            "network": "Conexiunea s-a pierdut. Mai încearcă."
+            "network": "Nu ajungem la castel. Verifică conexiunea.",
+            "server": "S-a stricat ceva la noi. Mai încearcă într-un minut."
         },
         "logout": {
             "label": "Deconectare",

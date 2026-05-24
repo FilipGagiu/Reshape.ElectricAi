@@ -40,13 +40,6 @@
                 <p class="ec-plan-steps__completed-body">
                     {{ 'plan.steps.completed.body' | transloco }}
                 </p>
-                <button
-                    type="button"
-                    class="ec-plan-steps__cta"
-                    (click)="gotoPlan()"
-                >
-                    {{ 'plan.steps.completed.cta' | transloco }}
-                </button>
             </div>
         } @else if (currentQuestion(); as question) {
             <div class="ec-plan-steps__card">

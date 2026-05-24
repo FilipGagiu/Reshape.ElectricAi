@@ -124,7 +124,7 @@
     },
     "plan": {
         "title": "My EC plan",
-        "placeholder": "Your Electric Castle, planned.",
+        "placeholder": "Your extracurricular plan lives here.",
         "cta": {
             "watchRecap": "Watch the recap"
         },
@@ -224,8 +224,7 @@
             },
             "completed": {
                 "title": "You're all set",
-                "body": "Answers saved. Your plan's brewing.",
-                "cta": "OPEN PLAN"
+                "body": "Answers saved. Your plan's brewing."
             }
         },
         "intake": {
@@ -244,26 +243,14 @@
                     "placeholder": "Your first name",
                     "description": "First name's plenty. We'll keep things casual from here."
                 },
-                "location": {
-                    "prompt": "Where are you coming in from?",
-                    "placeholder": "City or country",
-                    "description": "Helps us think about your route in and travel day.",
+                "origin": {
+                    "prompt": "Where are you coming in from, and how big's the crew?",
+                    "placeholder": "City + group size",
+                    "description": "Helps us think about your route in and how the days flow for your group.",
                     "chip": {
-                        "cluj": "Cluj-Napoca",
-                        "bucharest": "Bucharest",
-                        "otherRomania": "Elsewhere in Romania",
-                        "abroad": "From abroad"
-                    }
-                },
-                "groupSize": {
-                    "prompt": "How big's the crew?",
-                    "placeholder": "Solo, with friends...",
-                    "description": "So we can pace recommendations for your group.",
-                    "chip": {
-                        "solo": "Just me",
-                        "duo": "With a +1",
-                        "smallCrew": "Small crew (3-5)",
-                        "bigCrew": "Big crew (6+)"
+                        "clujSolo": "Cluj-Napoca, solo",
+                        "bucharestCrew": "Bucharest, with friends",
+                        "abroadGroup": "Abroad, big group"
                     }
                 },
                 "accommodation": {
@@ -351,7 +338,8 @@
             "passwordsMismatch": "Passwords don't match.",
             "emailTaken": "That email's already in use.",
             "invalidCredentials": "Wrong email or password.",
-            "network": "Connection lost. Try again."
+            "network": "Can't reach the castle. Check your connection.",
+            "server": "Something broke on our end. Try again in a moment."
         },
         "logout": {
             "label": "Sign out",

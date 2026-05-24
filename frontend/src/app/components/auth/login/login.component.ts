@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
-import { AuthService } from '@shared/services/auth.service';
+import { AuthError, AuthService } from '@shared/services/auth.service';
 
 interface LoginFormControls {
     email: FormControl<string>;
@@ -48,6 +48,8 @@ export class LoginComponent {
         }),
     });
 
+    protected readonly bypassEnabled = this.authService.devBypassEnabled;
+
     protected async submit(): Promise<void> {
         if (this.form.invalid || this.submitting()) {
             this.form.markAllAsTouched();
@@ -57,21 +59,33 @@ export class LoginComponent {
         this.submitting.set(true);
         this.errorKey.set(null);
 
-        const { email, password } = this.form.getRawValue();
-        const result = await this.authService.login(email, password);
+        try {
+            const { email, password } = this.form.getRawValue();
+            const result = await this.authService.login(email, password);
 
-        if (typeof result === 'string') {
-            this.errorKey.set(result);
+            if (this.isAuthErrorValue(result)) {
+                this.errorKey.set(result);
+                return;
+            }
+
+            await this.router.navigateByUrl('/');
+        } finally {
             this.submitting.set(false);
-            return;
         }
-
-        this.submitting.set(false);
-        void this.router.navigateByUrl('/');
     }
 
     protected bypass(): void {
+        if (!this.bypassEnabled) return;
         this.authService.bypass();
-        this.router.navigateByUrl('/');
+        void this.router.navigateByUrl('/');
+    }
+
+    private isAuthErrorValue(value: unknown): value is AuthError {
+        return (
+            value === AuthError.InvalidCredentials ||
+            value === AuthError.EmailTaken ||
+            value === AuthError.NetworkError ||
+            value === AuthError.ServerError
+        );
     }
 }

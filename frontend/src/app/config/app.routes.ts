@@ -62,6 +62,7 @@ export const routes: Routes = [
                         (m) => m.PlanStepsComponent,
                     ),
             },
+            { path: 'plan-steps', redirectTo: 'plan' },
         ],
     },
     { path: '**', redirectTo: '' },

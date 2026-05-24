@@ -1,4 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { DestroyRef, Injectable, computed, effect, inject, signal } from '@angular/core';
+
+import { FeedApi } from '@shared/api/feed-api';
+import { FeedEntryDto } from '@shared/api/dto/feed.dto';
+import { TokenStore } from '@shared/api/token-store';
+import { AuthService } from '@shared/services/auth.service';
+
 import { FeedCategory, FeedEntry } from './live-feed.model';
 
 const minutesAgo = (minutes: number): Date => new Date(Date.now() - minutes * 60_000);
@@ -106,13 +112,155 @@ const MOCK_FEED: ReadonlyArray<FeedEntry> = [
     },
 ];
 
-@Injectable({
-    providedIn: 'root',
-})
-export class LiveFeedService {
-    private readonly entries = signal<ReadonlyArray<FeedEntry>>(
-        [...MOCK_FEED].sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime()),
-    );
+const SSE_RECONNECT_DELAY_MS = 5000;
 
-    readonly feed = this.entries.asReadonly();
+@Injectable({ providedIn: 'root' })
+export class LiveFeedService {
+    private readonly feedApi = inject(FeedApi);
+    private readonly auth = inject(AuthService);
+    private readonly tokens = inject(TokenStore);
+    private readonly destroyRef = inject(DestroyRef);
+
+    private readonly entriesSignal = signal<ReadonlyArray<FeedEntry>>([]);
+    private readonly isUsingMockSignal = signal(false);
+    private eventSource: EventSource | null = null;
+    private reconnectHandle: ReturnType<typeof setTimeout> | null = null;
+
+    readonly feed = this.entriesSignal.asReadonly();
+    readonly isUsingMock = this.isUsingMockSignal.asReadonly();
+    readonly isConnected = computed(() => !this.isUsingMockSignal() && this.eventSource !== null);
+
+    constructor() {
+        // React to session changes: load fresh on login, switch to mock on bypass, clear on logout.
+        effect(() => {
+            const user = this.tokens.user();
+            const bypass = this.auth.isBypassActive();
+            this.closeStream();
+            if (!user) {
+                this.entriesSignal.set([]);
+                this.isUsingMockSignal.set(false);
+                return;
+            }
+            if (bypass) {
+                this.useMock();
+                return;
+            }
+            void this.loadAndStream(user.id);
+        });
+
+        this.destroyRef.onDestroy(() => this.closeStream());
+    }
+
+    private async loadAndStream(userId: string): Promise<void> {
+        try {
+            const entries = await this.fetchList();
+            this.entriesSignal.set(entries.map(toFeedEntry).sort(byPublishedDesc));
+            this.isUsingMockSignal.set(false);
+            this.openStream(userId);
+        } catch (err) {
+            console.warn('[live-feed] fetch failed, falling back to mock', err);
+            this.useMock();
+        }
+    }
+
+    private async fetchList(): Promise<ReadonlyArray<FeedEntryDto>> {
+        const observable = this.feedApi.list();
+        return await new Promise((resolve, reject) => {
+            const sub = observable.subscribe({
+                next: (value) => {
+                    resolve(value);
+                    sub.unsubscribe();
+                },
+                error: (err) => {
+                    reject(err);
+                    sub.unsubscribe();
+                },
+            });
+        });
+    }
+
+    private openStream(userId: string): void {
+        this.closeStream();
+        const url = this.feedApi.streamUrl(userId);
+        const source = new EventSource(url);
+        this.eventSource = source;
+
+        source.addEventListener('feed.created', (event) => this.handleCreated(event));
+        source.addEventListener('feed.updated', (event) => this.handleUpdated(event));
+        source.addEventListener('feed.deleted', (event) => this.handleDeleted(event));
+        source.onerror = () => this.scheduleReconnect(userId);
+    }
+
+    private handleCreated(event: MessageEvent): void {
+        const dto = parseEntry(event.data);
+        if (!dto) return;
+        const entry = toFeedEntry(dto);
+        this.entriesSignal.update((current) =>
+            [entry, ...current.filter((item) => item.id !== entry.id)].sort(byPublishedDesc),
+        );
+    }
+
+    private handleUpdated(event: MessageEvent): void {
+        const dto = parseEntry(event.data);
+        if (!dto) return;
+        const entry = toFeedEntry(dto);
+        this.entriesSignal.update((current) =>
+            current.map((item) => (item.id === entry.id ? entry : item)).sort(byPublishedDesc),
+        );
+    }
+
+    private handleDeleted(event: MessageEvent): void {
+        const dto = parseEntry(event.data);
+        if (!dto) return;
+        this.entriesSignal.update((current) => current.filter((item) => item.id !== dto.id));
+    }
+
+    private scheduleReconnect(userId: string): void {
+        if (this.reconnectHandle !== null) return;
+        this.reconnectHandle = setTimeout(() => {
+            this.reconnectHandle = null;
+            this.openStream(userId);
+        }, SSE_RECONNECT_DELAY_MS);
+    }
+
+    private closeStream(): void {
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+        }
+        if (this.reconnectHandle !== null) {
+            clearTimeout(this.reconnectHandle);
+            this.reconnectHandle = null;
+        }
+    }
+
+    private useMock(): void {
+        this.entriesSignal.set([...MOCK_FEED].sort(byPublishedDesc));
+        this.isUsingMockSignal.set(true);
+    }
+}
+
+function toFeedEntry(dto: FeedEntryDto): FeedEntry {
+    return {
+        id: dto.id,
+        category: dto.primaryCategory as unknown as FeedCategory,
+        title: dto.title,
+        body: dto.body,
+        publishedAt: new Date(dto.publishedUtc),
+        isGeneral: dto.isGeneral,
+        targetArtists: dto.targetArtists,
+        targetGenres: dto.targetGenres,
+    };
+}
+
+function byPublishedDesc(a: FeedEntry, b: FeedEntry): number {
+    return b.publishedAt.getTime() - a.publishedAt.getTime();
+}
+
+function parseEntry(raw: string): FeedEntryDto | null {
+    try {
+        return JSON.parse(raw) as FeedEntryDto;
+    } catch {
+        return null;
+    }
 }

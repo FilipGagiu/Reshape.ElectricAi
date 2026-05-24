@@ -15,7 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
 
-import { AuthService } from '@shared/services/auth.service';
+import { AuthError, AuthService } from '@shared/services/auth.service';
 
 interface RegisterFormControls {
     email: FormControl<string>;
@@ -81,16 +81,27 @@ export class RegisterComponent {
         this.submitting.set(true);
         this.errorKey.set(null);
 
-        const { email, password } = this.form.getRawValue();
-        const result = await this.authService.register(email, password);
+        try {
+            const { email, password } = this.form.getRawValue();
+            const result = await this.authService.register(email, password);
 
-        if (typeof result === 'string') {
-            this.errorKey.set(result);
+            if (this.isAuthErrorValue(result)) {
+                this.errorKey.set(result);
+                return;
+            }
+
+            await this.router.navigateByUrl('/');
+        } finally {
             this.submitting.set(false);
-            return;
         }
+    }
 
-        this.submitting.set(false);
-        void this.router.navigateByUrl('/');
+    private isAuthErrorValue(value: unknown): value is AuthError {
+        return (
+            value === AuthError.EmailTaken ||
+            value === AuthError.InvalidCredentials ||
+            value === AuthError.NetworkError ||
+            value === AuthError.ServerError
+        );
     }
 }

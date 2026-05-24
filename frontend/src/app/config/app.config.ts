@@ -5,9 +5,7 @@ import { provideServiceWorker } from '@angular/service-worker';
 
 import { EcHackatonTheme } from '@config/theme';
 import { provideI18n } from '@i18n/i18n.config';
-import { authInterceptor } from '@shared/interceptors/auth.interceptor';
-import { API_BASE_URL } from '@shared/tokens/api-base-url.token';
-import { environment } from '../../environments/environment';
+import { authInterceptor } from '@shared/api/auth.interceptor';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 
@@ -16,7 +14,6 @@ export const appConfig: ApplicationConfig = {
         provideBrowserGlobalErrorListeners(),
         provideZonelessChangeDetection(),
         provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
-        { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
         providePrimeNG({
             theme: {
                 preset: EcHackatonTheme,

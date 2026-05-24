@@ -213,6 +213,11 @@ a,
     --ec-page-divider: rgba(255, 255, 255, 0.12);
 }
 
+/* Override Tailwind's dark:bg-surface-950 to use the brand navy. */
+.dark\:bg-surface-950:where(.ec-hackaton-dark, .ec-hackaton-dark *) {
+    background-color: var(--ec-dark-navy);
+}
+
 /* Reduce motion accessibility. See visual §00. */
 @media (prefers-reduced-motion: reduce) {
     :root {
