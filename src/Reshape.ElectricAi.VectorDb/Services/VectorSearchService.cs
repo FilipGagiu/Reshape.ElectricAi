@@ -7,7 +7,10 @@ using Reshape.ElectricAi.VectorDb.Persistence;
 
 namespace Reshape.ElectricAi.VectorDb.Services;
 
-public sealed class VectorSearchService(VectorDbContext context, IEmbeddingService embeddingService) : IVectorSearchService
+// Each public method opens its own short-lived VectorDbContext via the factory so concurrent calls
+// from ItineraryBuilder's Task.WhenAll over sections (and the inner Task.WhenAll inside
+// TopArtistsSection) don't share a single scoped context and trip EF's ConcurrencyDetector.
+public sealed class VectorSearchService(IDbContextFactory<VectorDbContext> contextFactory, IEmbeddingService embeddingService) : IVectorSearchService
 {
     public async Task<IReadOnlyList<RetrievedChunk>> SearchDocumentsAsync(
         DocumentSearchFilter filter,
@@ -16,6 +19,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var query = context.DocumentChunks.AsNoTracking();
 
         if (filter.UserContext is { Count: > 0 })
@@ -55,6 +59,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var query = context.Questions.AsNoTracking();
 
         if (filter.UserContext is { Count: > 0 })
@@ -111,6 +116,7 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var query = context.EventEntries.AsNoTracking();
 
         if (filter.UserContext is { Count: > 0 })

@@ -16,8 +16,11 @@ public sealed class VectorSearchServiceTests(VectorDbFixture fixture)
             new VectorRepository<EventEntry>(context),
             fixture.CreateEmbeddingService());
 
+    // Hands the search service a factory whose every CreateDbContextAsync returns the same
+    // test-owned context — keeps the test's `await using` lifetime in charge while still
+    // exercising the production code path that goes through IDbContextFactory<T>.
     private VectorSearchService BuildSearchService(VectorDbContext context) =>
-        new(context, fixture.CreateEmbeddingService());
+        new(new TestDbContextFactory<VectorDbContext>(() => context), fixture.CreateEmbeddingService());
 
     [Fact]
     public async Task SearchDocumentsAsync_WithMatchingText_ReturnsChunk()

@@ -26,12 +26,37 @@ public static class VectorDbModule
         var connectionString = configuration.GetConnectionString("Postgres")
             ?? throw new InvalidOperationException("ConnectionStrings:Postgres is not configured.");
 
-        services.AddDbContext<VectorDbContext>(options =>
+        // Shared configurator: same connection + Npgsql options for both the scoped DbContext
+        // (used by VectorRepository / IngestService / EcDataSeeder) and the factory
+        // (used by VectorSearchService / EventLookupService on the parallel itinerary section path,
+        // where a shared scoped context would trip EF's ConcurrencyDetector).
+        // Block-bodied lambda (void) so the compiler infers Action<T> not Func<T,TResult> —
+        // UseNpgsql returns the builder fluently and an expression body would type as Func<>.
+        var configureContext = (DbContextOptionsBuilder options) =>
+        {
             options.UseNpgsql(connectionString, npgsql =>
             {
                 npgsql.MigrationsHistoryTable("__EFMigrationsHistory", "vector");
                 npgsql.UseVector();
-            }));
+            });
+        };
+
+        // Factory is the canonical EF Core answer for concurrent operations: parallel itinerary
+        // sections (Task.WhenAll inside ItineraryBuilder + the inner Task.WhenAll in
+        // TopArtistsSection) would trip EF's ConcurrencyDetector if they shared a single scoped
+        // VectorDbContext via the standard AddDbContext registration. Each search/lookup call now
+        // opens its own short-lived context through CreateDbContextAsync.
+        //
+        // Lifetime MUST be Scoped: the default Singleton factory cannot consume the Scoped
+        // DbContextOptions<VectorDbContext> that AddDbContext registers, and DI validation
+        // (ValidateScopes / ValidateOnBuild in dev) rejects that mismatch.
+        //
+        // The Scoped VectorDbContext registration below preserves the existing repository /
+        // ingest / seeder consumers — they still get one context per HTTP request, but now
+        // sourced via the factory so DI registers only one DbContextOptions<T>.
+        services.AddDbContextFactory<VectorDbContext>(configureContext, ServiceLifetime.Scoped);
+        services.AddScoped<VectorDbContext>(sp =>
+            sp.GetRequiredService<IDbContextFactory<VectorDbContext>>().CreateDbContext());
 
         services.AddScoped<IRepository<Document>, VectorRepository<Document>>();
         services.AddScoped<IRepository<DocumentChunk>, VectorRepository<DocumentChunk>>();
