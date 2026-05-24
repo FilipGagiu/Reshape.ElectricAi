@@ -4,7 +4,11 @@ using Reshape.ElectricAi.VectorDb.Persistence;
 
 namespace Reshape.ElectricAi.VectorDb.Services;
 
-public sealed class EventLookupService(VectorDbContext context) : IEventLookupService
+// Opens a short-lived VectorDbContext per call via the factory: TopArtistsSection runs
+// FindByTitlesAsync and IVectorSearchService.SearchEventsAsync concurrently via Task.WhenAll,
+// and ItineraryBuilder fans out three vector-touching sections concurrently — both would trip
+// EF's ConcurrencyDetector if every call shared the same scoped context.
+public sealed class EventLookupService(IDbContextFactory<VectorDbContext> contextFactory) : IEventLookupService
 {
     private const char LikeEscape = '\\';
 
@@ -27,6 +31,7 @@ public sealed class EventLookupService(VectorDbContext context) : IEventLookupSe
             return [];
         }
 
+        await using var context = await contextFactory.CreateDbContextAsync(cancellationToken);
         var rows = await context.EventEntries
             .AsNoTracking()
             .Where(e => patterns.Any(p => EF.Functions.ILike(e.Title, p, LikeEscape.ToString())))
