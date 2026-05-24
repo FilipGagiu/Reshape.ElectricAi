@@ -117,9 +117,8 @@ builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
-    var allowed = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
     options.AddDefaultPolicy(policy => policy
-        .WithOrigins(allowed)
+        .SetIsOriginAllowed(_ => true)
         .AllowAnyHeader()
         .AllowAnyMethod()
         .AllowCredentials());
