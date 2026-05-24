@@ -6,6 +6,10 @@ namespace Reshape.ElectricAi.Presentation.Middleware;
 
 public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
 {
+    // Generic 500 message. Per CODE.md §Error envelope the real exception message is
+    // logged server-side and NEVER returned to the client.
+    private const string GenericInternalMessage = "Sorry but it seems the rain disturbed our server vibe";
+
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase
@@ -33,7 +37,7 @@ public sealed partial class ExceptionHandlerMiddleware(RequestDelegate next, ILo
         catch (Exception ex)
         {
             LogUnhandled(logger, ex);
-            await WriteEnvelopeAsync(context, (int)HttpStatusCode.InternalServerError, "internal-error", "An unexpected error occurred.");
+            await WriteEnvelopeAsync(context, (int)HttpStatusCode.InternalServerError, "internal-error", GenericInternalMessage);
         }
     }
 

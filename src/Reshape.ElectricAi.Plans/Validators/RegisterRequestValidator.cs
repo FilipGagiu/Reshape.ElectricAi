@@ -14,7 +14,7 @@ public sealed class RegisterRequestValidator : AbstractValidator<RegisterRequest
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
-            .MinimumLength(10).WithMessage("Password must be at least 10 characters.")
+            .MinimumLength(8).WithMessage("Password must be at least 8 characters.")
             .Matches(@"\d").WithMessage("Password must contain at least one digit.")
             .Matches(@"[^A-Za-z0-9]").WithMessage("Password must contain at least one symbol.");
     }

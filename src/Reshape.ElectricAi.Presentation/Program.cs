@@ -43,14 +43,32 @@ builder.Services.Configure<ApiBehaviorOptions>(o =>
 {
     o.InvalidModelStateResponseFactory = context =>
     {
-        var details = context.ModelState
-            .Where(kvp => kvp.Value!.Errors.Count > 0)
-            .ToDictionary(
-                kvp => kvp.Key,
-                kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+        // Raw ModelState messages from System.Text.Json model binding can leak internal
+        // type names, JSON paths, and line/byte offsets. Never expose them to clients.
+        // Log them server-side for diagnostics, return a generic envelope.
+        var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
+            .CreateLogger("Reshape.ElectricAi.Presentation.ModelBinding");
+
+        if (logger.IsEnabled(LogLevel.Warning))
+        {
+            var fieldErrors = context.ModelState
+                .Where(kvp => kvp.Value!.Errors.Count > 0)
+                .ToDictionary(
+                    kvp => kvp.Key,
+                    kvp => kvp.Value!.Errors.Select(e => e.ErrorMessage).ToArray());
+
+            // Pass the dictionary unserialized so Serilog can destructure (@) into
+            // structured fields downstream (Seq/ELK indexing). Source-gen LoggerMessage
+            // honors the @ operator in the template.
+            ModelBindingLog.LogFailure(
+                logger,
+                context.HttpContext.Request.Method,
+                context.HttpContext.Request.Path,
+                fieldErrors);
+        }
 
         return new BadRequestObjectResult(
-            ErrorEnvelope.WithDetails("validation-failed", "One or more validation errors occurred.", details));
+            ErrorEnvelope.Simple("invalid-request", "Invalid request body."));
     };
 });
 
@@ -177,3 +195,16 @@ static void LoadSecretsJson(ConfigurationManager configuration, string startDir)
 }
 
 public partial class Program;
+
+internal static partial class ModelBindingLog
+{
+    // Source-gen LoggerMessage. Matches the convention used by ExceptionHandlerMiddleware
+    // and satisfies CA1848 under TreatWarningsAsErrors. The serialized field-error blob is a
+    // JSON string built by the caller; never returned to the client.
+    [LoggerMessage(EventId = 2001, Level = LogLevel.Warning, Message = "Model binding failed for {Method} {Path}: {@FieldErrors}")]
+    public static partial void LogFailure(
+        Microsoft.Extensions.Logging.ILogger logger,
+        string method,
+        string path,
+        IReadOnlyDictionary<string, string[]> fieldErrors);
+}
