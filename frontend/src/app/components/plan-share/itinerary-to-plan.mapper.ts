@@ -15,7 +15,7 @@ const DEFAULT_NAME = 'friend';
 const DEFAULT_ORIGIN = 'your city';
 const DEFAULT_VIBE_KEY = 'curiousAndChill';
 
-const TRANSPORT_MAP: Readonly<Record<TransportMode, TransportMethod>> = {
+const TRANSPORT_MAP: Partial<Record<TransportMode, TransportMethod>> = {
     RideShare: 'car',
     Car: 'car',
     EcTrain: 'train',
@@ -23,7 +23,7 @@ const TRANSPORT_MAP: Readonly<Record<TransportMode, TransportMethod>> = {
     Helicopter: 'car',
 };
 
-const ACCOMMODATION_MAP: Readonly<Record<Accommodation, AccommodationKind>> = {
+const ACCOMMODATION_MAP: Partial<Record<Accommodation, AccommodationKind>> = {
     VillageRental: 'bontida',
     Camping: 'festivalCamping',
     CarCamping: 'festivalCamping',

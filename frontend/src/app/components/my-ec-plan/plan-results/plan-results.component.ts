@@ -32,7 +32,7 @@ const CREW_LABEL_KEYS: Readonly<Record<CrewKind, string>> = {
     WithGroup: `${ENUM_KEY_PREFIX}.crew.WithGroup`,
 };
 
-const TRANSPORT_LABEL_KEYS: Readonly<Record<TransportMode, string>> = {
+const TRANSPORT_LABEL_KEYS: Partial<Record<TransportMode, string>> = {
     RideShare: `${ENUM_KEY_PREFIX}.transport.RideShare`,
     Car: `${ENUM_KEY_PREFIX}.transport.Car`,
     EcTrain: `${ENUM_KEY_PREFIX}.transport.EcTrain`,
@@ -40,7 +40,7 @@ const TRANSPORT_LABEL_KEYS: Readonly<Record<TransportMode, string>> = {
     Helicopter: `${ENUM_KEY_PREFIX}.transport.Helicopter`,
 };
 
-const ACCOMMODATION_LABEL_KEYS: Readonly<Record<Accommodation, string>> = {
+const ACCOMMODATION_LABEL_KEYS: Partial<Record<Accommodation, string>> = {
     VillageRental: `${ENUM_KEY_PREFIX}.accommodation.VillageRental`,
     Camping: `${ENUM_KEY_PREFIX}.accommodation.Camping`,
     CarCamping: `${ENUM_KEY_PREFIX}.accommodation.CarCamping`,
@@ -63,7 +63,7 @@ const AGE_LABEL_KEYS: Readonly<Record<AgeGroup, string>> = {
     Adult45Plus: `${ENUM_KEY_PREFIX}.age.Adult45Plus`,
 };
 
-const MUSIC_LABEL_KEYS: Readonly<Record<MusicGenre, string>> = {
+const MUSIC_LABEL_KEYS: Partial<Record<MusicGenre, string>> = {
     HipHop: `${ENUM_KEY_PREFIX}.music.HipHop`,
     House: `${ENUM_KEY_PREFIX}.music.House`,
     Balkan: `${ENUM_KEY_PREFIX}.music.Balkan`,
@@ -91,7 +91,7 @@ const FOOD_LABEL_KEYS: Readonly<Record<FoodRestriction, string>> = {
     Kosher: `${ENUM_KEY_PREFIX}.foodRestriction.Kosher`,
 };
 
-const CUISINE_LABEL_KEYS: Readonly<Record<Cuisine, string>> = {
+const CUISINE_LABEL_KEYS: Partial<Record<Cuisine, string>> = {
     American: `${ENUM_KEY_PREFIX}.cuisine.American`,
     Italian: `${ENUM_KEY_PREFIX}.cuisine.Italian`,
     Romanian: `${ENUM_KEY_PREFIX}.cuisine.Romanian`,
@@ -170,47 +170,47 @@ export class PlanResultsComponent {
     protected readonly crewLabel = computed(() => {
         const crew = this.preferences()?.crew;
         if (!crew) return null;
-        return this.resolveLabel(crew.kind, CREW_LABEL_KEYS as Readonly<Record<string, string>>);
+        return this.resolveLabel(crew.kind, CREW_LABEL_KEYS as Partial<Record<string, string>>);
     });
 
     protected readonly transportLabel = computed(() => {
         const mode = this.preferences()?.suggestedTransport?.mode;
         if (!mode) return null;
-        return this.resolveLabel(mode, TRANSPORT_LABEL_KEYS as Readonly<Record<string, string>>);
+        return this.resolveLabel(mode, TRANSPORT_LABEL_KEYS as Partial<Record<string, string>>);
     });
 
     protected readonly accommodationLabel = computed(() => {
         const type = this.preferences()?.suggestedAccommodation?.type;
         if (!type) return null;
-        return this.resolveLabel(type, ACCOMMODATION_LABEL_KEYS as Readonly<Record<string, string>>);
+        return this.resolveLabel(type, ACCOMMODATION_LABEL_KEYS as Partial<Record<string, string>>);
     });
 
     protected readonly ticketLabel = computed(() => {
         const ticket = this.preferences()?.ticketType;
         if (!ticket) return null;
-        return this.resolveLabel(ticket, TICKET_LABEL_KEYS as Readonly<Record<string, string>>);
+        return this.resolveLabel(ticket, TICKET_LABEL_KEYS as Partial<Record<string, string>>);
     });
 
     protected readonly ageLabel = computed(() => {
         const age = this.preferences()?.ageGroup;
         if (!age) return null;
-        return this.resolveLabel(age, AGE_LABEL_KEYS as Readonly<Record<string, string>>);
+        return this.resolveLabel(age, AGE_LABEL_KEYS as Partial<Record<string, string>>);
     });
 
     protected readonly musicLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.musicGenres, MUSIC_LABEL_KEYS as Readonly<Record<string, string>>),
+        this.mapLabels(this.preferences()?.musicGenres, MUSIC_LABEL_KEYS as Partial<Record<string, string>>),
     );
 
     protected readonly foodRestrictionLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.foodRestrictions, FOOD_LABEL_KEYS as Readonly<Record<string, string>>),
+        this.mapLabels(this.preferences()?.foodRestrictions, FOOD_LABEL_KEYS as Partial<Record<string, string>>),
     );
 
     protected readonly cuisineLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.cuisines, CUISINE_LABEL_KEYS as Readonly<Record<string, string>>),
+        this.mapLabels(this.preferences()?.cuisines, CUISINE_LABEL_KEYS as Partial<Record<string, string>>),
     );
 
     protected readonly activityLabels = computed<ReadonlyArray<LabelledValue>>(() =>
-        this.mapLabels(this.preferences()?.activityInterests, ACTIVITY_LABEL_KEYS as Readonly<Record<string, string>>),
+        this.mapLabels(this.preferences()?.activityInterests, ACTIVITY_LABEL_KEYS as Partial<Record<string, string>>),
     );
 
     protected readonly vibeTags = computed<ReadonlyArray<string>>(
@@ -274,13 +274,13 @@ export class PlanResultsComponent {
         }
     }
 
-    private resolveLabel(raw: string, lookup: Readonly<Record<string, string>>): LabelledValue {
+    private resolveLabel(raw: string, lookup: Partial<Record<string, string>>): LabelledValue {
         return { raw, labelKey: lookup[raw] ?? null };
     }
 
     private mapLabels(
         values: ReadonlyArray<string> | undefined,
-        lookup: Readonly<Record<string, string>>,
+        lookup: Partial<Record<string, string>>,
     ): ReadonlyArray<LabelledValue> {
         if (!values?.length) return [];
         return values.map((value) => this.resolveLabel(value, lookup));
