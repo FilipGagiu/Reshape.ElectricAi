@@ -1,9 +1,11 @@
+using System.Text.Json.Nodes;
 using Microsoft.Extensions.Logging;
 using Reshape.ElectricAi.Core.Configuration;
 using Reshape.ElectricAi.Core.Domain.Exceptions;
 using Reshape.ElectricAi.Core.Enums;
 using Reshape.ElectricAi.Core.Persistence;
 using Reshape.ElectricAi.Core.Services;
+using Reshape.ElectricAi.Core.Services.Schema;
 using Reshape.ElectricAi.VectorDb.Entities;
 using Reshape.ElectricAi.VectorDb.Persistence.Specifications;
 
@@ -18,6 +20,9 @@ public sealed partial class GenreBackfillService(
     private const int MaxCompletionTokens = 200;
     private const double Temperature = 0.0;
 
+    private static readonly JsonNode ResponseSchema = JsonSchemaStrictifier.Apply(
+        LlmJsonOptions.ExportSchema(typeof(ArtistGenreClassification)));
+
     public async Task<GenreBackfillResult> BackfillAsync(CancellationToken cancellationToken)
     {
         var chunks = await chunkRepository.ListAsync(new ArtistChunksMissingTagsSpec(), cancellationToken);
@@ -26,8 +31,6 @@ public sealed partial class GenreBackfillService(
 
         if (chunks.Count == 0)
             return new GenreBackfillResult(0, 0, 0);
-
-        var schema = LlmJsonOptions.ExportSchema(typeof(ArtistGenreClassification));
 
         var processed = 0;
         var failed = 0;
@@ -42,7 +45,7 @@ public sealed partial class GenreBackfillService(
                 var result = await openAi.CompleteStructuredAsync<ArtistGenreClassification>(
                     systemPrompt: GenreBackfillSchema.SystemPrompt,
                     userPrompt: chunk.Content,
-                    responseSchema: schema,
+                    responseSchema: ResponseSchema,
                     model: null,
                     maxCompletionTokens: MaxCompletionTokens,
                     temperature: Temperature,
