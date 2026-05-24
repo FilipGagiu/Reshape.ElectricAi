@@ -71,8 +71,12 @@ export class QuestionsService {
     async ensureHydrated(conversationId: string): Promise<void> {
         if (this.auth.isBypassActive()) return;
         if (this.hydratedIds().has(conversationId)) return;
+
+        const beId = this.getConversation(conversationId)?.beId;
+        if (!beId) return;
+
         try {
-            const detail = await firstValueFrom(this.conversationsApi.get(conversationId));
+            const detail = await firstValueFrom(this.conversationsApi.get(beId));
             const messages = detail.replies.map((r) => toChatMessage(r));
             this.conversationsSignal.update((list) =>
                 list.map((conv) =>
@@ -104,9 +108,15 @@ export class QuestionsService {
             return;
         }
 
+        const beId = this.getConversation(conversationId)?.beId;
+        if (!beId) {
+            this.markPending(conversationId, false);
+            return;
+        }
+
         try {
             const response = await firstValueFrom(
-                this.conversationsApi.continue(conversationId, { message: trimmed }),
+                this.conversationsApi.continue(beId, { message: trimmed }),
             );
             const botMessage = toChatMessage(response.reply);
             this.applyMessageToConversation(conversationId, botMessage);
@@ -157,15 +167,9 @@ export class QuestionsService {
             const response = await firstValueFrom(
                 this.conversationsApi.create({ message: text }),
             );
-            this.replaceConversationId(localId, response.id, response.title);
-            this.hydratedIds.update((set) => {
-                const next = new Set(set);
-                next.delete(localId);
-                next.add(response.id);
-                return next;
-            });
+            this.assignBeId(localId, response.id, response.title);
             const botMessage = toChatMessage(response.reply);
-            this.applyMessageToConversation(response.id, botMessage);
+            this.applyMessageToConversation(localId, botMessage);
         } catch (err) {
             const envelope = extractErrorEnvelope(err);
             const fallback: ChatMessage = makeMessage(
@@ -174,7 +178,6 @@ export class QuestionsService {
             );
             this.applyMessageToConversation(localId, fallback);
         } finally {
-            // Try both ids — the conversation may have swapped to the server id by now.
             this.markPending(localId, false);
         }
     }
@@ -206,22 +209,14 @@ export class QuestionsService {
         );
     }
 
-    private replaceConversationId(oldId: string, newId: string, newTitle: string): void {
+    private assignBeId(localId: string, beId: string, title: string): void {
         this.conversationsSignal.update((list) =>
             list.map((conv) =>
-                conv.id === oldId
-                    ? { ...conv, id: newId, firstQuestion: newTitle }
+                conv.id === localId
+                    ? { ...conv, beId, firstQuestion: title }
                     : conv,
             ),
         );
-        this.pendingConversationIdsSignal.update((set) => {
-            const next = new Set(set);
-            if (next.has(oldId)) {
-                next.delete(oldId);
-                next.add(newId);
-            }
-            return next;
-        });
     }
 
     private markPending(conversationId: string, pending: boolean): void {
@@ -237,6 +232,7 @@ export class QuestionsService {
 function toConversationSummary(item: ConversationListItemDto): Conversation {
     return {
         id: item.id,
+        beId: item.id,
         firstQuestion: item.title,
         messages: [],
         updatedAt: new Date(item.lastMessageUtc),

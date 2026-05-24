@@ -217,5 +217,14 @@ export type ArtistName = (typeof ARTISTS)[ArtistKey];
 
 export const ARTIST_KEYS = Object.keys(ARTISTS) as ArtistKey[];
 
+export const PLACEHOLDER_ARTIST_IMAGE = '/media/artists/placeholder.jpg';
+
 export const artistImagePath = (key: ArtistKey): string =>
     `/media/artists/${key}.jpg`;
+
+/** Resolves any string (typically a BE-supplied artist key) to an image path. */
+export function resolveArtistImage(key: string | null | undefined): string {
+    return key && key in ARTISTS
+        ? `/media/artists/${key}.jpg`
+        : PLACEHOLDER_ARTIST_IMAGE;
+}

@@ -1,4 +1,6 @@
-import { UserContext } from './conversation.dto';
+import { Category } from './feed.dto';
+
+export type UserContext = Partial<Record<Category, ReadonlyArray<string>>>;
 
 export type ConversationActor = 'User' | 'Bot';
 
