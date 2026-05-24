@@ -15,6 +15,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
 
+import { EcTopbarComponent } from '@shared/components/ec-topbar/ec-topbar.component';
+
 import {
     WizardProgressComponent,
     WizardProgressStep,
@@ -28,6 +30,7 @@ import { PlanIntakeService } from '../plan-intake/services/plan-intake.service';
     imports: [
         TranslocoModule,
         ReactiveFormsModule,
+        EcTopbarComponent,
         WizardProgressComponent,
     ],
     templateUrl: './plan-steps.component.html',
