@@ -15,11 +15,8 @@
     }
 
     <nav
-        class="live-feed-filters sticky z-[calc(var(--z-sticky)-1)] flex gap-2 overflow-x-auto px-4 py-3"
-        style="
-            background-color: var(--ec-dark-navy);
-            top: calc(env(safe-area-inset-top) + var(--space-14));
-        "
+        class="live-feed-filters sticky top-0 z-[calc(var(--z-sticky)-1)] flex gap-2 overflow-x-auto px-4 py-3"
+        style="background-color: var(--ec-dark-navy)"
         aria-label="Feed filters"
     >
         @for (filter of filterOrder; track trackFilter($index, filter)) {

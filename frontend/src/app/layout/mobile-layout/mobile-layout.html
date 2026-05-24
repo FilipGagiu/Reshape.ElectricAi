@@ -1,12 +1,10 @@
 <div class="bg-surface-50 dark:bg-surface-950 mobile-shell flex flex-col">
-    <div class="status-bar-cover bg-surface-50 dark:bg-surface-950 fixed top-0 right-0 left-0 z-30"></div>
-
     <main class="main-content flex flex-1 flex-col">
         <router-outlet></router-outlet>
     </main>
 
     <nav
-        class="bottom-nav bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 fixed right-0 bottom-0 left-0 z-20 flex items-stretch border-t"
+        class="bottom-nav bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 flex items-stretch border-t"
     >
         @for (item of navItems; track item.route) {
             <a

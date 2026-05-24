@@ -3,7 +3,8 @@
 }
 
 .ec-topbar {
-    top: env(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+    height: calc(var(--space-14) + env(safe-area-inset-top));
 }
 
 .ec-topbar__logout:hover {

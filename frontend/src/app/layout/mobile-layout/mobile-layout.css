@@ -2,16 +2,10 @@
     display: block;
 }
 
-/* Mobile shell uses dynamic viewport units so the iOS keyboard cannot push
-   content under the status bar. Falls back to 100vh on browsers without dvh. */
 .mobile-shell {
-    height: 100vh;
-    height: 100dvh;
+    position: fixed;
+    inset: 0;
     overflow: hidden;
-}
-
-.status-bar-cover {
-    height: env(safe-area-inset-top);
 }
 
 .bottom-nav {
@@ -20,8 +14,7 @@
 }
 
 .main-content {
-    padding-top: env(safe-area-inset-top);
-    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+    padding-top: calc(env(safe-area-inset-top) + var(--space-14));
     min-height: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
