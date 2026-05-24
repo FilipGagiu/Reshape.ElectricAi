@@ -2,23 +2,15 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 
 import { ChatMessage, Conversation, HotQuestion } from '../models/question.model';
 import { ChatReplyService } from './chat-reply.service';
-import { MOCK_CONVERSATIONS, MOCK_HOT_QUESTIONS } from './mock-data';
 
 export type LoadState = 'loading' | 'ready' | 'empty';
 
-/**
- * State container for the Questions page. Signals-only, OnPush-friendly.
- *
- * Hot questions are seeded from mock fixtures; future BE swap replaces the
- * loader with HttpClient. Past conversations live in memory only for v1;
- * a follow-up will add localStorage persistence.
- */
 @Injectable({ providedIn: 'root' })
 export class QuestionsService {
     private readonly chatReply = inject(ChatReplyService);
 
-    private readonly hotQuestionsSignal = signal<readonly HotQuestion[]>(MOCK_HOT_QUESTIONS);
-    private readonly conversationsSignal = signal<readonly Conversation[]>(MOCK_CONVERSATIONS);
+    private readonly hotQuestionsSignal = signal<readonly HotQuestion[]>([]);
+    private readonly conversationsSignal = signal<readonly Conversation[]>([]);
     private readonly pendingConversationIdsSignal = signal<ReadonlySet<string>>(new Set());
 
     readonly hotQuestions = computed(() => this.hotQuestionsSignal());

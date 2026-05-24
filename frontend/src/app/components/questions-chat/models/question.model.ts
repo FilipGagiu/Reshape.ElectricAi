@@ -1,10 +1,3 @@
-/**
- * Domain models for the Questions page.
- *
- * Backend not implemented yet. These shapes are the contract we'll honour
- * when the HTTP layer lands. See `services/mock-data.ts` for fixtures.
- */
-
 export type ChatRole = 'user' | 'assistant';
 
 export interface HotQuestion {
