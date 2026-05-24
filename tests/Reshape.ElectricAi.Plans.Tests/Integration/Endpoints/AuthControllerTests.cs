@@ -89,6 +89,16 @@ public sealed class AuthControllerTests(PostgresFixture postgres) : IAsyncLifeti
     }
 
     [Fact]
+    public async Task Register_PasswordOneCharBelowMinimum_Returns400()
+    {
+        var response = await _client.PostAsJsonAsync(
+            "/api/v1/auth/register",
+            new RegisterRequest(UniqueEmail("pw-len-boundary"), "Pas1!aa"));
+
+        response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
     public async Task Login_ValidCredentials_Returns200()
     {
         var email = UniqueEmail("login-ok");

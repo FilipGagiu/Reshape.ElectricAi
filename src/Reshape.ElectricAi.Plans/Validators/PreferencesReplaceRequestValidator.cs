@@ -17,7 +17,9 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
 
         When(x => x.Crew is not null, () =>
         {
-            RuleFor(x => x.Crew!.Kind).IsInEnum().WithMessage("Crew.Kind must be a valid value.");
+            RuleFor(x => x.Crew!.Kind)
+                .IsInEnum().When(x => x.Crew!.Kind is not null)
+                .WithMessage("Crew.Kind must be a valid value.");
             RuleFor(x => x.Crew!.EstimatedSize)
                 .InclusiveBetween(1, 200)
                 .When(x => x.Crew!.EstimatedSize is not null)
@@ -35,7 +37,8 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
         When(x => x.SuggestedTransport is not null, () =>
         {
             RuleFor(x => x.SuggestedTransport!.Mode)
-                .IsInEnum().WithMessage("SuggestedTransport.Mode must be a valid value.");
+                .IsInEnum().When(x => x.SuggestedTransport!.Mode is not null)
+                .WithMessage("SuggestedTransport.Mode must be a valid value.");
             RuleFor(x => x.SuggestedTransport!.Note)
                 .MaximumLength(200).When(x => x.SuggestedTransport!.Note is not null)
                 .WithMessage("SuggestedTransport.Note must be 200 characters or fewer.");
@@ -44,7 +47,8 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
         When(x => x.SuggestedAccommodation is not null, () =>
         {
             RuleFor(x => x.SuggestedAccommodation!.Type)
-                .IsInEnum().WithMessage("SuggestedAccommodation.Type must be a valid value.");
+                .IsInEnum().When(x => x.SuggestedAccommodation!.Type is not null)
+                .WithMessage("SuggestedAccommodation.Type must be a valid value.");
             RuleFor(x => x.SuggestedAccommodation!.Note)
                 .MaximumLength(200).When(x => x.SuggestedAccommodation!.Note is not null)
                 .WithMessage("SuggestedAccommodation.Note must be 200 characters or fewer.");
@@ -55,9 +59,8 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
             RuleFor(x => x.VibeTags!.Count)
                 .LessThanOrEqualTo(6).WithMessage("VibeTags must contain at most 6 items.");
             RuleForEach(x => x.VibeTags!)
-                .NotEmpty().WithMessage("VibeTag values must not be empty.")
-                .Must(value => value is not null && value.Trim().Length is >= 1 and <= 60)
-                .WithMessage("VibeTag values must be 1 to 60 characters.");
+                .Must(value => value is null || value.Trim().Length <= 60)
+                .WithMessage("VibeTag values must be 60 characters or fewer.");
         });
 
         When(x => x.MusicGenres is not null, () =>
@@ -109,9 +112,8 @@ public sealed class PreferencesReplaceRequestValidator : AbstractValidator<Prefe
             RuleFor(x => x.MustSeeArtists!.Count)
                 .LessThanOrEqualTo(20).WithMessage("MustSeeArtists must contain at most 20 items.");
             RuleForEach(x => x.MustSeeArtists!)
-                .NotEmpty().WithMessage("MustSeeArtists names must not be empty.")
-                .Must(name => name is not null && name.Trim().Length is >= 1 and <= 200)
-                .WithMessage("MustSeeArtists names must be 1 to 200 characters.");
+                .Must(name => name is null || name.Trim().Length <= 200)
+                .WithMessage("MustSeeArtists names must be 200 characters or fewer.");
             RuleFor(x => x.MustSeeArtists!)
                 .Must(items => items
                     .Where(s => !string.IsNullOrWhiteSpace(s))

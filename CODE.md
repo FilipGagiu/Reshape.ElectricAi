@@ -169,7 +169,9 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 - `ConflictException` → 409
 - `PreconditionFailedException` → 422
 - `BudgetExceededException` → 402
-- everything else → 500 with `code: "internal-error"` (the real message logged, not exposed).
+- everything else → 500 with `code: "internal-error"` (the real message logged, not exposed). The exposed `message` is the project's standard "rain vibe" string defined as `ExceptionHandlerMiddleware.GenericInternalMessage` — do NOT inline a different generic string elsewhere.
+
+**Model binding / JSON deserialization failures** (raised before any controller runs) → 400 with `code: "invalid-request"` and `message: "Invalid request body."` Configured via `ApiBehaviorOptions.InvalidModelStateResponseFactory` in `Program.cs`. The raw `ModelState` errors (which contain JSON paths, internal type names, and byte offsets) MUST be logged server-side at Warning and MUST NOT appear in the response body — they are an information disclosure risk. `details` is intentionally omitted for this code.
 
 ## Auth
 
@@ -177,7 +179,7 @@ Domain exceptions in Core inherit `DomainException` and carry a `Code`. The glob
 - Access token lifetime: `Auth:AccessTokenMinutes` (default 15).
 - Refresh token lifetime: `Auth:RefreshTokenDays` (default 7), stored as **SHA-256 hash** in `plans."RefreshTokens"`. Rotated on refresh, old token revoked. Rotation is atomic via `ExecuteUpdateAsync(Where(hash=X, RevokedUtc==null, ExpiresUtc>now)).SetProperty(RevokedUtc=now, ReplacedByHash=new)` in `Plans/Services/RefreshTokenStore.cs` — 0 rows updated → `UnauthorizedException("invalid-refresh-token")`. Postgres row-level lock serializes concurrent callers.
 - Password hashing: `BCrypt.HashPassword(password + base64(salt), workFactor: 12)`. Per-user salt is 16 random bytes from `RandomNumberGenerator.GetBytes(16)`, stored as `byte[]` alongside the hash.
-- Password policy: ≥ 10 characters, ≥ 1 digit, ≥ 1 symbol (enforced by FluentValidation).
+- Password policy: ≥ 8 characters, ≥ 1 digit, ≥ 1 symbol (enforced by FluentValidation).
 - Login MUST always run BCrypt verify even when the user is not found (constant-time, prevents user enumeration). `IPasswordHasher.VerifyDummy()` is part of the interface contract; runs BCrypt against a precomputed dummy hash. `PasswordHasher` is registered as **Singleton** (no mutable state, no DI deps) so the dummy hash is computed once per process.
 - JWT claims: `sub` (UserId), `email`, `role`, `jti` (random Guid per token, RFC 7519 §4.1.7 — required for uniqueness when tokens issue in the same epoch second), `iat`, `exp`, `iss=reshape-electric-ai`, `aud=reshape-electric-ai-api`.
 - `TokenValidationParameters` MUST pin `ValidAlgorithms = [SecurityAlgorithms.HmacSha256]` (defense in depth — prevents algorithm-confusion attacks if the signing key type ever changes). `MapInboundClaims = false` to drop legacy SAML auto-mapping (`sub`→`ClaimTypes.NameIdentifier`). Controllers read `JwtRegisteredClaimNames.Sub` directly with `ClaimTypes.NameIdentifier` as a unit-test fallback.

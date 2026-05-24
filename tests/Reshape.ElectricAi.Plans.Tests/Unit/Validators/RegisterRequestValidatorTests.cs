@@ -14,7 +14,15 @@ public sealed class RegisterRequestValidatorTests
         var result = _validator.TestValidate(new RegisterRequest("alice@example.com", "Short1!"));
 
         result.ShouldHaveValidationErrorFor(x => x.Password)
-              .WithErrorMessage("Password must be at least 10 characters.");
+              .WithErrorMessage("Password must be at least 8 characters.");
+    }
+
+    [Fact]
+    public void Validate_PasswordAtMinimumLength_Passes()
+    {
+        var result = _validator.TestValidate(new RegisterRequest("alice@example.com", "Pass1!aa"));
+
+        result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact]

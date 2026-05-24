@@ -37,9 +37,15 @@ internal static class PreferencesMappingExtensions
         var cuisines = entity.Cuisines.Select(c => c.Cuisine).ToArray();
         var activities = entity.Activities.Select(a => a.Activity).ToArray();
 
-        var crew = entity.CrewKind is null ? null : new CrewDto(entity.CrewKind.Value, entity.CrewEstimatedSize);
-        var transport = entity.Transport is null ? null : new TransportSuggestionDto(entity.Transport.Value, entity.TransportNote);
-        var accommodation = entity.Accommodation is null ? null : new AccommodationSuggestionDto(entity.Accommodation.Value, entity.AccommodationNote);
+        var crew = (entity.CrewKind is null && entity.CrewEstimatedSize is null)
+            ? null
+            : new CrewDto(entity.CrewKind, entity.CrewEstimatedSize);
+        var transport = (entity.Transport is null && entity.TransportNote is null)
+            ? null
+            : new TransportSuggestionDto(entity.Transport, entity.TransportNote);
+        var accommodation = (entity.Accommodation is null && entity.AccommodationNote is null)
+            ? null
+            : new AccommodationSuggestionDto(entity.Accommodation, entity.AccommodationNote);
 
         var filled = 0;
         if (!string.IsNullOrEmpty(entity.Name)) filled++;

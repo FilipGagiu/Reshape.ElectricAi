@@ -351,7 +351,11 @@ Extracted to `data/` (planned, not yet seeded). Ingest is idempotent via `Conten
 }
 ```
 
-Standard codes the FE can branch on: `validation-failed`, `unauthorized`, `forbidden`, `not-found`, `conflict`, `preferences-insufficient`, `chat-budget-exceeded`, `internal-error`.
+Standard codes the FE can branch on: `validation-failed`, `invalid-request`, `unauthorized`, `forbidden`, `not-found`, `conflict`, `preferences-insufficient`, `chat-budget-exceeded`, `internal-error`.
+
+- `validation-failed` — FluentValidation rejected a well-formed payload; `details` carries field-level messages safe to render in the UI.
+- `invalid-request` — model binding / JSON deserialization rejected the payload before validation could run (malformed body, wrong types, missing required body). `details` is intentionally omitted; raw binding messages are logged server-side, not exposed.
+- `internal-error` — unhandled server-side fault. `message` is a generic placeholder; the real exception is logged server-side, never returned.
 
 ---
 
