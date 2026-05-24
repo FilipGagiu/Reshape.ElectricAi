@@ -1,2 +1,2 @@
-export const APP_NAME = 'EcHackaton';
-export const APP_NAME_DISPLAY = 'ec-hackaton';
+export const APP_NAME = 'ElectricAi';
+export const APP_NAME_DISPLAY = 'Electric AI';

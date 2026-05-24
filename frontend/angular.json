@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ec-hackaton": {
+    "electric-ai": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -57,13 +57,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "750kB",
+                  "maximumError": "1.5MB"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
+                  "maximumWarning": "12kB",
+                  "maximumError": "16kB"
                 }
               ],
               "outputHashing": "all",
@@ -86,10 +86,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ec-hackaton:build:production"
+              "buildTarget": "electric-ai:build:production"
             },
             "development": {
-              "buildTarget": "ec-hackaton:build:development"
+              "buildTarget": "electric-ai:build:development"
             }
           },
           "defaultConfiguration": "development"
