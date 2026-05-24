@@ -228,3 +228,22 @@ export function resolveArtistImage(key: string | null | undefined): string {
         ? `/media/artists/${key}.jpg`
         : PLACEHOLDER_ARTIST_IMAGE;
 }
+
+/** Case-insensitive display-name → enum key reverse map. */
+const KEY_BY_DISPLAY_NAME: ReadonlyMap<string, ArtistKey> = new Map(
+    (Object.entries(ARTISTS) as Array<[ArtistKey, ArtistName]>).map(
+        ([key, name]) => [name.toUpperCase(), key],
+    ),
+);
+
+/** Find the enum key for a free-form display name (e.g. "The Cure", "THE CURE"). */
+export function artistKeyForName(name: string | null | undefined): ArtistKey | null {
+    if (!name) return null;
+    return KEY_BY_DISPLAY_NAME.get(name.trim().toUpperCase()) ?? null;
+}
+
+/** Resolve an image path from a BE-supplied display name; placeholder on miss. */
+export function resolveArtistImageByName(name: string | null | undefined): string {
+    const key = artistKeyForName(name);
+    return key ? artistImagePath(key) : PLACEHOLDER_ARTIST_IMAGE;
+}
