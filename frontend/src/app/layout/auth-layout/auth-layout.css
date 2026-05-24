@@ -39,6 +39,14 @@
     line-height: 1;
 }
 
+.ec-logo-mark__img {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    display: block;
+}
+
 .ec-brand-stamp {
     color: var(--ec-auth-stamp);
     font-size: 11px;
