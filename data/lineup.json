@@ -1,2207 +1,2807 @@
 [
   {
-    "artistName": "&FRIENDS",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "&FRIENDS",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "02:00",
-    "endTime": "04:00",
+    "start_time": "02:00",
+    "end_time": "04:00",
     "description": "From San Diego dreams to Dubai nights, &friends turns global culture into pure dance floor magic. When Black Coffee and Diplo support your sound and Sofi Tukker wants your remixes, you know it's more than just music - it's movement. This worldwide party starter caught Coachella's ear and got 20 million streams by bringing cultures together on the dance floor. No passport needed.",
-    "genres": ["Global Bass", "House", "World"]
+    "genres": [
+      "GlobalBass",
+      "House",
+      "World"
+    ]
   },
   {
-    "artistName": "¥ØU$UK€ ¥UK1MAT$U",
-    "stage": "BOOHA STAGE",
+    "artist_name": "¥ØU$UK€ ¥UK1MAT$U",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "This is where the vampires will headbang. After fighting brain cancer, Yousuke Yukimatsu reinvented himself as Japan's most fearless genre-bender. Shirtless and drenched in sweat, his sets are raw, emotional, and unpredictable—mixing gabber, trap, techno, and soul into sonic chaos that feels like life itself. This is more than a show; it's a testament to resilience.",
     "genres": null
   },
   {
-    "artistName": "30 CENTURY MAN",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "30 CENTURY MAN",
+    "stage": "BackyardStage",
     "day": "Fri",
-    "startTime": "21:15",
-    "endTime": "22:15",
+    "start_time": "21:15",
+    "end_time": "22:15",
     "description": "The enigmatic producer crafting tomorrow's sound today. 30 CENTURY MAN operates in the space between experimental and dancefloor-ready, creating futuristic compositions that feel both alien and familiar. His rare live appearances are events in themselves.",
     "genres": null
   },
   {
-    "artistName": "ABASC",
-    "stage": "PING PONG STAGE",
+    "artist_name": "ABASC",
+    "stage": "PingPongStage",
     "day": "Wed",
-    "startTime": "22:30",
-    "endTime": "00:00",
+    "start_time": "22:30",
+    "end_time": "00:00",
     "description": "Local talent ready to deliver underground electronic energy. Get ready for hypnotic beats and driving rhythms.",
     "genres": null
   },
   {
-    "artistName": "AFTERMATH",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "AFTERMATH",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "20:00",
-    "endTime": "21:30",
+    "start_time": "20:00",
+    "end_time": "21:30",
     "description": "Rooted in Romania's rich musical heritage, AFTERMATH channels Afro house's fresh energy. Born to move souls and fill dancefloors, they've opened for Shimza, Jamiie, and Awen—sharing stages and making crowds lose themselves to the rhythm.",
-    "genres": ["Afro House"]
+    "genres": [
+      "AfroHouse"
+    ]
   },
   {
-    "artistName": "AKOS",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "AKOS",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Akos fell in love with electronic sounds in 2005. He views music as energy, love, and inspiration. His style focuses on deep house, house, and techno—moving crowds with soulful, driving grooves.",
-    "genres": ["Deep House", "House", "Techno"]
+    "genres": [
+      "DeepHouse",
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "ALDARIS",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "ALDARIS",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Legend says he's still searching for the perfect groove—record by record, wax story by wax story. Wherever his journey ends, Aldaris has plenty of vinyl adventures to share. Join him.",
-    "genres": ["Vinyl Explorer", "Deep Grooves"]
+    "genres": [
+      "VinylExplorer",
+      "DeepGrooves"
+    ]
   },
   {
-    "artistName": "ALEX SUPER BEATS",
-    "stage": "MAIN STAGE",
+    "artist_name": "ALEX SUPER BEATS",
+    "stage": "MainStage",
     "day": "Sun",
-    "startTime": "22:30",
-    "endTime": "00:00",
+    "start_time": "22:30",
+    "end_time": "00:00",
     "description": "From Cluj-Napoca to the world, Alex Super Beats (formerly DJ Shiver) has been a driving force in Romania's electronic music scene. With a career spanning over a decade, he's shared stages with global icons and launched his own imprint to push boundaries in electronic music. Expect nothing less than an electrifying journey when he takes over the Castle stage.",
     "genres": null
   },
   {
-    "artistName": "ALI",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "ALI",
+    "stage": "BackyardStage",
     "day": "Sat",
-    "startTime": "00:05",
-    "endTime": "01:05",
+    "start_time": "00:05",
+    "end_time": "01:05",
     "description": "Ever heard Arabic lyrics over Indonesian funk? Ali's cooking up something wild in Jakarta - '70s rock riffs meet Middle Eastern soul, all wrapped in Southeast Asian groove. Three guys turning centuries of cultural fusion into fresh dance floor heat.",
-    "genres": ["Indonesian Funk", "Arabic Rock"]
+    "genres": [
+      "IndonesianFunk",
+      "ArabicRock"
+    ]
   },
   {
-    "artistName": "ÂME",
-    "stage": "BOOHA STAGE",
+    "artist_name": "ÂME",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "02:00",
-    "endTime": "05:00",
+    "start_time": "02:00",
+    "end_time": "05:00",
     "description": "This is electronic music's front line. 20 years ago, Âme decided club music needed more soul and started pushing the boundaries ever since. Today, whether it's Frank's live playing or Kristian's surgical mixing, Âme don't just read dancefloors - they redesign them. Get ready for a legendary performance.",
     "genres": null
   },
   {
-    "artistName": "ANAÏS B2B HOAX + PVC",
-    "stage": "HANGAR STAGE",
+    "artist_name": "ANAÏS B2B HOAX + PVC",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "03:00",
-    "endTime": "04:00",
+    "start_time": "03:00",
+    "end_time": "04:00",
     "description": "Fresh out the gate in Bristol, Anaïs already has Glastonbury, Boomtown, and Rampage eating from her palm. Her secret weapon? Raw jungle energy meets surgical precision behind the decks. Catch her before she outgrows those underground bunkers for festival main stages. // When Hoax drops a tune, even the underground veterans stop and listen. Piano skills meet bass addiction in this Bristol lab rat's productions. Pure dance floor science.",
     "genres": null
   },
   {
-    "artistName": "ANDI MOISESCU",
-    "stage": "PING PONG STAGE",
+    "artist_name": "ANDI MOISESCU",
+    "stage": "PingPongStage",
     "day": "Fri",
-    "startTime": "22:30",
-    "endTime": "00:00",
+    "start_time": "22:30",
+    "end_time": "00:00",
     "description": "From TV screens to festival stages, Romania's beloved entertainer brings his charismatic energy to the decks. ANDI MOISESCU traded hosting duties for house music, proving that good vibes translate across all mediums. When one of Romania's most recognizable faces gets behind the decks, magic happens.",
     "genres": null
   },
   {
-    "artistName": "ANDRA ANDRIUCĂ",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "ANDRA ANDRIUCĂ",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "15:00",
-    "endTime": "16:00",
+    "start_time": "15:00",
+    "end_time": "16:00",
     "description": "From Iași to Electric Castle, Andra Andriucă writes songs that feel like heart-to-hearts with your best friend. Backed by her band, she blends indie vibes with pop-rock energy for tracks that hit you right in the feels. Honest music for messy lives—don't miss her set!",
-    "genres": ["Pop", "Folk"]
+    "genres": [
+      "Pop",
+      "Folk"
+    ]
   },
   {
-    "artistName": "ANFISA LETYAGO",
-    "stage": "BOOHA STAGE",
+    "artist_name": "ANFISA LETYAGO",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "02:30",
-    "endTime": "04:30",
+    "start_time": "02:30",
+    "end_time": "04:30",
     "description": "Anfisa Letyago's journey is as extraordinary as her sets. With Carl Cox as a fan, her hypnotic techno commands your attention without begging for it. When she's in the booth, you can't help but just surrender to the groove.",
-    "genres": ["Techno"]
+    "genres": [
+      "Techno"
+    ]
   },
   {
-    "artistName": "ARAPU",
-    "stage": "STABLES STAGE",
+    "artist_name": "ARAPU",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "07:30",
-    "endTime": "11:00",
+    "start_time": "07:30",
+    "end_time": "11:00",
     "description": "Arapu, a certified treasure in Bucharest's underground, has produced records since 2011 and brings seductive playfulness to his straightforward, bass-driven sets. His discography blends drones, field recordings, and bass rumble, amplifying good mood across clubs and releases on his Liniar label.",
-    "genres": ["House", "Techno", "Experimental"]
+    "genres": [
+      "House",
+      "Techno",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "ARTEMAS",
-    "stage": "MAIN STAGE",
+    "artist_name": "ARTEMAS",
+    "stage": "MainStage",
     "day": "Fri",
-    "startTime": "19:30",
-    "endTime": "20:30",
+    "start_time": "19:30",
+    "end_time": "20:30",
     "description": "Oxford's finest sad boy with a knack for turning emotions into bangers. The guy who makes heartbreak sound cool, blending alternative pop, dark wave, and R&B. With Gold and Platinum hits like \"If U Think I'm Pretty\" and \"I Like the Way You Kiss Me,\" Artemas crafts moody soundscapes that hit you right in the feels.",
-    "genres": ["Alt-Pop", "Dark-Pop"]
+    "genres": [
+      "AltPop",
+      "DarkPop"
+    ]
   },
   {
-    "artistName": "ATTIC",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "ATTIC",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "15:00",
-    "endTime": "16:00",
+    "start_time": "15:00",
+    "end_time": "16:00",
     "description": "Local selector digging deep for the perfect groove. Expect house, disco, and electronic gems that move the soul.",
     "genres": null
   },
   {
-    "artistName": "BAD NERVES",
-    "stage": "HANGAR STAGE",
+    "artist_name": "BAD NERVES",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "19:40",
-    "endTime": "20:40",
+    "start_time": "19:40",
+    "end_time": "20:40",
     "description": "Essex boys making punk rock dangerous again. Think Ramones-meet-Buzzcocks in a 21st century speed blender. Bad Nerves pack more hooks in two minutes than most bands manage in a whole album. Bad Nerves are what happens when punk's original fire meets modern production. Come lose your voice screaming along.",
-    "genres": ["Garage Punk", "Power Pop"]
+    "genres": [
+      "GaragePunk",
+      "PowerPop"
+    ]
   },
   {
-    "artistName": "BAKAYAN",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "BAKAYAN",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "Guitar kid turned electronic wizard, Bákayan brings something different to Berlin's scene. Mixing his Southeast Asian roots with raw emotion, he makes dance music that hits differently. Part melody, part feeling, pure dance floor magic.",
     "genres": null
   },
   {
-    "artistName": "BENJA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "BENJA",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "04:00",
-    "endTime": "06:00",
+    "start_time": "04:00",
+    "end_time": "06:00",
     "description": "The producer who turns tango into techno. Benja's tracks are like sonic postcards from a future where South America rules the dancefloor. Expect swirling synths, tribal rhythms, and enough emotion to make even the toughest ravers shed a tear. Don't forget your passport.",
-    "genres": ["Electronic"]
+    "genres": [
+      "Electronic"
+    ]
   },
   {
-    "artistName": "BENZ",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "BENZ",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "Benz is a Tunisian DJ drawing from African and Arab heritage—rich rhythms and percussions transformed into energetic, soulful afrohouse sets that bridge past and present, creating immersive dancefloor experiences.",
-    "genres": ["Afrohouse"]
+    "genres": [
+      "AfroHouse"
+    ]
   },
   {
-    "artistName": "BIANCA OANCE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "BIANCA OANCE",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Romanian artist bringing fresh electronic energy. Expect house, pop, and dance sounds that connect with the crowd.",
     "genres": null
   },
   {
-    "artistName": "BICEP",
-    "stage": "HANGAR STAGE",
+    "artist_name": "BICEP",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "23:45",
-    "endTime": "01:15",
+    "start_time": "23:45",
+    "end_time": "01:15",
     "description": "From Belfast bedroom DJs to electronic music royalty, Bicep flex hard. Masters of turning dance music into pure emotion, they've got a black belt in making crowds lose their minds. Get ready to feel something real.",
     "genres": null
   },
   {
-    "artistName": "BILA",
-    "stage": "STABLES STAGE",
+    "artist_name": "BILA",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "23:00",
-    "endTime": "01:00",
+    "start_time": "23:00",
+    "end_time": "01:00",
     "description": "A discreet presence in electronic music, Bilǎ brings a well-balanced technical mixing approach. His productions are a nexus of classic and new sounds, creating refined, danceable experiences.",
     "genres": null
   },
   {
-    "artistName": "BLANILLA B2B MISSILE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "BLANILLA B2B MISSILE",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "02:00",
-    "endTime": "04:00",
+    "start_time": "02:00",
+    "end_time": "04:00",
     "description": "Titus Carole, the \"electronica droid,\" has traversed genres since 2004. With versatile mixing skills and an eclectic sound selection—ranging from 4/4 beats to broken beats—he crafts good mood music that swings between mellow grooves and high-energy DJ sets.",
     "genres": null
   },
   {
-    "artistName": "BOEBECK",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "BOEBECK",
+    "stage": "BackyardStage",
     "day": "Sat",
-    "startTime": "17:30",
-    "endTime": "18:20",
+    "start_time": "17:30",
+    "end_time": "18:20",
     "description": "Boebeck is a female-led new wave indie band from Hungary that's been turning heads across Europe. Their upcoming EP, Evil Under the Sun (2025), promises more of their signature blend of dreamy rock harmonies and poetic lyricism. Whether you're a fan of indie nostalgia or cutting-edge sounds, Boebeck is here to steal your heart at Electric Castle.",
-    "genres": ["Indie Pop"]
+    "genres": [
+      "IndiePop"
+    ]
   },
   {
-    "artistName": "BOGDAN MALAELE",
-    "stage": "PING PONG STAGE",
+    "artist_name": "BOGDAN MALAELE",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "16:00",
-    "endTime": "17:00",
+    "start_time": "16:00",
+    "end_time": "17:00",
     "description": "Comedian, gamer, father, lover—and in his own words, the best DJ in the EU—Bogdan Malaele brings humor and heartfelt vibes to every performance.",
-    "genres": ["Comedy", "DJ"]
+    "genres": [
+      "Comedy",
+      "Dj"
+    ]
   },
   {
-    "artistName": "BON ENTENDEUR",
-    "stage": "BOOHA STAGE",
+    "artist_name": "BON ENTENDEUR",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "00:30",
-    "endTime": "02:30",
+    "start_time": "00:30",
+    "end_time": "02:30",
     "description": "Two music obsessives dropping vintage voice samples over fresh beats, turning 70s gems into modern dance floor gold. 70 million streams can't be wrong. Merging classic French voices with cutting-edge production, this duo takes packed halls on a journey between decades.",
-    "genres": ["French Samples", "Nu-Disco"]
+    "genres": [
+      "FrenchSamples",
+      "NuDisco"
+    ]
   },
   {
-    "artistName": "BOSQUITO",
-    "stage": "MAIN STAGE",
+    "artist_name": "BOSQUITO",
+    "stage": "MainStage",
     "day": "Sat",
-    "startTime": "19:30",
-    "endTime": "20:30",
+    "start_time": "19:30",
+    "end_time": "20:30",
     "description": "25 years of turning Romanian rock into pure fire. From gypsy punk to symphonic ballads, Bosquito blend Balkan spirit with rock'n'roll heart. This anniversary show? Pure history in the making.",
-    "genres": ["Rock", "Balkan", "Gypsy Punk"]
+    "genres": [
+      "Rock",
+      "Balkan",
+      "GypsyPunk"
+    ]
   },
   {
-    "artistName": "BRÓDY & DR.PANDA",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "BRÓDY & DR.PANDA",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "01:30",
-    "endTime": "03:30",
+    "start_time": "01:30",
+    "end_time": "03:30",
     "description": "Romanian duo bringing genre-blending electronic sounds. Expect house, techno, and experimental beats that surprise and delight.",
     "genres": null
   },
   {
-    "artistName": "BRUTALISMUS 3000",
-    "stage": "HANGAR STAGE",
+    "artist_name": "BRUTALISMUS 3000",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "23:30",
-    "endTime": "00:30",
+    "start_time": "23:30",
+    "end_time": "00:30",
     "description": "Berlin's noisiest love story - where gabber meets punk, hardstyle meets industrial, and chaos meets genius. The soundtrack to a dystopian warehouse rave you never want to leave. He builds sonic weapons, she screams in multiple languages. Together, they're reinventing rave culture for a generation that needs it more than ever.",
-    "genres": ["Hardcore", "Techno"]
+    "genres": [
+      "Hardcore",
+      "Techno"
+    ]
   },
   {
-    "artistName": "BULLY",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "BULLY",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "03:30",
-    "endTime": "05:30",
+    "start_time": "03:30",
+    "end_time": "05:30",
     "description": "Since 2000, Bully has curated genre-blending journeys—from funk grooves and house to obscure hip-hop and world music. Having played virtually every major venue in Romania and shared stages with legends like Qbert and Freestylers, his vinyl and tape collecting fuels masterful, storytelling sets that celebrate rhythm and melody.",
-    "genres": ["Big Beat", "Breakbeat", "Hip-Hop", "World Music"]
+    "genres": [
+      "BigBeat",
+      "Breakbeat",
+      "HipHop",
+      "WorldMusic"
+    ]
   },
   {
-    "artistName": "CALINACHO",
-    "stage": "HANGAR STAGE",
+    "artist_name": "CALINACHO",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "01:00",
-    "endTime": "01:30",
+    "start_time": "01:00",
+    "end_time": "01:30",
     "description": "Calinacho is redefining Romanian trap with his genre-blending sound and heartfelt lyrics. With tracks like \"Seara Mea\" and \"Lipsa Ta\" from his acclaimed album Ai Grijă, he's established himself as a leading voice in Romanian R&B. Whether collaborating with big names or dropping solo hits, Calinacho brings authenticity to every performance. At Electric Castle, expect an intimate yet electrifying set from this rising star.",
-    "genres": ["Pop", "Trap"]
+    "genres": [
+      "Pop",
+      "Trap"
+    ]
   },
   {
-    "artistName": "CALLY",
-    "stage": "STABLES STAGE",
+    "artist_name": "CALLY",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "14:00",
-    "endTime": "17:00",
+    "start_time": "14:00",
+    "end_time": "17:00",
     "description": "Hailing from Craiova, Romania, caLLy (real name Dragos Gabriel Dumitru) is a forward-thinking DJ and producer whose refined sound has earned him a respected place in the global underground scene. Known for his deep, hypnotic grooves and precise minimal aesthetic, caLLy brings a unique identity to both his productions and DJ sets.",
-    "genres": ["Minimal", "Techno"]
+    "genres": [
+      "Minimal",
+      "Techno"
+    ]
   },
   {
-    "artistName": "CALYX",
-    "stage": "BOOHA STAGE",
+    "artist_name": "CALYX",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "19:00",
-    "endTime": "20:00",
+    "start_time": "19:00",
+    "end_time": "20:00",
     "description": "Half of the legendary Calyx & TeeBee duo, Calyx brings decades of technical precision to the decks. His solo sets showcase the darker, more technical side of drum & bass—surgical beats that hit harder than a freight train.",
-    "genres": ["Drum & Bass"]
+    "genres": [
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "CAMI LAYÉ OKÚN",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "CAMI LAYÉ OKÚN",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "Cami Layé Okún unlocks Cuban disco secrets and drops Amazonian funk bombs. Her vinyl bag's loaded with tropical treasures most DJs can't even name. This is how party music should feel.",
-    "genres": ["Tropical Disco", "Funk", "Afro-Latin"]
+    "genres": [
+      "TropicalDisco",
+      "Funk",
+      "AfroLatin"
+    ]
   },
   {
-    "artistName": "CAP",
-    "stage": "STABLES STAGE",
+    "artist_name": "CAP",
+    "stage": "StablesStage",
     "day": "Thu",
-    "startTime": "01:00",
-    "endTime": "04:00",
+    "start_time": "01:00",
+    "end_time": "04:00",
     "description": "Cap has made a name worldwide for surgical-smooth mixing, spot-on selection, and tireless dedication. His residencies at Club Guesthouse, Sunwaves Festival, and Resolute anchor his reputation as a tastemaker. Cap's tastefully reduced grooves, progressive narratives, and technical mixing reveal a DJ in tune with today's electronic music world, crafting explorations that ignite dance floors.",
-    "genres": ["Minimal", "Techno", "Electro", "Deep House"]
+    "genres": [
+      "Minimal",
+      "Techno",
+      "Electro",
+      "DeepHouse"
+    ]
   },
   {
-    "artistName": "CARI CARI",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "CARI CARI",
+    "stage": "BackyardStage",
     "day": "Sat",
-    "startTime": "20:30",
-    "endTime": "21:30",
+    "start_time": "20:30",
+    "end_time": "21:30",
     "description": "Austria's desert rock duo bringing psychedelic storms to Electric Castle. The band that turns Austrian forests into American deserts. Cari Cari's music is a roadtrip through the wildest corners of your mind, fueled by distortion and wanderlust. Prepare for a set that'll make you question reality... and maybe buy a motorcycle.",
-    "genres": ["Indie Rock", "Blues"]
+    "genres": [
+      "IndieRock",
+      "Blues"
+    ]
   },
   {
-    "artistName": "CASABLANCA DRIVERS",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "CASABLANCA DRIVERS",
+    "stage": "BackyardStage",
     "day": "Sat",
-    "startTime": "22:15",
-    "endTime": "23:15",
+    "start_time": "22:15",
+    "end_time": "23:15",
     "description": "French indie duo from Corsica bringing garage rock meets dirty bouncy pop to the Castle. Nicolas Paoletti and Alexandre Diani have been evolving their sound since 2012, and their Paris-honed energy is about to electrify Transylvania. From Mediterranean shores to Romanian grounds.",
     "genres": null
   },
   {
-    "artistName": "CC:DISCO!",
-    "stage": "BOOHA STAGE",
+    "artist_name": "CC:DISCO!",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "23:00",
-    "endTime": "00:30",
+    "start_time": "23:00",
+    "end_time": "00:30",
     "description": "The DJ who proves that disco never died, it just moved Down Under. CC:DISCO!'s selections are like a masterclass in feel-good music, from rare groove gems to modern club bangers. Get ready for a set that'll make your parents jealous they missed the 70s at the Castle.",
-    "genres": ["Disco", "House"]
+    "genres": [
+      "Disco",
+      "House"
+    ]
   },
   {
-    "artistName": "CHARLIE B2B MIHIGH",
-    "stage": "STABLES STAGE",
+    "artist_name": "CHARLIE B2B MIHIGH",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "05:00",
-    "endTime": "08:00",
+    "start_time": "05:00",
+    "end_time": "08:00",
     "description": "Charlie is a deep selector whose studio work complements his DJing, offering unique moments reflective of himself. With a trove of unreleased works, his complex, peculiar sound always keeps groove at the forefront, making him a secret weapon at festivals and events across Europe. // Mihigh defines his sound through a uniquely evolving storytelling style. Drawing from profound minimal and techno influences, he combines new and old to craft obscure, hypnotic grooves. Founder of Midi Records Romania, he champions quality over quantity.",
     "genres": null
   },
   {
-    "artistName": "CHIRTY",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "CHIRTY",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "14:00",
-    "endTime": "16:00",
+    "start_time": "14:00",
+    "end_time": "16:00",
     "description": "Romanian selector now in Rotterdam's scene, Chirty weaves bass, footwork, garage, and hybrid grooves. She's played Poing, Perron, Weelde, Sexyland, Mysteryland, and Oranjebitter—and is expanding into Romania, Switzerland, and the UK.",
-    "genres": ["Bass", "Footwork", "Garage"]
+    "genres": [
+      "Bass",
+      "Footwork",
+      "Garage"
+    ]
   },
   {
-    "artistName": "CHRISTIAN AB",
-    "stage": "STABLES STAGE",
+    "artist_name": "CHRISTIAN AB",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "23:00",
-    "endTime": "02:00",
+    "start_time": "23:00",
+    "end_time": "02:00",
     "description": "Part of Berlin's vinyl-loving community, Christian AB's selections do the talking. With a passion for unearthing forgotten gems within electronic music and beyond, his distinctive sound breaks down club music barriers, delighting audiences with unexpected twists and turns and bringing a playful energy that cements his reputation as a must-see DJ.",
-    "genres": ["Vinyl", "Electronic", "Eclectic"]
+    "genres": [
+      "Vinyl",
+      "Electronic",
+      "Eclectic"
+    ]
   },
   {
-    "artistName": "CHRISTIAN THOMSON",
-    "stage": "PING PONG STAGE",
+    "artist_name": "CHRISTIAN THOMSON",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "20:15",
-    "endTime": "21:15",
+    "start_time": "20:15",
+    "end_time": "21:15",
     "description": "Local talent delivering carefully curated electronic sounds. Expect house and techno mixed with technical precision.",
     "genres": null
   },
   {
-    "artistName": "CHRISTINE RENÉE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "CHRISTINE RENÉE",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "03:00",
-    "endTime": "05:00",
+    "start_time": "03:00",
+    "end_time": "05:00",
     "description": "Berlin's techno enchantress bringing dark magic to Transylvania. Christine Renée's sets are a masterclass in hypnotic grooves, blending minimal techno with acid-tinged warehouse vibes. She's already conquered Berghain - now it's time to show Electric Castle why she's Germany's best-kept secret.",
-    "genres": ["House", "Soulful"]
+    "genres": [
+      "House",
+      "Soulful"
+    ]
   },
   {
-    "artistName": "CIREȘAN",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "CIREȘAN",
+    "stage": "BackyardStage",
     "day": "Fri",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "Funky beats? Check. Retro 80s vibes? Check. Cireșan knows how to get a crowd moving with his blend of synth-pop and classic rock grooves. If you're into Daft Punk or RHCP, this set is gonna be your jam. All about good vibes and killer hooks. Bring your dancing shoes!",
-    "genres": ["Pop", "Folk"]
+    "genres": [
+      "Pop",
+      "Folk"
+    ]
   },
   {
-    "artistName": "CLARAA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "CLARAA",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "22:00",
-    "endTime": "23:30",
+    "start_time": "22:00",
+    "end_time": "23:30",
     "description": "When CLARAA steps up, genres blur beautifully. Think afro-house grooves dancing with melodic techno peaks, served with Parisian flair and Barcelona spirit. Her sets work magic in both underground bunkers and beachfront superclubs.",
-    "genres": ["Afro-House", "Melodic Techno"]
+    "genres": [
+      "AfroHouse",
+      "MelodicTechno"
+    ]
   },
   {
-    "artistName": "COOL CATS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "COOL CATS",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "15:00",
-    "endTime": "16:30",
+    "start_time": "15:00",
+    "end_time": "16:30",
     "description": "Navigating seamlessly from House to Disco and back to Techno, Andruw & Vlint.on emerge as two up-and-coming DJs from Romania's vibrant underground scene. Their dance-centric energy and sets draw inspiration from indie dance, italo disco, dark disco, progressive, trance, EBM, and house—evoking the spirit of the 70s, 80s, and 90s.",
-    "genres": ["House", "Disco", "Techno"]
+    "genres": [
+      "House",
+      "Disco",
+      "Techno"
+    ]
   },
   {
-    "artistName": "CORVIN & BUNIKU",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "CORVIN & BUNIKU",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "Corvin & BUNIKU are a Romanian duo whose style eludes definition—an eclectic roller coaster through contrasting genres and unlikely mix-matches, with a definitely humorous edge.",
-    "genres": ["Eclectic", "DJ Duo"]
+    "genres": [
+      "Eclectic",
+      "DjDuo"
+    ]
   },
   {
-    "artistName": "CUC",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "CUC",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "14:00",
-    "endTime": "16:00",
+    "start_time": "14:00",
+    "end_time": "16:00",
     "description": "CUC carves sound from wax. Deep house, ambient textures, jazz-infused grooves—always vinyl, always warm. When he's not playing festivals, you'll find him at the record café in Cluj that shares the name (@cuc.space), where the crackle of vinyl blends with the hum of conversation.",
-    "genres": ["Deep House"]
+    "genres": [
+      "DeepHouse"
+    ]
   },
   {
-    "artistName": "CULTATUM",
-    "stage": "BOOHA STAGE",
+    "artist_name": "CULTATUM",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "16:30",
-    "endTime": "18:00",
+    "start_time": "16:30",
+    "end_time": "18:00",
     "description": "Former DJ and current graphic designer, cultatum returns to music with renewed passion. Known for melodic storytelling and groovy basslines, his sets take the crowd on a rhythmic, uplifting journey—sharing energy he's held back for far too long.",
-    "genres": ["Melodic House"]
+    "genres": [
+      "MelodicHouse"
+    ]
   },
   {
-    "artistName": "CULTURE SHOCK",
-    "stage": "BOOHA STAGE",
+    "artist_name": "CULTURE SHOCK",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "19:45",
-    "endTime": "21:00",
+    "start_time": "19:45",
+    "end_time": "21:00",
     "description": "Culture Shock Drum & Bass / Jungle Hospital Records legends bringing two decades of pure liquid vibes and surgical basslines. Culture Shock's anthems have soundtracked countless raves, blending soulful melodies with dancefloor devastation. When they drop, crowds know they're in for something special.",
-    "genres": ["Drum & Bass"]
+    "genres": [
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "D'JHU",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "D'JHU",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "Playing since 2008, D'Jhu thrives on genre-blending. Never shows up with a prepared lesson—he adapts in real time to the crowd's vibe, tossing various styles that tickle the ears.",
     "genres": null
   },
   {
-    "artistName": "DAN ANDREI",
-    "stage": "STABLES STAGE",
+    "artist_name": "DAN ANDREI",
+    "stage": "StablesStage",
     "day": "Fri",
-    "startTime": "01:00",
-    "endTime": "04:00",
+    "start_time": "01:00",
+    "end_time": "04:00",
     "description": "Dan Andrei is an established figure known for deep, raw track selections with a stripped-back aesthetic. His groovy basslines and blissful meanders captivate audiences, while live sets showcase his powerful weaving of tracks into unforgettable experiences.",
-    "genres": ["House", "Tech House", "Groove"]
+    "genres": [
+      "House",
+      "TechHouse",
+      "Groove"
+    ]
   },
   {
-    "artistName": "DAR DISKU",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "DAR DISKU",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "Record label, DJ collective, and live project celebrating music from Arabia and beyond. Founded by Mazen Almaskati and Vish M, DAR DISKU (\"home of the disco\" in Arabic) explores Middle Eastern and Asian sounds blended with contemporary electronic music. From 1970s Egyptian inspiration to modern Castle magic.",
-    "genres": ["Arabic Fusion", "Electronic"]
+    "genres": [
+      "ArabicFusion",
+      "Electronic"
+    ]
   },
   {
-    "artistName": "DEAN KLOOGE",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DEAN KLOOGE",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "15:00",
-    "endTime": "15:55",
+    "start_time": "15:00",
+    "end_time": "15:55",
     "description": "Dean Klooge is bringing raw alt-rock energy straight outta Cluj-Napoca. No frills, no fluff—Dean Klooge delivers alternative rock with punk vibes and a lot of heart. Their live shows are loud, chaotic (in the best way), and packed with tracks that'll stick in your head long after the festival ends.",
-    "genres": ["Alternative", "Indie"]
+    "genres": [
+      "Alternative",
+      "Indie"
+    ]
   },
   {
-    "artistName": "DECKSTER",
-    "stage": "BOOHA STAGE",
+    "artist_name": "DECKSTER",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "17:00",
-    "endTime": "18:00",
+    "start_time": "17:00",
+    "end_time": "18:00",
     "description": "From soulful jazz to hardcore breaks and dub to reggae, Deckster's sets showcase the history and culture of bass music—featuring playful DnB rhythms, 140 BPM bass blasts, and everything in between.",
-    "genres": ["Bass Music", "DnB", "Reggae"]
+    "genres": [
+      "BassMusic",
+      "Dnb",
+      "Reggae"
+    ]
   },
   {
-    "artistName": "DEER JADE",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "DEER JADE",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Ten cities before 22, and now Deer Jade's bringing that wild energy to dance floors worldwide. Her sets feel like a warm hug and a rocket launch at the same time. The critics love her, but it's the smiles in the crowd that tell the real story.",
-    "genres": ["House", "Indie Electronica"]
+    "genres": [
+      "House",
+      "IndieElectronica"
+    ]
   },
   {
-    "artistName": "DEGS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DEGS",
+    "stage": "HangarStage",
     "day": "Wed",
-    "startTime": "23:30",
-    "endTime": "01:15",
+    "start_time": "23:30",
+    "end_time": "01:15",
     "description": "Some MCs rap, others sing - Degs does both with surgical precision. Switching between rapid-fire bars and soulful hooks, he just makes it look effortless. From freestyle heat on Hospital classics to creating summer classics, he's pure fire.",
-    "genres": ["MC", "Rap", "Vocals"]
+    "genres": [
+      "Mc",
+      "Rap",
+      "Vocals"
+    ]
   },
   {
-    "artistName": "DEGS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DEGS",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "01:00",
-    "endTime": "02:00",
+    "start_time": "01:00",
+    "end_time": "02:00",
     "description": "Some MCs rap, others sing - Degs does both with surgical precision. Switching between rapid-fire bars and soulful hooks, he just makes it look effortless. From freestyle heat on Hospital classics to creating summer classics, he's pure fire.",
-    "genres": ["MC", "Rap", "Vocals"]
+    "genres": [
+      "Mc",
+      "Rap",
+      "Vocals"
+    ]
   },
   {
-    "artistName": "DEKI ALEM",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DEKI ALEM",
+    "stage": "HangarStage",
     "day": "Wed",
-    "startTime": "20:30",
-    "endTime": "21:30",
+    "start_time": "20:30",
+    "end_time": "21:30",
     "description": "Twin brothers from Sweden, Deki Alem are rewriting the rules of alternative music. Fusing drum & bass, grunge, and rap into explosive soundscapes, their live shows are pure adrenaline. From opening for Gorillaz to storming Europe's biggest festivals, they're unstoppable.",
-    "genres": ["Hip-Hop", "Drum & Bass"]
+    "genres": [
+      "HipHop",
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "DELIRIC X SILENT STRIKE",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DELIRIC X SILENT STRIKE",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "01:05",
-    "endTime": "02:05",
+    "start_time": "01:05",
+    "end_time": "02:05",
     "description": "The dream team that elevated Romanian rap to an art form. Deliric spits truth with surgical precision while Silent Strike crafts beats that could score sci-fi films. Together, they're taking the Castle on a journey through Bucharest's concrete jungle and beyond. Prepare for lyrical acrobatics over mind-bending production.",
-    "genres": ["Hip-Hop"]
+    "genres": [
+      "HipHop"
+    ]
   },
   {
-    "artistName": "DENY",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DENY",
+    "stage": "PingPongStage",
     "day": "Thu",
-    "startTime": "02:00",
-    "endTime": "03:00",
+    "start_time": "02:00",
+    "end_time": "03:00",
     "description": "Romanian artist bringing alternative electronic sounds to the Castle. Expect experimental beats with serious attitude.",
     "genres": null
   },
   {
-    "artistName": "DIANA CĂLDĂRARU",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "DIANA CĂLDĂRARU",
+    "stage": "BackyardStage",
     "day": "Thu",
-    "startTime": "20:30",
-    "endTime": "21:30",
+    "start_time": "20:30",
+    "end_time": "21:30",
     "description": "Romania's classical music star with a voice that could shatter glass. Diana Căldăraru blends opera grandeur with pop sensibility, creating a sound that's both majestic and accessible. Her music is like a symphony on a summer evening.",
-    "genres": ["Pop", "Soul"]
+    "genres": [
+      "Pop",
+      "Soul"
+    ]
   },
   {
-    "artistName": "DIGITALOVE",
-    "stage": "BOOHA STAGE",
+    "artist_name": "DIGITALOVE",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "21:00",
-    "endTime": "23:00",
+    "start_time": "21:00",
+    "end_time": "23:00",
     "description": "DigitaLove ignites crowds with electrifying sets that blend house, tech house, techno, and disco at festivals like Untold, Electric Castle, Jazz in the Park, and TIFF.",
-    "genres": ["House", "Tech House", "Techno", "Disco"]
+    "genres": [
+      "House",
+      "TechHouse",
+      "Techno",
+      "Disco"
+    ]
   },
   {
-    "artistName": "DIMITRI'S BATS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DIMITRI'S BATS",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "15:00",
-    "endTime": "16:00",
+    "start_time": "15:00",
+    "end_time": "16:00",
     "description": "Transylvania's own gothic post-punk heroes. Dimitri's Bats channel the spirit of Joy Division and The Cure, with a distinctly Romanian twist. Their brooding melodies and haunting vocals will make even the most jaded hipsters remember why they fell in love with rock.",
-    "genres": ["Post-Punk", "Garage Rock"]
+    "genres": [
+      "PostPunk",
+      "GarageRock"
+    ]
   },
   {
-    "artistName": "DIRTY SHIRT",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DIRTY SHIRT",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "17:00",
-    "endTime": "18:00",
+    "start_time": "17:00",
+    "end_time": "18:00",
     "description": "They married metal riffs with folk melodies when everyone said it couldn't work. Now, 30 years later, Dirty Shirt will celebrate at the Castle a legacy of making metal fans dance to traditional flutes. Eastern Europe's wildest experiment turned hardcore-metal and folk instruments into pure party fuel. Three decades strong, still breaking rules.",
-    "genres": ["Folk Metal", "Hardcore"]
+    "genres": [
+      "FolkMetal",
+      "Hardcore"
+    ]
   },
   {
-    "artistName": "DISKO ANKSYETE (CORINA SUCAROV)",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DISKO ANKSYETE (CORINA SUCAROV)",
+    "stage": "PingPongStage",
     "day": "Wed",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Corina Sucarov of +SHE+ fronts Disko Anksyete—a DJ series exploring the beauty in darkness. Her sets weave darkwave, post-punk, new wave, and dark disco into a spellbinding rhythm inspired by New Order, Depeche Mode, Bauhaus, and more.",
     "genres": null
   },
   {
-    "artistName": "DJ CRISTACHE",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DJ CRISTACHE",
+    "stage": "PingPongStage",
     "day": "Sun",
-    "startTime": "19:00",
-    "endTime": "20:30",
+    "start_time": "19:00",
+    "end_time": "20:30",
     "description": "Alex Cristache lives a double life—lawyer by day, Bucharest's most sought-after elegant nightlife DJ by night. With an impressive vinyl collection, he's shaped atmospheres at Scenario, Casa Mița Biciclista, Summer Well, and Nostalgia.",
-    "genres": ["Elegant Nightlife", "Vinyl"]
+    "genres": [
+      "ElegantNightlife",
+      "Vinyl"
+    ]
   },
   {
-    "artistName": "DJ DIANA SAR",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DJ DIANA SAR",
+    "stage": "PingPongStage",
     "day": "Fri",
-    "startTime": "19:00",
-    "endTime": "20:30",
+    "start_time": "19:00",
+    "end_time": "20:30",
     "description": "Actress, influencer, and DJ, Diana Sar brings an authentic, high-energy vibe. Her music sets are fresh, dynamic, and perfectly tailored to every type of crowd.",
-    "genres": ["Fresh", "Dynamic House"]
+    "genres": [
+      "Fresh",
+      "DynamicHouse"
+    ]
   },
   {
-    "artistName": "DJ HEFE",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DJ HEFE",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "02:00",
-    "endTime": "04:00",
+    "start_time": "02:00",
+    "end_time": "04:00",
     "description": "Hefe (Coma member since 2000) spins alternative punk, ska, and hardcore in Club Fire and beyond, while hosting Guerrilla Radio's Domestika and Blackrhino's Vertigo Cultural—bringing raw energy to every set.",
     "genres": null
   },
   {
-    "artistName": "DJ MA-TA",
-    "stage": "PING PONG STAGE",
+    "artist_name": "DJ MA-TA",
+    "stage": "PingPongStage",
     "day": "Sun",
-    "startTime": "22:30",
-    "endTime": "00:00",
+    "start_time": "22:30",
+    "end_time": "00:00",
     "description": "Romania's mother figure behind the decks—serving straight-to-jail type beats with a signature boldness.",
     "genres": null
   },
   {
-    "artistName": "DJ OPTIK",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "DJ OPTIK",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "05:00",
-    "endTime": "07:00",
+    "start_time": "05:00",
+    "end_time": "07:00",
     "description": "Began in 5th grade throwing parties and building his high-school radio station; from 1996 on Radio 21 Ciuc to Radio 21 Bucharest at age 21, he launched Romania's first electronic show \"Obsession,\" won Nights.ro's Best DJ (2008), later moved \"Obsession\" to Ibiza Global Radio, and co-founded the Double Trouble project/label with Adrian Eftimie—continuously shaping Romania's electronic legacy.",
     "genres": null
   },
   {
-    "artistName": "DJ SAUCE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "DJ SAUCE",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "20:00",
-    "endTime": "21:30",
+    "start_time": "20:00",
+    "end_time": "21:30",
     "description": "Sauce's style breaks the mold—an eclectic mix spanning old-school hip-hop roots to modern genres. He crafts \"old to new\" shows that seamlessly traverse styles, thanks to hip-hop's versatility as the \"mother genre.\"",
-    "genres": ["Eclectic Hip-Hop–inspired"]
+    "genres": [
+      "EclecticHipHopInspired"
+    ]
   },
   {
-    "artistName": "DJ SPINNA",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "DJ SPINNA",
+    "stage": "TheBeachStage",
     "day": "Wed",
-    "startTime": "21:00",
-    "endTime": "23:00",
+    "start_time": "21:00",
+    "end_time": "23:00",
     "description": "DJ Spinna's been rocking parties since cassettes were king, blending hip-hop, house, and soul into pure sonic gold. His crates run deeper than the Mariana Trench, from rare groove gems to futuristic beats. With remixes for everyone from De La Soul to Mary J. Blige, DJ Spinna's here to school Transylvania in the art of groove.",
-    "genres": ["Hip-Hop", "House", "Soul"]
+    "genres": [
+      "HipHop",
+      "House",
+      "Soul"
+    ]
   },
   {
-    "artistName": "DJ TENNIS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "DJ TENNIS",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "00:30",
-    "endTime": "02:30",
+    "start_time": "00:30",
+    "end_time": "02:30",
     "description": "The guy who swapped tennis courts for turntables and never looked back. From booking the legends to becoming one himself. His sound? Life and Death in musical form - melancholy and euphoria wrapped in Italian passion. Like a late-night road trip with no map.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "DODO",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "DODO",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "04:00",
-    "endTime": "06:00",
+    "start_time": "04:00",
+    "end_time": "06:00",
     "description": "Dodo is a dynamic and multifaceted force in the music scene, recognized as a DJ, promoter, event organizer, founder of the Make Music Not War music production school in Romania, and booking manager. Since launching his sonic journey in 2010, Dodo has carved out a distinct niche, blending his passion for performance with a flair for curating unforgettable experiences for music lovers.",
-    "genres": ["Multi-genre"]
+    "genres": [
+      "MultiGenre"
+    ]
   },
   {
-    "artistName": "DORA GAITANOVICI",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DORA GAITANOVICI",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "15:25",
-    "endTime": "16:20",
+    "start_time": "15:25",
+    "end_time": "16:20",
     "description": "Dora Gaitanovici leads Romania's new alt-rock wave with zero apologies. From Eurovision stages to packed festivals, her band mixes folk roots with modern rock punch. One show is all it takes - Pure electricity.",
-    "genres": ["Alt-Rock", "Folk-Pop"]
+    "genres": [
+      "AltRock",
+      "FolkPop"
+    ]
   },
   {
-    "artistName": "DOV'È LIANA",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "DOV'È LIANA",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "23:00",
-    "endTime": "00:00",
+    "start_time": "23:00",
+    "end_time": "00:00",
     "description": "Three French rebels cooking up bilingual bangers and throwing the most liberating parties in Europe. Their mission? Make people dance like nobody's watching. Dov'è Liana crashed Milan's coolest clubs with zero filters. Now they're mixing French touch with Italian heat, 40 sold-out shows say they're onto something special.",
     "genres": null
   },
   {
-    "artistName": "DU MAD",
-    "stage": "BOOHA STAGE",
+    "artist_name": "DU MAD",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "23:00",
-    "endTime": "00:30",
+    "start_time": "23:00",
+    "end_time": "00:30",
     "description": "\"Too weird to live / too rare to die.\" An elusive project that defies easy classification—an experimental journey through sound and rhythm.",
-    "genres": ["Experimental", "Avant-Garde"]
+    "genres": [
+      "Experimental",
+      "AvantGarde"
+    ]
   },
   {
-    "artistName": "DUB PISTOLS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "DUB PISTOLS",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "23:35",
-    "endTime": "00:35",
+    "start_time": "23:35",
+    "end_time": "00:35",
     "description": "The hardest working rebels in showbiz turned acid house dreams into a genre-crushing legacy. Started in '96 with a riot, still causing beautiful chaos today. Barry Ashworth and his band of musical misfits blend breakbeats, ska, and pure chaos into festival gold. No rules, just vibes.",
-    "genres": ["Breakbeat", "Ska", "Acid House"]
+    "genres": [
+      "Breakbeat",
+      "Ska",
+      "AcidHouse"
+    ]
   },
   {
-    "artistName": "DUBASE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "DUBASE",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "Since 1997 in Cluj under CRS and the first Romanian electronic festival De la Hoya, Dubase has been a promoter, digger, and live film-scorer (TIFF). He curates Roots stage at Electric Castle for reggae/dub/jungle and spotlighted exotic \"world\" music. His jungle mixtapes first aired on Cluj FM's \"Welcome to the Club,\" and he's stayed militant for jungle through its resurgence to 2025.",
-    "genres": ["Jungle", "Dub", "Reggae", "Roots"]
+    "genres": [
+      "Jungle",
+      "Dub",
+      "Reggae",
+      "Roots"
+    ]
   },
   {
-    "artistName": "DWLS B2B MEMPHYS + BLOCKSBERG & DEGS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "DWLS B2B MEMPHYS + BLOCKSBERG & DEGS",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "Cluj-Napoca's DWLS has DJed DnB for over 15 years—his sets traverse deep, liquid, and heavy rollers. Founder of Quite Lucky promotion (2022), he's dedicated to uplifting the local DnB community. // Memphys brings expert DnB mixing while vocalist Blocksberg adds mesmerizing vocals—together crafting a captivating fusion of sound and energy for an exhilarating journey.",
     "genres": null
   },
   {
-    "artistName": "EDIP B2B KOV",
-    "stage": "BOOHA STAGE",
+    "artist_name": "EDIP B2B KOV",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "06:30",
-    "endTime": "08:00",
+    "start_time": "06:30",
+    "end_time": "08:00",
     "description": "Romanian electronic duo bringing collaborative energy. Expect house and techno mixed with precision and passion.",
     "genres": null
   },
   {
-    "artistName": "ELEEZ",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "ELEEZ",
+    "stage": "HideoutStage",
     "day": "Wed",
-    "startTime": "20:30",
-    "endTime": "22:30",
+    "start_time": "20:30",
+    "end_time": "22:30",
     "description": "Eleez's journey began over a decade ago with melodic techno and progressive. After a 2022 DJ course, she joined The Mindkickers collective, co-creating high-energy parties. Her ecstatic, immersive sets channel deep passion and deliver powerful, authentic experiences.",
-    "genres": ["Melodic Techno", "Progressive"]
+    "genres": [
+      "MelodicTechno",
+      "Progressive"
+    ]
   },
   {
-    "artistName": "ELIA NAFZGER",
-    "stage": "STABLES STAGE",
+    "artist_name": "ELIA NAFZGER",
+    "stage": "StablesStage",
     "day": "Fri",
-    "startTime": "22:00",
-    "endTime": "01:00",
+    "start_time": "22:00",
+    "end_time": "01:00",
     "description": "Rooted in London's cultural crossroads and now based in Bucharest, Elia Nafzger brings a deeply personal energy to the decks. She has played venues like Fabric and Guesthouse and cities including Miami, New York, and Berlin—blending carefully selected records to elevate the room's energy. A devoted record digger, Elia crafts narrative-driven sets bridging past, present, and future through groove, texture, and intention.",
-    "genres": ["House", "Deep House", "Nu-Disco"]
+    "genres": [
+      "House",
+      "DeepHouse",
+      "NuDisco"
+    ]
   },
   {
-    "artistName": "EMILY MAKIS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "EMILY MAKIS",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "19:00",
-    "endTime": "19:45",
+    "start_time": "19:00",
+    "end_time": "19:45",
     "description": "Rising star in the liquid DnB scene, Emily Makis crafts ethereal soundscapes that float between dreamy atmospherics and driving rhythms. Her productions balance emotional depth with dancefloor energy, proving that bass music can move both hearts and feet.",
-    "genres": ["Drum & Bass", "Vocalist"]
+    "genres": [
+      "DrumAndBass",
+      "Vocalist"
+    ]
   },
   {
-    "artistName": "ENASESCU",
-    "stage": "PING PONG STAGE",
+    "artist_name": "ENASESCU",
+    "stage": "PingPongStage",
     "day": "Thu",
-    "startTime": "00:30",
-    "endTime": "02:00",
+    "start_time": "00:30",
+    "end_time": "02:00",
     "description": "One of the pioneers of Hip-Hop & R&B parties in Bucharest, Enășescu brings an explosive set to Radio Stage—blending rap, R&B, reggae, and funk for an unforgettable urban experience.",
     "genres": null
   },
   {
-    "artistName": "ENEVEL",
-    "stage": "BOOHA STAGE",
+    "artist_name": "ENEVEL",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "14:00",
-    "endTime": "15:30",
+    "start_time": "14:00",
+    "end_time": "15:30",
     "description": "With roots in Sibiu's rave scene, Enevel launched the Bass Trap Mix series in 2013, pioneering trap music in Romania. From house and minimal beginnings to dubstep and trap, he's played clubs and festivals nationwide—continuously refining his own dedicated sound.",
-    "genres": ["Trap", "Bass"]
+    "genres": [
+      "Trap",
+      "Bass"
+    ]
   },
   {
-    "artistName": "ESAUNUE & XAKIS",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "ESAUNUE & XAKIS",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "13:00",
-    "endTime": "14:00",
+    "start_time": "13:00",
+    "end_time": "14:00",
     "description": "This duo discovered an alchemical formula to bridge genres and generations—crafting sets that surprise with unexpected connections across electronic styles.",
     "genres": null
   },
   {
-    "artistName": "ETY",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "ETY",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "Meet eTy, whose mixes and auditory journeys evoke powerful emotions, transporting you to a space where anything is possible. Music is our escape.",
-    "genres": ["Eclectic", "Experimental"]
+    "genres": [
+      "Eclectic",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "EVE + POL",
-    "stage": "BOOHA STAGE",
+    "artist_name": "EVE + POL",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "22:30",
-    "endTime": "00:00",
+    "start_time": "22:30",
+    "end_time": "00:00",
     "description": "EVE+POL is Romania's first live techno duo (f. 2024) founded by vocalist Evelina Negru and composer/producer Paul Ilea. They fuse improvisation, modular synths, drum machines, and raw vocals for an electrifying, ever-evolving performance. Blending dub techno, tech house, DnB, broken beat, and experimental electro, each real-time show is unique. Their single \"PROMISE\" delivers raw energy alongside an avant-garde video.",
     "genres": null
   },
   {
-    "artistName": "FARSIGHT",
-    "stage": "BOOHA STAGE",
+    "artist_name": "FARSIGHT",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "12:00",
-    "endTime": "14:00",
+    "start_time": "12:00",
+    "end_time": "14:00",
     "description": "Local electronic talent ready to showcase Romania's underground scene. Expect deep house and techno that transcends.",
     "genres": null
   },
   {
-    "artistName": "FISH56OCTAGON",
-    "stage": "HANGAR STAGE",
+    "artist_name": "FISH56OCTAGON",
+    "stage": "HangarStage",
     "day": "Wed",
-    "startTime": "01:15",
-    "endTime": "03:00",
+    "start_time": "01:15",
+    "end_time": "03:00",
     "description": "The DJ who made rave culture go viral. Armed with vinyl, humor, and infectious energy, he's here to turn the Castle into a dancefloor revolution.",
-    "genres": ["Various"]
+    "genres": [
+      "Various"
+    ]
   },
   {
-    "artistName": "FLAVA D + PVC",
-    "stage": "BOOHA STAGE",
+    "artist_name": "FLAVA D + PVC",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "18:00",
-    "endTime": "19:30",
+    "start_time": "18:00",
+    "end_time": "19:30",
     "description": "UK garage legend meets Hospital Records precision. FLAVA D's been shaping the UK bass scene for over a decade, while PVC brings that technical drum & bass expertise. When garage royalty collaborates with DnB mastery, expect something special. This is UK bass culture at its finest.",
     "genres": null
   },
   {
-    "artistName": "FLOYD LAVINE",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "FLOYD LAVINE",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "01:00",
-    "endTime": "02:30",
+    "start_time": "01:00",
+    "end_time": "02:30",
     "description": "His passport says South African, but Floyd Lavine's groove speaks every language. Part nomad, part future-funk architect, Floyd Lavine took Berlin's concrete jungle, planted African roots, and watched something entirely new grow. From BBC Radio to Ibiza nights, he turns techno into African tales.",
-    "genres": ["Future-Funk", "Techno"]
+    "genres": [
+      "FutureFunk",
+      "Techno"
+    ]
   },
   {
-    "artistName": "FNX OMAR",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "FNX OMAR",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "23:30",
-    "endTime": "01:00",
+    "start_time": "23:30",
+    "end_time": "01:00",
     "description": "FNX OMAR's taking his Morocco-meets-house-music recipe from Miami to Amsterdam, leaving packed dancefloors and dropped jaws everywhere. If you dig your grooves with a side of cultural fusion and chart-topping swagger, this is your guy.",
-    "genres": ["Afro House", "Global Fusion"]
+    "genres": [
+      "AfroHouse",
+      "GlobalFusion"
+    ]
   },
   {
-    "artistName": "GALA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "GALA",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "DJ & sound producer from Kyiv with 14 years' experience and 1,000+ parties worldwide. Passionate about exploring new sounds and styles, Gala delivers high-energy, positive-vibe sets—from intimate clubs to big festivals across Europe and Asia.",
     "genres": null
   },
   {
-    "artistName": "GEORGE HEERD",
-    "stage": "BOOHA STAGE",
+    "artist_name": "GEORGE HEERD",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "05:00",
-    "endTime": "06:30",
+    "start_time": "05:00",
+    "end_time": "06:30",
     "description": "George Heerd is a DJ/producer from Constanța, Romania, dedicated to fresh underground beats. He's shared stages with Raresh, Praslea, and Andrew James Gustav at Club Guesthouse, Platforma Wolff, Electric Castle, and Picnic Fonic. His high-quality productions and captivating live sets are quickly making their mark.",
-    "genres": ["Underground", "Deep House"]
+    "genres": [
+      "Underground",
+      "DeepHouse"
+    ]
   },
   {
-    "artistName": "GESCU",
-    "stage": "STABLES STAGE",
+    "artist_name": "GESCU",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "11:00",
-    "endTime": "14:00",
+    "start_time": "11:00",
+    "end_time": "14:00",
     "description": "Since joining Sunrise Booking Agency in 2007, Gescu evolved from an aspiring DJ to a mainstay performer. Known for sleek mixing and calm confidence, he opens major events locally and internationally, and delivers long back-to-back afterhours sets at Sunwaves.",
-    "genres": ["House", "Tech House", "Minimal"]
+    "genres": [
+      "House",
+      "TechHouse",
+      "Minimal"
+    ]
   },
   {
-    "artistName": "GIRL ULTRA",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "GIRL ULTRA",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "21:15",
-    "endTime": "22:15",
+    "start_time": "21:15",
+    "end_time": "22:15",
     "description": "Mexico City's R&B queen proving that R&B knows no language barriers. Girl Ultra's music is a celebration of femininity, sexuality, and the power of a perfect groove. Get ready for a journey through smoky clubs and moonlit streets...",
-    "genres": ["R&B", "Alternative"]
+    "genres": [
+      "RAndB",
+      "Alternative"
+    ]
   },
   {
-    "artistName": "GOJNEA76",
-    "stage": "STABLES STAGE",
+    "artist_name": "GOJNEA76",
+    "stage": "StablesStage",
     "day": "Thu",
-    "startTime": "07:00",
-    "endTime": "10:00",
+    "start_time": "07:00",
+    "end_time": "10:00",
     "description": "Known for pushing boundaries, Gojnea76 blurs electronic genres, turning heads with every track. Drawing inspiration from everything artsy—be it metal bands, cinematography, or photography—there's a heavy-handed heaviness to his music.",
-    "genres": ["Electronic (Hybrid)"]
+    "genres": [
+      "ElectronicHybrid"
+    ]
   },
   {
-    "artistName": "GQ",
-    "stage": "BOOHA STAGE",
+    "artist_name": "GQ",
+    "stage": "BoohaStage",
     "day": null,
-    "startTime": null,
-    "endTime": null,
+    "start_time": null,
+    "end_time": null,
     "description": "Bringing smooth sophistication to the bass scene, GQ crafts sets that flow like liquid gold. His deep, soulful approach to drum & bass proves that the genre can be both hard-hitting and emotionally resonant—music for the head, heart, and feet.",
-    "genres": ["MC", "Drum & Bass"]
+    "genres": [
+      "Mc",
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "GRAMOFONE",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "GRAMOFONE",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "DIY spirit meets genre-blending madness—Gramofone is here to keep things interesting. From opening for Bon Jovi to experimenting with techy music videos, they're always up to something cool. Their Electric Castle set? Guaranteed fun!",
-    "genres": ["Swing", "Electro Swing"]
+    "genres": [
+      "Swing",
+      "ElectroSwing"
+    ]
   },
   {
-    "artistName": "GRASU XXL",
-    "stage": "MAIN STAGE",
+    "artist_name": "GRASU XXL",
+    "stage": "MainStage",
     "day": "Sat",
-    "startTime": "18:00",
-    "endTime": "18:55",
+    "start_time": "18:00",
+    "end_time": "18:55",
     "description": "Romania's hip-hop heavyweight with lyrical finesse to match. Two decades deep, Grasu XXL's still the bridge between old school and new cool. With flows for days and a stage presence that commands respect, expect nothing but XXL energy.",
-    "genres": ["Hip-Hop"]
+    "genres": [
+      "HipHop"
+    ]
   },
   {
-    "artistName": "GRID",
-    "stage": "BOOHA STAGE",
+    "artist_name": "GRID",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "17:00",
-    "endTime": "18:00",
+    "start_time": "17:00",
+    "end_time": "18:00",
     "description": "Eastern Transylvania export Grid cuts his teeth with the Tone Troopers collective. His DnB sets span jungle to neurofunk, while occasionally dipping into UK garage, breaks, or house—always moving crowds with continuous, creative blends.",
-    "genres": ["Drum & Bass", "Jungle", "UK Garage", "Breaks", "House"]
+    "genres": [
+      "DrumAndBass",
+      "Jungle",
+      "UkGarage",
+      "Breaks",
+      "House"
+    ]
   },
   {
-    "artistName": "GRIMUS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "GRIMUS",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "16:35",
-    "endTime": "17:30",
+    "start_time": "16:35",
+    "end_time": "17:30",
     "description": "Cluj-Napoca's very own alt-rock giants, Grimus, have been shaping Romania's music scene for nearly two decades. Their live shows are a masterclass in emotional intensity, blending soaring melodies with raw energy. They've opened for Muse and 30 Seconds to Mars - now coming to the Castle, to remind you why they're one of Romania's finest exports.",
-    "genres": ["Alternative Rock"]
+    "genres": [
+      "AlternativeRock"
+    ]
   },
   {
-    "artistName": "GULLY",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "GULLY",
+    "stage": "HideoutStage",
     "day": "Wed",
-    "startTime": "02:30",
-    "endTime": "04:00",
+    "start_time": "02:30",
+    "end_time": "04:00",
     "description": "Drawn by curiosity at age 16, Gully fell in love with DJing's power to connect. After residencies in Craiova clubs, he shifted toward minimal-tech-house and now shares stages with legends like John Digweed, Dubfire, and Fritz Kalkbrenner—earning NIGHTS.RO Breakthrough awards.",
-    "genres": ["Minimal", "Tech-House"]
+    "genres": [
+      "Minimal",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "H2B - HELSINKI 2 BUCHAREST",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "H2B - HELSINKI 2 BUCHAREST",
+    "stage": "TheBeachStage",
     "day": "Wed",
-    "startTime": "01:00",
-    "endTime": "03:00",
+    "start_time": "01:00",
+    "end_time": "03:00",
     "description": "Cross-cultural collaboration bringing Nordic minimalism meets Balkan energy. Expect electronic sounds that bridge two worlds.",
     "genres": null
   },
   {
-    "artistName": "HEAVEN CAN WAIT",
-    "stage": "PING PONG STAGE",
+    "artist_name": "HEAVEN CAN WAIT",
+    "stage": "PingPongStage",
     "day": "Fri",
-    "startTime": "17:00",
-    "endTime": "19:00",
+    "start_time": "17:00",
+    "end_time": "19:00",
     "description": "\"Heaven can wait, I'm in paradise\" is the start of an evolving project spanning Hip-Hop and Drum & Bass. Electric Castle marks its first stop on a journey across genres.",
-    "genres": ["Hip-Hop", "Drum & Bass"]
+    "genres": [
+      "HipHop",
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "HERODOT",
-    "stage": "STABLES STAGE",
+    "artist_name": "HERODOT",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "17:00",
-    "endTime": "20:00",
+    "start_time": "17:00",
+    "end_time": "20:00",
     "description": "Herodot is a DJ, producer, label owner, and sound engineer known for his deep connection to Romania's electronic music scene. A Sunrise Hub & Agency member, he shapes refined grooves and immersive sonic journeys, pushing underground music boundaries through his label and technical expertise.",
-    "genres": ["Techno", "House", "Deep"]
+    "genres": [
+      "Techno",
+      "House",
+      "Deep"
+    ]
   },
   {
-    "artistName": "HIP HOP TAKEOVERS",
-    "stage": "PING PONG STAGE",
+    "artist_name": "HIP HOP TAKEOVERS",
+    "stage": "PingPongStage",
     "day": "Fri",
-    "startTime": "00:00",
-    "endTime": "04:00",
+    "start_time": "00:00",
+    "end_time": "04:00",
     "description": "Hip Hop Takeovers is a high-energy event series that brings the raw essence of hip hop to the forefront. Blending live performances, DJ sets, and immersive experiences, it's a celebration of the culture—music, dance, art, and community—all under one roof.",
-    "genres": ["Event Series", "Hip-Hop"]
+    "genres": [
+      "EventSeries",
+      "HipHop"
+    ]
   },
   {
-    "artistName": "HOT SINCE 82",
-    "stage": "BOOHA STAGE",
+    "artist_name": "HOT SINCE 82",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "02:30",
-    "endTime": "04:30",
+    "start_time": "02:30",
+    "end_time": "04:30",
     "description": "From marathon sets in Barnsley to ruling Ibiza - Hot Since 82 knows how to keep a crowd in his pocket. House music with drama, smooth vibes with teeth. Warning: May cause time to disappear.",
-    "genres": ["House"]
+    "genres": [
+      "House"
+    ]
   },
   {
-    "artistName": "HUGH HARDIE B2B AZOTIX + PVC",
-    "stage": "BOOHA STAGE",
+    "artist_name": "HUGH HARDIE B2B AZOTIX + PVC",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "16:30",
-    "endTime": "18:00",
+    "start_time": "16:30",
+    "end_time": "18:00",
     "description": "Romania's lockdown-born Azotix (Eduard Dohot) rose on VISION, then released on Overview Music, Gemini Gemini, and Critical Music. Tipped by Halogenix and Rockwell, his precocious talent promises a bright future in DnB.",
     "genres": null
   },
   {
-    "artistName": "IBIZA RECORDS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "IBIZA RECORDS",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "21:00",
-    "endTime": "23:00",
+    "start_time": "21:00",
+    "end_time": "23:00",
     "description": "Some learn Ibiza classics from YouTube - these guys helped create them - Jan and Calvin bring pure vinyl magic from the White Isle. Father and son duo spinning those classic house anthems that made Space and Pacha legendary. Pure vinyl, pure memories, pure fire.",
-    "genres": ["House Classics", "Vinyl"]
+    "genres": [
+      "HouseClassics",
+      "Vinyl"
+    ]
   },
   {
-    "artistName": "INNA",
-    "stage": "MAIN STAGE",
+    "artist_name": "INNA",
+    "stage": "MainStage",
     "day": "Thu",
-    "startTime": "20:40",
-    "endTime": "21:30",
+    "start_time": "20:40",
+    "end_time": "21:30",
     "description": "With chart-toppers across Europe and Latin America, INNA's conquered everything from club anthems to reggaeton collabs. Two billion views later, she's coming to Bontida to electrify the Castle with hits that made Eastern Europe the hottest dance destination. Ready your dancing shoes.",
-    "genres": ["Dance Pop"]
+    "genres": [
+      "DancePop"
+    ]
   },
   {
-    "artistName": "IOANA B2B CRISTINA",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "IOANA B2B CRISTINA",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "14:00",
-    "endTime": "16:00",
+    "start_time": "14:00",
+    "end_time": "16:00",
     "description": "Two friends who love house music and have been playing together since 2018—twin selectors bringing tight back-to-back synergy to every set.",
-    "genres": ["House"]
+    "genres": [
+      "House"
+    ]
   },
   {
-    "artistName": "IOVA",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "IOVA",
+    "stage": "BackyardStage",
     "day": "Sat",
-    "startTime": "19:00",
-    "endTime": "20:00",
+    "start_time": "19:00",
+    "end_time": "20:00",
     "description": "Romania's Gen Z pop queen is here to spill the tea on life's awkward moments—bad dates, anxiety, mediocre sex—you name it. IOVA's electro-pop bangers like \"Down on My Knees\" will have you vibing while feeling seen at the same time.",
-    "genres": ["Pop", "Electronic"]
+    "genres": [
+      "Pop",
+      "Electronic"
+    ]
   },
   {
-    "artistName": "IRIS - CRISTI MINCULESCU, VALTER & BORO",
-    "stage": "HANGAR STAGE",
+    "artist_name": "IRIS - CRISTI MINCULESCU, VALTER & BORO",
+    "stage": "HangarStage",
     "day": "Wed",
-    "startTime": "22:05",
-    "endTime": "23:05",
+    "start_time": "22:05",
+    "end_time": "23:05",
     "description": "Legends never die, they just get louder. IRIS returns with the dream team - Cristi's iconic vocals, Valter's guitar wizardry, and Boro's thunderous rhythms. From communist-era rebels to modern rock titans, they're still the soundtrack to Romanian freedom.",
-    "genres": ["Rock"]
+    "genres": [
+      "Rock"
+    ]
   },
   {
-    "artistName": "IVVA",
-    "stage": "STABLES STAGE",
+    "artist_name": "IVVA",
+    "stage": "StablesStage",
     "day": "Thu",
-    "startTime": "22:00",
-    "endTime": "01:00",
+    "start_time": "22:00",
+    "end_time": "01:00",
     "description": "Noemi Vlad, known as Ivva, focuses on minimalist soundscapes with driving basslines and textured atmospheres. She's released on Saraw, Sendero, Romanesco, and debuted her first EP on DUB Musik, captivating audiences with her deep, hypnotic style.",
-    "genres": ["Minimal Techno", "Microhouse", "Deep Tech"]
+    "genres": [
+      "MinimalTechno",
+      "MicroHouse",
+      "DeepTech"
+    ]
   },
   {
-    "artistName": "JACOTÉNE",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "JACOTÉNE",
+    "stage": "BackyardStage",
     "day": "Thu",
-    "startTime": "19:00",
-    "endTime": "20:00",
+    "start_time": "19:00",
+    "end_time": "20:00",
     "description": "Nobody's ready for JACOTÉNE. At 17, she's already got Sydney Opera House shook and casually collecting souls at festivals. Those Amy Winehouse comparisons? Just wait till you hear her live. Melbourne's teenage powerhouse isn't asking for permission to take over.",
-    "genres": ["Pop", "Soul", "Indie"]
+    "genres": [
+      "Pop",
+      "Soul",
+      "Indie"
+    ]
   },
   {
-    "artistName": "JAHNERATION",
-    "stage": "HANGAR STAGE",
+    "artist_name": "JAHNERATION",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "18:40",
-    "endTime": "19:40",
+    "start_time": "18:40",
+    "end_time": "19:40",
     "description": "Parisian rastas with a mission to make Europe dance. Jahneration's fusion of reggae, rap, and rock is like a musical cocktail of good vibes. They've shared stages with Groundation and Alborosie - now it's Romania's turn to catch the fever. One love, Electric Castle!",
-    "genres": ["Reggae", "Hip-Hop"]
+    "genres": [
+      "Reggae",
+      "HipHop"
+    ]
   },
   {
-    "artistName": "JAYDA G",
-    "stage": "BOOHA STAGE",
+    "artist_name": "JAYDA G",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "00:30",
-    "endTime": "02:30",
+    "start_time": "00:30",
+    "end_time": "02:30",
     "description": "The DJ with a master's degree in saving the ocean. From environmental science labs to Grammy nominations, Jayda G brings scientific precision to soulful house grooves. Her beats are contagious, her joy even more so. Born in Canadian wilderness, refined in Berlin clubs, now bringing that rare pure energy to the Castle.",
-    "genres": ["House", "Disco"]
+    "genres": [
+      "House",
+      "Disco"
+    ]
   },
   {
-    "artistName": "JOEY VALENCE & BRAE",
-    "stage": "HANGAR STAGE",
+    "artist_name": "JOEY VALENCE & BRAE",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "21:40",
-    "endTime": "22:40",
+    "start_time": "21:40",
+    "end_time": "22:40",
     "description": "They skipped the record labels and went straight to making history. Joey Valence & Brae took DIY rap from their bedroom to billions of views, proving sometimes the best parties start in basements.",
-    "genres": ["DIY Rap", "Hip-Hop"]
+    "genres": [
+      "DiyRap",
+      "HipHop"
+    ]
   },
   {
-    "artistName": "JULIAN M",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "JULIAN M",
+    "stage": "HideoutStage",
     "day": "Wed",
-    "startTime": "18:00",
-    "endTime": "20:30",
+    "start_time": "18:00",
+    "end_time": "20:30",
     "description": "Julian M has pioneered Romania's electronic scene since 1999. From founding Future FM pirate radio to producing radio shows (Pro FM, BIN Radio, Radio Cluj) and mixing across styles—downtempo, broken-beats, funk, deep, Balearic, organic afro house—he creates true musical journeys backed by 25+ years of experience.",
-    "genres": ["Eclectic", "Downtempo to Afro House"]
+    "genres": [
+      "Eclectic",
+      "DowntempoToAfroHouse"
+    ]
   },
   {
-    "artistName": "JUSTICE",
-    "stage": "MAIN STAGE",
+    "artist_name": "JUSTICE",
+    "stage": "MainStage",
     "day": "Sat",
-    "startTime": "00:30",
-    "endTime": "01:45",
+    "start_time": "00:30",
+    "end_time": "01:45",
     "description": "From setting dancefloors on fire with D.A.N.C.E to melting genres like mad scientists, these French legends turned electronic music into high art. Part disco, part metal, pure electricity - Justice don't follow rules - they break them with style.",
-    "genres": ["Electro", "Disco", "Rock"]
+    "genres": [
+      "Electro",
+      "Disco",
+      "Rock"
+    ]
   },
   {
-    "artistName": "JUSTIN TIMBERLAKE",
-    "stage": "MAIN STAGE",
+    "artist_name": "JUSTIN TIMBERLAKE",
+    "stage": "MainStage",
     "day": "Thu",
-    "startTime": "22:30",
-    "endTime": "00:30",
+    "start_time": "22:30",
+    "end_time": "00:30",
     "description": "He's bringing sexy back. Pop's ultimate triple threat: he sings, he dances, he makes the whole world move. After 20+ years of hits, JT's still the blueprint for what a superstar should be. Now that's what we call justified.",
-    "genres": ["Pop"]
+    "genres": [
+      "Pop"
+    ]
   },
   {
-    "artistName": "K LINE",
-    "stage": "BOOHA STAGE",
+    "artist_name": "K LINE",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "K-LINE is a House music producer/DJ from Romania, now in Bucharest, who has explored various styles but found his greatest passion in House. He blends diverse influences with modern sounds to create unique experiences—pouring heart into every beat, drop, and mix to bring joy and energy to his audience.",
     "genres": null
   },
   {
-    "artistName": "K-LU",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "K-LU",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Active since 2005, K-lu blends funk, hip-hop, electro, and bass music with his own video mixes. A scratch master, he peppers sets with quotes from classic Romanian films—surprising and amusing audiences alike.",
-    "genres": ["Funk", "Hip-Hop", "Electro", "Bass"]
+    "genres": [
+      "Funk",
+      "HipHop",
+      "Electro",
+      "Bass"
+    ]
   },
   {
-    "artistName": "KARAK",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "KARAK",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Karak explores diverse genres to craft a unique blend that defies classification. With confidence and precision, he navigates electronic soundscapes—innovative, dynamic sets with a touch of nostalgia.",
-    "genres": ["Forward-Thinking Electronic"]
+    "genres": [
+      "ForwardThinkingElectronic"
+    ]
   },
   {
-    "artistName": "KASRA",
-    "stage": "BOOHA STAGE",
+    "artist_name": "KASRA",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "Critical Music boss and tastemaker extraordinaire, Kasra has shaped the sound of modern drum & bass for over a decade. Behind the decks, he seamlessly blends deep liquid vibes with cutting-edge neurofunk—a masterclass in genre evolution.",
-    "genres": ["Drum & Bass"]
+    "genres": [
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "KATAA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "KATAA",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Cătălin Iordache (kataa) is a DJ/producer from Timișoara, active since 2009. He blends house, deep house, afro house, and tech house. Releases on Deepalma, King Street Sounds, Hotfingers, Cruise Music. Supported by Simon Field, Mark Knight, Nora En Pure, Sam Feldt, Redondo, and Glen Horsborough.",
-    "genres": ["House", "Deep House", "Afro House", "Tech House"]
+    "genres": [
+      "House",
+      "DeepHouse",
+      "AfroHouse",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "KIDS WITH BUNS",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "KIDS WITH BUNS",
+    "stage": "BackyardStage",
     "day": "Fri",
-    "startTime": "19:30",
-    "endTime": "20:30",
+    "start_time": "19:30",
+    "end_time": "20:30",
     "description": "Two friends, one mission: make sadness slap. Kids With Buns make feelings bounce. Kids With Buns turn heartbreak and growing pains into indie anthems that make you cry and move at the same time. Like Girl in Red with a Belgian twist.",
-    "genres": ["Indie Dance", "Electro-Pop"]
+    "genres": [
+      "IndieDance",
+      "ElectroPop"
+    ]
   },
   {
-    "artistName": "KINGS OF THE ROLLERS & INJA",
-    "stage": "HANGAR STAGE",
+    "artist_name": "KINGS OF THE ROLLERS & INJA",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "02:00",
-    "endTime": "03:00",
+    "start_time": "02:00",
+    "end_time": "03:00",
     "description": "Raw jungle DNA runs through everything Kings of The Rollers touch. Three drum & bass masterminds behind the decks, endless dubplates at the ready. Serum, Voltage, and Bladerunner unleash pure jungle mayhem from Glastonbury to Rampage. The Hospital Records crew leaving crowds breathless since day one. // A one-man musical hurricane. When Inja grabs the mic, expect poetry in motion. From Guardian columns to festival stages, he juggles bars, beats, and burning social issues while keeping the crowd bouncing. Hospital Records' secret weapon keeping drum & bass crowds spellbound worldwide.",
     "genres": null
   },
   {
-    "artistName": "KIT SEBASTIAN",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "KIT SEBASTIAN",
+    "stage": "BackyardStage",
     "day": "Fri",
-    "startTime": "23:30",
-    "endTime": "00:30",
+    "start_time": "23:30",
+    "end_time": "00:30",
     "description": "Two Londoners with passports full of stamps and heads full of vintage sounds. Kit Sebastian blend Turkish psychedelia with French pop magic, turning global influences into pure sonic gold. Every set feels like raiding the world's coolest record store.",
-    "genres": ["Psychedelic", "Global Pop"]
+    "genres": [
+      "Psychedelic",
+      "GlobalPop"
+    ]
   },
   {
-    "artistName": "KOSTA",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "KOSTA",
+    "stage": "TheBeachStage",
     "day": "Wed",
-    "startTime": "23:00",
-    "endTime": "01:00",
+    "start_time": "23:00",
+    "end_time": "01:00",
     "description": "Romanian selector with deep crates and deeper grooves. Expect house and techno vibes that hit just right.",
     "genres": null
   },
   {
-    "artistName": "KOZO",
-    "stage": "STABLES STAGE",
+    "artist_name": "KOZO",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "20:00",
-    "endTime": "23:00",
+    "start_time": "20:00",
+    "end_time": "23:00",
     "description": "Romanian DJ and producer Kozo is a familiar face in the underground, with a career spanning over three decades of technical precision and refined sound. His sets blend house, techno, and dub, while his Intuit FM platform explores ambient, leftfield, trip-hop, shoegaze, free jazz, and psychedelia. His experimental live project Capra Veciunului pushes boundaries with an interplay of electronic textures and atmospheric vocals.",
-    "genres": ["House", "Techno", "Dub", "Experimental"]
+    "genres": [
+      "House",
+      "Techno",
+      "Dub",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "KRAFTY KUTS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "KRAFTY KUTS",
+    "stage": "HangarStage",
     "day": "Wed",
-    "startTime": "23:30",
-    "endTime": "01:15",
+    "start_time": "23:30",
+    "end_time": "01:15",
     "description": "The breakbeat mastermind who turned turntables into time machines. From break-dancing teen to festival-conquering DJ, Brighton's bass music legend Krafty Kuts revolutionized UK bass music with superhuman scratching skills. When he drops those funk-fueled breaks, even the most committed wallflowers start moving. Get ready.",
-    "genres": ["Breakbeat", "Funk"]
+    "genres": [
+      "Breakbeat",
+      "Funk"
+    ]
   },
   {
-    "artistName": "LEGALLY B",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "LEGALLY B",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "A blend of funk-inflected basslines, crisp percussion, and indie dance textures—drawn from Japan's and the Middle East's vibrant cultures. Emotion-driven, her sound bridges eras and genres with a pulse for freedom. Each performance is a dancefloor story that liberates mind and body.",
-    "genres": ["Indie Dance", "Funky Bass"]
+    "genres": [
+      "IndieDance",
+      "FunkyBass"
+    ]
   },
   {
-    "artistName": "LEPROUS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "LEPROUS",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "21:35",
-    "endTime": "22:35",
+    "start_time": "21:35",
+    "end_time": "22:35",
     "description": "When Norwegian metal meets fearless innovation, you get Leprous. Seven albums deep, they've gone from Emperor's backing band to progressive metal royalty. Time to expand your musical universe. Progressive metal's finest mind-benders are playing at the Castle.",
-    "genres": ["Progressive Metal"]
+    "genres": [
+      "ProgressiveMetal"
+    ]
   },
   {
-    "artistName": "LES GOURMANDS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "LES GOURMANDS",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "02:00",
-    "endTime": "04:00",
+    "start_time": "02:00",
+    "end_time": "04:00",
     "description": "Hailing from Transylvania, Romanian artists Mihai I. and Marius F. discovered their passion early. Their club-resident collaboration revealed a natural synergy, inspiring Les Gourmands—a dynamic electronic project of driving basslines, captivating house/techno rhythms, and ethereal melodies. They continue to innovate in the studio, promising new releases that resonate worldwide.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "LIZZ",
-    "stage": "STABLES STAGE",
+    "artist_name": "LIZZ",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "18:00",
-    "endTime": "21:00",
+    "start_time": "18:00",
+    "end_time": "21:00",
     "description": "LIZZ (real name Petre Vali) is a DJ and producer originally from Buzău, now based in Cluj-Napoca, Romania. He discovered electronic music at the age of 15 and has since developed a deep passion for mixing and producing, crafting a personal style rooted in subtlety, rhythm, and emotion.",
-    "genres": ["Deep Minimal", "Micro-house", "Techno"]
+    "genres": [
+      "DeepMinimal",
+      "MicroHouse",
+      "Techno"
+    ]
   },
   {
-    "artistName": "LOS BASTONEROS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "LOS BASTONEROS",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "21:00",
-    "endTime": "22:30",
+    "start_time": "21:00",
+    "end_time": "22:30",
     "description": "Formed 7 years ago, this trio from Târgu-Mureș has performed hundreds of events in Romania and abroad. They run three vinyl labels of their own and have released EPs on multiple imprints—champions of true analog dancefloor culture.",
-    "genres": ["Vinyl-only Electronic"]
+    "genres": [
+      "VinylOnlyElectronic"
+    ]
   },
   {
-    "artistName": "M.O.Z.A.R",
-    "stage": "PING PONG STAGE",
+    "artist_name": "M.O.Z.A.R",
+    "stage": "PingPongStage",
     "day": "Thu",
-    "startTime": "03:00",
-    "endTime": "04:30",
+    "start_time": "03:00",
+    "end_time": "04:30",
     "description": "Mozar is a genre-blending DJ with Syrian roots, bringing the perfect mix of R&B, house, and techno to the stage. With a deep love for rhythm and an ear for seamless transitions, she creates electrifying sets that make every crowd move. From sultry R&B grooves to pulsating techno beats, Mozar's sound is all about vibe, energy, and emotion.",
     "genres": null
   },
   {
-    "artistName": "MAGA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "MAGA",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "01:00",
-    "endTime": "04:00",
+    "start_time": "01:00",
+    "end_time": "04:00",
     "description": "For nine years, MAGA's been cooking up something unique in France's electronic scene. Known for pushing boundaries with hybrid live sets, he's now stripped things back to the essence - just pure grooves and hypnotic melodies. Organic sounds for electric nights.",
-    "genres": ["Electronic", "Hybrid Live Sets"]
+    "genres": [
+      "Electronic",
+      "HybridLiveSets"
+    ]
   },
   {
-    "artistName": "MAHONY",
-    "stage": "BOOHA STAGE",
+    "artist_name": "MAHONY",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "04:30",
-    "endTime": "06:30",
+    "start_time": "04:30",
+    "end_time": "06:30",
     "description": "Local selector bringing sophisticated electronic vibes. Expect deep house and melodic techno that elevates the spirit.",
-    "genres": ["House", "Tech House"]
+    "genres": [
+      "House",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "MALEX",
-    "stage": "BOOHA STAGE",
+    "artist_name": "MALEX",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "MALEX [RO] has been active since 2012, juggling beats from hip-hop, funk, soul, nu-jazz, groove house, and techno. First appearing at MOX festival, he's also part of its organization, pushing the scene forward from Cluj.",
-    "genres": ["Hip-Hop", "Funk", "Soul", "Nu-Jazz", "Groove House", "Techno"]
+    "genres": [
+      "HipHop",
+      "Funk",
+      "Soul",
+      "NuJazz",
+      "GrooveHouse",
+      "Techno"
+    ]
   },
   {
-    "artistName": "MARGARET DYGAS",
-    "stage": "STABLES STAGE",
+    "artist_name": "MARGARET DYGAS",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "04:00",
-    "endTime": "07:30",
+    "start_time": "04:00",
+    "end_time": "07:30",
     "description": "With roots in New York, London, and Berlin, Margaret Dygas crafts music with international resonance. Since moving to Berlin in 2007, she has released on Contexterrior, PowerShovelAudio, Perlon, and Non Standard Productions, bringing emotive, refined electronic sounds to global audiences.",
-    "genres": ["Techno", "House", "Melodic"]
+    "genres": [
+      "Techno",
+      "House",
+      "Melodic"
+    ]
   },
   {
-    "artistName": "MARWAN",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "MARWAN",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Artist bringing Middle Eastern influences to electronic music. Expect house and techno infused with cultural richness.",
     "genres": null
   },
   {
-    "artistName": "MEGANISI",
-    "stage": "PING PONG STAGE",
+    "artist_name": "MEGANISI",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "21:15",
-    "endTime": "22:30",
+    "start_time": "21:15",
+    "end_time": "22:30",
     "description": "Bucharest-based DJ/producer Meganisi blends lo-fi, jazz, reggaeton, and jungle into sets that balance danceable beats with melancholic moods—guaranteed to get everyone moving.",
-    "genres": ["Lo-Fi", "Jazz", "Reggaeton", "Jungle"]
+    "genres": [
+      "LoFi",
+      "Jazz",
+      "Reggaeton",
+      "Jungle"
+    ]
   },
   {
-    "artistName": "MIANDA",
-    "stage": "BOOHA STAGE",
+    "artist_name": "MIANDA",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Co-founder of Trails collective, Mianda (@mianda___) digs vinyl to craft explosive DJ journeys across years and genres. His dynamic sets power Bucharest's nightlife and have taken him to France, Spain, Italy, the UK, Egypt, and beyond—always charging the dancefloor with electric energy.",
-    "genres": ["Electro", "Techno", "House"]
+    "genres": [
+      "Electro",
+      "Techno",
+      "House"
+    ]
   },
   {
-    "artistName": "MIHAI POPOVICIU",
-    "stage": "BOOHA STAGE",
+    "artist_name": "MIHAI POPOVICIU",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "22:30",
-    "endTime": "00:30",
+    "start_time": "22:30",
+    "end_time": "00:30",
     "description": "Every artist leaves a mark, and Mihai Popoviciu's is unmistakable. For almost two decades, the Romanian producer and DJ has crafted a signature style—deep, hypnotic grooves, pinpoint precision, and an energy that commands the dancefloor.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "MIHAIL",
-    "stage": "HANGAR STAGE",
+    "artist_name": "MIHAIL",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "16:40",
-    "endTime": "17:40",
+    "start_time": "16:40",
+    "end_time": "17:40",
     "description": "From viral hits to artistic reinvention, Mihail's career is a testament to creative courage. His time spent in isolation inspired To Whom We Return, an album that explores themes of human connection and introspection. As the first Romanian artist to perform at Glastonbury, Mihail has proven that his music transcends borders. At Electric Castle, expect a set that's both deeply personal and universally resonant.",
-    "genres": ["Indie Pop", "Soul"]
+    "genres": [
+      "IndiePop",
+      "Soul"
+    ]
   },
   {
-    "artistName": "MIHNEA ROG",
-    "stage": "STABLES STAGE",
+    "artist_name": "MIHNEA ROG",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "12:00",
-    "endTime": "15:00",
+    "start_time": "12:00",
+    "end_time": "15:00",
     "description": "Mihnea Rog, a recent apparition in the Romanian clubbing scene, is climbing the ranks with a dedicated work ethic. His selection and production have put him under the spotlight, benefiting from a meticulous approach to discovering new music.",
-    "genres": ["House", "Techno", "Deep"]
+    "genres": [
+      "House",
+      "Techno",
+      "Deep"
+    ]
   },
   {
-    "artistName": "MINDTHEGAP TRIO",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "MINDTHEGAP TRIO",
+    "stage": "BackyardStage",
     "day": "Fri",
-    "startTime": "16:30",
-    "endTime": "17:30",
+    "start_time": "16:30",
+    "end_time": "17:30",
     "description": "The band that turns jazz into a thrilling adventure. Mindthegap Trio's music is like a rollercoaster ride through the history of jazz, from swing to free improvisation. Prepare for a set that'll make you question everything you thought you knew about jazz... and maybe even learn something new.",
-    "genres": ["Jazz", "Fusion"]
+    "genres": [
+      "Jazz",
+      "Fusion"
+    ]
   },
   {
-    "artistName": "MIU",
-    "stage": "BOOHA STAGE",
+    "artist_name": "MIU",
+    "stage": "BoohaStage",
     "day": "Wed",
-    "startTime": "20:00",
-    "endTime": "22:30",
+    "start_time": "20:00",
+    "end_time": "22:30",
     "description": "MIU's style is rooted in house music. His DJ sets fuse classic '90s warehouse beats with old-school chord stabs, catchy vocal cuts, and a touch of UK garage. A longtime percussion lover, expect snappy rhythms and unstoppable grooves that get you moving.",
-    "genres": ["House", "UK Garage"]
+    "genres": [
+      "House",
+      "UkGarage"
+    ]
   },
   {
-    "artistName": "MOBLACK",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "MOBLACK",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "04:30",
-    "endTime": "07:00",
+    "start_time": "04:30",
+    "end_time": "07:00",
     "description": "From Naples to Ghana, MoBlack turned cultural fusion into dancefloor gold. The fashion guru who built Afro House's future while honoring its roots, creating a label that feels more like a movement. Turning local voices into global anthems.",
-    "genres": ["Afro House", "Cultural Fusion"]
+    "genres": [
+      "AfroHouse",
+      "CulturalFusion"
+    ]
   },
   {
-    "artistName": "MOONLIGHT BREAKFAST",
-    "stage": "HANGAR STAGE",
+    "artist_name": "MOONLIGHT BREAKFAST",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "18:05",
-    "endTime": "19:00",
+    "start_time": "18:05",
+    "end_time": "19:00",
     "description": "The band that proves Romania can do neo-soul with the best of them. Moonlight Breakfast's sound is what would happen if Amy Winehouse jammed with Morcheeba in a Bucharest basement. Their silky vocals will transport you to a smoky 60s jazz club... in space.",
-    "genres": ["Dream Pop", "Indie"]
+    "genres": [
+      "DreamPop",
+      "Indie"
+    ]
   },
   {
-    "artistName": "MURI",
-    "stage": "PING PONG STAGE",
+    "artist_name": "MURI",
+    "stage": "PingPongStage",
     "day": "Thu",
-    "startTime": "19:30",
-    "endTime": "22:00",
+    "start_time": "19:30",
+    "end_time": "22:00",
     "description": "Trained as a structural engineer, MURI blends the precision of his profession with the art of music. His sets reflect this harmony—meticulous yet expressive, technical yet emotive.",
-    "genres": ["Eclectic", "House"]
+    "genres": [
+      "Eclectic",
+      "House"
+    ]
   },
   {
-    "artistName": "MUSAI",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "MUSAI",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "Local artist channeling creative electronic energy. Expect ambient, house, and experimental sounds that inspire.",
     "genres": null
   },
   {
-    "artistName": "MUSSPELL",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "MUSSPELL",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "16:30",
-    "endTime": "17:30",
+    "start_time": "16:30",
+    "end_time": "17:30",
     "description": "Dreamy, moody, and straight out of Cluj, Musspell mixes northern vibes with ethereal dream-pop. Think synths, guitars, live drums, and female vocals weaving in and out like a conversation. Perfect for a chill-out session under the stars.",
-    "genres": ["Indie", "Alternative"]
+    "genres": [
+      "Indie",
+      "Alternative"
+    ]
   },
   {
-    "artistName": "NASIRI",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "NASIRI",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "23:30",
-    "endTime": "01:00",
+    "start_time": "23:30",
+    "end_time": "01:00",
     "description": "Forget everything you know about electronic music. Nasiri brings centuries-old instruments to the club, creating a sound where Persian soul meets modern groove. When those Middle Eastern melodies float over deep electronic beats, something magical happens.",
-    "genres": ["World", "Electronic", "Middle Eastern"]
+    "genres": [
+      "World",
+      "Electronic",
+      "MiddleEastern"
+    ]
   },
   {
-    "artistName": "NAVALA",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "NAVALA",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "NAVALA fuses Latin rhythms, disco motifs, and African percussion into smooth, natural funk grooves. Her sets break cultural barriers—an unforgettable journey through traditional and modern genres.",
-    "genres": ["Latin", "Disco", "African Funk"]
+    "genres": [
+      "Latin",
+      "Disco",
+      "AfricanFunk"
+    ]
   },
   {
-    "artistName": "NEIL FRANCES",
-    "stage": "HANGAR STAGE",
+    "artist_name": "NEIL FRANCES",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "22:00",
-    "endTime": "23:00",
+    "start_time": "22:00",
+    "end_time": "23:00",
     "description": "Two guys who turned tape machines into time machines. Neil Frances blends hip-hop, soul, and electronic music into pure joy, turning dancefloors into funk laboratories. Get ready to wear off your sneakers.",
     "genres": null
   },
   {
-    "artistName": "NELU",
-    "stage": "BOOHA STAGE",
+    "artist_name": "NELU",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "15:30",
-    "endTime": "17:00",
+    "start_time": "15:30",
+    "end_time": "17:00",
     "description": "Emerging from Transylvania, Nelu blends minimal with jump-up to create a distinctive drum & bass sound. A rising talent in Romania's underground DnB community, his style quickly captures attention with its unique energy.",
-    "genres": ["Drum & Bass", "Jump-Up"]
+    "genres": [
+      "DrumAndBass",
+      "JumpUp"
+    ]
   },
   {
-    "artistName": "NETSKY B2B NGHTMRE",
-    "stage": "MAIN STAGE",
+    "artist_name": "NETSKY B2B NGHTMRE",
+    "stage": "MainStage",
     "day": "Fri",
-    "startTime": "00:30",
-    "endTime": "02:10",
+    "start_time": "00:30",
+    "end_time": "02:10",
     "description": "Meet drum & bass's golden boy - Two decades of turning festivals upside down, Netsky is the producer who made dancefloor anthems feel like love letters. Whether he's making ravers float or pop fans dance, Netsky's got that rare power to lift spirits through sound. // The producer who makes speakers tremble and crowds lose it. From anonymous uploads to festival main stages, NGHTMRE turned bass into an art form. And now, teaming up with drum & bass royalty Netsky, this rare B2B set brings together two of electronic music's most innovative minds. History in the making at the Castle.",
     "genres": null
   },
   {
-    "artistName": "NEXUS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "NEXUS",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "16:00",
-    "endTime": "17:00",
+    "start_time": "16:00",
+    "end_time": "17:00",
     "description": "Romanian artist connecting different electronic worlds. Expect house, techno, and ambient sounds that flow seamlessly together.",
     "genres": null
   },
   {
-    "artistName": "NILÜFER YANYA",
-    "stage": "HANGAR STAGE",
+    "artist_name": "NILÜFER YANYA",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "20:00",
-    "endTime": "21:00",
+    "start_time": "20:00",
+    "end_time": "21:00",
     "description": "What happens when Nina Simone meets Pixies in a West London bedroom? Nilüfer Yanya answered a question nobody asked, and somehow made everyone's playlists deeper. From classical piano to dark guitar pop, she refuses to pick a lane, mixing indie rock, jazz, and raw soul into something entirely her own.",
-    "genres": ["Indie Rock", "Jazz", "Soul"]
+    "genres": [
+      "IndieRock",
+      "Jazz",
+      "Soul"
+    ]
   },
   {
-    "artistName": "NITEFREAK",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "NITEFREAK",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "02:30",
-    "endTime": "04:30",
+    "start_time": "02:30",
+    "end_time": "04:30",
     "description": "The guy who went from selling beats to stealing shows. Nitefreak took Zimbabwe's pulse and turned it into Ibiza gold. These days Black Coffee's spinning his tracks, but he still makes beats like he's got something to prove.",
-    "genres": ["Afro Tech", "Global Bass"]
+    "genres": [
+      "AfroTech",
+      "GlobalBass"
+    ]
   },
   {
-    "artistName": "NOGA EREZ",
-    "stage": "MAIN STAGE",
+    "artist_name": "NOGA EREZ",
+    "stage": "MainStage",
     "day": "Sun",
-    "startTime": "19:35",
-    "endTime": "20:35",
+    "start_time": "19:35",
+    "end_time": "20:35",
     "description": "Castle's favourite troublemaker is back, this time debuting on the Main Stage. The sound? Think alt-pop meets hip-hop meets pure attitude. Noga Erez blends music with raw honesty and turns it into revolution fuel. Get ready for some beautiful chaos.",
-    "genres": ["Alt-Pop", "Hip-Hop"]
+    "genres": [
+      "AltPop",
+      "HipHop"
+    ]
   },
   {
-    "artistName": "NOMAD",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "NOMAD",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "I'm NOMAD, and for me, music is more than sound—it's connection. A good track isn't just heard; it's felt. I chase rhythms that unite people, tell stories without words, and create moments where music, DJ, and crowd become one.",
-    "genres": ["Eclectic Electronic"]
+    "genres": [
+      "EclecticElectronic"
+    ]
   },
   {
-    "artistName": "NYSS",
-    "stage": "PING PONG STAGE",
+    "artist_name": "NYSS",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "23:00",
-    "endTime": "00:00",
+    "start_time": "23:00",
+    "end_time": "00:00",
     "description": "Balancing careers in music and architecture, NYSS blends hip-hop, R&B, and funk into intentionally structured yet free-flowing sets—reflecting deep roots in Bucharest's dance community.",
-    "genres": ["Hip-Hop", "R&B", "Funk"]
+    "genres": [
+      "HipHop",
+      "RAndB",
+      "Funk"
+    ]
   },
   {
-    "artistName": "OCS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "OCS",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "18:20",
-    "endTime": "19:20",
+    "start_time": "18:20",
+    "end_time": "19:20",
     "description": "Omul cu Șobolani (OCS) has been shaping Romania's alt-rock scene for nearly three decades. Their mix of grunge-inspired riffs and poetic lyrics has made them icons of the genre. Get ready for a live performance that is raw, emotional, and unforgettable.",
-    "genres": ["Alternative Rock"]
+    "genres": [
+      "AlternativeRock"
+    ]
   },
   {
-    "artistName": "OCTO OCTA & ERIS DREW",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "OCTO OCTA & ERIS DREW",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "00:00",
-    "endTime": "03:00",
+    "start_time": "00:00",
+    "end_time": "03:00",
     "description": "Dance music's power couple bringing transcendent vibes to Transylvania, turning dancefloors into sacred spaces. Octo Octa & Eris Drew craft euphoric house and breakbeat journeys, infused with spiritual energy and pure love. Their B2B sets are legendary - prepare for a masterclass in rave ecstasy.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "OKTOPUS",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "OKTOPUS",
+    "stage": "HideoutStage",
     "day": "Thu",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "A dedicated house music selector—pure grooves, no frills.",
-    "genres": ["House"]
+    "genres": [
+      "House"
+    ]
   },
   {
-    "artistName": "OLAF",
-    "stage": "PING PONG STAGE",
+    "artist_name": "OLAF",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "17:00",
-    "endTime": "18:30",
+    "start_time": "17:00",
+    "end_time": "18:30",
     "description": "Olaf, the metalhead who loves disco, brings a unique fusion of heavy roots and classic grooves—turning disco music into a head-banging experience.",
-    "genres": ["Disco"]
+    "genres": [
+      "Disco"
+    ]
   },
   {
-    "artistName": "OM LA LUNĂ",
-    "stage": "HANGAR STAGE",
+    "artist_name": "OM LA LUNĂ",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "18:15",
-    "endTime": "19:15",
+    "start_time": "18:15",
+    "end_time": "19:15",
     "description": "With poetic lyrics that feel like diary entries and melodies that linger long after the last note, they've redefined Romania's indie-folk scene. Born from Doru Pușcașu's raw acoustic project, their sound now blends delicate storytelling with cinematic intensity. At the Castle, expect goosebumps, singalongs, and maybe even a tear or two.",
-    "genres": ["Indie Rock", "Alternative"]
+    "genres": [
+      "IndieRock",
+      "Alternative"
+    ]
   },
   {
-    "artistName": "ON THE BLOCK DJ SET",
-    "stage": "HANGAR STAGE",
+    "artist_name": "ON THE BLOCK DJ SET",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "03:00",
-    "endTime": "04:30",
+    "start_time": "03:00",
+    "end_time": "04:30",
     "description": "Ever since their first 2016 epic party in Bucharest, ON THE BLOCK has been selling out events across the country, bringing the vibe of the hottest international urban parties to Romania. 8 years later, the OTB community has only grown bigger. If not the biggest in RO.",
-    "genres": ["Hip-Hop"]
+    "genres": [
+      "HipHop"
+    ]
   },
   {
-    "artistName": "OSCAR",
-    "stage": "HANGAR STAGE",
+    "artist_name": "OSCAR",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "02:20",
-    "endTime": "02:50",
+    "start_time": "02:20",
+    "end_time": "02:50",
     "description": "From talent show prodigy to Romanian trap royalty, Oscar has carved his own path in the music industry. With a unique blend of soulful lyrics and hard-hitting beats, Oscar's live performances are unforgettable. Electric Castle is about to witness his rise to the next level.",
-    "genres": ["Hip-Hop", "Trap"]
+    "genres": [
+      "HipHop",
+      "Trap"
+    ]
   },
   {
-    "artistName": "OUCH COLLECTIVE",
-    "stage": "PING PONG STAGE",
+    "artist_name": "OUCH COLLECTIVE",
+    "stage": "PingPongStage",
     "day": "Sun",
-    "startTime": "17:00",
-    "endTime": "19:00",
+    "start_time": "17:00",
+    "end_time": "19:00",
     "description": "Ouch Collective is a dynamic platform dedicated to amplifying womxn voices across the global music spectrum. Trailblazing hip-hop culture—old-school to contemporary—Ouch supports and spotlights womxn artists, creating a global nexus of DJs, insiders, and fans united by a love for music and creative expression.",
-    "genres": ["Hip-Hop", "Multi-genre"]
+    "genres": [
+      "HipHop",
+      "MultiGenre"
+    ]
   },
   {
-    "artistName": "PANJABI HIT SQUAD",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "PANJABI HIT SQUAD",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "00:00",
-    "endTime": "01:30",
+    "start_time": "00:00",
+    "end_time": "01:30",
     "description": "If you hear the crowd going wild from across the festival grounds, chances are it's Panjabi Hit Squad doing their thing. Mixing familiar bangers with red-hot global beats, Rav & Dee turn first-time listeners into instant fans. Missing this set? Don't even think about it.",
-    "genres": ["Hip-Hop", "Bhangra", "Global"]
+    "genres": [
+      "HipHop",
+      "Bhangra",
+      "Global"
+    ]
   },
   {
-    "artistName": "PAUL K",
-    "stage": "STABLES STAGE",
+    "artist_name": "PAUL K",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "15:00",
-    "endTime": "18:00",
+    "start_time": "15:00",
+    "end_time": "18:00",
     "description": "Based in Transylvania, Paul K views music as a mirror to the human soul—transcending mortality through mystical, introspective, and profound sounds. Blending playing and production seamlessly, he experiments in the studio, refining a distinctive sonic imprint in limitless shapes and forms.",
-    "genres": ["Experimental", "Ambient", "Electronic"]
+    "genres": [
+      "Experimental",
+      "Ambient",
+      "Electronic"
+    ]
   },
   {
-    "artistName": "PAULVLJ",
-    "stage": "PING PONG STAGE",
+    "artist_name": "PAULVLJ",
+    "stage": "PingPongStage",
     "day": "Sun",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Blending music genres with internet references discovered after hours of doomscrolling, PAULVLJ's chaotic-yet-cohesive sets resemble a hearty musical stew—combining various styles into a uniquely satisfying listening experience.",
-    "genres": ["Eclectic Mix"]
+    "genres": [
+      "EclecticMix"
+    ]
   },
   {
-    "artistName": "PAUZA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "PAUZA",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "A sound that's equal parts Havana street party and Berlin warehouse rave. PAUZA crafts deep, hypnotic grooves that bridge continents, mixing ancestral Cuban sounds with futuristic textures, now bringing tropical heat to Transylvania. Get ready for a set that'll make you question why salsa and techno were ever separate.",
-    "genres": ["Electronic", "Organic House"]
+    "genres": [
+      "Electronic",
+      "OrganicHouse"
+    ]
   },
   {
-    "artistName": "PIXAR STELAR",
-    "stage": "PING PONG STAGE",
+    "artist_name": "PIXAR STELAR",
+    "stage": "PingPongStage",
     "day": "Wed",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Romanian artist bringing eclectic electronic vibes to the Castle. Expect a diverse mix that'll keep you moving.",
     "genres": null
   },
   {
-    "artistName": "PRASLEA",
-    "stage": "STABLES STAGE",
+    "artist_name": "PRASLEA",
+    "stage": "StablesStage",
     "day": "Sun",
-    "startTime": "02:00",
-    "endTime": "05:00",
+    "start_time": "02:00",
+    "end_time": "05:00",
     "description": "Praslea is a groundbreaking character in the club scene, collaborating with Raresh, El Cezere, and Kozo on projects like Afumați and running the Understand label. Inspired by Thomas Melchior, Scott Ferguson, Tobias Freund, Cabanne, Global Communication, Philip Glass, and Stephan Mincus, his releases include Jurnal de bord ([a:rpia:r]) and Circoloco @ DC10 Anniversary (Moon Harbour).",
-    "genres": ["Techno", "House", "Experimental"]
+    "genres": [
+      "Techno",
+      "House",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "PRICHINDEL",
-    "stage": "STABLES STAGE",
+    "artist_name": "PRICHINDEL",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "21:00",
-    "endTime": "23:00",
+    "start_time": "21:00",
+    "end_time": "23:00",
     "description": "Cătălin Prichindel is a Romanian DJ and producer known for his groovy electronic style. A forerunner of Romania's new wave, he co-founded Tonomat Records and consistently delivers joyful energy and crowd-connecting performances.",
-    "genres": ["House", "Techno", "Minimal"]
+    "genres": [
+      "House",
+      "Techno",
+      "Minimal"
+    ]
   },
   {
-    "artistName": "PRIKU",
-    "stage": "STABLES STAGE",
+    "artist_name": "PRIKU",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "01:00",
-    "endTime": "04:00",
+    "start_time": "01:00",
+    "end_time": "04:00",
     "description": "Adrian Niculae a.k.a. Priku established himself as a hardworking, passionate music creator. A Sunrise Booking member since 2007, he rose to big gigs through notable Sunwaves performances and continues to deliver dynamic house and tech house sets.",
-    "genres": ["House", "Tech House"]
+    "genres": [
+      "House",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "PUIU",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "PUIU",
+    "stage": "TheBeachStage",
     "day": "Fri",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Vinyl spinnin', tune diggin', good mood bringin'—this fun-lovin' criminal serves up grooves that put you in a great mood.",
-    "genres": ["Funk", "Groove"]
+    "genres": [
+      "Funk",
+      "Groove"
+    ]
   },
   {
-    "artistName": "QUEENS OF THE STONE AGE",
-    "stage": "MAIN STAGE",
+    "artist_name": "QUEENS OF THE STONE AGE",
+    "stage": "MainStage",
     "day": "Fri",
-    "startTime": "22:50",
-    "endTime": "00:05",
+    "start_time": "22:50",
+    "end_time": "00:05",
     "description": "Desert-born, chaos-driven, and impossible to pin down - QOTSA are rock's ultimate shape-shifters. Two decades of heavy riffs and heavier grooves, always evolving, never settling.",
-    "genres": ["Rock"]
+    "genres": [
+      "Rock"
+    ]
   },
   {
-    "artistName": "QUEST",
-    "stage": "STABLES STAGE",
+    "artist_name": "QUEST",
+    "stage": "StablesStage",
     "day": "Thu",
-    "startTime": "04:00",
-    "endTime": "07:00",
+    "start_time": "04:00",
+    "end_time": "07:00",
     "description": "Quest, class of 1992, influenced by the Alien Army and by the special technique of shadowboxing... Head of La Nota Del Diablo. Like the Beast, he goes by many names: Diabolus in musica (devil in music), the devil's interval, the tritone, the triad, and the flatted fifth. His sets showcase a vast collection of unearthed, genre-bending gems ranging across the electronic spectrum from outré techno to electro to EBM.",
-    "genres": ["Techno", "EBM", "Experimental"]
+    "genres": [
+      "Techno",
+      "Ebm",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "RAOUL",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "RAOUL",
+    "stage": "TheBeachStage",
     "day": "Wed",
-    "startTime": "17:00",
-    "endTime": "19:00",
+    "start_time": "17:00",
+    "end_time": "19:00",
     "description": "From SoundSquad in Cluj-Napoca, Raoul spreads good vibes—organizing events and DJing with an eclectic mix of funk, disco, and dancey grooves to soundtrack sunny hangouts and keep you moving all day long.",
-    "genres": ["Funk", "Disco", "Dance Grooves"]
+    "genres": [
+      "Funk",
+      "Disco",
+      "DanceGrooves"
+    ]
   },
   {
-    "artistName": "RAVA",
-    "stage": "HANGAR STAGE",
+    "artist_name": "RAVA",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "01:40",
-    "endTime": "02:10",
+    "start_time": "01:40",
+    "end_time": "02:10",
     "description": "One of Romania's hottest trap stars, Rava has been dominating the scene with his infectious hooks and raw lyrics. With millions of streams and sold-out shows across the country, Rava is a name you can't miss if you're in for an iconic urban performance. At Electric Castle, expect energy and tracks that will have the crowd bouncing all night.",
-    "genres": ["Trap"]
+    "genres": [
+      "Trap"
+    ]
   },
   {
-    "artistName": "REFUSED",
-    "stage": "HANGAR STAGE",
+    "artist_name": "REFUSED",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "21:20",
-    "endTime": "22:20",
+    "start_time": "21:20",
+    "end_time": "22:20",
     "description": "Born from Umeå's underground scene, rejected its rules, then rewrote them entirely. These Swedish rebels turned punk inside out, broke up, and came back stronger. That's music that burns brighter than rules.",
-    "genres": ["Hardcore Punk"]
+    "genres": [
+      "HardcorePunk"
+    ]
   },
   {
-    "artistName": "RHEM",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "RHEM",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "21:30",
-    "endTime": "23:30",
+    "start_time": "21:30",
+    "end_time": "23:30",
     "description": "Rhem is a Bucharest-based DJ/producer and LiveAct artist with 12+ years' experience. His lush, melodic, and energetic style fuses deep house and tech house with beautiful vocals. In 2022 he launched a LiveAct project blending controllers, modular synths, and drums—drawing on Middle Eastern musical culture to craft organic, hypnotic performances.",
-    "genres": ["Deep House", "Tech House"]
+    "genres": [
+      "DeepHouse",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "RÓISÍN MURPHY",
-    "stage": "MAIN STAGE",
+    "artist_name": "RÓISÍN MURPHY",
+    "stage": "MainStage",
     "day": "Fri",
-    "startTime": "21:10",
-    "endTime": "22:10",
+    "start_time": "21:10",
+    "end_time": "22:10",
     "description": "Ireland's avant-pop queen who refuses to play by the rules. From Moloko's dance hits to solo experimentation, Róisín Murphy makes art you can dance to. Part fashion icon, part musical shapeshifter, wholly impossible to ignore. The costumes are wild, the moves are wilder, the music is wildest. Don't miss this.",
-    "genres": ["Art Pop", "Electronic"]
+    "genres": [
+      "ArtPop",
+      "Electronic"
+    ]
   },
   {
-    "artistName": "ROMANSOFF",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "ROMANSOFF",
+    "stage": "TheBeachStage",
     "day": "Thu",
-    "startTime": "21:30",
-    "endTime": "00:00",
+    "start_time": "21:30",
+    "end_time": "00:00",
     "description": "Tudor Gheorghe (Romansoff) is a Bucharest DJ/producer and vinyl collector with 13+ years on the capital's underground club scene. Versatile and creative, he's released on Raw Tools, Mork, Creme Organization, and Les Yeux Orange, and regularly headlines Bucharest's top nights.",
-    "genres": ["Underground Club", "Vinyl"]
+    "genres": [
+      "UndergroundClub",
+      "Vinyl"
+    ]
   },
   {
-    "artistName": "ROMARE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "ROMARE",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "What happens when you mix a drummer's groove with a crate digger's obsession? Meet Romare, the sonic collagist turning dusty vinyl into fresh dance floor gold. Behind the decks, old records become fresh beats, jazz meets club culture, and every track tells a story. DJ Mag's Album of the Year? Just the beginning.",
-    "genres": ["Jazz House", "Collage", "Dance"]
+    "genres": [
+      "JazzHouse",
+      "Collage",
+      "Dance"
+    ]
   },
   {
-    "artistName": "ROSA PISTOLA",
-    "stage": "PING PONG STAGE",
+    "artist_name": "ROSA PISTOLA",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Mexico City's reggaeton rebel bringing perreo heat to Transylvania. Rosa Pistola blends Latin rhythms with punk attitude and enough bass to shake the Castle walls. Rosa Pistola's selections bridge the gap between dembow rhythms and industrial techno, creating a sound that's equal parts sexy and confrontational. Prepare for the wildest workout of your life. No gym membership required.",
-    "genres": ["Reggaeton", "Latin Club"]
+    "genres": [
+      "Reggaeton",
+      "LatinClub"
+    ]
   },
   {
-    "artistName": "RUDIMΞNTAL",
-    "stage": "MAIN STAGE",
+    "artist_name": "RUDIMΞNTAL",
+    "stage": "MainStage",
     "day": "Sat",
-    "startTime": "21:00",
-    "endTime": "22:00",
+    "start_time": "21:00",
+    "end_time": "22:00",
     "description": "From pirate radio to platinum records, Rudimental wrote the blueprint for festival-sized drum & bass. Grammy nominees and chart-toppers who blend soul, reggae and electronic beats, these BRIT Award winners will deliver anthems, chaos, and most likely your new summer soundtrack.",
-    "genres": ["Drum & Bass", "Pop"]
+    "genres": [
+      "DrumAndBass",
+      "Pop"
+    ]
   },
   {
-    "artistName": "S!RENE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "S!RENE",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Young blood with an old soul - that's S!RENE for you. Grew up on gospel, fell in love with everything from African funk to amapiano, and now he's cooking up something entirely new. Europe's already hooked, Asia's gone wild, you're next.",
-    "genres": ["Amapiano", "Afro-Funk", "Gospel"]
+    "genres": [
+      "Amapiano",
+      "AfroFunk",
+      "Gospel"
+    ]
   },
   {
-    "artistName": "SAMBO",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SAMBO",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "14:00",
-    "endTime": "15:00",
+    "start_time": "14:00",
+    "end_time": "15:00",
     "description": "Co-founder of Discognito label, Sambo blends energetic house grooves and curates quality underground sounds. His 2023 return to classic house has earned support from Jamie Jones, Fleur Shore, and others—putting him on the international radar.",
-    "genres": ["House"]
+    "genres": [
+      "House"
+    ]
   },
   {
-    "artistName": "SCATTERBRAIN",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SCATTERBRAIN",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "14:00",
-    "endTime": "15:30",
+    "start_time": "14:00",
+    "end_time": "15:30",
     "description": "Andrei Duruș (Scatterbrain) is a Romanian drum & bass producer/DJ with releases on Galacy, Fokuz, and DeVice. Influenced by Technimatic, Netsky, and Calibre, he debuted internationally in Prague in 2024 and has performed at iconic Romanian venues like Arenele Romane and Club Quantic. His technical precision and creativity promise an exciting future.",
-    "genres": ["Drum & Bass"]
+    "genres": [
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "SHAGGY",
-    "stage": "MAIN STAGE",
+    "artist_name": "SHAGGY",
+    "stage": "MainStage",
     "day": "Sun",
-    "startTime": "21:10",
-    "endTime": "22:10",
+    "start_time": "21:10",
+    "end_time": "22:10",
     "description": "Mr. Boombastic himself, serving certified bangers since the 90s. From Kingston to global domination, Shaggy's got that rare superpower of making hits feel like house parties. Two decades later, he's still making crowds lose control.",
-    "genres": ["Reggae", "Dancehall"]
+    "genres": [
+      "Reggae",
+      "Dancehall"
+    ]
   },
   {
-    "artistName": "SHANTI CELESTE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "SHANTI CELESTE",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Hearing Shanti Celeste play is like watching colors mix in real time. She floats between sunny house euphoria and dark techno thunder like it's nothing. Her tracks breathe atmosphere, her sets build pure magic, and when those airy vocals hit - game over. Dance floor therapy at its finest.",
-    "genres": ["House", "Techno", "Euphoria"]
+    "genres": [
+      "House",
+      "Techno",
+      "Euphoria"
+    ]
   },
   {
-    "artistName": "SHIMI",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "SHIMI",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Co-founder of Made from Scratch crew and scratch teacher at OWPN Academy, Shimi has backed national MCs since 2008. He's shared stages with Mobb Deep, Jeru the Damaja, Dope DOD, Wilkinson, Stanton Warriors, JFB, DJ Undoo, K-Lu, Sauce, and many more. His sets build from old-school rap into high-BPM drum'n'bass or drift into funk, house, and UKG, adapting to venue, crowd, and energy.",
-    "genres": ["Old-School Rap", "DJ", "Turntablist"]
+    "genres": [
+      "OldSchoolRap",
+      "Dj",
+      "Turntablist"
+    ]
   },
   {
-    "artistName": "SHURUBEL",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "SHURUBEL",
+    "stage": "HideoutStage",
     "day": "Sun",
-    "startTime": "16:00",
-    "endTime": "18:00",
+    "start_time": "16:00",
+    "end_time": "18:00",
     "description": "I was a radio DJ for 10 years and a resident DJ for 5 years in a wild Bucharest student club—throwing house, dubstep, DnB, and heavy tracks from 10 PM to 7 AM. Now I gently place smooth funky house rhythms into the minds and bodies of the crowd. Don't shy away!",
     "genres": null
   },
   {
-    "artistName": "SILENCE PATH",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "SILENCE PATH",
+    "stage": "HideoutStage",
     "day": "Fri",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Silence Path is an electronic music project born from a passion for music. Its goal is to convey powerful emotions and create an authentic connection with the audience, offering a unique musical experience.",
-    "genres": ["Electronic", "Ambient"]
+    "genres": [
+      "Electronic",
+      "Ambient"
+    ]
   },
   {
-    "artistName": "SILENT DISCIPLE",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "SILENT DISCIPLE",
+    "stage": "TheBeachStage",
     "day": "Wed",
-    "startTime": "19:00",
-    "endTime": "21:00",
+    "start_time": "19:00",
+    "end_time": "21:00",
     "description": "A turntablist, Twitcher, and YouTube curator, Silent Disciple fuses funk, vinyl, and live performance—proving the \"silent d\" doesn't mute the music.",
     "genres": null
   },
   {
-    "artistName": "SIMULA",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SIMULA",
+    "stage": "BoohaStage",
     "day": "Sun",
-    "startTime": "20:00",
-    "endTime": "21:00",
+    "start_time": "20:00",
+    "end_time": "21:00",
     "description": "The energy merchant of the DnB scene, Simula specializes in peak-time anthems that turn any crowd into a bouncing mass. His jump-up selections are pure adrenaline—guaranteed to make even the most reserved raver lose control.",
-    "genres": ["Drum & Bass"]
+    "genres": [
+      "DrumAndBass"
+    ]
   },
   {
-    "artistName": "SIXTEE SECONDS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SIXTEE SECONDS",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "04:30",
-    "endTime": "06:30",
+    "start_time": "04:30",
+    "end_time": "06:30",
     "description": "Blending musical genres and eras seamlessly, Sixtee Seconds electrify with dynamic DJ sets. Merging house's timeless essence with cutting-edge techno, they ignite a new era—getting diverse-influenced dancers moving to an innovative rhythm.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "SKELER",
-    "stage": "HANGAR STAGE",
+    "artist_name": "SKELER",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "02:15",
-    "endTime": "03:25",
+    "start_time": "02:15",
+    "end_time": "03:25",
     "description": "Skeler's sound is what would happen if Burial and Clams Casino had a baby... in Transylvania. Skeler blends trap rhythms, ethereal melodies, and enough reverb to drown in. His tracks sound like the soundtrack to a cyberpunk thriller set in Bucharest. Get ready for a glimpse into electronic music's moody future.",
-    "genres": ["Wave", "Hardwave"]
+    "genres": [
+      "Wave",
+      "Hardwave"
+    ]
   },
   {
-    "artistName": "SOCOL",
-    "stage": "PING PONG STAGE",
+    "artist_name": "SOCOL",
+    "stage": "PingPongStage",
     "day": "Wed",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "\"The DJ's DJ\"—Socol is revered for his versatile style and expertise behind the decks, earning him the nickname that speaks for itself.",
-    "genres": ["Eclectic"]
+    "genres": [
+      "Eclectic"
+    ]
   },
   {
-    "artistName": "SOFI TUKKER",
-    "stage": "MAIN STAGE",
+    "artist_name": "SOFI TUKKER",
+    "stage": "MainStage",
     "day": "Thu",
-    "startTime": "01:00",
-    "endTime": "02:30",
+    "start_time": "01:00",
+    "end_time": "02:30",
     "description": "Turning Brazilian vibes into Grammy nods, streaming billions, and building the most positive community in dance music. When these best friends hit the stage, everyone's invited to the good time.",
-    "genres": ["Dance Pop", "House"]
+    "genres": [
+      "DancePop",
+      "House"
+    ]
   },
   {
-    "artistName": "SOFIA KOURTESIS",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SOFIA KOURTESIS",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "00:00",
-    "endTime": "02:00",
+    "start_time": "00:00",
+    "end_time": "02:00",
     "description": "Deep in Berlin's electronic scene, Sofia Kourtesis crafts spiritual house music straight from Lima's soul. Recording sounds from her hometown streets, she turns them into house tracks that hit right in the feels. Catch her set - thank us later.",
     "genres": null
   },
   {
-    "artistName": "SONJA MOONEAR B2B ANDREI CIUBUC",
-    "stage": "STABLES STAGE",
+    "artist_name": "SONJA MOONEAR B2B ANDREI CIUBUC",
+    "stage": "StablesStage",
     "day": "Fri",
-    "startTime": "04:00",
-    "endTime": "09:00",
+    "start_time": "04:00",
+    "end_time": "09:00",
     "description": "From classical training to Technics and machines, Sonja Moonear has built a career spanning over two decades as a DJ and producer with a reputation for discerning record selection and a flair for funky-leaning techno, trippy house, and high-grade beats. A key figure in the Geneva squat scene, minimal movement, and Perlon label circle. // Andrei Ciubuc is one of the artists belonging to the new wave of Romanian underground minimal producers and DJs. He created his own label \"Draganenii,\" imprinting a unique, easily recognizable style of versatility at every opportunity.",
     "genres": null
   },
   {
-    "artistName": "SPARROW & BARBOSSA",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "SPARROW & BARBOSSA",
+    "stage": "HideoutStage",
     "day": "Sat",
-    "startTime": "02:00",
-    "endTime": "05:00",
+    "start_time": "02:00",
+    "end_time": "05:00",
     "description": "Meet Caribbean House's founding fathers: Sparrow & Barbossa took Afro rhythms, island vibes, and pure groove science, then democratized the dancefloor. No passports needed for this journey.",
-    "genres": ["Caribbean House", "Afro House"]
+    "genres": [
+      "CaribbeanHouse",
+      "AfroHouse"
+    ]
   },
   {
-    "artistName": "STASI SANLIN",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "STASI SANLIN",
+    "stage": "HideoutStage",
     "day": "Wed",
-    "startTime": "00:30",
-    "endTime": "02:30",
+    "start_time": "00:30",
+    "end_time": "02:30",
     "description": "Bucharest's techno sorceress casting spells on unsuspecting ravers. Stasi Sanlin's sets are a masterclass in tension and release, blending hypnotic minimal with peak-time bangers. Prepare for a journey into techno's deepest, darkest corners.",
-    "genres": ["House", "Techno"]
+    "genres": [
+      "House",
+      "Techno"
+    ]
   },
   {
-    "artistName": "SUB:LIMINAL",
-    "stage": "BOOHA STAGE",
+    "artist_name": "SUB:LIMINAL",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "15:30",
-    "endTime": "16:30",
+    "start_time": "15:30",
+    "end_time": "16:30",
     "description": "Underground Romanian talent bringing drum and bass bangers. Expect explosive dancefloor energy.",
     "genres": null
   },
   {
-    "artistName": "SUCIU",
-    "stage": "STABLES STAGE",
+    "artist_name": "SUCIU",
+    "stage": "StablesStage",
     "day": "Sat",
-    "startTime": "09:00",
-    "endTime": "12:00",
+    "start_time": "09:00",
+    "end_time": "12:00",
     "description": "Suciu balances moods and motifs like a tightrope walker, blending house, jazz, rap, and rock influences into dance-inducing sets. His groove-led productions dip into haunted atmospherics, creating individualized experiences.",
-    "genres": ["House", "Techno", "Dark"]
+    "genres": [
+      "House",
+      "Techno",
+      "Dark"
+    ]
   },
   {
-    "artistName": "SUGAR",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "SUGAR",
+    "stage": "TheBeachStage",
     "day": "Sat",
-    "startTime": "20:00",
-    "endTime": "22:00",
+    "start_time": "20:00",
+    "end_time": "22:00",
     "description": "Cluj-Napoca's passionate selector and collector, Sugár curates vast, diverse vinyl sets that move heads and feet. Featured at Electric Castle, Jazz in the Park, TIFF, and through MeloMenuții (MeloMelanj duo with D'Jhu). Founder of MeloMelanj record store, he's a vital force in the local scene.",
     "genres": null
   },
   {
-    "artistName": "SVDDEN DEATH",
-    "stage": "HANGAR STAGE",
+    "artist_name": "SVDDEN DEATH",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "03:25",
-    "endTime": "04:35",
+    "start_time": "03:25",
+    "end_time": "04:35",
     "description": "Bass music's masked menace bringing the apocalypse to Electric Castle. Svdden Death's brutal sound got dubstep, metal, and pure chaos into a sonic assault that'll rearrange your DNA. Prepare for the heaviest set of your life - earplugs are mandatory.",
-    "genres": ["Dubstep", "Riddim"]
+    "genres": [
+      "Dubstep",
+      "Riddim"
+    ]
   },
   {
-    "artistName": "SYLVIE KREUSCH",
-    "stage": "HANGAR STAGE",
+    "artist_name": "SYLVIE KREUSCH",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "20:20",
-    "endTime": "21:20",
+    "start_time": "20:20",
+    "end_time": "21:20",
     "description": "Belgium's dark pop enchantress casting spells on unsuspecting audiences. Sylvie Kreusch mixes sultry vocals, cinematic soundscapes, and enough charisma to fill ten stages. Part Lana Del Rey, part Nick Cave, all hypnotic. Prepare to be bewitched.",
-    "genres": ["Art Pop", "Alternative"]
+    "genres": [
+      "ArtPop",
+      "Alternative"
+    ]
   },
   {
-    "artistName": "TAKING BACK AUGUST",
-    "stage": "HANGAR STAGE",
+    "artist_name": "TAKING BACK AUGUST",
+    "stage": "HangarStage",
     "day": "Sun",
-    "startTime": "14:00",
-    "endTime": "14:50",
+    "start_time": "14:00",
+    "end_time": "14:50",
     "description": "Cluj-Napoca's pop-punk heroes keeping the spirit of the 2000s alive. Taking Back August is hot for catchy hooks with raw emotion, creating anthems for a new generation of misfits. They channel the energy of Blink-182 and the passion of My Chemical Romance, with a distinctly Transylvanian twist. Get ready to scream along to lyrics you wish you'd written in high school.",
-    "genres": ["Alternative Rock"]
+    "genres": [
+      "AlternativeRock"
+    ]
   },
   {
-    "artistName": "TARAPHONICS",
-    "stage": "MAIN STAGE",
+    "artist_name": "TARAPHONICS",
+    "stage": "MainStage",
     "day": "Sun",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "Taraphonics reimagines Romanian lăutărească virtuosity with pop voices in a vibrant contemporary fusion. A bridge between generations, this will be Electric Castle's first breath of folclor reinvented.",
-    "genres": ["Folk Fusion", "Contemporary"]
+    "genres": [
+      "FolkFusion",
+      "Contemporary"
+    ]
   },
   {
-    "artistName": "THE AMAZONS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "THE AMAZONS",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "19:55",
-    "endTime": "20:55",
+    "start_time": "19:55",
+    "end_time": "20:55",
     "description": "When Reading's finest decided rock needed more ambition, The Amazons were born. Three albums of pure arena energy later, conquering the UK charts, they're still making speakers tremble and crowds believe. Not to be missed.",
-    "genres": ["Alternative Rock"]
+    "genres": [
+      "AlternativeRock"
+    ]
   },
   {
-    "artistName": "THE SCRATCH",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "THE SCRATCH",
+    "stage": "BackyardStage",
     "day": "Thu",
-    "startTime": "00:00",
-    "endTime": "01:00",
+    "start_time": "00:00",
+    "end_time": "01:00",
     "description": "Four lads turning traditional melodies into absolute mayhem. The Scratch blend metal chaos with folk soul, creating shows so wild they had to be seen to be believed. Dublin's worst-kept secret is about to blow up.",
-    "genres": ["Metal", "Folk Fusion"]
+    "genres": [
+      "Metal",
+      "FolkFusion"
+    ]
   },
   {
-    "artistName": "THE SISTERS OF MERCY",
-    "stage": "HANGAR STAGE",
+    "artist_name": "THE SISTERS OF MERCY",
+    "stage": "HangarStage",
     "day": "Thu",
-    "startTime": "23:40",
-    "endTime": "00:40",
+    "start_time": "23:40",
+    "end_time": "00:40",
     "description": "Dark rock royalty since 1980, The Sisters of Mercy wrote the blueprint for gothic greatness. Andrew Eldritch and his faithful drum machine Doktor Avalanche turned post-punk into pure theater. Four decades later, they're still showing everyone how it's done.",
-    "genres": ["Gothic Rock", "Post-Punk"]
+    "genres": [
+      "GothicRock",
+      "PostPunk"
+    ]
   },
   {
-    "artistName": "TOESUP",
-    "stage": "PING PONG STAGE",
+    "artist_name": "TOESUP",
+    "stage": "PingPongStage",
     "day": "Sun",
-    "startTime": "21:00",
-    "endTime": "22:00",
+    "start_time": "21:00",
+    "end_time": "22:00",
     "description": "Known for TikTok remixes and viral edits, TOESUP delivers unexpected house mashups—keeping audiences on their toes with his creative selections.",
-    "genres": ["House"]
+    "genres": [
+      "House"
+    ]
   },
   {
-    "artistName": "TOTALLY SPICE",
-    "stage": "BOOHA STAGE",
+    "artist_name": "TOTALLY SPICE",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "18:00",
-    "endTime": "20:00",
+    "start_time": "18:00",
+    "end_time": "20:00",
     "description": "Totally Spice is a female duo storming Bucharest's scene with technopop love, UK garage from the heart, broken rave anthems, and pink psychedelia. They build a community focused on women, non-binary, and female-identified artists—where confidence, resilience, and unapologetic spirit converge.",
-    "genres": ["Technopop", "UK Garage", "Psychedelia"]
+    "genres": [
+      "Technopop",
+      "UkGarage",
+      "Psychedelia"
+    ]
   },
   {
-    "artistName": "UNGLUED + DEGS",
-    "stage": "HANGAR STAGE",
+    "artist_name": "UNGLUED + DEGS",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "04:00",
-    "endTime": "05:00",
+    "start_time": "04:00",
+    "end_time": "05:00",
     "description": "The moment Unglued touches a track, ravers know what's coming. UKF called him one to watch, The Wire got on board, and now Hospital Records locked him down. Catch his set before the secret gets too big to contain. // Some MCs rap, others sing - Degs does both with surgical precision.",
     "genres": null
   },
   {
-    "artistName": "URBANDAWN + PVC",
-    "stage": "HANGAR STAGE",
+    "artist_name": "URBANDAWN + PVC",
+    "stage": "HangarStage",
     "day": "Sat",
-    "startTime": "05:00",
-    "endTime": "06:00",
+    "start_time": "05:00",
+    "end_time": "06:00",
     "description": "Classical training, Brazilian roots, and heavy Scandinavian metal shaped Urbandawn's distinctive sound. Now he's cooking up bangers that make both underground heads and mainstream crowds lose their minds. São Paulo's finest keeps leveling up.",
     "genres": null
   },
   {
-    "artistName": "VALERIA STOICA",
-    "stage": "MAIN STAGE",
+    "artist_name": "VALERIA STOICA",
+    "stage": "MainStage",
     "day": "Thu",
-    "startTime": "19:30",
-    "endTime": "20:00",
+    "start_time": "19:30",
+    "end_time": "20:00",
     "description": "An indie-pop dreamer with a voice like a summer breeze. If Bon Iver and Florence had a love child, it'd sound something like this. With a voice that could melt glaciers, her music feels like wandering through a meadow at sunset—soft, soulful, and full of heart. Get ready to fall in love.",
-    "genres": ["Indie Folk", "Pop"]
+    "genres": [
+      "IndieFolk",
+      "Pop"
+    ]
   },
   {
-    "artistName": "VANIIRII",
-    "stage": "PING PONG STAGE",
+    "artist_name": "VANIIRII",
+    "stage": "PingPongStage",
     "day": "Thu",
-    "startTime": "17:30",
-    "endTime": "19:30",
+    "start_time": "17:30",
+    "end_time": "19:30",
     "description": "VAnIIRII discovered her passion for music through dance and choreography. Attending electronic music parties since 2011, she began mixing favorite tracks across genres. Her close connection to the VRTW crew opened new musical areas, now woven into her smooth, playful sets.",
-    "genres": ["Electronic", "Eclectic"]
+    "genres": [
+      "Electronic",
+      "Eclectic"
+    ]
   },
   {
-    "artistName": "VLADEMIR",
-    "stage": "BOOHA STAGE",
+    "artist_name": "VLADEMIR",
+    "stage": "BoohaStage",
     "day": "Thu",
-    "startTime": "22:00",
-    "endTime": "00:00",
+    "start_time": "22:00",
+    "end_time": "00:00",
     "description": "Local underground favorite ready to showcase Romania's electronic talent. Expect techno and house that cuts deep.",
     "genres": null
   },
   {
-    "artistName": "VOLT",
-    "stage": "HIDEOUT STAGE",
+    "artist_name": "VOLT",
+    "stage": "HideoutStage",
     "day": "Wed",
-    "startTime": "22:30",
-    "endTime": "00:30",
+    "start_time": "22:30",
+    "end_time": "00:30",
     "description": "Greetings, I'm VOLT—30+ years in the industry. I've collaborated with Blanilla, Ndj, Manki (Ruffinaments), and played Electric Castle, MOX, The Sunsets, Untold, Double Rise. For four years I've also been resident DJ at Brener Social Club, shaping unforgettable parties.",
-    "genres": ["House", "Tech-House"]
+    "genres": [
+      "House",
+      "TechHouse"
+    ]
   },
   {
-    "artistName": "VOLTAGE + INJA",
-    "stage": "BOOHA STAGE",
+    "artist_name": "VOLTAGE + INJA",
+    "stage": "BoohaStage",
     "day": "Fri",
-    "startTime": "19:30",
-    "endTime": "21:00",
+    "start_time": "19:30",
+    "end_time": "21:00",
     "description": "A one-man musical hurricane. When Inja grabs the mic, expect poetry in motion. From Guardian columns to festival stages, he juggles bars, beats, and burning social issues while keeping the crowd bouncing. Hospital Records' secret weapon keeping drum & bass crowds spellbound worldwide.",
     "genres": null
   },
   {
-    "artistName": "WAX ON FRIDAYS",
-    "stage": "THE BEACH STAGE",
+    "artist_name": "WAX ON FRIDAYS",
+    "stage": "TheBeachStage",
     "day": "Sun",
-    "startTime": "02:00",
-    "endTime": "04:00",
+    "start_time": "02:00",
+    "end_time": "04:00",
     "description": "A vinyl-only selector since '04, Wax on Fridays champions underground sounds—from shouting divas to comforting grooves—with a deep knowledge of the mighty 12\" format.",
-    "genres": ["Vinyl-Only", "Various Electronic"]
+    "genres": [
+      "VinylOnly",
+      "VariousElectronic"
+    ]
   },
   {
-    "artistName": "WHITE MAHALA",
-    "stage": "HANGAR STAGE",
+    "artist_name": "WHITE MAHALA",
+    "stage": "HangarStage",
     "day": "Fri",
-    "startTime": "16:35",
-    "endTime": "17:35",
+    "start_time": "16:35",
+    "end_time": "17:35",
     "description": "The band that turns weddings into mosh pits. Bucharest's gypsy punk revolutionaries bringing Balkan madness to the 21st century. Think traditional Roma melodies with rock energy and hip-hop attitude. Their live shows are like a tour through Eastern Europe's wildest street parties.",
-    "genres": ["Balkan", "Gypsy Punk"]
+    "genres": [
+      "Balkan",
+      "GypsyPunk"
+    ]
   },
   {
-    "artistName": "WOOMB",
-    "stage": "BACKYARD STAGE",
+    "artist_name": "WOOMB",
+    "stage": "BackyardStage",
     "day": "Sun",
-    "startTime": "19:30",
-    "endTime": "20:30",
+    "start_time": "19:30",
+    "end_time": "20:30",
     "description": "Woomb is the Bulgarian duo making waves across Europe with their genre-defying sound. With tracks like \"Shape Yourself Around Me\" and \"Post War Lovemaking Machine,\" this Bulgarian duo is redefining Southeast Europe's alternative scene. Don't miss their Electric Castle debut.",
-    "genres": ["Electronic", "Experimental"]
+    "genres": [
+      "Electronic",
+      "Experimental"
+    ]
   },
   {
-    "artistName": "YCS",
-    "stage": "PING PONG STAGE",
+    "artist_name": "YCS",
+    "stage": "PingPongStage",
     "day": "Sat",
-    "startTime": "18:30",
-    "endTime": "20:15",
+    "start_time": "18:30",
+    "end_time": "20:15",
     "description": "Bucharest-based YCS explores music's cultural dimensions in new club contexts. A ballroom culture devotee, her hot bouncy beats mix with reggaeton, jersey club, house, and gqom to keep dancefloors moving.",
-    "genres": ["Ballroom", "Reggaeton", "Jersey Club", "Gqom", "House"]
+    "genres": [
+      "Ballroom",
+      "Reggaeton",
+      "JerseyClub",
+      "Gqom",
+      "House"
+    ]
   },
   {
-    "artistName": "YUNGBLUD",
-    "stage": "MAIN STAGE",
+    "artist_name": "YUNGBLUD",
+    "stage": "MainStage",
     "day": "Sat",
-    "startTime": "22:40",
-    "endTime": "23:40",
+    "start_time": "22:40",
+    "end_time": "23:40",
     "description": "The rockstar your parents warned you about. Yungblud mixes punk chaos, pop hooks, and raw vulnerability into anthems for the misfits. His live shows are pure adrenaline – think mosh pits, glitter, and a whole lot of feels. He's loud, he's unapologetic, and he's here to make you scream your heart out.",
-    "genres": ["Alt-Rock", "Pop-Punk"]
+    "genres": [
+      "AltRock",
+      "PopPunk"
+    ]
   },
   {
-    "artistName": "ZDA",
-    "stage": "PING PONG STAGE",
+    "artist_name": "ZDA",
+    "stage": "PingPongStage",
     "day": "Fri",
-    "startTime": "21:00",
-    "endTime": "22:00",
+    "start_time": "21:00",
+    "end_time": "22:00",
     "description": "ZDA combines mainstream and underground—left popcorn TV for eclectic mixes. Always playful, she brings good vibes and makes crowds dance. It's all about the dance.",
-    "genres": ["Eclectic", "Mainstream meets Underground"]
+    "genres": [
+      "Eclectic",
+      "MainstreamMeetsUnderground"
+    ]
   },
   {
-    "artistName": "ZDOB ȘI ZDUB",
-    "stage": "MAIN STAGE",
+    "artist_name": "ZDOB ȘI ZDUB",
+    "stage": "MainStage",
     "day": "Fri",
-    "startTime": "18:00",
-    "endTime": "19:00",
+    "start_time": "18:00",
+    "end_time": "19:00",
     "description": "Zdob și Zdub brings the Balkan party. From Chișinău basements to Eurovision stages, they're Moldova's folk-punk ambassadors who put Eastern European madness on the global map, blending traditional sounds with rock energy. Get ready for the wildest hora you've ever been part of.",
-    "genres": ["Folk Punk", "Rock"]
+    "genres": [
+      "FolkPunk",
+      "Rock"
+    ]
   },
   {
-    "artistName": "ZO",
-    "stage": "BOOHA STAGE",
+    "artist_name": "ZO",
+    "stage": "BoohaStage",
     "day": "Sat",
-    "startTime": "14:00",
-    "endTime": "16:00",
+    "start_time": "14:00",
+    "end_time": "16:00",
     "description": "Cluj-based promoter-turned-DJ ZO has pushed the local bass scene for seven years, booking acts like Loefah and Commodo. His dancefloor-oriented sets span hip-hop, dub, UK garage, and DnB, always delivering top-notch selection.",
-    "genres": ["Hip-Hop", "Dub", "UK Garage", "Drum & Bass"]
+    "genres": [
+      "HipHop",
+      "Dub",
+      "UkGarage",
+      "DrumAndBass"
+    ]
   }
 ]

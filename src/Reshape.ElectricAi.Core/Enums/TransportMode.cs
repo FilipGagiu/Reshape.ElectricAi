@@ -6,5 +6,9 @@ public enum TransportMode
     Car,
     EcTrain,
     EcBus,
-    Helicopter
+    Helicopter,
+    Plane,
+    Bike,
+    CfrTrain,
+    Flixbus
 }

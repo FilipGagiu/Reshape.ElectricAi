@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Reshape.ElectricAi.Core.Dtos.VectorSearch;
 using Reshape.ElectricAi.Core.Enums;
@@ -21,6 +22,9 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
     private static readonly Action<ILogger, int, Exception?> LogPagesSeeded =
         LoggerMessage.Define<int>(LogLevel.Information, 0, "EC pages seeder: processed {Count} sections");
 
+    private static readonly Action<ILogger, int, Exception?> LogLineupSeeded =
+        LoggerMessage.Define<int>(LogLevel.Information, 0, "EC lineup seeder: processed {Count} artists");
+
     public async Task SeedAsync(string dataRoot, CancellationToken ct = default)
     {
         var faqPath = Path.Combine(dataRoot, "faqs-ec-website.json");
@@ -30,6 +34,10 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
         var pagesDir = Path.Combine(dataRoot, "ec-pages");
         if (Directory.Exists(pagesDir))
             await SeedPagesAsync(pagesDir, ct);
+
+        var lineupPath = Path.Combine(dataRoot, "lineup.json");
+        if (File.Exists(lineupPath))
+            await SeedLineupAsync(lineupPath, ct);
     }
 
     private async Task SeedFaqsAsync(string jsonPath, CancellationToken ct)
@@ -76,6 +84,36 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
 
         LogPagesSeeded(logger, sectionCount, null);
     }
+
+    private async Task SeedLineupAsync(string jsonPath, CancellationToken ct)
+    {
+        var entries = JsonSerializer.Deserialize<LineupEntry[]>(
+            await File.ReadAllTextAsync(jsonPath, ct), JsonOpts)!;
+
+        foreach (var entry in entries)
+        {
+            var genrePart = entry.Genres is { Length: > 0 }
+                ? $"\nGenres: {string.Join(", ", entry.Genres.Select(ToDisplayName))}"
+                : string.Empty;
+
+            var content = $"""
+                Artist: {entry.ArtistName}
+                Stage: {ToDisplayName(entry.Stage)} at Electric Castle Festival
+                Day: {entry.Day} | Time: {entry.StartTime} – {entry.EndTime}
+
+                {entry.Description ?? string.Empty}{genrePart}
+                """;
+
+            await ingest.IngestDocumentAsync(new IngestDocumentRequest(
+                Title: $"Lineup: {entry.ArtistName}",
+                Content: content), ct);
+        }
+
+        LogLineupSeeded(logger, entries.Length, null);
+    }
+
+    private static string ToDisplayName(string pascalCase) =>
+        Regex.Replace(pascalCase, @"(?<=[a-z])(?=[A-Z])", " ");
 
     private static (string sourceRef, string body) ParseFrontmatter(string content)
     {
@@ -162,4 +200,13 @@ public sealed class EcDataSeeder(IIngestService ingest, ILogger<EcDataSeeder> lo
         FaqAnswer[] Answers);
 
     private sealed record FaqAnswer(string Text, Dictionary<string, string[]>? CategoryValues);
+
+    private sealed record LineupEntry(
+        string ArtistName,
+        string Stage,
+        string Day,
+        string StartTime,
+        string EndTime,
+        string? Description,
+        string[]? Genres);
 }

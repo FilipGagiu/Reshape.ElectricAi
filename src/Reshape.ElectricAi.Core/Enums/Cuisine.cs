@@ -16,5 +16,7 @@ public enum Cuisine
     MiddleEastern,
     Bbq,
     StreetFood,
+    Lebanese,
+    Hungarian,
     Other
 }

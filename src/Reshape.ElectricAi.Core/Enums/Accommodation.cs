@@ -6,5 +6,6 @@ public enum Accommodation
     Camping,
     CarCamping,
     RvCamping,
-    Glamping
+    Glamping,
+    Hotel
 }

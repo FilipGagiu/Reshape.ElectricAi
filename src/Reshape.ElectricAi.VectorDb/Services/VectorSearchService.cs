@@ -16,13 +16,21 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is { Count: > 0 }
-            ? CategoryTagsHelper.ToTags(filter.UserContext)
-            : null;
+        var query = context.DocumentChunks.AsNoTracking();
 
-        var raw = await context.DocumentChunks
-            .AsNoTracking()
-            .Where(c => filterTags == null || filterTags.Any(ft => c.CategoryTags.Contains(ft)))
+        if (filter.UserContext is { Count: > 0 })
+        {
+            foreach (var f in CategoryTagsHelper.ToPerCategoryTagFilters(filter.UserContext))
+            {
+                var prefix = f.CategoryPrefix;
+                var allowed = f.AllowedTags;
+                query = query.Where(c =>
+                    !c.CategoryTags.Any(t => EF.Functions.Like(t, prefix + "%")) ||
+                    c.CategoryTags.Any(t => allowed.Contains(t)));
+            }
+        }
+
+        var raw = await query
             .Select(c => new
             {
                 c.DocumentId,
@@ -47,13 +55,21 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is { Count: > 0 }
-            ? CategoryTagsHelper.ToTags(filter.UserContext)
-            : null;
+        var query = context.Questions.AsNoTracking();
 
-        var questionResults = await context.Questions
-            .AsNoTracking()
-            .Where(q => filterTags == null || filterTags.Any(ft => q.CategoryTags.Contains(ft)))
+        if (filter.UserContext is { Count: > 0 })
+        {
+            foreach (var f in CategoryTagsHelper.ToPerCategoryTagFilters(filter.UserContext))
+            {
+                var prefix = f.CategoryPrefix;
+                var allowed = f.AllowedTags;
+                query = query.Where(q =>
+                    !q.CategoryTags.Any(t => EF.Functions.Like(t, prefix + "%")) ||
+                    q.CategoryTags.Any(t => allowed.Contains(t)));
+            }
+        }
+
+        var questionResults = await query
             .Select(q => new
             {
                 q.Id,
@@ -95,13 +111,21 @@ public sealed class VectorSearchService(VectorDbContext context, IEmbeddingServi
         var queryEmbedding = await embeddingService.GenerateEmbeddingAsync(filter.QueryText, cancellationToken);
         var queryVector = new Vector(queryEmbedding.ToArray());
 
-        var filterTags = filter.UserContext is { Count: > 0 }
-            ? CategoryTagsHelper.ToTags(filter.UserContext)
-            : null;
+        var query = context.EventEntries.AsNoTracking();
 
-        var raw = await context.EventEntries
-            .AsNoTracking()
-            .Where(e => filterTags == null || filterTags.Any(ft => e.CategoryTags.Contains(ft)))
+        if (filter.UserContext is { Count: > 0 })
+        {
+            foreach (var f in CategoryTagsHelper.ToPerCategoryTagFilters(filter.UserContext))
+            {
+                var prefix = f.CategoryPrefix;
+                var allowed = f.AllowedTags;
+                query = query.Where(e =>
+                    !e.CategoryTags.Any(t => EF.Functions.Like(t, prefix + "%")) ||
+                    e.CategoryTags.Any(t => allowed.Contains(t)));
+            }
+        }
+
+        var raw = await query
             .Select(e => new
             {
                 e.FeedEntryId,

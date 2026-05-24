@@ -5,20 +5,22 @@ url: https://electriccastle.ro/fyi
 scraped_at: 2026-05-23T00:51:39Z
 ---
 
+This page contains essential practical information for Electric Castle festival attendees, covering ticket personalization, opening hours, wristband swap, cashless payments, transport options, rules, and safety.
+
 ## THE NAME ON YOUR TICKET
 
-Every ticket (including camping and accommodation tickets) needs to have the holder's NAME and ADDRESS on it (same as their ID). When adding your details, you will have to upload a PHOTO as well, which won't be visible on your ticket, but on your EC account only.
-Tickets are nominal, so you can't enter the festival if you don't have your name & your photo on your ticket. The address is necessary just for a double check, especially in case of a common name.
-In order to receive the wristband and enter the festival, it is necessary for the ticket personalization to be complete. You can personalize your ticket for free within the first 7 days after purchasing it; thereafter, a personalization fee will be applied. Use the EC website while you do this.
-You can upgrade your ticket or full pass either from your EC account or at the festival.
-If you have a voucher or an invitation, you need to redeem it until the date mentioned on it and to personalize it. You will not be able to enter the festival with a voucher.
+At Electric Castle, every ticket (including camping and accommodation tickets) needs to have the holder's NAME and ADDRESS on it (same as their ID). When adding your details, you will have to upload a PHOTO as well, which won't be visible on your ticket, but on your EC account only.
+Tickets are nominal, so you can't enter Electric Castle if you don't have your name & your photo on your ticket. The address is necessary just for a double check, especially in case of a common name.
+In order to receive the wristband and enter Electric Castle, it is necessary for the ticket personalization to be complete. You can personalize your ticket for free within the first 7 days after purchasing it; thereafter, a personalization fee will be applied. Use the EC website while you do this.
+You can upgrade your Electric Castle ticket or full pass either from your EC account or at the festival.
+If you have a voucher or an invitation, you need to redeem it until the date mentioned on it and to personalize it. You will not be able to enter Electric Castle with a voucher.
 
 ## OPENING HOURS
 
-The festival will open at 2 PM on Thursday, July 16, and will remain open until 8 AM on Monday, July 20.
-EC Village, the festival's campsite, will open at 12 PM on Wednesday, July 15, and will stay open until 10 AM on Monday, July 20. You will need a Camping Pass to enter.
+Electric Castle festival opening hours: The festival will open at 2 PM on Thursday, July 16, and will remain open until 8 AM on Monday, July 20.
+EC Village (the festival's campsite) will open at 12 PM on Wednesday, July 15, and will stay open until 10 AM on Monday, July 20. You will need a Camping Pass to enter EC Village.
 
-Important:
+Important rules about minors at Electric Castle:
 Minors up to 7 years old benefit from free entry if they are accompanied by a legal guardian who owns a valid entry ticket.
 Minors under 16 can enter if they have approval from a parent or legal guardian, accompanied by them or another adult responsible for supervising them. One adult can accompany up to 3 minors.
 Minors aged 16-17 need a parental statement for participation.
@@ -27,7 +29,7 @@ The consent form can be downloaded from the EC website and filled in. Make sure 
 
 ## GET YOUR WRISTBAND EARLY
 
-To save time, you can visit a Swap Point, show your ID, and swap your ticket into a wristband before the festival begins. Pre-Swapped wristbands can go straight to the fast lane.
+Electric Castle wristband pre-swap: To save time at the festival entrance, you can visit a Swap Point, show your ID, and swap your ticket into a wristband before the festival begins. Pre-Swapped wristbands can go straight to the fast lane at Electric Castle.
 IMPORTANT: Pre-Swap is not available for day tickets. Minors can only get their wristbands at the festival.
 Swap points are available in Cluj-Napoca at Iulius Mall (ground floor) and in Bucharest at Promenada Mall and AFI Cotroceni.
 You can also order your own wristband in Cluj and Bucharest via Wolt, starting from July 8.
@@ -41,14 +43,14 @@ Bucharest — AFI Cotroceni: glo island, Bulevardul General Paul Teodorescu 4. J
 
 ## ONLINE TOP-UP
 
-Every payment made inside the festival is cashless — you can pay for anything using your wristband. For that, you need to top-up money on it by creating an account and registering your ticket on the cashless platform at electriccastle.ro.
+Electric Castle uses a fully cashless payment system — every payment made inside the festival is cashless. You can pay for anything using your wristband. For that, you need to top-up money on it by creating an account and registering your ticket on the cashless platform at electriccastle.ro.
 
-Steps:
-• Login or create an account on our website.
+Steps to top up your Electric Castle wristband:
+• Login or create an account on the EC website.
 • Register your ticket code on the Cashless platform.
 • Top-up money.
 
-When you swap your ticket into a wristband, the wristband will be automatically connected to your cashless account and will have that amount of money on it.
+When you swap your ticket into a wristband at Electric Castle, the wristband will be automatically connected to your cashless account and will have that amount of money on it.
 Once registered in the Cashless platform, tickets can no longer be sold through the exchange platform.
 On-site top-ups are also available at the festival, every day from 11:00 to 6:00 (the next day). The maximum amount of cash that can be topped up is 2,500 lei. From 6:00 to 11:00, top-up will be available only online.
 Your wristband must be activated inside the festival area to use the top-up amount. You can activate your wristband by scanning it at a bar or vendor.
@@ -56,35 +58,35 @@ After every online top-up, you will have to scan your wristband at any payment p
 
 ## REFUND
 
-IMPORTANT: Cash refunds of the remaining balance on the wristband, requested at the festival cash desks, are subject to a 3% processing fee. This fee will be deducted from the refunded amount and applies regardless of the method used to load funds onto the wristband.
+Electric Castle cashless wristband refunds: Cash refunds of the remaining balance on the wristband, requested at the festival cash desks, are subject to a 3% processing fee. This fee will be deducted from the refunded amount and applies regardless of the method used to load funds onto the wristband.
 Refunds requested after the festival has ended, online via bank transfer, are not subject to this processing fee.
 By requesting a refund during the festival, the participant acknowledges and agrees to the application of this processing fee.
 
 ## GETTING TO THE FESTIVAL AND BACK
 
-The Electric Castle festival ground is located 30 km (18 miles) outside Cluj-Napoca, in the village of Bonțida. If you're not staying in EC Village or Bonțida, you can come by train (EC Trains are the best option), bus, or car.
+Transport to and from Electric Castle: The Electric Castle festival ground is located 30 km (18 miles) outside Cluj-Napoca, in the village of Bonțida. If you're not staying in EC Village or Bonțida, you can come by train (EC Trains are the best option), bus, or car.
 * A whole street in Bontida will be used to load up to 5 buses at once, making the trip back to town as quick as possible.
 * Average 30 min bus queue during peak times.
 * Dedicated Whatsapp Chat (+40752653049): for transportation issues only, to stay in touch with you and find solutions ASAP when you need them.
 
 ## BY EC TRAINS (INTERREGIONAL)
 
-You can choose to travel to Electric Castle with a dedicated EC train that will leave a few times a day, from Gara Mică (Cluj-Napoca). Only festival goers with valid train tickets and festival tickets will be allowed on this train. The EC train will stop in Jucu, where you will get into a dedicated bus that will take you to the festival. The price of a ticket is 35 LEI and it covers the whole journey Cluj→Bontida.
-This is the easiest and fastest way to get to the festival as you'll avoid the rush hours on the road.
+EC Train transport to Electric Castle: You can choose to travel to Electric Castle with a dedicated EC train that will leave a few times a day, from Gara Mică (Cluj-Napoca). Only festival goers with valid train tickets and festival tickets will be allowed on this train. The EC train will stop in Jucu, where you will get into a dedicated bus that will take you to the festival. The price of a ticket is 35 LEI and it covers the whole journey Cluj→Bontida.
+This is the easiest and fastest way to get to Electric Castle as you'll avoid the rush hours on the road.
 Tickets are sold exclusively online. EC trains have limited capacity, so we strongly recommend buying a ticket in advance. When purchasing, select your departure date and time; the ticket will only be valid for that journey.
 Unused EC train tickets can be used for any ride with EC buses.
 
 ## BY BUS — NON STOP
 
-There will be non-stop buses leaving from Iulius Mall and Expo Transilvania to the Castle and back, all day and all night long.
+EC Bus transport to Electric Castle: There will be non-stop buses leaving from Iulius Mall and Expo Transilvania to Electric Castle and back, all day and all night long.
 We strongly recommend you to buy bus tickets in advance online (card payment). Tickets will also be available in the bus stations (paying with your wristband, via card, or in cash). A bus ticket costs 35 LEI/way and can be used for any ride during the festival.
 
 Facilities at the Iulius Mall bus station:
 24h or 5-day parking lots at Iulius Mall — show your EC wristband at Info Parking to benefit from a discount.
 Info Point, access to toilets, food court and drinks.
 Easy access via CTP buses.
-First bus from Cluj-Napoca: July 16, 11:00 AM.
-Last bus from Bontida: July 21, 11:00 AM.
+First bus from Cluj-Napoca to Electric Castle: July 16, 11:00 AM.
+Last bus from Bontida (Electric Castle) back to Cluj-Napoca: July 21, 11:00 AM.
 
 Bus stations when returning to Cluj-Napoca: Aurel Vlaicu bus station (near Expo Transilvania) and Iulius Mall.
 
@@ -92,22 +94,22 @@ Special rides for EC Village: dedicated buses from Cluj-Napoca on July 14 & 15, 
 
 ## BY CFR TRAINS
 
-You can also travel to the festival by a regular train. Take the train to Bontida station — any CFR train that passes through Bontida will stop there. You can find the CFR schedule online. Once you get to Bontida, you will have to walk for about 40 minutes until you reach the festival's entrance.
+CFR train travel to Electric Castle: You can also travel to the festival by a regular Romanian CFR train. Take the train to Bontida station — any CFR train that passes through Bontida will stop there. You can find the CFR schedule online at cfrcalatori.ro. Once you get to Bontida, you will have to walk for about 40 minutes until you reach the Electric Castle entrance.
 
 ## BY PLANE
 
-If you're traveling from a different country, we recommend you fly to Cluj-Napoca Airport (airportcluj.ro), 30 km from the festival site. From the airport, you can go to one of the departure points of our transport options (Iulius Mall and Expo Transilvania), to the train station, order a ride through Uber, or take a taxi to the festival site.
+Air travel to Electric Castle: If you're traveling from a different country, we recommend you fly to Cluj-Napoca Airport (airportcluj.ro), 30 km from the Electric Castle festival site. From the airport, you can go to one of the departure points of our transport options (Iulius Mall and Expo Transilvania), to the train station, order a ride through Uber, or take a taxi to the festival site.
 
 ## BY FLIXBUS
 
-If you're traveling from a different country, you can choose to hop on a Flixbus and benefit from a 20% discount on the trip by filling in the form on the EC website.
-From the bus station, you can go to one of the departure points of our transport options (Iulius Mall and Expo Transilvania), to the train station (10 minutes walk), order a ride through Uber, or take a taxi to the festival site.
+Flixbus travel to Electric Castle: If you're traveling from a different country, you can choose to hop on a Flixbus and benefit from a 20% discount on the trip by filling in the form on the EC website.
+From the Flixbus station in Cluj-Napoca, you can go to one of the departure points of EC transport options (Iulius Mall and Expo Transilvania), to the train station (10 minutes walk), order a ride through Uber, or take a taxi to the Electric Castle festival site.
 
 ## BY CAR
 
-We strongly advise you to leave your car at home. Use our trains or shuttle buses!
+Car travel to Electric Castle: We strongly advise you to leave your car at home. Use our trains or shuttle buses!
 However, if you choose to come by car, share the ride with your friends. If there are no empty seats when you arrive at the festival, we will offer you free parking (spots are limited) and you get the chance to win some cool prizes — part of our carpooling sustainability initiative.
-If you are coming to the festival just to drop off / pick up someone, you will have to get a parking ticket and enter the parking area.
+If you are coming to Electric Castle just to drop off / pick up someone, you will have to get a parking ticket and enter the parking area.
 The main festival access road is from Rascruci (except for RVs), not Bontida — make sure you follow the road signs. If you're travelling in your RV, you'll use the main entrance to Bontida through the E576 road. Have your RV Ticket ready at the checkpoint.
 Print your Car Camping or RV Camping Ticket and leave it on your car's board.
 If you arrive by car and you'll be staying in the EC Village, you'll first need to park your car in the parking area and then take a few minutes walk to the camping area. If you have a Car Camping Ticket, you will enter the designated area from EC Village.
@@ -116,17 +118,17 @@ There will be a dedicated and limited Premium Parking accessible with a parking 
 
 ## BY UBER
 
-Uber drivers will have access via E 576 and DJ161. There will be a dedicated pick-up and drop-off spot for Uber and a flat fee of 200 LEI for the trip to the castle. This flat fee applies for any ride from Cluj-Napoca to the festival or back.
+Uber to Electric Castle: Uber drivers will have access via E 576 and DJ161. There will be a dedicated pick-up and drop-off spot for Uber and a flat fee of 200 LEI for the trip to Electric Castle. This flat fee applies for any ride from Cluj-Napoca to the festival or back.
 IMPORTANT: Drivers will only be allowed to the dedicated spot in Bonțida by showing the ongoing ride on the app.
 
 ## BY TAXI & OTHER APPS
 
-If you choose to come by taxi or other transport app, you will have access via E 576 and DJ161. There will be a dedicated Taxi Station.
+Taxi to Electric Castle: If you choose to come by taxi or other transport app, you will have access via E 576 and DJ161. There will be a dedicated Taxi Station near the Electric Castle festival site.
 IMPORTANT: Drivers will only be allowed there by showing the ongoing ride on the app.
 
 ## GETTING TO YOUR BONTIDA ACCOMMODATION
 
-IF YOUR ACCOMMODATION IS IN BONTIDA VILLAGE, IT IS VERY IMPORTANT TO KNOW THIS:
+Important information for festival-goers staying in private accommodation in Bontida village (not EC Village):
 Talk to your host regarding car access and give them the license plate number of the car you will use to get to their address.
 Your host will have to inform the Auto Accreditation Office about your license plate number.
 You will use the main road to Bontida, E576–DJ161, regardless of what GPS apps instruct you.
@@ -137,13 +139,13 @@ Cars with no auto access pass will use the road from Rascruci and will head to t
 
 ## LOCKERS
 
-Choose a care-free experience at the castle by leaving your stuff in a locker and charging your phone whenever you need. Book one in advance online. Charging lockers will be available in the EC Village as well.
+Electric Castle lockers: Choose a care-free experience at the castle by leaving your stuff in a locker and charging your phone whenever you need. Book one in advance online. Charging lockers will be available in the EC Village as well.
 
 ## DOs AND DON'Ts
 
 ### In the festival area
 
-Participants can bring with them:
+Items permitted inside Electric Castle festival area:
 Backpacks
 Professional photo cameras and video cameras (the use of materials for commercial or promotional purposes is strictly prohibited)
 Laptops
@@ -155,7 +157,7 @@ Sunscreen
 Hand sanitizer
 Lazy Bag
 
-Participants cannot bring with them:
+Items NOT permitted inside Electric Castle festival area:
 Drugs (illegal substances)
 Food and beverages
 Knives or folding knives
@@ -176,7 +178,7 @@ Drones or other unmanned aerial vehicles
 
 ## STAYING IN THE EC VILLAGE
 
-Find out what to expect before your arrival at the EC Village. Participants can bring with them:
+Electric Castle EC Village rules — what to bring when staying at the campsite:
 Backpacks & luggage
 Laptops
 Food (including canned food) — except for glass packages
@@ -193,7 +195,7 @@ Lazy Bag
 Flashlights
 Small garden furniture pieces (folding chairs, folding tables) — put them inside when leaving the campsite; we don't take responsibility for lost items
 
-Participants cannot bring with them:
+Items NOT permitted in EC Village campsite:
 Drugs (illegal substances)
 Fire sources
 Electric generators — staff will assist if needed
@@ -214,11 +216,11 @@ Big sound systems
 Reusable metal or glass bottles
 Drones or other unmanned aerial vehicles
 
-In case you need help or info, go to the Camping Reception at the entrance of EC Village.
+In case you need help or info at EC Village, go to the Camping Reception at the entrance of EC Village.
 
 ## REUSABLE CUPS
 
-You can find reusable cups at every bar (except Fresh, Wine, Speed Bars & Coffee Shops). Cocktails or draft beer will be served in them.
+Electric Castle reusable cup system: You can find reusable cups at every bar (except Fresh, Wine, Speed Bars & Coffee Shops). Cocktails or draft beer will be served in them.
 For your first drink, you'll pay a 10 lei deposit for the cup.
 For your second order, return the cup to the bar and receive a clean one in exchange.
 If you don't want to carry the empty cup, you can ask the bar for a cup token in exchange.
@@ -229,23 +231,23 @@ Cups collected from others will not be accepted.
 
 ## SAFETY
 
-We want the festival to be a safe place for everyone.
+Electric Castle safety and security: We want the festival to be a safe place for everyone.
 You can find our Red Team across the festival, ready to help anytime.
-If you ever feel unsafe, call +40741069443 (our safety line), or order an "Angel Shot" at the bar. We'll take care and provide you with extra safety.
+If you ever feel unsafe at Electric Castle, call +40741069443 (our safety line), or order an "Angel Shot" at the bar. We'll take care and provide you with extra safety.
 Behind the Safety Line there will be a team of professional therapists to assist you in case of emergencies.
 These safety tools are here for those who truly need help — please do not use the safety line or the Angel Shot code for non-safety-related situations.
-If you have general questions or need festival info, please reach out via email or visit the Info Point inside the festival.
+If you have general questions or need festival info, please reach out via email or visit the Info Point inside Electric Castle.
 Also, if you'd like to rest assured that the drink in your hand is safe, you can ask for a cap and a straw at any bar.
 Knowledge is sexy. Visit www.ginfospot.ro for sex-related advice and resources.
 
 ## FIRST AID
 
-There will be 4 first-aid points inside the festival and one in the EC Village. Check the festival's map.
+Electric Castle first aid: There will be 4 first-aid points inside the festival and one in the EC Village. Check the festival's map.
 
 ## DISCOVER THE EC WORLD
 
-Check out the schedule in the EC App.
+Check out the Electric Castle schedule in the EC App.
 Check out our sustainability initiatives and see how you can get involved.
 There will be Free Water refill stations inside the festival and EC Village. Bring your own container.
-Got more questions? Check out the FAQs.
-Check out the Rules and Regulations for EC.
+Got more questions? Check out the FAQs on the Electric Castle website.
+Check out the Rules and Regulations for Electric Castle.
