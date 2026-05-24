@@ -48,6 +48,7 @@ public static class AiChatModule
         services.AddSingleton<IOpenAiClient, OpenAiClient>();
         services.AddScoped<IAskService, AskService>();
         services.AddScoped<IConversationService, ConversationService>();
+        services.AddScoped<IHotQuestionsService, HotQuestionsService>();
 
         RegisterValidators(services);
 

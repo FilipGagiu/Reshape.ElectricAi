@@ -17,7 +17,9 @@ namespace Reshape.ElectricAi.Presentation.Controllers;
 [Authorize]
 [Route("api/v1/conversations")]
 [Produces("application/json")]
-public sealed class ConversationsController(IConversationService conversations) : ControllerBase
+public sealed class ConversationsController(
+    IConversationService conversations,
+    IHotQuestionsService hotQuestions) : ControllerBase
 {
     [HttpGet]
     [ProducesResponseType(typeof(IReadOnlyList<ConversationSummaryDto>), StatusCodes.Status200OK)]
@@ -25,6 +27,15 @@ public sealed class ConversationsController(IConversationService conversations) 
         CancellationToken cancellationToken)
     {
         var items = await conversations.ListAsync(CurrentUserId(), cancellationToken);
+        return Ok(items);
+    }
+
+    [HttpGet("hot-questions")]
+    [ProducesResponseType(typeof(IReadOnlyList<HotQuestionDto>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IReadOnlyList<HotQuestionDto>>> GetHotQuestionsAsync(
+        CancellationToken cancellationToken)
+    {
+        var items = await hotQuestions.GetTopAsync(5, cancellationToken);
         return Ok(items);
     }
 
