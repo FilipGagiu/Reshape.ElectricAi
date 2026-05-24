@@ -48,6 +48,8 @@ public static class VectorDbModule
         services.AddScoped<Reshape.ElectricAi.Core.Services.Itinerary.IEventLookupService, EventLookupService>();
         services.AddScoped<IIngestService, IngestService>();
         services.AddScoped<EcDataSeeder>();
+        services.AddSingleton<SeedJobChannel>();
+        services.AddHostedService<SeedBackgroundService>();
 
         RegisterValidators(services);
 
