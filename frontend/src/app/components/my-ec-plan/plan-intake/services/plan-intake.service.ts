@@ -19,7 +19,7 @@ import {
 } from '../models/plan-intake.model';
 import { PLAN_INTAKE_QUESTIONS } from './plan-intake.questions';
 
-const STORAGE_PREFIX = 'ec-plan-intake-v2-';
+const STORAGE_PREFIX = 'ec-plan-intake-v3-';
 const ANON_STORAGE_KEY = `${STORAGE_PREFIX}anonymous`;
 const SUBMIT_ENDPOINT = '/api/plan-intake';
 

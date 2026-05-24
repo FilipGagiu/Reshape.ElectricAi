@@ -58,13 +58,6 @@ export const routes: Routes = [
             {
                 path: 'plan',
                 loadComponent: () =>
-                    import('@components/my-ec-plan/my-ec-plan.component').then(
-                        (m) => m.MyEcPlanComponent,
-                    ),
-            },
-            {
-                path: 'plan-steps',
-                loadComponent: () =>
                     import('@components/my-ec-plan/plan-steps/plan-steps.component').then(
                         (m) => m.PlanStepsComponent,
                     ),

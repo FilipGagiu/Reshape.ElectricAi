@@ -2,8 +2,7 @@
     "nav": {
         "liveFeed": "Live feed",
         "questions": "Questions",
-        "plan": "My EC plan",
-        "steps": "Steps"
+        "plan": "My EC plan"
     },
     "liveFeed": {
         "title": "Live feed",
@@ -125,7 +124,7 @@
     },
     "plan": {
         "title": "My EC plan",
-        "placeholder": "Your extracurricular plan lives here.",
+        "placeholder": "Your Electric Castle, planned.",
         "cta": {
             "watchRecap": "Watch the recap"
         },
@@ -245,14 +244,26 @@
                     "placeholder": "Your first name",
                     "description": "First name's plenty. We'll keep things casual from here."
                 },
-                "origin": {
-                    "prompt": "Where are you coming in from, and how big's the crew?",
-                    "placeholder": "City + group size",
-                    "description": "Helps us think about your route in and how the days flow for your group.",
+                "location": {
+                    "prompt": "Where are you coming in from?",
+                    "placeholder": "City or country",
+                    "description": "Helps us think about your route in and travel day.",
                     "chip": {
-                        "clujSolo": "Cluj-Napoca, solo",
-                        "bucharestCrew": "Bucharest, with friends",
-                        "abroadGroup": "Abroad, big group"
+                        "cluj": "Cluj-Napoca",
+                        "bucharest": "Bucharest",
+                        "otherRomania": "Elsewhere in Romania",
+                        "abroad": "From abroad"
+                    }
+                },
+                "groupSize": {
+                    "prompt": "How big's the crew?",
+                    "placeholder": "Solo, with friends...",
+                    "description": "So we can pace recommendations for your group.",
+                    "chip": {
+                        "solo": "Just me",
+                        "duo": "With a +1",
+                        "smallCrew": "Small crew (3-5)",
+                        "bigCrew": "Big crew (6+)"
                     }
                 },
                 "accommodation": {

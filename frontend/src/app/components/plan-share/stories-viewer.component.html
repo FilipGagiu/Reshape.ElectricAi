@@ -73,9 +73,10 @@
         </span>
 
         @if (paused()) {
-            <div class="ec-stories__pause" aria-live="polite">
-                <i class="pi pi-pause ec-stories__pause-icon" aria-hidden="true"></i>
-            </div>
+            <span class="ec-stories__pause-badge" aria-live="polite">
+                <i class="pi pi-pause" aria-hidden="true"></i>
+                <span class="ec-stories__pause-label">{{ 'plan.story.pause' | transloco }}</span>
+            </span>
         }
     }
 </div>

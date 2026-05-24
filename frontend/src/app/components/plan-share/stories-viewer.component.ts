@@ -82,16 +82,8 @@ export class StoriesViewerComponent {
     // Slide types that hold until the viewer taps / keyboards forward (no
     // auto-advance). Welcome is intentionally a "freeze frame": the first
     // moment lands and the viewer drives the next beat themselves.
-    // TEMP: every slide is manual while we iterate on slide HTML. Revert to
-    // just ['welcome'] when auto-advance should resume.
     private readonly MANUAL_ADVANCE_TYPES: ReadonlySet<PlanSlide['type']> = new Set([
         'welcome',
-        'transport',
-        'sleep',
-        'music',
-        'food',
-        'activityVibe',
-        'share',
     ]);
 
     protected readonly currentSlideAutoAdvances = computed(() => {

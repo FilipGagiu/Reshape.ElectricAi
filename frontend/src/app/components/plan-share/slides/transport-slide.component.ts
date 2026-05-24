@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 
+import { SlideLoopFadeDirective } from './loop-fade.directive';
+
 import { PlanTransportSlide, TransportMethod } from '../plan-share.model';
 
 const ICON_BY_METHOD: Record<TransportMethod, string> = {
@@ -13,11 +15,11 @@ const ICON_BY_METHOD: Record<TransportMethod, string> = {
 
 @Component({
     selector: 'app-transport-slide',
-    imports: [TranslocoModule],
+    imports: [TranslocoModule, SlideLoopFadeDirective],
     template: `
         <div class="ec-slide">
             <video
-                class="ec-slide__video"
+                class="ec-slide__video" appSlideLoopFade
                 src="/media/sliders/slide_2_bg.mp4"
                 autoplay
                 muted

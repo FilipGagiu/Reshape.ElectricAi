@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
 
+import { SlideLoopFadeDirective } from './loop-fade.directive';
+
 import { PlanActivityVibeSlide } from '../plan-share.model';
 
 /**
@@ -9,11 +11,11 @@ import { PlanActivityVibeSlide } from '../plan-share.model';
  */
 @Component({
     selector: 'app-activity-vibe-slide',
-    imports: [TranslocoModule],
+    imports: [TranslocoModule, SlideLoopFadeDirective],
     template: `
         <div class="ec-slide">
             <video
-                class="ec-slide__video"
+                class="ec-slide__video" appSlideLoopFade
                 src="/media/sliders/slide_6_bg.mp4"
                 autoplay
                 muted

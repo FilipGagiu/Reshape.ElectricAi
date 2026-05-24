@@ -1,10 +1,11 @@
-export const PLAN_INTAKE_STATE_VERSION = 2;
+export const PLAN_INTAKE_STATE_VERSION = 3;
 
 export type PlanIntakeStatus = 'collecting' | 'submitting' | 'submitted' | 'error';
 
 export enum PlanIntakeQuestionId {
     Name = 'name',
-    Origin = 'origin',
+    Location = 'location',
+    GroupSize = 'groupSize',
     Accommodation = 'accommodation',
     Vibe = 'vibe',
     Music = 'music',

@@ -1,16 +1,18 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { TranslocoModule, TranslocoService } from '@jsverse/transloco';
+
+import { SlideLoopFadeDirective } from './loop-fade.directive';
 import { inject } from '@angular/core';
 
 import { PlanShareSlide } from '../plan-share.model';
 
 @Component({
     selector: 'app-share-slide',
-    imports: [TranslocoModule],
+    imports: [TranslocoModule, SlideLoopFadeDirective],
     template: `
         <div class="ec-slide">
             <video
-                class="ec-slide__video"
+                class="ec-slide__video" appSlideLoopFade
                 src="/media/sliders/slide_7_bg.mp4"
                 autoplay
                 muted
