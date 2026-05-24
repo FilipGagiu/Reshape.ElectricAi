@@ -71,10 +71,15 @@ public static class VectorDbModule
         services.AddScoped<IEmbeddingService, OpenAiEmbeddingService>();
         services.AddScoped<IVectorSearchService, VectorSearchService>();
         services.AddScoped<Reshape.ElectricAi.Core.Services.Itinerary.IEventLookupService, EventLookupService>();
+        services.AddScoped<ITopArtistsService, TopArtistsService>();
         services.AddScoped<IIngestService, IngestService>();
         services.AddScoped<EcDataSeeder>();
         services.AddSingleton<SeedJobChannel>();
         services.AddHostedService<SeedBackgroundService>();
+
+        services.AddScoped<GenreBackfillService>();
+        services.AddSingleton<GenreBackfillJobChannel>();
+        services.AddHostedService<GenreBackfillBackgroundService>();
 
         RegisterValidators(services);
 

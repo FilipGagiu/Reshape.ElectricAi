@@ -1,9 +1,19 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { TranslocoModule } from '@jsverse/transloco';
+
+import { PLACEHOLDER_ARTIST_IMAGE, resolveArtistImageByName } from '@shared/api/artists';
 
 import { SlideLoopFadeDirective } from './loop-fade.directive';
 
 import { PlanMusicSlide } from '../plan-share.model';
+
+interface ArtistRow {
+    readonly rank: number;
+    readonly name: string;
+    readonly imagePath: string;
+}
+
+const MAX_ARTISTS = 5;
 
 @Component({
     selector: 'app-music-slide',
@@ -26,14 +36,23 @@ import { PlanMusicSlide } from '../plan-share.model';
             </h1>
             <span class="ec-slide__accent" aria-hidden="true"></span>
 
-            <div class="ec-slide__artists">
-                @for (artist of slide().artists; track artist; let isLast = $last) {
-                    <span class="ec-slide__artist">{{ artist }}</span>
-                    @if (!isLast) {
-                        <span class="ec-slide__separator" aria-hidden="true">×</span>
-                    }
+            <ol class="ec-slide__lineup">
+                @for (row of artistRows(); track row.rank) {
+                    <li class="ec-slide__lineup-row">
+                        <span class="ec-slide__rank" aria-hidden="true">{{ row.rank }}</span>
+                        <span class="ec-slide__avatar">
+                            <img
+                                class="ec-slide__avatar-img"
+                                [src]="row.imagePath"
+                                [alt]="row.name"
+                                loading="lazy"
+                                (error)="onImgError($event)"
+                            />
+                        </span>
+                        <span class="ec-slide__artist">{{ row.name }}</span>
+                    </li>
                 }
-            </div>
+            </ol>
 
             <p class="ec-slide__body">
                 {{
@@ -85,7 +104,7 @@ import { PlanMusicSlide } from '../plan-share.model';
         }
         .ec-slide__headline,
         .ec-slide__accent,
-        .ec-slide__artists,
+        .ec-slide__lineup,
         .ec-slide__body {
             position: relative;
             z-index: 2;
@@ -105,36 +124,64 @@ import { PlanMusicSlide } from '../plan-share.model';
             height: 2px;
             background-color: var(--ec-red);
         }
-        .ec-slide__artists {
+        .ec-slide__lineup {
+            list-style: none;
+            margin: var(--space-5) 0 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: var(--space-1);
-            margin-top: var(--space-6);
+            align-items: stretch;
+            gap: var(--space-3);
+            width: 100%;
+            max-width: 340px;
         }
-        .ec-slide__artist {
-            font-size: 26px;
-            font-weight: 800;
-            font-style: italic;
-            color: var(--ec-yellow);
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-            line-height: 1.1;
+        .ec-slide__lineup-row {
+            display: grid;
+            grid-template-columns: 32px 56px 1fr;
+            align-items: center;
+            gap: var(--space-3);
+            text-align: left;
             animation: ec-slide-fade-up var(--duration-deliberate) var(--ease-emphasized) both;
         }
-        .ec-slide__artist:nth-child(1) {
-            animation-delay: 80ms;
+        .ec-slide__lineup-row:nth-child(1) { animation-delay: 80ms; }
+        .ec-slide__lineup-row:nth-child(2) { animation-delay: 140ms; }
+        .ec-slide__lineup-row:nth-child(3) { animation-delay: 200ms; }
+        .ec-slide__lineup-row:nth-child(4) { animation-delay: 260ms; }
+        .ec-slide__lineup-row:nth-child(5) { animation-delay: 320ms; }
+        .ec-slide__rank {
+            font-size: 28px;
+            font-weight: 900;
+            font-style: italic;
+            color: var(--ec-yellow);
+            text-align: center;
+            line-height: 1;
+            letter-spacing: 0.02em;
         }
-        .ec-slide__artist:nth-child(3) {
-            animation-delay: 180ms;
+        .ec-slide__avatar {
+            display: block;
+            width: 56px;
+            height: 56px;
+            background-color: var(--ec-dark-navy);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: var(--radius-none);
+            overflow: hidden;
         }
-        .ec-slide__artist:nth-child(5) {
-            animation-delay: 280ms;
+        .ec-slide__avatar-img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
-        .ec-slide__separator {
-            font-size: 22px;
-            color: rgba(255, 255, 255, 0.55);
-            font-weight: 400;
+        .ec-slide__artist {
+            font-size: 20px;
+            font-weight: 800;
+            font-style: italic;
+            color: var(--ec-white);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            line-height: 1.15;
+            min-width: 0;
+            word-break: break-word;
         }
         .ec-slide__body {
             margin: var(--space-5) 0 0;
@@ -156,7 +203,7 @@ import { PlanMusicSlide } from '../plan-share.model';
         }
         @media (prefers-reduced-motion: reduce) {
             .ec-slide__headline,
-            .ec-slide__artist {
+            .ec-slide__lineup-row {
                 animation: none;
             }
         }
@@ -166,7 +213,24 @@ import { PlanMusicSlide } from '../plan-share.model';
 export class MusicSlideComponent {
     readonly slide = input.required<PlanMusicSlide>();
 
+    protected readonly artistRows = computed<ReadonlyArray<ArtistRow>>(() =>
+        this.slide()
+            .artists.slice(0, MAX_ARTISTS)
+            .map((name, index) => ({
+                rank: index + 1,
+                name,
+                imagePath: resolveArtistImageByName(name),
+            })),
+    );
+
     protected genresLabel(): string {
         return this.slide().genres.join(' & ');
+    }
+
+    protected onImgError(event: Event): void {
+        const target = event.target;
+        if (target instanceof HTMLImageElement && target.src !== PLACEHOLDER_ARTIST_IMAGE) {
+            target.src = PLACEHOLDER_ARTIST_IMAGE;
+        }
     }
 }
