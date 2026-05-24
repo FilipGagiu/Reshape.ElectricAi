@@ -197,7 +197,7 @@
     },
     "plan": {
         "title": "Planul meu EC",
-        "placeholder": "Planul tău extracurricular trăiește aici.",
+        "placeholder": "Planul tău la Electric Castle trăiește aici.",
         "results": {
             "subtitle": "Festivalul tău, esențializat.",
             "greeting": "Salut {{name}}, planul tău e gata.",

@@ -1,10 +1,10 @@
 # Frontend PWA Deploy (EC2 Ubuntu + Nginx)
 
-Handoff doc for ops/backend team. Deploys Angular PWA (`ec-hackaton`) as static files behind Nginx on the existing EC2 Ubuntu host that already runs the backend.
+Handoff doc for ops/backend team. Deploys Angular PWA (`electric-ai`) as static files behind Nginx on the existing EC2 Ubuntu host that already runs the backend.
 
 ## Facts about the app
 
-- Angular project name: `ec-hackaton` (see `frontend/angular.json`).
+- Angular project name: `electric-ai` (see `frontend/angular.json`).
 - PWA: enabled (`serviceWorker: "ngsw-config.json"`). Build emits `ngsw-worker.js`, `ngsw.json`, and `manifest.webmanifest` alongside the normal hashed bundles.
 - Build output dir: `frontend/dist/ec-hackaton/browser/`.
 - Build command: `npm ci && npm run build` (defaults to `--configuration production`).
@@ -178,7 +178,7 @@ set -euo pipefail
 
 REPO_DIR="<REPO_DIR>"
 WEBROOT="<WEBROOT>"
-APP_NAME="ec-hackaton"
+APP_NAME="electric-ai"
 
 cd "$REPO_DIR"
 git fetch --prune
@@ -260,7 +260,7 @@ git checkout <PREVIOUS_COMMIT_SHA>
 cd frontend
 npm ci
 npm run build
-sudo rsync -a --delete "dist/ec-hackaton/browser/" "<WEBROOT>/"
+sudo rsync -a --delete "dist/electric-ai/browser/" "<WEBROOT>/"
 ```
 
 Bumping the build (even a no-op commit) is preferred over reverting in place — SW versioning works off content hashes, and rebuilding generates a fresh `ngsw.json` users will pick up.

@@ -197,7 +197,7 @@
     },
     "plan": {
         "title": "My EC plan",
-        "placeholder": "Your extracurricular plan lives here.",
+        "placeholder": "Your plan at Electric Castle lives here.",
         "results": {
             "subtitle": "Your festival, distilled.",
             "greeting": "Hey {{name}}, your plan's ready.",
